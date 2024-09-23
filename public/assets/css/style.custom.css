@@ -1,0 +1,207 @@
+/*
+    Custom styles
+
+    Copyright (c) 2024 Xsam Technologies and/or its affiliates. All rights reserved.
+*/
+/********** Typographie **********/
+textarea {
+    resize: none!important;
+}
+
+/* border */
+.kls-border-blue {
+    border-color: #0595be !important;
+}
+
+.kls-dark-green {
+    border-color: #056526 !important;
+}
+
+.kls-lime-green {
+    border-color: #a4da22 !important;
+}
+
+/* border-radius */
+.kls-rounded {
+    -webkit-border-radius: 1.4rem;
+    border-radius: 1.4rem;
+}
+
+.kls-rounded-bottom {
+    -webkit-border-bottom-left-radius: 1.4rem;
+    -webkit-border-bottom-right-radius: 1.4rem;
+    border-bottom-left-radius: 1.4rem;
+    border-bottom-right-radius: 1.4rem;
+}
+
+/* Text */
+.kls-blue-text {
+    color: #0595be!important;
+}
+
+.kls-dark-green-text {
+    color: #056526!important;
+}
+
+.kls-lime-green-text {
+    color: #a4da22!important;
+}
+
+.kls-font-weight-700 {
+    font-weight: 700;
+}
+
+.kls-font-small {
+    font-size: 0.8rem;
+}
+
+/* Button */
+.kls-btn-blue {
+    background: #0595be;
+}
+
+.kls-btn-blue:hover,
+.kls-btn-blue:focus {
+    background: #048db3;
+}
+
+.kls-btn-outline-blue {
+    background: transparent;
+    color: #fff;
+    border: solid 1px #0595be;
+}
+
+.kls-btn-outline-blue:hover {
+    background: #0595be;
+}
+
+.kls-btn-outline-blue:focus {
+    background: #0595be;
+    border: solid 1px #048db3;
+}
+
+.kls-btn-dark-green {
+    background: #056526;
+}
+
+.kls-btn-dark-green:hover,
+.kls-btn-dark-green:focus {
+    background: #055c23;
+}
+
+.kls-btn-outline-dark-green {
+    background: transparent;
+    color: #fff;
+    border: solid 1px #056526;
+}
+
+.kls-btn-outline-dark-green:hover {
+    background: #056526;
+}
+
+.kls-btn-outline-dark-green:focus {
+    background: #056526;
+    border: solid 1px #055c23;
+}
+
+.kls-btn-lime-green {
+    background: #a4da22;
+}
+
+.kls-btn-lime-green:hover,
+.kls-btn-lime-green:focus {
+    background: #95c91e;
+}
+
+.kls-btn-outline-lime-green {
+    background: transparent;
+    color: #fff;
+    border: solid 1px #a4da22;
+}
+
+.kls-btn-outline-lime-green:hover {
+    background: #a4da22;
+}
+
+.kls-btn-outline-lime-green:focus {
+    background: #a4da22;
+    border: solid 1px #95c91e;
+}
+
+/* paragraph */
+.kls-line-height-1 {
+    line-height: 1;
+}
+
+.kls-line-height-1_2 {
+    line-height: 1.2;
+}
+
+.kls-line-height-1_25 {
+    line-height: 1.25;
+}
+
+.kls-line-height-1_3 {
+    line-height: 1.3;
+}
+
+.kls-line-height-1_35 {
+    line-height: 1.35;
+}
+
+.kls-line-height-1_4 {
+    line-height: 1.4;
+}
+
+.kls-line-height-1_45 {
+    line-height: 1.45;
+}
+
+.kls-line-height-1_5 {
+    line-height: 1.5;
+}
+
+/* stretched link */
+.card-body + .stretched-link::after {
+    background-color: rgba(70, 100, 150, 0.2)!important;
+    opacity: 0;
+    transition: .3s;
+}
+
+.card-body + .stretched-link.changed::after {
+    opacity: 1;
+}
+
+/* FROM TABLET TO LARGE SCREEN */
+@media screen and (min-width: 768px) {
+    /*
+        CUSTOM COMPONENTS
+    */
+    .kls-rounded-sm {
+        -webkit-border-radius: 1.4rem;
+        border-radius: 1.4rem;
+    }
+
+    .kls-rounded-bottom-sm {
+        -webkit-border-bottom-left-radius: 1.4rem;
+        -webkit-border-bottom-right-radius: 1.4rem;
+        border-bottom-left-radius: 1.4rem;
+        border-bottom-right-radius: 1.4rem;
+    }
+}
+
+/* SMARTPHONE SCREEN */
+@media screen and (max-width: 767px) {
+    
+}
+
+/*
+    A modal over another modal
+*/
+.modal:nth-of-type(even) {
+    z-index: 1052 !important;
+}
+
+.modal-backdrop.show:nth-of-type(even) {
+    z-index: 1051 !important;
+}
