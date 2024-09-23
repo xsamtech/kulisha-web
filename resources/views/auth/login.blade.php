@@ -14,30 +14,24 @@
     @csrf
                                 <!-- Email, Phone or Username -->
                                 <div class="mt-4 mb-3 input-group-lg">
-                                    <input type="text" name="identifier" class="form-control" placeholder="@lang('miscellaneous.login_username')" autofocus>
+                                    <input type="text" name="login_username" id="login_username" class="form-control" placeholder="@lang('miscellaneous.login_username')" autofocus>
                                 </div>
-    @error('identifier')
-                                <div class="text-red-500">{{ $message }}</div>
-    @enderror
 
                                 <!-- Password -->
                                 <div class="mb-3 position-relative">
                                     <!-- Password -->
                                     <div class="input-group input-group-lg">
-                                        <input type="password" name="password" id="psw-input" class="form-control fakepassword" placeholder="@lang('miscellaneous.password.label')">
+                                        <input type="password" name="login_password" id="login_password" class="form-control fakepassword" placeholder="@lang('miscellaneous.password.label')">
                                         <span class="input-group-text p-0">
                                             <i class="fakepasswordicon fa-solid fa-eye-slash cursor-pointer p-2 w-40px"></i>
                                         </span>
                                     </div>
-    @error('password')
-                                    <div class="text-red-500">{{ $message }}</div>
-    @enderror
                                 </div>
 
                                 <!-- Remember me -->
                                 <div class="mb-4 d-sm-flex justify-content-between">
                                     <div>
-                                        <input type="checkbox" class="form-check-input" id="rememberCheck">
+                                        <input type="checkbox" name="login_remember" id="login_remember" class="form-check-input" id="rememberCheck">
                                         <label class="form-check-label" for="rememberCheck">@lang('miscellaneous.remember_me')</label>
                                     </div>
                                     <a href="" role="button">@lang('miscellaneous.forgotten_password')</a>
