@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Xanders
+ * @see https://team.xsamtech.com/xanderssamoth
+ */
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
@@ -16,7 +20,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Kulisha'),
 
     /*
     |--------------------------------------------------------------------------
@@ -83,7 +87,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
@@ -110,6 +114,32 @@ return [
     */
 
     'faker_locale' => 'en_US',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Available locales
+    |--------------------------------------------------------------------------
+    |
+    | All locales that application works with
+    |
+    */
+    'available_locales' => [
+        'Afrikaans' => 'af',
+        'Allemand' => 'de',
+        'عرب' => 'ar',
+        '中国人' => 'zh',
+        'English' => 'en',
+        'Español' => 'es',
+        'Français' => 'fr',
+        'Italiano' => 'it',
+        '日本語' => 'ja',
+        'Lingala' => 'ln',
+        'Nederlands' => 'nl',
+        'Русский' => 'ru',
+        'Swahili' => 'sw',
+        'Türkçe' => 'tr',
+        'čeština' => 'cs'
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -168,6 +198,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Aneeskhan47\PaginationMerge\PaginationMergeServiceProvider::class, //--- Pagination Merge
     ])->toArray(),
 
     /*
@@ -183,6 +214,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'PaginationMerge' => Aneeskhan47\PaginationMerge\Facades\PaginationMerge::class, //--- Pagination Merge
     ])->toArray(),
 
 ];

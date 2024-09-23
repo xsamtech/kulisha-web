@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Xanders
+ * @see https://team.xsamtech.com/xanderssamoth
+ */
 
 return [
 
@@ -29,6 +33,19 @@ return [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    ],
+
+    'flexpay' => [
+        'merchant' => env('FLEXPAY_MERCHANT'),
+        'gateway_mobile' => env('FLEXPAY_GATEWAY_MOBILE'),
+        'gateway_card_v1' => env('FLEXPAY_GATEWAY_CARD_V1'),
+        'gateway_card_v2' => env('FLEXPAY_GATEWAY_CARD_V2'),
+        'gateway_check' => env('FLEXPAY_GATEWAY_CHECK'),
+        'api_token' => env('FLEXPAY_API_TOKEN'),
+    ],
+
+    'ipinfo' => [
+        'access_token' => env('IPINFO_SECRET'),
     ],
 
 ];
