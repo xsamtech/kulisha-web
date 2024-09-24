@@ -65,7 +65,7 @@
             <div class="container">
                 <div id="successMessageWrapper" class="position-fixed w-100 top-0 start-0 z-index-99 d-none">
                     <div class="row">
-                        <div class="col-sm-6 col-11 mx-auto">
+                        <div class="col-lg-5 col-sm-6 col-11 mx-auto">
                             <div class="alert alert-success d-flex align-items-center" role="alert">
                                 <i class="bi bi-info-circle me-3 fs-5"></i>
                                 <div class="custom-message"></div>
@@ -75,7 +75,7 @@
                 </div>
                 <div id="errorMessageWrapper" class="position-fixed w-100 top-0 start-0 z-index-99 d-none">
                     <div class="row">
-                        <div class="col-sm-6 col-11 mx-auto">
+                        <div class="col-lg-5 col-sm-6 col-11 mx-auto">
                             <div class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
                                 <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
                                 <div class="custom-message"></div>
@@ -217,18 +217,23 @@
                             $('#successMessageWrapper').removeClass('d-none');
 							$('#successMessageWrapper .custom-message').html(res.message);
 
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken
+                                }
+                            });
+
                             $.ajax({
                                 type: 'POST',
                                 url: currentHost + '/login',
                                 data: {
-                                    '_csrf': csrfToken, 
                                     'username': res.data.username, 
                                     'password': formData.get('password'), 
                                     'remember': formData.get('remember') 
                                 },
                                 dataType: 'application/x-www-form-urlencoded',
-                                success: function (response) {
-                                    location.reload();
+                                complete: function () {
+                                    window.location.href = window.location.href;
                                 }
                             });
                         },
@@ -247,11 +252,11 @@
 
                             if (xhr.responseJSON.reference) {
                                 if (xhr.responseJSON.reference === 'email') {
-                                    $('#errorMessageWrapper .custom-message').html(`${xhr.responseJSON.message}. <a href="${currentHost}/forgot-password?ref=${xhr.responseJSON.data.email}"><?= __('auth.verify-now') ?></a>`);
+                                    $('#errorMessageWrapper .custom-message').html(`${xhr.responseJSON.message}. <br class="d-lg-block d-sm-none d-block"><a href="${currentHost}/forgot-password?ref=${xhr.responseJSON.data.email}"><?= __('auth.verify-now') ?></a>`);
                                 }
 
                                 if (xhr.responseJSON.reference === 'phone') {
-                                    $('#errorMessageWrapper .custom-message').html(`${xhr.responseJSON.message}. <a href="${currentHost}/forgot-password?ref=${xhr.responseJSON.data.phone}"><?= __('auth.verify-now') ?></a>`);
+                                    $('#errorMessageWrapper .custom-message').html(`${xhr.responseJSON.message}. <br class="d-lg-block d-sm-none d-block"><a href="${currentHost}/forgot-password?ref=${xhr.responseJSON.data.phone}"><?= __('auth.verify-now') ?></a>`);
                                 }
 
                             } else {
