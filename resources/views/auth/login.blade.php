@@ -10,18 +10,17 @@
                             <h1 class="mb-4 kls-lime-green-text">@lang('miscellaneous.login_title2')</h1>
 
                             <!-- Form START -->
-                            <form method="POST" action="{{ route('login') }}">
-    @csrf
+                            <form id="login_form" onkeyup="event.preventDefault(); unableSubmit('login');">
                                 <!-- Email, Phone or Username -->
                                 <div class="mt-4 mb-3 input-group-lg">
-                                    <input type="text" name="login_username" id="login_username" class="form-control" placeholder="@lang('miscellaneous.login_username')" autofocus>
+                                    <input type="text" name="login_username" id="username" class="form-control" placeholder="@lang('miscellaneous.login_username')" autofocus>
                                 </div>
 
                                 <!-- Password -->
                                 <div class="mb-3 position-relative">
                                     <!-- Password -->
                                     <div class="input-group input-group-lg">
-                                        <input type="password" name="login_password" id="login_password" class="form-control fakepassword" placeholder="@lang('miscellaneous.password.label')">
+                                        <input type="password" name="login_password" id="password" class="form-control fakepassword" placeholder="@lang('miscellaneous.password.label')">
                                         <span class="input-group-text p-0">
                                             <i class="fakepasswordicon fa-solid fa-eye-slash cursor-pointer p-2 w-40px"></i>
                                         </span>
@@ -31,15 +30,18 @@
                                 <!-- Remember me -->
                                 <div class="mb-4 d-sm-flex justify-content-between">
                                     <div>
-                                        <input type="checkbox" name="login_remember" id="login_remember" class="form-check-input" id="rememberCheck">
-                                        <label class="form-check-label" for="rememberCheck">@lang('miscellaneous.remember_me')</label>
+                                        <input type="checkbox" name="login_remember" id="remember" class="form-check-input">
+                                        <label class="form-check-label" for="remember">@lang('miscellaneous.remember_me')</label>
                                     </div>
-                                    <a href="" role="button">@lang('miscellaneous.forgotten_password')</a>
+                                    <a href="{{ route('password.request') }}" role="button">@lang('miscellaneous.forgotten_password')</a>
                                 </div>
 
                                 <!-- Button -->
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-lg btn-primary rounded-pill">@lang('auth.login')</button>
+                                    <button id="submit" class="btn btn-lg btn-primary rounded-pill disabled">
+                                        <span class="text-uppercase">@lang('auth.login')</span>
+                                        <div class="spinner-border text-white float-end opacity-0" style="margin-top: -5px;" role="status"><span class="visually-hidden">Loading...</span></div>
+                                    </button>
                                 </div>
                                 <!-- Register -->
                                 <p class="mt-4 mb-0" style="line-height: 20px;">@lang('miscellaneous.not_member')<a href="" role="button"> <br class="d-sm-none d-block">@lang('miscellaneous.register_title2')</a></p>

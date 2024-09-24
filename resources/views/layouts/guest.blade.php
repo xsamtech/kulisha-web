@@ -63,22 +63,16 @@
         <main class="py-5">
             <!-- Container START -->
             <div class="container">
-@if ($errors->any())
-                <div class="position-fixed w-100 top-0 start-0 z-index-99">
+                <div id="errorMessageWrapper" class="position-fixed w-100 top-0 start-0 z-index-99 d-none">
                     <div class="row">
                         <div class="col-lg-5 col-sm-6 col-11 mx-auto">
                             <div class="alert alert-danger d-flex align-items-center" role="alert">
                                 <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
-                                <div>
-    @foreach ($errors->all() as $error)
-                                    {{ $error }}
-    @endforeach
-                                </div>
+                                <div class="errorMessage">Lorem ipsum dolor sit amet</div>
                             </div>
                         </div>
                     </div>
                 </div>
-@endif
 
                 <div class="row{{ empty($exception) ? ' d-lg-none' : ''}} mb-4">
                     <div class="col-lg-3 col-sm-4 col-8 mx-auto">
@@ -166,5 +160,67 @@
         <!-- Custom scripts -->
         <script src="{{ asset('assets/js/load-guest-scripts.js') }}"></script>
         <script src="{{ asset('assets/js/script.guest.js') }}"></script>
+        <script type="text/javascript">
+            const unableSubmit = (form) => {
+                if (form == 'login') {
+                    const loginUsername = document.getElementById('username');
+                    const loginPassword = document.getElementById('password');
+                    const loginSubmit = document.getElementById('submit');
+
+                    if (loginUsername.value.trim() !== '' && loginPassword.value.trim() !== '') {
+                        loginSubmit.classList.remove('disabled');
+
+                    } else {
+                        loginSubmit.classList.add('disabled');
+                    }
+                }
+            };
+
+            $(function () {
+                /**
+                 * Login
+                */
+                $('form#login_form').submit(function (e) {
+                    e.preventDefault();
+
+                    var formData = new FormData(this);
+
+                    $.ajax({
+						headers: { 'Accept': 'application/json', 'X-localization': navigator.language },
+						type: 'POST',
+						contentType: 'application/json',
+						url: apiHost + '/user/login',
+						data: formData,
+						beforeSend: function () {
+							$('form#workData .request-message').html('<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>');
+						},
+						success: function (res) {
+                            if ($('form#workData .request-message').hasClass('text-danger')) {
+                                $('form#workData .request-message').removeClass('text-danger');
+                            }
+
+							$('form#workData .request-message').addClass('text-success').html(res.message);
+
+                            document.getElementById('workData').reset();
+							location.reload();
+                        },
+						cache: false,
+						contentType: false,
+						processData: false,
+						error: function (xhr, error, status_description) {
+                            if ($('form#workData .request-message').hasClass('text-success')) {
+                                $('form#workData .request-message').removeClass('text-success');
+                            }
+
+                            $('form#workData .request-message').addClass('text-danger').html(xhr.responseJSON.message);
+							console.log(xhr.responseJSON);
+							console.log(xhr.status);
+							console.log(error);
+							console.log(status_description);
+						}
+					});
+                });
+            });
+        </script>
     </body>
 </html>

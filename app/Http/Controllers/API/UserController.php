@@ -1407,7 +1407,7 @@ class UserController extends BaseController
             $password_reset = PasswordResetToken::where('phone', $user->phone)->first();
 
             if ($user->phone_verified_at == null) {
-                return $this->handleError(new ResourcesPasswordReset($password_reset), __('notifications.unverified_token'), 400);
+                return $this->handleError(new ResourcesPasswordReset($password_reset), __('notifications.unverified_token_phone'), 400);
             }
 
             if (!empty($blocked_member_status)) {
@@ -1471,8 +1471,10 @@ class UserController extends BaseController
 
             $password_reset = PasswordResetToken::where('email', $user->email)->first();
 
-            if ($user->email_verified_at == null) {
-                return $this->handleError(new ResourcesPasswordReset($password_reset), __('notifications.unverified_token'), 400);
+            if ($inputs['username'] == $user->email) {
+                if ($user->email_verified_at == null) {
+                    return $this->handleError(new ResourcesPasswordReset($password_reset), __('notifications.unverified_token_email'), 400);
+                }
             }
 
             if (!empty($blocked_member_status)) {
@@ -1515,7 +1517,7 @@ class UserController extends BaseController
                     Session::create([
                         'id' => Str::random(255),
                         'ip_address' =>  $request->header('X-ip-address'),
-                        'user_agent' => $request->hasHeader('X-ip-address') ? $request->header('X-user-agent') : null,
+                        'ip_address' => $request->hasHeader('X-ip-address') ? $request->header('X-ip-address') : null,
                         'user_id' => $user->id
                     ]);
                 }

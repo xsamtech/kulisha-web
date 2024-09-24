@@ -49,8 +49,6 @@ Route::get('/events/{id}', [HomeController::class, 'eventDatas'])->whereNumber('
 Route::get('/events/{entity}', [HomeController::class, 'eventEntity'])->name('event.entity');
 Route::get('/events/{entity}/{id}', [HomeController::class, 'eventEntityDatas'])->whereNumber('id')->name('event.entity.datas');
 
-require __DIR__.'/auth.php';
-
 // Account
 Route::get('/{username}', [AccountController::class, 'profile'])->name('profile.home');
 Route::get('/{username}/{entity}', [AccountController::class, 'profileEntity'])->name('profile.entity');
@@ -104,3 +102,5 @@ Route::get('/apis/{entity}/{id}', [ThirdPartyController::class, 'apiEntityDatas'
 Route::get('/integrations', [ThirdPartyController::class, 'integration'])->name('integration.home');
 Route::get('/integrations/{entity}', [ThirdPartyController::class, 'integrationEntity'])->name('integration.entity');
 Route::get('/integrations/{entity}/{id}', [ThirdPartyController::class, 'integrationEntityDatas'])->whereNumber('id')->name('integration.entity.datas');
+
+require __DIR__.'/auth.php';

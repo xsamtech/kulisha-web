@@ -18,7 +18,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this::$api_client_manager = new ApiClientManager();
-        $this->middleware('auth')->except(['changeLanguage', 'index']);
+        $this->middleware('auth')->except(['changeLanguage']);
     }
 
     // ==================================== HTTP GET METHODS ====================================
@@ -44,11 +44,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (Session::has('user_demo')) {
-            return view('demo.welcome');
-
-        } else {
-            return redirect()->route('login');
-        }
+        return view('welcome');
     }
 }
