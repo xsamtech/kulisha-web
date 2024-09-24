@@ -13,14 +13,14 @@
                             <form id="login_form" onkeyup="event.preventDefault(); unableSubmit('login');">
                                 <!-- Email, Phone or Username -->
                                 <div class="mt-4 mb-3 input-group-lg">
-                                    <input type="text" name="login_username" id="username" class="form-control" placeholder="@lang('miscellaneous.login_username')" autofocus>
+                                    <input type="text" name="username" id="username" class="form-control" placeholder="@lang('miscellaneous.login_username')" autofocus>
                                 </div>
 
                                 <!-- Password -->
                                 <div class="mb-3 position-relative">
                                     <!-- Password -->
                                     <div class="input-group input-group-lg">
-                                        <input type="password" name="login_password" id="password" class="form-control fakepassword" placeholder="@lang('miscellaneous.password.label')">
+                                        <input type="password" name="password" id="password" class="form-control fakepassword" placeholder="@lang('miscellaneous.password.label')">
                                         <span class="input-group-text p-0">
                                             <i class="fakepasswordicon fa-solid fa-eye-slash cursor-pointer p-2 w-40px"></i>
                                         </span>
@@ -30,7 +30,7 @@
                                 <!-- Remember me -->
                                 <div class="mb-4 d-sm-flex justify-content-between">
                                     <div>
-                                        <input type="checkbox" name="login_remember" id="remember" class="form-check-input">
+                                        <input type="checkbox" name="remember" id="remember" class="form-check-input">
                                         <label class="form-check-label" for="remember">@lang('miscellaneous.remember_me')</label>
                                     </div>
                                     <a href="{{ route('password.request') }}" role="button">@lang('miscellaneous.forgotten_password')</a>

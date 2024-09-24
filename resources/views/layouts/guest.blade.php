@@ -68,7 +68,7 @@
                         <div class="col-lg-5 col-sm-6 col-11 mx-auto">
                             <div class="alert alert-success d-flex align-items-center" role="alert">
                                 <i class="bi bi-info-circle me-3 fs-5"></i>
-                                <div class="successMessage"></div>
+                                <div class="custom-message"></div>
                             </div>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                         <div class="col-lg-5 col-sm-6 col-11 mx-auto">
                             <div class="alert alert-danger d-flex align-items-center" role="alert">
                                 <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
-                                <div class="errorMessage"></div>
+                                <div class="custom-message"></div>
                             </div>
                         </div>
                     </div>
@@ -196,7 +196,7 @@
                     const formData = new FormData(this);
 
                     $.ajax({
-						headers: { 'Accept': 'application/json', 'X-localization': navigator.language },
+						headers: { 'Accept': 'application/json', 'X-localization': navigator.language.split('-')[0] },
 						type: 'POST',
 						contentType: 'application/json',
 						url: apiHost + '/user/login',
@@ -206,12 +206,15 @@
 							$('#submit .spinner-border').removeClass('opacity-0');
 						},
 						success: function (res) {
+							$('#submit').removeClass('disabled');
+							$('#submit .spinner-border').addClass('opacity-0');
+
                             if (!$('#errorMessageWrapper').hasClass('d-none')) {
                                 $('#errorMessageWrapper').addClass('d-none');
                             }
 
                             $('#successMessageWrapper').removeClass('d-none');
-							$('#successMessage').html(res.message);
+							$('#successMessageWrapper .custom-message').html(res.message);
 
 							location.reload();
                         },
@@ -219,6 +222,9 @@
 						contentType: false,
 						processData: false,
 						error: function (xhr, error, status_description) {
+							$('#submit').removeClass('disabled');
+							$('#submit .spinner-border').addClass('opacity-0');
+
                             if (!$('#successMessageWrapper').hasClass('d-none')) {
                                 $('#successMessageWrapper').addClass('d-none');
                             }
@@ -227,15 +233,15 @@
 
                             if (xhr.responseJSON.reference) {
                                 if (xhr.responseJSON.reference === 'email') {
-                                    $('#errorMessage').html(xhr.responseJSON.message + '. <a href="<?= route(\'password.request\', [\'ref\' => \'' + xhr.responseJSON.data.email + '\']) ?>"><?= __(\'auth.verify-now\') ?>');
+                                    $('#errorMessageWrapper .custom-message').html(xhr.responseJSON.message + '. <a href="<?= route("password.request", ["ref" => "' + xhr.responseJSON.data.email + '"]) ?>"><?= __("auth.verify-now") ?></a>');
                                 }
 
                                 if (xhr.responseJSON.reference === 'phone') {
-                                    $('#errorMessage').html(xhr.responseJSON.message + '. <a href="<?= route(\'password.request\', [\'ref\' => \'' + xhr.responseJSON.data.phone + '\']) ?>"><?= __(\'auth.verify-now\') ?>');
+                                    $('#errorMessageWrapper .custom-message').html(xhr.responseJSON.message + '. <a href="<?= route("password.request", ["ref" => "' + xhr.responseJSON.data.phone + '"]) ?>"><?= __("auth.verify-now") ?></a>');
                                 }
 
                             } else {
-                                $('#errorMessage').html(xhr.responseJSON.message);
+                                $('#errorMessageWrapper .custom-message').html(xhr.responseJSON.message);
                             }
 
 							console.log(xhr.responseJSON);

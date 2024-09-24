@@ -35,10 +35,10 @@ return [
     'select-your-profile' => 'Choisissez votre profil',
     // Error messages
     'unauthorized' => 'Cet espace est réservé à l\'administrateur',
-    'failed' => 'Ces informations d\identification ne correspondent pas à nos enregistrement.',
-    'token_error' => 'Le code est incorrect.',
-    'username' => 'Utilisateur inconnu.',
-    'password' => 'Le mot de passe fourni est incorrect.',
-    'throttle' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes.',
+    'failed' => 'Ces informations d\identification ne correspondent pas à nos enregistrement',
+    'token_error' => 'Le code est incorrect',
+    'username' => 'Utilisateur inconnu',
+    'password' => 'Le mot de passe fourni est incorrect',
+    'throttle' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes',
 
 ];

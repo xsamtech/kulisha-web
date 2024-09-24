@@ -35,10 +35,10 @@ return [
     'select-your-profile' => 'Choose your profile',
     // Error messages
     'unauthorized' => 'This space is reserved for the administrator',
-    'failed' => 'These credentials do not match our records.',
-    'token_error' => 'The code is incorrect.',
-    'username' => 'Unknown user.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'These credentials do not match our records',
+    'token_error' => 'The code is incorrect',
+    'username' => 'Unknown user',
+    'password' => 'The provided password is incorrect',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds',
 
 ];
