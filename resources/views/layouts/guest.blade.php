@@ -227,11 +227,11 @@
 
                             if (xhr.responseJSON.reference) {
                                 if (xhr.responseJSON.reference === 'email') {
-                                    $('#errorMessage').html(xhr.responseJSON.message + '. <a href="<?= route(\'password.request\', ['ref' => \'' + xhr.responseJSON.data.email + '\']) ?>"><?= __(\'auth.verify-now\') ?>');
+                                    $('#errorMessage').html(xhr.responseJSON.message + '. <a href="<?= route(\'password.request\', [\'ref\' => \'' + xhr.responseJSON.data.email + '\']) ?>"><?= __(\'auth.verify-now\') ?>');
                                 }
 
                                 if (xhr.responseJSON.reference === 'phone') {
-                                    $('#errorMessage').html(xhr.responseJSON.message + '. <a href="<?= route(\'password.request\', ['ref' => \'' + xhr.responseJSON.data.phone + '\']) ?>"><?= __(\'auth.verify-now\') ?>');
+                                    $('#errorMessage').html(xhr.responseJSON.message + '. <a href="<?= route(\'password.request\', [\'ref\' => \'' + xhr.responseJSON.data.phone + '\']) ?>"><?= __(\'auth.verify-now\') ?>');
                                 }
 
                             } else {
