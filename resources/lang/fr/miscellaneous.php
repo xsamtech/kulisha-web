@@ -287,7 +287,7 @@ return [
         'privacy_policy' => 'Confidentialité',
         'cookies' => 'Cookies',
         'contact' => 'Contact',
-        'login_register' => 's’identifier ou s’inscrire',
+        'login_register' => 'S’identifier',
         'account_settings' => 'Paramètres du compte',
         'messages' => 'Discussions',
         'history' => 'Historique des activités',
