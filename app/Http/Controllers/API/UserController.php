@@ -1393,7 +1393,7 @@ class UserController extends BaseController
             $password_reset = PasswordResetToken::where('phone', $user->phone)->first();
 
             if ($user->phone_verified_at == null) {
-                return $this->handleError(new ResourcesPasswordReset($password_reset), __('notifications.unverified_token_phone'), 400);
+                return $this->handleError(new ResourcesPasswordReset($password_reset), __('notifications.unverified_token_phone'), 400, 'phone');
             }
 
             if (!empty($blocked_member_status)) {
@@ -1459,7 +1459,7 @@ class UserController extends BaseController
 
             if ($inputs['username'] == $user->email) {
                 if ($user->email_verified_at == null) {
-                    return $this->handleError(new ResourcesPasswordReset($password_reset), __('notifications.unverified_token_email'), 400);
+                    return $this->handleError(new ResourcesPasswordReset($password_reset), __('notifications.unverified_token_email'), 400, 'email');
                 }
             }
 

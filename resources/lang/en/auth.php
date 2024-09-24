@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Xanders
- * @see https://team.xsamtech.com/xanderssamoth
+ * @see https://www.linkedin.com/in/xanders-samoth-b2770737/
  */
 
 return [
@@ -21,8 +21,18 @@ return [
     'register' => 'Register',
     'login' => 'Log in',
     'reset-password' => 'Reset password',
-    'verify-email' => 'Verify e-mail',
+    'verify-now' => 'Verify now',
+    'verify-email' => 'Enter your email',
+    'verify-phone' => 'Enter your phone number',
+    'verify-email-phone' => 'Enter your email or your phone number',
+    'verified-email' => 'E-mail verified',
+    'verified-phone' => 'Phone number verified',
     'confirm-password' => 'Confirm password',
+    'otp-code' => 'OTP code',
+    'otp-check' => 'Write the code you received by mail or SMS',
+    'otp-check-email' => 'Write the code you received by mail',
+    'otp-check-phone' => 'Write the code you received by SMS',
+    'select-your-profile' => 'Choose your profile',
     // Error messages
     'unauthorized' => 'This space is reserved for the administrator',
     'failed' => 'These credentials do not match our records.',

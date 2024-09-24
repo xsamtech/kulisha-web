@@ -63,12 +63,22 @@
         <main class="py-5">
             <!-- Container START -->
             <div class="container">
+                <div id="successMessageWrapper" class="position-fixed w-100 top-0 start-0 z-index-99 d-none">
+                    <div class="row">
+                        <div class="col-lg-5 col-sm-6 col-11 mx-auto">
+                            <div class="alert alert-success d-flex align-items-center" role="alert">
+                                <i class="bi bi-info-circle me-3 fs-5"></i>
+                                <div class="successMessage"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div id="errorMessageWrapper" class="position-fixed w-100 top-0 start-0 z-index-99 d-none">
                     <div class="row">
                         <div class="col-lg-5 col-sm-6 col-11 mx-auto">
                             <div class="alert alert-danger d-flex align-items-center" role="alert">
                                 <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
-                                <div class="errorMessage">Lorem ipsum dolor sit amet</div>
+                                <div class="errorMessage"></div>
                             </div>
                         </div>
                     </div>
@@ -183,7 +193,7 @@
                 $('form#login_form').submit(function (e) {
                     e.preventDefault();
 
-                    var formData = new FormData(this);
+                    const formData = new FormData(this);
 
                     $.ajax({
 						headers: { 'Accept': 'application/json', 'X-localization': navigator.language },
@@ -192,27 +202,42 @@
 						url: apiHost + '/user/login',
 						data: formData,
 						beforeSend: function () {
-							$('form#workData .request-message').html('<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>');
+							$('#submit').addClass('disabled');
+							$('#submit .spinner-border').removeClass('opacity-0');
 						},
 						success: function (res) {
-                            if ($('form#workData .request-message').hasClass('text-danger')) {
-                                $('form#workData .request-message').removeClass('text-danger');
+                            if (!$('#errorMessageWrapper').hasClass('d-none')) {
+                                $('#errorMessageWrapper').addClass('d-none');
                             }
 
-							$('form#workData .request-message').addClass('text-success').html(res.message);
+                            $('#successMessageWrapper').removeClass('d-none');
+							$('#successMessage').html(res.message);
 
-                            document.getElementById('workData').reset();
 							location.reload();
                         },
 						cache: false,
 						contentType: false,
 						processData: false,
 						error: function (xhr, error, status_description) {
-                            if ($('form#workData .request-message').hasClass('text-success')) {
-                                $('form#workData .request-message').removeClass('text-success');
+                            if (!$('#successMessageWrapper').hasClass('d-none')) {
+                                $('#successMessageWrapper').addClass('d-none');
                             }
 
-                            $('form#workData .request-message').addClass('text-danger').html(xhr.responseJSON.message);
+                            $('#errorMessageWrapper').removeClass('d-none');
+
+                            if (xhr.responseJSON.reference) {
+                                if (xhr.responseJSON.reference === 'email') {
+                                    $('#errorMessage').html(xhr.responseJSON.message + '. <a href="<?= route(\'password.request\', ['ref' => \'' + xhr.responseJSON.data.email + '\']) ?>"><?= __(\'auth.verify-now\') ?>');
+                                }
+
+                                if (xhr.responseJSON.reference === 'phone') {
+                                    $('#errorMessage').html(xhr.responseJSON.message + '. <a href="<?= route(\'password.request\', ['ref' => \'' + xhr.responseJSON.data.phone + '\']) ?>"><?= __(\'auth.verify-now\') ?>');
+                                }
+
+                            } else {
+                                $('#errorMessage').html(xhr.responseJSON.message);
+                            }
+
 							console.log(xhr.responseJSON);
 							console.log(xhr.status);
 							console.log(error);

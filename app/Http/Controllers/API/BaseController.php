@@ -67,7 +67,7 @@ class BaseController extends Controller
      * @param  $code
      * @return \Illuminate\Http\Response
      */
-    public function handleError($error, $errorMsg = [], $code = 404)
+    public function handleError($error, $errorMsg = [], $code = 404, $reference = null)
     {
         if (empty($errorMsg)) {
 			$res = [
@@ -86,7 +86,11 @@ class BaseController extends Controller
 
             $res['message'] = $errorMsg;
 
-			return response()->json($res, $code);
+            if (!empty($reference)) {
+                $res['reference'] = $reference;
+            }
+
+            return response()->json($res, $code);
         }
     }
 }
