@@ -123,13 +123,6 @@ class UserController extends BaseController
         }
 
         if ($inputs['email'] != null) {
-            // Check if user email already exists
-            // foreach ($users as $another_user):
-            //     if ($another_user->email == $inputs['email']) {
-            //         return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['email'], __('validation.custom.email.exists'), 400);
-            //     }
-            // endforeach;
-
             // If email exists in "password_reset" table, delete it
             if ($password_resets != null) {
                 foreach ($password_resets as $password_reset):
@@ -141,13 +134,6 @@ class UserController extends BaseController
         }
 
         if ($inputs['phone'] != null) {
-            // Check if user phone already exists
-            // foreach ($users as $another_user):
-            //     if ($another_user->phone == $inputs['phone']) {
-            //         return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['phone'], __('validation.custom.phone.exists'), 400);
-            //     }
-            // endforeach;
-
             // If phone exists in "password_reset" table, delete it
             if ($password_resets != null) {
                 foreach ($password_resets as $password_reset):
@@ -1386,11 +1372,11 @@ class UserController extends BaseController
         ];
 
         if ($inputs['username'] == null OR $inputs['username'] == ' ') {
-            return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['username'], __('validation.required'), 400);
+            return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['username'], __('validation.required', ['field_name' => __('miscellaneous.login_username')]), 400);
         }
 
         if ($inputs['password'] == null) {
-            return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['password'], __('validation.required'), 400);
+            return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['password'], __('validation.required', ['field_name' => __('miscellaneous.password.label')]), 400);
         }
 
         if (is_numeric($inputs['username'])) {
