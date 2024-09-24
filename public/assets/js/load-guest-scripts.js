@@ -1,5 +1,5 @@
 /**
- * Load "guest.blade.php" JS files
+ * This scripts are loading "guest.blade.php" JS files
  * 
  * Copyright (c) 2024 Xsam Technologies and/or its affiliates. All rights reserved.
  * 
@@ -12,6 +12,7 @@ const currentLanguage = $('html').attr('lang');
 const currentHost = $('[name="kls-url"]').attr('content');
 const apiHost = $('[name="kls-api-url"]').attr('content');
 const appRef = $('[name="kls-ref"]').attr('content');
+const csrfToken = $('[name="csrf-token"]').attr('content');
 const kulishaBrand = document.querySelectorAll('.kulisha-brand');
 // Mobile user agent
 const userAgent = navigator.userAgent;

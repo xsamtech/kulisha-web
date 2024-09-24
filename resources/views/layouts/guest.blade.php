@@ -65,7 +65,7 @@
             <div class="container">
                 <div id="successMessageWrapper" class="position-fixed w-100 top-0 start-0 z-index-99 d-none">
                     <div class="row">
-                        <div class="col-lg-5 col-sm-6 col-11 mx-auto">
+                        <div class="col-sm-6 col-11 mx-auto">
                             <div class="alert alert-success d-flex align-items-center" role="alert">
                                 <i class="bi bi-info-circle me-3 fs-5"></i>
                                 <div class="custom-message"></div>
@@ -75,10 +75,11 @@
                 </div>
                 <div id="errorMessageWrapper" class="position-fixed w-100 top-0 start-0 z-index-99 d-none">
                     <div class="row">
-                        <div class="col-lg-5 col-sm-6 col-11 mx-auto">
-                            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <div class="col-sm-6 col-11 mx-auto">
+                            <div class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
                                 <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
                                 <div class="custom-message"></div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         </div>
                     </div>
@@ -128,7 +129,7 @@
                                         @lang('miscellaneous.your_language') <i class="fa-solid fa-angle-down"></i>
                                     </a>
 
-                                    <ul class="dropdown-menu mt-1 p-0" aria-labelledby="dropdownLanguage">
+                                    <ul class="dropdown-menu mt-1 p-0" aria-labelledby="dropdownLanguage" style="max-height: 20rem;">
 @foreach ($available_locales as $locale_name => $available_locale)
                                         <li class="w-100">
     @if ($available_locale != $current_locale)
@@ -216,7 +217,20 @@
                             $('#successMessageWrapper').removeClass('d-none');
 							$('#successMessageWrapper .custom-message').html(res.message);
 
-							location.reload();
+                            $.ajax({
+                                type: 'POST',
+                                url: currentHost + '/login',
+                                data: {
+                                    '_csrf': csrfToken, 
+                                    'username': res.data.username, 
+                                    'password': formData.get('password'), 
+                                    'remember': formData.get('remember') 
+                                },
+                                dataType: 'application/x-www-form-urlencoded',
+                                success: function (response) {
+                                    location.reload();
+                                }
+                            });
                         },
 						cache: false,
 						contentType: false,

@@ -50,8 +50,6 @@ Route::get('/events/{entity}', [HomeController::class, 'eventEntity'])->name('ev
 Route::get('/events/{entity}/{id}', [HomeController::class, 'eventEntityDatas'])->whereNumber('id')->name('event.entity.datas');
 
 // Account
-Route::get('/{username}', [AccountController::class, 'profile'])->name('profile.home');
-Route::get('/{username}/{entity}', [AccountController::class, 'profileEntity'])->name('profile.entity');
 Route::get('/messages', [AccountController::class, 'message'])->name('message.home');
 Route::get('/messages/{id}', [AccountController::class, 'messageDatas'])->whereNumber('id')->name('message.datas');
 Route::get('/settings', [AccountController::class, 'settings'])->name('settings.home');
@@ -104,3 +102,11 @@ Route::get('/integrations/{entity}', [ThirdPartyController::class, 'integrationE
 Route::get('/integrations/{entity}/{id}', [ThirdPartyController::class, 'integrationEntityDatas'])->whereNumber('id')->name('integration.entity.datas');
 
 require __DIR__.'/auth.php';
+
+/*
+|--------------------------------------------------------------------------
+| Dynamic routes to avoid conflicts with others
+|--------------------------------------------------------------------------
+*/
+Route::get('/{username}', [AccountController::class, 'profile'])->where('username', '[A-Za-z0-9_]+')->name('profile.home');
+Route::get('/{username}/{entity}', [AccountController::class, 'profileEntity'])->name('profile.entity');
