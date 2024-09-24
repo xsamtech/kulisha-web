@@ -243,9 +243,13 @@
                                 </li>
                                 <li class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item bg-danger-soft-hover" href="{{ route('logout') }}">
-                                        <i class="bi bi-power fa-fw me-2"></i>@lang('miscellaneous.logout')
-                                    </a>
+                                    <form action="{{ route('logout') }}" method="post">
+@csrf
+                                        <input type="hidden" name="logged_out_user" value="">
+                                        <button type="submit" id="logged_out_user" class="dropdown-item bg-danger-soft-hover">
+                                            <i class="bi bi-power fa-fw me-2"></i>@lang('miscellaneous.logout')
+                                        </button>
+                                    </form>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <!-- Dark mode options START -->

@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\Resources\User as ResourcesUser;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -23,9 +26,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->composer('*', function ($view) {
-            $view->with('current_locale', app()->getLocale());
-            $view->with('available_locales', config('app.available_locales'));
-        });
+        if (Auth::check()) {
+            $current_user = Auth::user();
+
+            View::share('current_user', ResourcesUser::collection($current_user)->toArray(request()));
+
+            view()->composer('*', function ($view) {
+                $view->with('current_locale', app()->getLocale());
+                $view->with('available_locales', config('app.available_locales'));
+            });
+
+        } else {
+            view()->composer('*', function ($view) {
+                $view->with('current_locale', app()->getLocale());
+                $view->with('available_locales', config('app.available_locales'));
+            });
+        }
     }
 }
