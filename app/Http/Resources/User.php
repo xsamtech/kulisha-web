@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -27,7 +28,8 @@ class User extends JsonResource
             'username' => $this->username,
             'about_me' => $this->about_me,
             'gender' => $this->gender,
-            'birth_date' => !empty($this->birth_date) ? (str_starts_with(app()->getLocale(), 'fr') ? \Carbon\Carbon::createFromFormat('Y-m-d', $this->birth_date)->format('d/m/Y') : \Carbon\Carbon::createFromFormat('Y-m-d', $this->birth_date)->format('m/d/Y')) : null,
+            'birth_date' => !empty($this->birth_date) ? (str_starts_with(app()->getLocale(), 'fr') ? Carbon::createFromFormat('Y-m-d', $this->birth_date)->format('d/m/Y') : \Carbon\Carbon::createFromFormat('Y-m-d', $this->birth_date)->format('m/d/Y')) : null,
+            'age' => !empty($this->birth_date) ? $this->age() : null,
             'country' => $this->country,
             'city' => $this->city,
             'address_1' => $this->address_1,
@@ -42,7 +44,7 @@ class User extends JsonResource
             'phone_verified_at' => $this->phone_verified_at,
             'prefered_theme' => $this->prefered_theme,
             'prefered_language' => $this->prefered_language,
-            'profile_photo_path' => !empty($this->profile_photo_path) ? getWebURL() . '/storage/' . $this->profile_photo_path : getWebURL() . '/img/avatar.png',
+            'profile_photo_path' => !empty($this->profile_photo_path) ? getWebURL() . '/storage/' . $this->profile_photo_path : getWebURL() . '/assets/img/avatar-' . $this->gender . '.svg',
             'cover_photo_path' => !empty($this->cover_photo_path) ? getWebURL() . '/storage/' . $this->cover_photo_path : null,
             'cover_coordinates' => $this->cover_coordinates,
             'two_factor_secret' => $this->two_factor_secret,
@@ -58,8 +60,10 @@ class User extends JsonResource
             'allow_search_engine' => $this->allow_search_engine,
             'allow_search_by_email' => $this->allow_search_by_email,
             'allow_sponsored_messages' => $this->allow_sponsored_messages,
-            'tips_at_every_connection' => $this->tips_at_every_connection,
+            'tips_at_every_login' => $this->tips_at_every_login,
             'api_token' => $this->api_token,
+            'is_online' => $this->is_online,
+            'last_login_at' => $this->last_login_at,
             'status' => Status::make($this->status),
             'type' => Type::make($this->type),
             'visibility' => Visibility::make($this->visibility),
@@ -69,8 +73,6 @@ class User extends JsonResource
             'files' => File::collection($this->files),
             'carts' => Cart::collection($this->carts)->sortByDesc('created_at')->toArray(),
             'payments' => Payment::collection($this->payments)->sortByDesc('created_at')->toArray(),
-            'histories' => History::collection($this->histories_from)->sortByDesc('created_at')->toArray(),
-            'notifications' => Notification::collection($this->notifications_to)->sortByDesc('created_at')->toArray(),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s')
         ];

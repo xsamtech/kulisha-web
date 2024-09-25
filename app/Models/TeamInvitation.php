@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @author Xanders
@@ -11,22 +11,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class TeamInvitation extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    // protected $fillable = [
-    //     'email',
-    //     'role',
-    // ];
     protected $guarded = [];
-
-    /**
-     * Get the team that the invitation belongs to.
-     */
-    public function team(): BelongsTo
-    {
-        return $this->belongsTo(Team::class);
-    }
 }

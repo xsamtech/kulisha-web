@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,21 +32,26 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $hidden = ['password', 'remember_token', 'two_factor_recovery_codes', 'two_factor_secret'];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = ['email_verified_at' => 'datetime', 'phone_verified_at' => 'datetime'];
+    protected $casts = [
+        'last_login_at' => 'datetime:Y-m-d H:i:s',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
+    ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array<int, string>
+     * Accessor for Age.
      */
-    protected $appends = ['profile_photo_url'];
+    public function age(): int
+    {
+        return Carbon::parse($this->attributes['birth_date'])->age;
+    }
 
     /**
      * MANY-TO-MANY
