@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Http\Resources\User as ResourcesUser;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -27,6 +26,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->composer('*', function ($view) {
+            if (Auth::check()) {
+                $currentUser = new ResourcesUser(Auth::user());
+                $user_data = $currentUser->toArray(request()); // Convertir la ressource en tableau
+
+                $view->with('current_user', $user_data);
+            }
+
             $view->with('current_locale', app()->getLocale());
             $view->with('available_locales', config('app.available_locales'));
         });

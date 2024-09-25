@@ -14,6 +14,7 @@ return [
     */
 
     // ===== ERROR PAGES
+    'network_error' => 'Erreur réseau',
     // 400
     '400_title' => 'Mauvaise requête',
     '400_description' => 'Vérifiez votre requête s’il vous plait !',

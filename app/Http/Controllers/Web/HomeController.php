@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\ApiClientManager;
+use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User as ResourcesUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -14,11 +15,8 @@ use Illuminate\Support\Facades\Session;
  */
 class HomeController extends Controller
 {
-    public static $api_client_manager;
-
     public function __construct()
     {
-        $this::$api_client_manager = new ApiClientManager();
         $this->middleware('auth')->except(['changeLanguage']);
     }
 

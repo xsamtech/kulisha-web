@@ -1,4 +1,3 @@
-{{ dd($current_user) }}
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
     <head>
@@ -109,18 +108,18 @@
                         <ul class="navbar-nav navbar-nav-scroll mx-auto">
                             <!-- Home -->
                             <li class="nav-item">
-                                <a class="nav-link{{ Route::is('home') ? ' active' : '' }}" href="{{ route('home') }}" title="@lang('miscellaneous.menu.home')" data-bs-toggle="tooltip" data-bs-placement="bottom">
-@if (!request()->route()->named('home'))
+                                <a class="nav-link{{ Route::is('home') ? ' active' : '' }}" href="{{ route('home') }}" title="@lang('miscellaneous.menu.home')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/'); return false;">
+{{-- @if (!request()->route()->named('home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
-@endif
+@endif --}}
                                     <i class="bi {{ Route::is('home') ? 'bi-house-fill' : 'bi-house' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.home')</span>
                                 </a>
                             </li>
 
                             <!-- Discover -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link{{ Route::is('discover.home') ? ' active' : '' }}" href="{{ route('discover.home') }}" title="@lang('miscellaneous.menu.discover')" data-bs-toggle="tooltip" data-bs-placement="bottom">
-{{-- @if (!request()->route()->named('cart.home'))
+                                <a class="nav-link{{ Route::is('discover.home') ? ' active' : '' }}" href="{{ route('discover.home') }}" title="@lang('miscellaneous.menu.discover')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/discover'); return false;">
+{{-- @if (!request()->route()->named('discover.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
                                     <i class="bi {{ Route::is('discover.home') ? 'bi-compass-fill' : 'bi-compass' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.discover')</span>
@@ -129,7 +128,7 @@
 
                             <!-- Orders -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link{{ Route::is('cart.home') ? ' active' : '' }}" href="{{ route('cart.home') }}" title="@lang('miscellaneous.menu.public.orders.title')" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                <a class="nav-link{{ Route::is('cart.home') ? ' active' : '' }}" href="{{ route('cart.home') }}" title="@lang('miscellaneous.menu.public.orders.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/cart'); return false;">
 {{-- @if (!request()->route()->named('cart.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -139,17 +138,17 @@
 
                             <!-- Notifications -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link{{ Route::is('notification.home') ? ' active' : '' }}" href="{{ route('notification.home') }}" title="@lang('miscellaneous.menu.notifications.title')" data-bs-toggle="tooltip" data-bs-placement="bottom">
-@if (!request()->route()->named('notification.home'))
+                                <a class="nav-link{{ Route::is('notification.home') ? ' active' : '' }}" href="{{ route('notification.home') }}" title="@lang('miscellaneous.menu.notifications.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/notifications'); return false;">
+{{-- @if (!request()->route()->named('notification.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
-@endif
+@endif --}}
                                     <i class="bi {{ Route::is('notification.home') ? 'bi-bell-fill' : 'bi-bell' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.notifications.title')</span>
                                 </a>
                             </li>
 
                             <!-- Communties -->
                             <li class="nav-item">
-                                <a class="nav-link{{ Route::is('community.home') ? ' active' : '' }}" href="{{ route('community.home') }}" title="@lang('miscellaneous.menu.public.communities.title')" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                <a class="nav-link{{ Route::is('community.home') ? ' active' : '' }}" href="{{ route('community.home') }}" title="@lang('miscellaneous.menu.public.communities.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/communities'); return false;">
 {{-- @if (!request()->route()->named('community.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -159,7 +158,7 @@
 
                             <!-- Events -->
                             <li class="nav-item">
-                                <a class="nav-link{{ Route::is('event.home') ? ' active' : '' }}" href="{{ route('event.home') }}" title="@lang('miscellaneous.menu.public.events.title')" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                <a class="nav-link{{ Route::is('event.home') ? ' active' : '' }}" href="{{ route('event.home') }}" title="@lang('miscellaneous.menu.public.events.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/events'); return false;">
 {{-- @if (!request()->route()->named('event.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -169,10 +168,10 @@
 
                             <!-- Messaging -->
                             <li class="nav-item">
-                                <a class="nav-link{{ Route::is('message.home') ? ' active' : '' }}" href="{{ route('message.home') }}" title="@lang('miscellaneous.menu.messages')" data-bs-toggle="tooltip" data-bs-placement="bottom">
-@if (!request()->route()->named('message.home'))
+                                <a class="nav-link{{ Route::is('message.home') ? ' active' : '' }}" href="{{ route('message.home') }}" title="@lang('miscellaneous.menu.messages')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/messages'); return false;">
+{{-- @if (!request()->route()->named('message.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
-@endif
+@endif --}}
                                     <i class="bi {{ Route::is('message.home') ? 'bi-chat-quote-fill' : 'bi-chat-quote' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.messages')</span>
                                 </a>
                             </li>
@@ -208,7 +207,7 @@
 
                         <li class="nav-item ms-2 dropdown">
                             <a role="button" class="nav-link btn icon-md p-0" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img class="avatar-img rounded-circle" src="{{ asset('assets/img/template/avatar/07.jpg') }}" alt>
+                                <img class="avatar-img rounded-circle" src="{{ asset($current_user['profile_photo_path']) }}" alt>
                             </a>
 
                             <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
@@ -217,15 +216,17 @@
                                     <div class="d-flex align-items-center position-relative">
                                         <!-- Avatar -->
                                         <div class="avatar me-3">
-                                            <img class="avatar-img rounded-circle" src="assets/img/template/avatar/07.jpg" alt="avatar">
+                                            <img class="avatar-img rounded-circle" src="{{ asset($current_user['profile_photo_path']) }}" alt="avatar">
                                         </div>
                                         <div>
-                                            <a class="h6 stretched-link" href="{{ route('profile.home', ['username' => 'tonystark']) }}">{{ Str::limit('Robert Downey Jr.', 14, '...') }}</a>
-                                            <p class="small m-0">@tonystark</p>
+                                            <a class="h6 stretched-link" href="{{ route('profile.home', ['username' => $current_user['username']]) }}">
+                                                {{ Str::limit(($current_user['firstname'] . ' ' . $current_user['lastname']), 14, '...') }}
+                                            </a>
+                                            <p class="small m-0">{{ '@' . $current_user['username'] }}</p>
                                         </div>
                                     </div>
 
-                                    <a class="dropdown-item btn btn-primary-soft btn-sm mt-3 mb-2 text-center rounded-pill" href="{{ route('profile.home', ['username' => 'tonystark']) }}">@lang('miscellaneous.menu.public.profile.title')</a>
+                                    <a class="dropdown-item btn btn-primary-soft btn-sm mt-3 mb-2 text-center rounded-pill" href="{{ route('profile.home', ['username' => $current_user['username']]) }}">@lang('miscellaneous.menu.public.profile.title')</a>
                                 </li>
 
                                 <!-- Links -->
@@ -277,7 +278,7 @@
         <main>
             <!-- Container START -->
             <div class="container">
-                <div class="row g-4">
+                <div id="appContent" class="row g-4">
 
 @yield('app-content')
 
@@ -466,6 +467,47 @@
         <script src="{{ asset('assets/js/load-app-scripts.js') }}"></script>
         <script src="{{ asset('assets/js/script.app.js') }}"></script>
         <script type="text/javascript">
+            function navigate(url) {
+                fetch(url).then(response => {
+                    if (!response.ok) {
+                        throw new Error('<?= __("notifications.network_error") ?>');
+                    }
+
+                    return response.text();
+
+                }).then(html => {
+                    document.getElementById('appContent').innerHTML = html;
+
+                    // Update history
+                    history.pushState({ url: url }, '', url);
+
+                }).catch(error => {
+                    document.getElementById('appContent').innerHTML = `<div class="col-sm-6 mx-auto" style="min-height: 40rem;"><h1 class="mt-5 text-center">${error}</h1></div>`;
+                });
+            }
+
+            window.onpopstate = function(event) {
+                if (event.state) {
+                    fetch(event.state.url).then(response => {
+                        if (!response.ok) {
+                            throw new Error('<?= __("notifications.network_error") ?>');
+                        }
+
+                        return response.text();
+
+                    }).then(html => {
+                        document.getElementById('appContent').innerHTML = html;
+
+                    }).catch(error => {
+                        console.error('Erreur lors du chargement :', error);
+                    });
+
+                } else {
+                    // Shows the page with the logo if the status is null
+                    document.getElementById('appContent').innerHTML = '<h1>Bienvenue sur la page d\'accueil</h1>';
+                }
+            };
+
             $(function () {
                 $('#newPostType .form-check').each(function () {
                     $(this).on('click', function () {

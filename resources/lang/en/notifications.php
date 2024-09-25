@@ -14,6 +14,7 @@ return [
     */
 
     // ===== ERROR PAGES
+    'network_error' => 'Network error',
     // 400
     '400_title' => 'Bad request',
     '400_description' => 'Verify your request please!',
