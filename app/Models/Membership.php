@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Laravel\Jetstream\Membership as JetstreamMembership;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
  */
-class Membership extends JetstreamMembership
+class Membership extends Model
 {
     /**
      * Indicates if the IDs are auto-incrementing.

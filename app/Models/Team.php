@@ -2,18 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Laravel\Jetstream\Events\TeamCreated;
-use Laravel\Jetstream\Events\TeamDeleted;
-use Laravel\Jetstream\Events\TeamUpdated;
-use Laravel\Jetstream\Team as JetstreamTeam;
 
 /**
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
  */
-class Team extends JetstreamTeam
+class Team extends Model
 {
     use HasFactory;
 
@@ -36,17 +33,6 @@ class Team extends JetstreamTeam
     //     'personal_team',
     // ];
     protected $guarded = [];
-
-    /**
-     * The event map for the model.
-     *
-     * @var array<string, class-string>
-     */
-    protected $dispatchesEvents = [
-        'created' => TeamCreated::class,
-        'updated' => TeamUpdated::class,
-        'deleted' => TeamDeleted::class,
-    ];
 
     /**
      * MANY-TO-ONE
