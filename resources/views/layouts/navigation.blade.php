@@ -1,100 +1,192 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+        <!-- ======================= Header START -->
+        <header class="navbar-light bg-mode fixed-top">
+            <!-- Logo Nav START -->
+            <nav class="navbar navbar-icon navbar-expand-lg">
+                <div class="container">
+                    <!-- Logo START -->
+                    <a class="navbar-brand" href="{{ route('home') }}">
+                        <img class="navbar-brand-item" src="{{ asset('assets/img/logo-text.png') }}" alt="Kulisha">
+                        {{-- <img class="light-mode-item navbar-brand-item" src="{{ asset('assets/img/brand.png') }}" alt="Kulisha">
+                        <img class="dark-mode-item navbar-brand-item" src="{{ asset('assets/img/brand-reverse.png') }}" alt="Kulisha"> --}}
                     </a>
-                </div>
+                    <!-- Logo END -->
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
-            </div>
+                    <!-- Responsive navbar toggler -->
+                    <button class="navbar-toggler ms-auto icon-md btn btn-light p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-animation">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                    <!-- Main navbar START -->
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <ul class="navbar-nav navbar-nav-scroll mx-auto">
+                            <!-- Home -->
+                            <li class="nav-item">
+                                <a class="nav-link{{ Route::is('home') ? ' active' : '' }}" href="{{ route('home') }}" title="@lang('miscellaneous.menu.home')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/home', 'home'); return false;">
+{{-- @if (!request()->route()->named('home'))
+                                    <div class="badge-notif badge-notif-bottom"></div>
+@endif --}}
+                                    <i class="bi {{ Route::is('home') ? 'bi-house-fill' : 'bi-house' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.home')</span>
+                                </a>
+                            </li>
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
+                            <!-- Discover -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link{{ Route::is('discover.home') ? ' active' : '' }}" href="{{ route('discover.home') }}" title="@lang('miscellaneous.menu.discover')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/discover', 'discover'); return false;">
+{{-- @if (!request()->route()->named('discover.home'))
+                                    <div class="badge-notif badge-notif-bottom"></div>
+@endif --}}
+                                    <i class="bi {{ Route::is('discover.home') ? 'bi-compass-fill' : 'bi-compass' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.discover')</span>
+                                </a>
+                            </li>
+
+                            <!-- Orders -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link{{ Route::is('cart.home') ? ' active' : '' }}" href="{{ route('cart.home') }}" title="@lang('miscellaneous.menu.public.orders.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/cart', 'cart'); return false;">
+{{-- @if (!request()->route()->named('cart.home'))
+                                    <div class="badge-notif badge-notif-bottom"></div>
+@endif --}}
+                                    <i class="bi {{ Route::is('cart.home') ? 'bi-basket3-fill' : 'bi-basket3' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.public.orders.title')</span>
+                                </a>
+                            </li>
+
+                            <!-- Notifications -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link{{ Route::is('notification.home') ? ' active' : '' }}" href="{{ route('notification.home') }}" title="@lang('miscellaneous.menu.notifications.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/notifications', 'notifications'); return false;">
+{{-- @if (!request()->route()->named('notification.home'))
+                                    <div class="badge-notif badge-notif-bottom"></div>
+@endif --}}
+                                    <i class="bi {{ Route::is('notification.home') ? 'bi-bell-fill' : 'bi-bell' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.notifications.title')</span>
+                                </a>
+                            </li>
+
+                            <!-- Communties -->
+                            <li class="nav-item">
+                                <a class="nav-link{{ Route::is('community.home') ? ' active' : '' }}" href="{{ route('community.home') }}" title="@lang('miscellaneous.menu.public.communities.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/communities', 'communities'); return false;">
+{{-- @if (!request()->route()->named('community.home'))
+                                    <div class="badge-notif badge-notif-bottom"></div>
+@endif --}}
+                                    <i class="bi {{ Route::is('community.home') ? 'bi-people-fill' : 'bi-people' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.public.communities.title')</span>
+                                </a>
+                            </li>
+
+                            <!-- Events -->
+                            <li class="nav-item">
+                                <a class="nav-link{{ Route::is('event.home') ? ' active' : '' }}" href="{{ route('event.home') }}" title="@lang('miscellaneous.menu.public.events.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/events', 'events'); return false;">
+{{-- @if (!request()->route()->named('event.home'))
+                                    <div class="badge-notif badge-notif-bottom"></div>
+@endif --}}
+                                    <i class="bi {{ Route::is('event.home') ? 'bi-calendar-event-fill' : 'bi-calendar-event' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.public.events.title')</span>
+                                </a>
+                            </li>
+
+                            <!-- Messaging -->
+                            <li class="nav-item">
+                                <a class="nav-link{{ Route::is('message.home') ? ' active' : '' }}" href="{{ route('message.home') }}" title="@lang('miscellaneous.menu.messages')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/messages', 'messages'); return false;">
+{{-- @if (!request()->route()->named('message.home'))
+                                    <div class="badge-notif badge-notif-bottom"></div>
+@endif --}}
+                                    <i class="bi {{ Route::is('message.home') ? 'bi-chat-quote-fill' : 'bi-chat-quote' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.messages')</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item ms-3 opacity-0 d-md-inline-block d-none">
+                                <a class="nav-link">
+                                    <i class="bi bi-three-dots-vertical"></i> <span class="nav-text"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Main navbar END -->
+
+                    <!-- Nav right START -->
+                    <ul class="nav flex-nowrap align-items-center ms-auto list-unstyled">
+                        <li class="nav-item ms-2 dropdown nav-search">
+                            <a class="nav-link btn icon-md p-0" href="#" id="searchDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-search fs-5"> </i>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-animation dropdown-menu-end p-3 small" aria-labelledby="searchDropdown">
+                                <!-- Profile info -->
+                                <div class="nav flex-nowrap align-items-center">
+                                    <div class="nav-item w-100">
+                                        <form class="rounded position-relative">
+                                            <input class="form-control ps-5 bg-light" type="search" placeholder="@lang('miscellaneous.search_label')" aria-label="Search" title="@lang('miscellaneous.search_label')">
+                                            <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                        </button>
-                    </x-slot>
+                        </li>
 
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
+                        <li class="nav-item ms-2 dropdown">
+                            <a role="button" class="nav-link btn icon-md p-0" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img class="avatar-img rounded-circle" src="{{ asset($current_user['profile_photo_path']) }}" alt>
+                            </a>
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+                            <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
+                                <!-- Profile info -->
+                                <li class="px-3">
+                                    <div class="d-flex align-items-center position-relative">
+                                        <!-- Avatar -->
+                                        <div class="avatar me-3">
+                                            <img class="avatar-img rounded-circle" src="{{ asset($current_user['profile_photo_path']) }}" alt="avatar">
+                                        </div>
+                                        <div>
+                                            <a class="h6 stretched-link" href="{{ route('profile.home', ['username' => $current_user['username']]) }}">
+                                                {{ Str::limit(($current_user['firstname'] . ' ' . $current_user['lastname']), 14, '...') }}
+                                            </a>
+                                            <p class="small m-0">{{ '@' . $current_user['username'] }}</p>
+                                        </div>
+                                    </div>
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
+                                    <a class="dropdown-item btn btn-primary-soft btn-sm mt-3 mb-2 text-center rounded-pill" href="{{ route('profile.home', ['username' => $current_user['username']]) }}">@lang('miscellaneous.menu.public.profile.title')</a>
+                                </li>
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
-    </div>
-</nav>
+                                <!-- Links -->
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('settings.home') }}"><i class="bi bi-gear fa-fw me-2"></i>@lang('miscellaneous.menu.public.settings.title')</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="https://xsamtech.com/messenger" target="_blank">
+                                        <i class="fa-fw bi bi-telephone me-2"></i>@lang('miscellaneous.public.home.help')
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="https://xsamtech.com/products/kulisha" target="_blank">
+                                        <i class="fa-fw bi bi-question-circle me-2"></i>@lang('miscellaneous.menu.about')
+                                    </a>
+                                </li>
+                                <li class="dropdown-divider"></li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="post">
+@csrf
+                                        <input type="hidden" name="logged_out_user" value="">
+                                        <button type="submit" id="logged_out_user" class="dropdown-item bg-danger-soft-hover">
+                                            <i class="bi bi-power fa-fw me-2"></i>@lang('miscellaneous.logout')
+                                        </button>
+                                    </form>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <!-- Dark mode options START -->
+                                <li>
+                                    <div id="themeToggler" class="modeswitch-item theme-icon-active d-flex justify-content-center gap-2 align-items-center p-3 pb-0">
+                                        <span>@lang('miscellaneous.theme')</span>
+                                        <button type="button" class="btn btn-light light"  data-mdb-ripple-init><i class="bi bi-sun"></i></button>
+                                        <button type="button" class="btn btn-light dark"  data-mdb-ripple-init><i class="bi bi-moon-fill"></i></button>
+                                        <button type="button" class="btn btn-light auto"  data-mdb-ripple-init><i class="bi bi-circle-half"></i></button>
+                                    </div>
+                                </li>
+                                <!-- Dark mode options END-->
+                            </ul>
+                        </li>
+                    </ul>
+                    <!-- Nav right END -->
+                </div>
+            </nav>
+            <!-- Logo Nav END -->
+        </header>
+        <!-- ======================= Header END -->

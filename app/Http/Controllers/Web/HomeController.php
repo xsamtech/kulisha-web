@@ -36,14 +36,84 @@ class HomeController extends Controller
     }
 
     /**
-     * GET: Welcome/Home page
+     * GET: Home main page
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View
      */
     public function index()
     {
+        return view('index');
+    }
+
+    /**
+     * GET: Home included page
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\View\View
+     */
+    public function home()
+    {
         return view('home');
+    }
+
+    /**
+     * GET: Discover page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function discover()
+    {
+        return view('discover');
+    }
+
+    /**
+     * GET: Cart page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function cart()
+    {
+        return view('cart');
+    }
+
+    /**
+     * GET: Notifications page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function notification()
+    {
+        return view('notification');
+    }
+
+    /**
+     * GET: Communities page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function community()
+    {
+        return view('community');
+    }
+
+    /**
+     * GET: Events page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function event()
+    {
+        return view('event');
+    }
+
+    /**
+     * GET: Messages page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function message()
+    {
+        return view('message');
     }
 
     // ==================================== HTTP POST METHODS ====================================

@@ -1,6 +1,3 @@
-@extends('layouts.app', ['page_title' => 'Kulisha / ' . __('miscellaneous.menu.public.news_feed')])
-
-@section('app-content')
 
                 <!-- Sidenav START -->
                 <div class="col-lg-3 mt-0">
@@ -129,19 +126,7 @@
 										</a>
 
 										<ul class="dropdown-menu dropdown-menu-end mt-1 p-0" aria-labelledby="dropdownLanguage">
-    @foreach ($available_locales as $locale_name => $available_locale)
-                                            <li class="w-100">
-		@if ($available_locale != $current_locale)
-												<a class="dropdown-item px-3 py-2" href="{{ route('change_language', ['locale' => $available_locale]) }}">
-													{{ $locale_name }}
-												</a>
-		@else
-												<span class="dropdown-item px-3 py-2 kls-lime-green-text">
-													{{ $locale_name }}
-												</span>
-		@endif
-                                            </li>
-    @endforeach
+	@include('components.locales')
                                         </ul>
                                     </li>
 								</ul>
@@ -1699,12 +1684,12 @@
 				</div>
 				<!-- Main content END -->
 
-					<!-- Right sidebar START -->
-					<div class="col-lg-3 mt-0">
-						<div class="row g-4">
-							<!-- Card follow START -->
-							<div class="col-sm-6 col-lg-12">
-								<div class="card">
+				<!-- Right sidebar START -->
+				<div class="col-lg-3 mt-0">
+					<div class="row g-4">
+						<!-- Card follow START -->
+						<div class="col-sm-6 col-lg-12">
+							<div class="card">
 									<!-- Card header START -->
 									<div class="card-header pb-0 border-0">
 										<h5 class="card-title mb-0">Who to follow</h5>
@@ -1864,5 +1849,3 @@
 						</div>
 					</div>
 					<!-- Right sidebar END -->
-
-@endsection

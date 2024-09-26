@@ -108,7 +108,7 @@
                         <ul class="navbar-nav navbar-nav-scroll mx-auto">
                             <!-- Home -->
                             <li class="nav-item">
-                                <a class="nav-link{{ Route::is('home') ? ' active' : '' }}" href="{{ route('home') }}" title="@lang('miscellaneous.menu.home')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/'); return false;">
+                                <a class="nav-link{{ Route::is('home') ? ' active' : '' }}" href="{{ route('home') }}" title="@lang('miscellaneous.menu.home')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/', 'home'); return false;">
 {{-- @if (!request()->route()->named('home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -118,7 +118,7 @@
 
                             <!-- Discover -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link{{ Route::is('discover.home') ? ' active' : '' }}" href="{{ route('discover.home') }}" title="@lang('miscellaneous.menu.discover')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/discover'); return false;">
+                                <a class="nav-link{{ Route::is('discover.home') ? ' active' : '' }}" href="{{ route('discover.home') }}" title="@lang('miscellaneous.menu.discover')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/discover', 'discover'); return false;">
 {{-- @if (!request()->route()->named('discover.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -128,7 +128,7 @@
 
                             <!-- Orders -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link{{ Route::is('cart.home') ? ' active' : '' }}" href="{{ route('cart.home') }}" title="@lang('miscellaneous.menu.public.orders.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/cart'); return false;">
+                                <a class="nav-link{{ Route::is('cart.home') ? ' active' : '' }}" href="{{ route('cart.home') }}" title="@lang('miscellaneous.menu.public.orders.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/cart', 'cart'); return false;">
 {{-- @if (!request()->route()->named('cart.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -138,7 +138,7 @@
 
                             <!-- Notifications -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link{{ Route::is('notification.home') ? ' active' : '' }}" href="{{ route('notification.home') }}" title="@lang('miscellaneous.menu.notifications.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/notifications'); return false;">
+                                <a class="nav-link{{ Route::is('notification.home') ? ' active' : '' }}" href="{{ route('notification.home') }}" title="@lang('miscellaneous.menu.notifications.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/notifications', 'notifications'); return false;">
 {{-- @if (!request()->route()->named('notification.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -148,7 +148,7 @@
 
                             <!-- Communties -->
                             <li class="nav-item">
-                                <a class="nav-link{{ Route::is('community.home') ? ' active' : '' }}" href="{{ route('community.home') }}" title="@lang('miscellaneous.menu.public.communities.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/communities'); return false;">
+                                <a class="nav-link{{ Route::is('community.home') ? ' active' : '' }}" href="{{ route('community.home') }}" title="@lang('miscellaneous.menu.public.communities.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/communities', 'communities'); return false;">
 {{-- @if (!request()->route()->named('community.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -158,7 +158,7 @@
 
                             <!-- Events -->
                             <li class="nav-item">
-                                <a class="nav-link{{ Route::is('event.home') ? ' active' : '' }}" href="{{ route('event.home') }}" title="@lang('miscellaneous.menu.public.events.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/events'); return false;">
+                                <a class="nav-link{{ Route::is('event.home') ? ' active' : '' }}" href="{{ route('event.home') }}" title="@lang('miscellaneous.menu.public.events.title')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/events', 'events'); return false;">
 {{-- @if (!request()->route()->named('event.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -168,7 +168,7 @@
 
                             <!-- Messaging -->
                             <li class="nav-item">
-                                <a class="nav-link{{ Route::is('message.home') ? ' active' : '' }}" href="{{ route('message.home') }}" title="@lang('miscellaneous.menu.messages')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/messages'); return false;">
+                                <a class="nav-link{{ Route::is('message.home') ? ' active' : '' }}" href="{{ route('message.home') }}" title="@lang('miscellaneous.menu.messages')" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="navigate('/messages', 'messages'); return false;">
 {{-- @if (!request()->route()->named('message.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -278,7 +278,7 @@
         <main>
             <!-- Container START -->
             <div class="container">
-                <div id="appContent" class="row g-4">
+                <div id="appContent" class="row g-4" style="min-height: 40rem;">
 
 @yield('app-content')
 
@@ -467,7 +467,443 @@
         <script src="{{ asset('assets/js/load-app-scripts.js') }}"></script>
         <script src="{{ asset('assets/js/script.app.js') }}"></script>
         <script type="text/javascript">
-            function navigate(url) {
+            function navigate(url, ref) {
+                switch (ref) {
+                    case 'home':
+                        document.title = '{{ "Kulisha / " . __("miscellaneous.menu.public.news_feed") }}'
+                        document.getElementById('appContent').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img class="h-50px" src="/assets/img/cover-placeholder.png" class="card-img-top" alt>' +
+                                                                                    '<div class="card-body pt-0">' +
+                                                                                        '<div class="text-center">' +
+                                                                                            '<div class="avatar avatar-lg mt-n5 mb-3">' +
+                                                                                                '<a><img class="avatar-img rounded border border-white border-3" src="/assets/img/avatar-placeholder.png" alt></a>' +
+                                                                                            '</div>' +
+                                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                                '<span class="placeholder col-5"></span>' +
+                                                                                            '</p>' +
+                                                                                        '</div>' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>';
+                        break;
+                    case 'discover':
+                        document.title = '{{ __("miscellaneous.menu.discover") }}'
+                        document.getElementById('appContent').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                    '</div>' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>';
+                        break;
+                    case 'cart':
+                        document.title = '{{ __("miscellaneous.menu.public.orders.cart.title") }}'
+                        document.getElementById('appContent').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                    '</div>' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>';
+                        break;
+                    case 'notifications':
+                        document.title = '{{ __("miscellaneous.menu.notifications.title") }}'
+                        document.getElementById('appContent').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                    '</div>' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>';
+                        break;
+                    case 'communities':
+                        document.title = '{{ __("miscellaneous.menu.public.communities.title") }}'
+                        document.getElementById('appContent').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                    '</div>' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>';
+                        break;
+                    case 'events':
+                        document.title = '{{ __("miscellaneous.menu.public.events.title") }}'
+                        document.getElementById('appContent').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                    '</div>' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>';
+                        break;
+                    case 'messages':
+                        document.title = '{{ __("miscellaneous.menu.messages") }}'
+                        document.getElementById('appContent').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                    '</div>' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>' +
+                                                                            '<div class="col-lg-3 mt-0">' +
+                                                                                '<div class="card" aria-hidden="true">' +
+                                                                                    '<img src="..." class="card-img-top" alt="...">' +
+                                                                                    '<div class="card-body">' +
+                                                                                        '<h5 class="card-title placeholder-glow">' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                        '</h5>' +
+                                                                                        '<p class="card-text placeholder-glow">' +
+                                                                                            '<span class="placeholder col-7"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-4"></span>' +
+                                                                                            '<span class="placeholder col-6"></span>' +
+                                                                                            '<span class="placeholder col-8"></span>' +
+                                                                                        '</p>' +
+                                                                                        '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                                    '</div>' +
+                                                                                '</div>' +
+                                                                            '</div>';
+                        break;
+                    default:
+                        break;
+                }
+
                 fetch(url).then(response => {
                     if (!response.ok) {
                         throw new Error('<?= __("notifications.network_error") ?>');
@@ -480,9 +916,10 @@
 
                     // Update history
                     history.pushState({ url: url }, '', url);
+                    loadJS();
 
                 }).catch(error => {
-                    document.getElementById('appContent').innerHTML = `<div class="col-sm-6 mx-auto" style="min-height: 40rem;"><h1 class="mt-5 text-center">${error}</h1></div>`;
+                    document.getElementById('appContent').innerHTML = `<div class="col-sm-6 mx-auto pt-5"><div class="mt-5 bg-image d-flex justify-content-center"><img src="/assets/img/logo.png" width="160"><div class="mask"></div></div><h1 class="mb-0 text-center">${error}</h1></div>`;
                 });
             }
 
