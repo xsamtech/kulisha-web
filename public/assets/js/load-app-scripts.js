@@ -67,7 +67,7 @@ function loadJS(url) {
 async function loadScriptsSequentially() {
     for (const script of scripts) {
         try {
-            await loadScript(script);
+            await loadJS(script);
         } catch (error) {
             console.error('Erreur lors du chargement du script:', script);
         }
