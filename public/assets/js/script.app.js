@@ -23,7 +23,7 @@ if (isWebview1 || isWebview2) {
 function themeLight() {
     document.documentElement.setAttribute('data-bs-theme', 'light');
 
-    for (let i = 0; i < kulishaBrand.length; i++) {
+    for (var i = 0; i < kulishaBrand.length; i++) {
       kulishaBrand[i].setAttribute('src', currentHost + '/assets/img/brand.png');
     }
 
@@ -36,7 +36,7 @@ function themeLight() {
 function themeDark() {
     document.documentElement.setAttribute('data-bs-theme', 'dark');
 
-    for (let i = 0; i < kulishaBrand.length; i++) {
+    for (var i = 0; i < kulishaBrand.length; i++) {
       kulishaBrand[i].setAttribute('src', currentHost + '/assets/img/brand-reverse.png');
     }
 
@@ -47,19 +47,19 @@ function themeDark() {
  * Set theme to auto
  */
 function themeAuto() {
-    const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+    var darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
 
     if (darkThemeMq.matches) {
         document.documentElement.setAttribute('data-bs-theme', 'dark');
 
-        for (let i = 0; i < kulishaBrand.length; i++) {
+        for (var i = 0; i < kulishaBrand.length; i++) {
             kulishaBrand[i].setAttribute('src', currentHost + '/assets/img/brand-reverse.png');
         }
 
     } else {
         document.documentElement.setAttribute('data-bs-theme', 'light');
 
-        for (let i = 0; i < kulishaBrand.length; i++) {
+        for (var i = 0; i < kulishaBrand.length; i++) {
             kulishaBrand[i].setAttribute('src', currentHost + '/assets/img/brand.png');
         }
     }
@@ -87,12 +87,12 @@ function isNumeric(str) {
  * @param string cname 
  */
  function getCookie(cname) {
-    let name = cname + '=';
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
+    var name = cname + '=';
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
 
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
 
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
@@ -144,7 +144,7 @@ $(function () {
     autosize($('textarea'));
 
     /* Perfect scrollbar */
-    const ps = new PerfectScrollbar('.perfect-scrollbar', {
+    var ps = new PerfectScrollbar('.perfect-scrollbar', {
         wheelSpeed: 2,
         wheelPropagation: true,
         minScrollbarLength: 20

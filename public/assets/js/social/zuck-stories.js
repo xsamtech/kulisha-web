@@ -15,7 +15,8 @@ var timestamp = function() {
 // Stories data
 
 // Update your story below
-let stories = new Zuck("stories", {
+// let stories = new Zuck("stories", {
+var stories = new Zuck("stories", {
   backNative: false,    // uses window history to enable back button on browsers/android
   previousTap: true,    // use 1/3 of the screen to navigate to previous item when tap the story
   skin: "snapgram",     // container class
