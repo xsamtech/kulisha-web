@@ -4,7 +4,7 @@
             <nav class="navbar navbar-icon navbar-expand-lg">
                 <div class="container">
                     <!-- Logo START -->
-                    <a class="navbar-brand" href="{{ route('index') }}">
+                    <a class="navbar-brand" href="{{ route('home') }}">
                         <img class="navbar-brand-item" src="{{ asset('assets/img/logo-text.png') }}" alt="Kulisha">
                         {{-- <img class="light-mode-item navbar-brand-item" src="{{ asset('assets/img/brand.png') }}" alt="Kulisha">
                         <img class="dark-mode-item navbar-brand-item" src="{{ asset('assets/img/brand-reverse.png') }}" alt="Kulisha"> --}}
@@ -25,11 +25,11 @@
                         <ul class="navbar-nav navbar-nav-scroll mx-auto">
                             <!-- Home -->
                             <li class="nav-item">
-                                <a class="nav-link{{ Route::is('index') || Route::is('home') ? ' active' : '' }}" data-page="home" href="{{ route('home') }}" title="@lang('miscellaneous.menu.home')" onclick="navigate('/home', this); return false;">
+                                <a class="nav-link{{ Route::is('home') ? ' active' : '' }}" data-page="home" href="{{ route('home') }}" title="@lang('miscellaneous.menu.home')" onclick="navigate('/', this); return false;">
 {{-- @if (!request()->route()->named('home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
-                                    <i class="bi {{ Route::is('index') || Route::is('home') ? 'bi-house-fill' : 'bi-house' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.home')</span>
+                                    <i class="bi {{ Route::is('home') ? 'bi-house-fill' : 'bi-house' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.home')</span>
                                 </a>
                             </li>
 

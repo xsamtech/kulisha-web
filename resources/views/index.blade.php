@@ -2601,8 +2601,6 @@
 
 					const icon = link.children[0]; // Select the icon in the link
 
-					console.log(icon);
-
 					// Reset the icon to its default state
 					icon.classList.remove('bi-house-fill', 'bi-compass-fill', 'bi-basket3-fill', 'bi-bell-fill', 'bi-people-fill', 'bi-calendar-event-fill', 'bi-chat-quote-fill');
 					icon.classList.add(icon.classList[1]); // Resets the default class without "-fill"
@@ -2613,8 +2611,6 @@
 						// Change the icon class
 						switch (activePage) {
 							case 'home':
-								const icon = link.children[0]; // Select the icon in the link
-
 								icon.classList.remove('bi-house');
 								icon.classList.add('bi-house-fill');
 								break;

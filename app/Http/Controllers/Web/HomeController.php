@@ -36,24 +36,13 @@ class HomeController extends Controller
     }
 
     /**
-     * GET: Home main page
+     * GET: Home page
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
         return view('index');
-    }
-
-    /**
-     * GET: Home included page
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\View\View
-     */
-    public function home()
-    {
-        return view('home');
     }
 
     /**
