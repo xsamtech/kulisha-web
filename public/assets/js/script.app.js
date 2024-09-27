@@ -156,16 +156,16 @@ $(function () {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 
-    /* jQuery scroll4ever */
-    $('#scope').scroll4ever({
-        trigger: '.next-page-link',
-        container: '#items',
-        selector: '.item',
-        distance: 100,
-        debug: true,
-        start: function () { $('.next-page-link').html('<div class="loader"><div class="loaderBar"></div></div>'); },
-        complete: function () { }
-    });
+    // /* jQuery scroll4ever */
+    // $('#scope').scroll4ever({
+    //     trigger: '.next-page-link',
+    //     container: '#items',
+    //     selector: '.item',
+    //     distance: 100,
+    //     debug: true,
+    //     start: function () { $('.next-page-link').html('<div class="loader"><div class="loaderBar"></div></div>'); },
+    //     complete: function () { }
+    // });
 
     /* On select change, update de country phone code */
     $('#select_country1').on('change', function () {

@@ -2112,8 +2112,10 @@
         <script src="{{ asset('assets/js/load-app-scripts.js') }}"></script>
         <script src="{{ asset('assets/js/script.app.js') }}"></script>
         <script type="text/javascript">
-            function navigate(url, ref) {
-                switch (ref) {
+			function navigate(url, element) {
+				ref = element.getAttribute('data-page');
+
+				switch (ref) {
                     case 'home':
                         document.title = '{{ "Kulisha / " . __("miscellaneous.menu.public.news_feed") }}'
                         document.getElementById('contents').innerHTML = '<div class="col-lg-3 mt-0">' +
@@ -2561,7 +2563,8 @@
 
                     // Update history
                     history.pushState({ url: url }, '', url);
-                    loadJS();
+					loadScriptsInParallel(scripts);
+					setActiveLink(ref)
 
                 }).catch(error => {
                     document.getElementById('contents').innerHTML = `<div class="col-sm-6 mx-auto pt-5"><div class="mt-5 bg-image d-flex justify-content-center"><img src="/assets/img/logo.png" width="160"><div class="mask"></div></div><h1 class="mb-0 text-center">${error}</h1></div>`;
@@ -2589,6 +2592,69 @@
                     document.getElementById('contents').innerHTML = '<h1>Bienvenue sur la page d\'accueil</h1>';
                 }
             };
+
+			function setActiveLink(activePage) {
+				const navLinks = document.querySelectorAll('.nav-link');
+
+				navLinks.forEach(link => {
+					link.classList.remove('active'); // Removes the "active" class from all links
+
+					const icon = link.children[0]; // Select the icon in the link
+
+					console.log(icon);
+
+					// Reset the icon to its default state
+					icon.classList.remove('bi-house-fill', 'bi-compass-fill', 'bi-basket3-fill', 'bi-bell-fill', 'bi-people-fill', 'bi-calendar-event-fill', 'bi-chat-quote-fill');
+					icon.classList.add(icon.classList[1]); // Resets the default class without "-fill"
+
+					if (link.getAttribute('data-page') === activePage) {
+						link.classList.add('active'); // Adds the "active" class to the corresponding link
+
+						// Change the icon class
+						switch (activePage) {
+							case 'home':
+								const icon = link.children[0]; // Select the icon in the link
+
+								icon.classList.remove('bi-house');
+								icon.classList.add('bi-house-fill');
+								break;
+
+							case 'discover':
+								icon.classList.remove('bi-compass');
+								icon.classList.add('bi-compass-fill');
+								break;
+
+							case 'cart':
+								icon.classList.remove('bi-basket3');
+								icon.classList.add('bi-basket3-fill');
+								break;
+
+							case 'notification':
+								icon.classList.remove('bi-bell');
+								icon.classList.add('bi-bell-fill');
+								break;
+
+							case 'community':
+								icon.classList.remove('bi-people');
+								icon.classList.add('bi-people-fill');
+								break;
+
+							case 'event':
+								icon.classList.remove('bi-calendar-event');
+								icon.classList.add('bi-calendar-event-fill');
+								break;
+
+							case 'message':
+								icon.classList.remove('bi-chat-quote');
+								icon.classList.add('bi-chat-quote-fill');
+								break;
+
+							default:
+								break;
+						}
+					}
+				});
+			}
 
             $(function () {
                 $('#newPostType .form-check').each(function () {

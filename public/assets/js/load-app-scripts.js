@@ -54,8 +54,8 @@ var scripts = [
     '/assets/js/social/functions.js',
     '/assets/addons/custom/autosize/js/autosize.min.js',
     '/assets/addons/custom/perfect-scrollbar/dist/perfect-scrollbar.min.js',
-    '/assets/js/load-app-scripts.js',
     '/assets/addons/custom/jquery/scroll4ever/js/jquery.scroll4ever.js',
+    '/assets/js/load-app-scripts.js',
     '/assets/js/script.app.js',
 ];
 
@@ -64,14 +64,23 @@ function loadJS(url) {
     return $.getScript(currentHost + url);
 }
 
-async function loadScriptsSequentially() {
-    for (var script of scripts) {
-        try {
-            await loadJS(script);
-        } catch (error) {
-            console.error('Erreur lors du chargement du script:', script);
-        }
-    }
-}
+// async function loadScriptsSequentially() {
+//     for (var script of scripts) {
+//         try {
+//             await loadJS(script);
+//         } catch (error) {
+//             console.error('Erreur lors du chargement du script: ', script);
+//         }
+//     }
+// }
 
-loadScriptsSequentially();
+/*async*/ function loadScriptsInParallel(scripts) {
+    const loadPromises = scripts.map(script => {
+        return loadJS(script).catch(error => {
+            console.error('Erreur lors du chargement du script: ', script);
+        });
+    });
+
+    // Attendre que toutes les promesses soient résolues
+    /*await*/ Promise.all(loadPromises);
+}

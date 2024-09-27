@@ -4,7 +4,7 @@
             <nav class="navbar navbar-icon navbar-expand-lg">
                 <div class="container">
                     <!-- Logo START -->
-                    <a class="navbar-brand" href="{{ route('home') }}">
+                    <a class="navbar-brand" href="{{ route('index') }}">
                         <img class="navbar-brand-item" src="{{ asset('assets/img/logo-text.png') }}" alt="Kulisha">
                         {{-- <img class="light-mode-item navbar-brand-item" src="{{ asset('assets/img/brand.png') }}" alt="Kulisha">
                         <img class="dark-mode-item navbar-brand-item" src="{{ asset('assets/img/brand-reverse.png') }}" alt="Kulisha"> --}}
@@ -25,17 +25,17 @@
                         <ul class="navbar-nav navbar-nav-scroll mx-auto">
                             <!-- Home -->
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home') }}" title="@lang('miscellaneous.menu.home')" onclick="navigate('/home', 'home'); return false;">
+                                <a class="nav-link{{ Route::is('index') || Route::is('home') ? ' active' : '' }}" data-page="home" href="{{ route('home') }}" title="@lang('miscellaneous.menu.home')" onclick="navigate('/home', this); return false;">
 {{-- @if (!request()->route()->named('home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
-                                    <i class="bi {{ Route::is('home') ? 'bi-house-fill' : 'bi-house' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.home')</span>
+                                    <i class="bi {{ Route::is('index') || Route::is('home') ? 'bi-house-fill' : 'bi-house' }}"></i> <span class="nav-text">@lang('miscellaneous.menu.home')</span>
                                 </a>
                             </li>
 
                             <!-- Discover -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link" href="{{ route('discover.home') }}" title="@lang('miscellaneous.menu.discover')" onclick="navigate('/discover', 'discover'); return false;">
+                                <a class="nav-link{{ Route::is('discover.home') ? ' active' : '' }}" data-page="discover" href="{{ route('discover.home') }}" title="@lang('miscellaneous.menu.discover')" onclick="navigate('/discover', this); return false;">
 {{-- @if (!request()->route()->named('discover.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -45,7 +45,7 @@
 
                             <!-- Orders -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link" href="{{ route('cart.home') }}" title="@lang('miscellaneous.menu.public.orders.title')" onclick="navigate('/cart', 'cart'); return false;">
+                                <a class="nav-link{{ Route::is('cart.home') ? ' active' : '' }}" data-page="cart" href="{{ route('cart.home') }}" title="@lang('miscellaneous.menu.public.orders.title')" onclick="navigate('/cart', this); return false;">
 {{-- @if (!request()->route()->named('cart.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -55,7 +55,7 @@
 
                             <!-- Notifications -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link" href="{{ route('notification.home') }}" title="@lang('miscellaneous.menu.notifications.title')" onclick="navigate('/notifications', 'notifications'); return false;">
+                                <a class="nav-link{{ Route::is('notification.home') ? ' active' : '' }}" data-page="notification" href="{{ route('notification.home') }}" title="@lang('miscellaneous.menu.notifications.title')" onclick="navigate('/notifications', this); return false;">
 {{-- @if (!request()->route()->named('notification.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -65,7 +65,7 @@
 
                             <!-- Communties -->
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('community.home') }}" title="@lang('miscellaneous.menu.public.communities.title')" onclick="navigate('/communities', 'communities'); return false;">
+                                <a class="nav-link{{ Route::is('community.home') ? ' active' : '' }}" data-page="community" href="{{ route('community.home') }}" title="@lang('miscellaneous.menu.public.communities.title')" onclick="navigate('/communities', this); return false;">
 {{-- @if (!request()->route()->named('community.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -75,7 +75,7 @@
 
                             <!-- Events -->
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('event.home') }}" title="@lang('miscellaneous.menu.public.events.title')" onclick="navigate('/events', 'events'); return false;">
+                                <a class="nav-link{{ Route::is('event.home') ? ' active' : '' }}" data-page="event" href="{{ route('event.home') }}" title="@lang('miscellaneous.menu.public.events.title')" onclick="navigate('/events', this); return false;">
 {{-- @if (!request()->route()->named('event.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
@@ -85,7 +85,7 @@
 
                             <!-- Messaging -->
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('message.home') }}" title="@lang('miscellaneous.menu.messages')" onclick="navigate('/messages', 'messages'); return false;">
+                                <a class="nav-link{{ Route::is('message.home') ? ' active' : '' }}" data-page="message" href="{{ route('message.home') }}" title="@lang('miscellaneous.menu.messages')" onclick="navigate('/messages', this); return false;">
 {{-- @if (!request()->route()->named('message.home'))
                                     <div class="badge-notif badge-notif-bottom"></div>
 @endif --}}
