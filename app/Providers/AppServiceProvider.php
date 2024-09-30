@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function ($view) {
             if (Auth::check()) {
                 $currentUser = new ResourcesUser(Auth::user());
-                $user_data = $currentUser->toArray(request()); // Convertir la ressource en tableau
+                $user_data = $currentUser->toArray(request()); // Convert resource to array
 
                 $view->with('current_user', $user_data);
             }
