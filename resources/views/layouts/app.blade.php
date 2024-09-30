@@ -262,8 +262,8 @@
         <!-- Dropzone -->
         <script src="{{ asset('assets/addons/social/dropzone/dist/min/dropzone.min.js') }}"></script>
         <!-- Zuck -->
-        <script src="{{ asset('assets/addons/social/zuck.js/dist/zuck.min.js') }}"></script>
-        <script src="{{ asset('assets/js/social/zuck-stories.js') }}"></script>
+        {{-- <script src="{{ asset('assets/addons/social/zuck.js/dist/zuck.min.js') }}"></script>
+        <script src="{{ asset('assets/js/social/zuck-stories.js') }}"></script> --}}
         <!-- Theme Functions -->
         <script src="{{ asset('assets/js/social/functions.js') }}"></script>
         <!-- Autoresize textarea -->
@@ -730,8 +730,11 @@
 
                 fetch(url).then(response => {
                     if (!response.ok) {
+                        console.error('*****Response error: ', response.status);
                         throw new Error('<?= __("notifications.network_error") ?>');
                     }
+
+                    console.log('*****url: ' + url);
 
                     return response.text();
 
@@ -774,7 +777,14 @@
 
                     // Update history
                     history.pushState({ url: url }, '', url);
-					loadScriptsInParallel(scripts);
+					// loadScriptsInParallel(scripts).then(initializeComponents);
+                    loadScriptsInParallel(scripts).then(() => {
+                        initializeComponents();
+                        setActiveLink(element);
+                    }).catch(error => {
+                        console.error('*****Error loading scripts: ', error);
+                    });
+
 					setActiveLink(element)
 
                 }).catch(error => {
@@ -788,6 +798,9 @@
                         if (!response.ok) {
                             throw new Error('<?= __("notifications.network_error") ?>');
                         }
+
+                        console.log('*****event.state.url: ' + event.state.url);
+                        console.log('*****response.text(): ' + response.text());
 
                         return response.text();
 
@@ -828,11 +841,18 @@
                         // Insert columns into main content
                         document.getElementById('content').innerHTML = columnsHtml;
 
-                        loadScriptsInParallel(scripts);
+                        // loadScriptsInParallel(scripts).then(initializeComponents);
+                        loadScriptsInParallel(scripts).then(() => {
+                            initializeComponents();
+                            setActiveLink(element);
+                        }).catch(error => {
+                            console.error('*****Error loading scripts: ', error);
+                        });
+
                         setActiveLink(element)
 
                     }).catch(error => {
-                        console.error('Erreur lors du chargement :', error);
+                        console.error('*****Error while loading data: ', error);
                     });
 
                 } else {

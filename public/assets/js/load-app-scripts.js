@@ -36,7 +36,7 @@ var isIos = /ip(ad|hone|od)/.test(normalizedUserAgent) || navigator.platform ===
 var isAndroid = /android/.test(normalizedUserAgent);
 var isSafari = /safari/.test(normalizedUserAgent);
 var isWebview1 = appRef.split('-')[1] != 'nai';
-var isWebview2 = (isAndroid && /; wv\)/.test(normalizedUserAgent)) || (isIos && !standalone && !isSafari);
+var isWebview2 = (isAndroid && /; wv\)/.test(normalizedUserAgent)) || (isIos && !standalone && !isSafari);
 
 var scripts = [
     '/assets/addons/custom/jquery/js/jquery.min.js',
@@ -74,13 +74,33 @@ function loadJS(url) {
 //     }
 // }
 
-/*async*/ function loadScriptsInParallel(scripts) {
-    const loadPromises = scripts.map(script => {
-        return loadJS(script).catch(error => {
-            console.error('Erreur lors du chargement du script: ', script);
-        });
-    });
+// async function loadScriptsInParallel(scripts) {
+//     const loadPromises = scripts.map(script => {
+//         return loadJS(script).catch(error => {
+//             console.error('Erreur lors du chargement du script: ', script);
+//         });
+//     });
 
-    // Attendre que toutes les promesses soient résolues
-    /*await*/ Promise.all(loadPromises);
+//     // Wait until all promises are resolved
+//     await Promise.all(loadPromises);
+// }
+
+function loadScriptsInParallel(scripts) {
+    return Promise.all(scripts.map(src => {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.body.appendChild(script);
+        });
+    }));
+}
+
+function initializeComponents() {
+    // Initialize dropdowns
+    const dropdowns = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+
+    dropdowns.forEach(dropdown => new bootstrap.Dropdown(dropdown));
 }
