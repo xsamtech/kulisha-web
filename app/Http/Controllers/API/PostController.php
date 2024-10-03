@@ -1256,15 +1256,7 @@ class PostController extends BaseController
                                             })
                                             ->orWhere(function ($q1) use ($current_user, $connections_only_visibility, $connected_users_ids) {
                                                 $q1->where('posts.visibility_id', $connections_only_visibility->id)
-                                                    ->whereHas('subscriptions', function ($q2) use ($current_user, $connected_users_ids) {
-                                                        $q2->where(function ($q3) use ($current_user, $connected_users_ids) {
-                                                            $q3->where('subscriptions.user_id', $current_user->id)
-                                                                ->whereIn('subscriptions.subscriber_id', $connected_users_ids);
-                                                        })->orWhere(function ($q3) use ($current_user, $connected_users_ids) {
-                                                            $q3->where('subscriptions.subscriber_id', $current_user->id)
-                                                                ->whereIn('subscriptions.user_id', $connected_users_ids);
-                                                        });
-                                                    });
+                                                    ->whereIn('posts.user_id', $connected_users_ids);
                                                 });
                             })->orderByDesc('posts.created_at')->paginate(10);
 
