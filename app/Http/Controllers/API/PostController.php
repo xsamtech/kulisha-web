@@ -1254,7 +1254,7 @@ class PostController extends BaseController
                                                     ]);
                                                 });
                                             })
-                                            ->orWhere(function ($q1) use ($current_user, $connections_only_visibility, $connected_users_ids) {
+                                            ->orWhere(function ($q1) use ($connections_only_visibility, $connected_users_ids) {
                                                 $q1->where('posts.visibility_id', $connections_only_visibility->id)
                                                     ->whereIn('posts.user_id', $connected_users_ids);
                                                 });
