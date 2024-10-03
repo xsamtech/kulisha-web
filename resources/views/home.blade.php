@@ -23,46 +23,47 @@
 
 								<!-- Offcanvas body -->
 								<div class="offcanvas-body d-block px-2 px-lg-0">
+									{{-- CURRENT USER --}}
 									<!-- Card START -->
 									<div class="card overflow-hidden">
 										<!-- Cover image -->
-										<div class="h-50px" style="background-image:url({{ asset('assets/img/template/bg/01.jpg') }}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+										<div class="h-50px" style="background-image:url({{ asset($current_user['cover_photo_path']) }}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
 										<!-- Card body START -->
 										<div class="card-body pt-0">
 											<div class="text-center">
 												<!-- Avatar -->
 												<div class="avatar avatar-lg mt-n5 mb-3">
-													<a href="{{ route('profile.home', ['username' => 'tonystark']) }}">
-														<img class="avatar-img rounded border border-white border-3" src="{{ asset('assets/img/template/avatar/07.jpg') }}" alt>
+													<a href="{{ route('profile.home', ['username' => $current_user['username']]) }}">
+														<img class="avatar-img rounded border border-white border-3" src="{{ asset($current_user['profile_photo_path']) }}" alt>
 													</a>
 												</div>
 
 												<!-- Info -->
-												<h5 class="mb-0"> <a href="{{ route('profile.home', ['username' => 'tonystark']) }}">Robert Downey Jr.</a></h5>
-												<small>@tonystark</small>
+												<h5 class="mb-0"> <a href="{{ route('profile.home', ['username' => $current_user['username']]) }}">{{ $current_user['firstname'] . ' ' . $current_user['lastname'] }}</a></h5>
+												<small>{{ '@' . $current_user['username'] }}</small>
 												<p class="mt-3">
-													I'd love to change the world, but they won’t give me the source code.
+													{{ $current_user['about_me'] }}
 												</p>
 
 												<!-- User stat START -->
 												<div class="hstack gap-2 gap-xl-3 justify-content-center">
 													<!-- User stat item -->
 													<div>
-														<h6 class="mb-0 small">{{ thousandsCurrencyFormat(256) }}</h6>
+														<h6 class="mb-0 small">{{ !empty($current_user['regular_posts']) ? thousandsCurrencyFormat(count($current_user['regular_posts'])) : 0 }}</h6>
 														<small class="kls-fs-7">{{ Str::limit(__('miscellaneous.public.profile.statistics.posts'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
 													</div>
 													<!-- Divider -->
 													<div class="vr" style="z-index: 9999;"></div>
 													<!-- User stat item -->
 													<div>
-														<h6 class="mb-0 small">{{ thousandsCurrencyFormat(25829384) }}</h6>
+														<h6 class="mb-0 small">{{ !empty($current_user['followers']) ? thousandsCurrencyFormat(count($current_user['followers'])) : 0 }}</h6>
 														<small class="kls-fs-7">{{ Str::limit(__('miscellaneous.public.profile.statistics.followers'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
 													</div>
 													<!-- Divider -->
 													<div class="vr" style="z-index: 9999;"></div>
 													<!-- User stat item -->
 													<div>
-														<h6 class="mb-0 small">{{ thousandsCurrencyFormat(36500) }}</h6>
+														<h6 class="mb-0 small">{{ !empty($current_user['following']) ? thousandsCurrencyFormat(count($current_user['following'])) : 0 }}</h6>
 														<small class="kls-fs-7">{{ Str::limit(__('miscellaneous.public.profile.statistics.following'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
 													</div>
 												</div>

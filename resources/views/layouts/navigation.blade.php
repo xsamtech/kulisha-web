@@ -104,13 +104,13 @@
 
                     <!-- Nav right START -->
                     <ul class="nav flex-nowrap align-items-center ms-auto list-unstyled">
+                        {{-- SEARCH FORM --}}
                         <li class="nav-item ms-2 dropdown nav-search">
                             <a class="nav-link btn icon-md p-0" href="#" id="searchDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-search fs-5"> </i>
                             </a>
 
                             <div class="dropdown-menu dropdown-animation dropdown-menu-end p-3 small" aria-labelledby="searchDropdown">
-                                <!-- Profile info -->
                                 <div class="nav flex-nowrap align-items-center">
                                     <div class="nav-item w-100">
                                         <form class="rounded position-relative">
@@ -122,13 +122,13 @@
                             </div>
                         </li>
 
+                        {{-- PROFILE INFO --}}
                         <li class="nav-item ms-2 dropdown">
                             <a role="button" class="nav-link btn icon-md p-0" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img class="avatar-img rounded-circle" src="{{ asset($current_user['profile_photo_path']) }}" alt>
                             </a>
 
                             <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
-                                <!-- Profile info -->
                                 <li class="px-3">
                                     <div class="d-flex align-items-center position-relative">
                                         <!-- Avatar -->

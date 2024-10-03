@@ -261,9 +261,11 @@
         <script src="{{ asset('assets/addons/social/plyr/plyr.js') }}"></script>
         <!-- Dropzone -->
         <script src="{{ asset('assets/addons/social/dropzone/dist/min/dropzone.min.js') }}"></script>
+@if (Route::is('home'))
         <!-- Zuck -->
-        {{-- <script src="{{ asset('assets/addons/social/zuck.js/dist/zuck.min.js') }}"></script>
-        <script src="{{ asset('assets/js/social/zuck-stories.js') }}"></script> --}}
+        <script src="{{ asset('assets/addons/social/zuck.js/dist/zuck.min.js') }}"></script>
+        <script src="{{ asset('assets/js/social/zuck-stories.js') }}"></script>
+@endif
         <!-- Theme Functions -->
         <script src="{{ asset('assets/js/social/functions.js') }}"></script>
         <!-- Autoresize textarea -->

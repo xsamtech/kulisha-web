@@ -2,6 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Group as ModelsGroup;
+use App\Models\Post as ModelsPost;
+use App\Models\Status as ModelsStatus;
+use App\Models\Subscription as ModelsSubscription;
+use App\Models\Type as ModelsType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -20,6 +25,23 @@ class User extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Groups
+        $post_type_group = ModelsGroup::where('group_name->fr', 'Type de post')->first();
+        $post_or_community_status_group = ModelsGroup::where('group_name->fr', 'Etat du post ou de la communauté')->first();
+        // Statuses
+        $operational_status = ModelsStatus::where([['status_name->fr', 'Opérationnel'], ['group_id', $post_or_community_status_group->id]])->first();
+        $boosted_status = ModelsStatus::where([['status_name->fr', 'Boosté'], ['group_id', $post_or_community_status_group->id]])->first();
+        // Types
+        $comment_type = ModelsType::where([['type_name->fr', 'Commentaire'], ['group_id', $post_type_group->id]])->first();
+        $story_type = ModelsType::where([['type_name->fr', 'Story'], ['group_id', $post_type_group->id]])->first();
+        // Requests
+        $followers = ModelsSubscription::whereNotNull('subscriber_id')->where([['user_id', $this->id], ['is_following', 1]])->get();
+        $following = ModelsSubscription::where([['subscriber_id', $this->id], ['is_following', 1]])->get();
+        $regular_posts = ModelsPost::where([['user_id', $this->id], ['type_id', '<>', $comment_type->id], ['type_id', '<>', $story_type->id]])->where(function ($query) use ($operational_status, $boosted_status) {
+            $query->where('status_id', $operational_status->id)->orWhere('status_id', $boosted_status->id);
+        })->get();
+        $last_field = Field::collection($this->fields)->sortByDesc('created_at')->first();
+
         return [
             'id' => $this->id,
             'firstname' => $this->firstname,
@@ -45,7 +67,7 @@ class User extends JsonResource
             'prefered_theme' => $this->prefered_theme,
             'prefered_language' => $this->prefered_language,
             'profile_photo_path' => !empty($this->profile_photo_path) ? getWebURL() . '/storage/' . $this->profile_photo_path : getWebURL() . '/assets/img/avatar-' . $this->gender . '.svg',
-            'cover_photo_path' => !empty($this->cover_photo_path) ? getWebURL() . '/storage/' . $this->cover_photo_path : null,
+            'cover_photo_path' => !empty($this->cover_photo_path) ? getWebURL() . '/storage/' . $this->cover_photo_path : getWebURL() . '/assets/img/cover-' . $last_field->alias . '.svg',
             'cover_coordinates' => $this->cover_coordinates,
             'two_factor_secret' => $this->two_factor_secret,
             'two_factor_recovery_codes' => $this->two_factor_recovery_codes,
@@ -68,11 +90,14 @@ class User extends JsonResource
             'type' => Type::make($this->type),
             'visibility' => Visibility::make($this->visibility),
             'roles' => Role::collection($this->roles),
-            'fields' => Field::collection($this->fields),
+            'fields' => Field::collection($this->fields)->sortByDesc('created_at')->toArray(),
             'websites' => Website::collection($this->websites),
             'files' => File::collection($this->files),
             'carts' => Cart::collection($this->carts)->sortByDesc('created_at')->toArray(),
             'payments' => Payment::collection($this->payments)->sortByDesc('created_at')->toArray(),
+            'followers' => $followers,
+            'following' => $following,
+            'regular_posts' => $regular_posts,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s')
         ];
