@@ -186,13 +186,15 @@ class PostController extends BaseController
                 foreach ($mentions as $mention):
                     $mentioned = User::where('username', $mention)->first();
 
-                    $notification = Notification::create([
-                        'type_id' => $mention_type->id,
-                        'status_id' => $unread_notification_status->id,
-                        'from_user_id' => $post->user_id,
-                        'to_user_id' => $mentioned->id,
-                        'post_id' => $post->id
-                    ]);
+                    if ($mentioned->id != $post->user_id) {
+                        $notification = Notification::create([
+                            'type_id' => $mention_type->id,
+                            'status_id' => $unread_notification_status->id,
+                            'from_user_id' => $post->user_id,
+                            'to_user_id' => $mentioned->id,
+                            'post_id' => $post->id
+                        ]);
+                    }
                 endforeach;
             }
 
@@ -332,13 +334,15 @@ class PostController extends BaseController
                 foreach ($mentions as $mention):
                     $mentioned = User::where('username', $mention)->first();
 
-                    $notification = Notification::create([
-                        'type_id' => $mention_type->id,
-                        'status_id' => $unread_notification_status->id,
-                        'from_user_id' => $post->user_id,
-                        'to_user_id' => $mentioned->id,
-                        'post_id' => $post->id
-                    ]);
+                    if ($mentioned->id != $post->user_id) {
+                        $notification = Notification::create([
+                            'type_id' => $mention_type->id,
+                            'status_id' => $unread_notification_status->id,
+                            'from_user_id' => $post->user_id,
+                            'to_user_id' => $mentioned->id,
+                            'post_id' => $post->id
+                        ]);
+                    }
                 endforeach;
             }
 
@@ -889,13 +893,15 @@ class PostController extends BaseController
                     foreach ($mentions as $mention):
                         $mentioned = User::where('username', $mention)->first();
 
-                        $notification = Notification::create([
-                            'type_id' => $mention_type->id,
-                            'status_id' => $unread_notification_status->id,
-                            'from_user_id' => $post->user_id,
-                            'to_user_id' => $mentioned->id,
-                            'post_id' => $post->id
-                        ]);
+                        if ($mentioned->id != $post->user_id) {
+                            $notification = Notification::create([
+                                'type_id' => $mention_type->id,
+                                'status_id' => $unread_notification_status->id,
+                                'from_user_id' => $post->user_id,
+                                'to_user_id' => $mentioned->id,
+                                'post_id' => $post->id
+                            ]);
+                        }
                     endforeach;
                 }
             }
