@@ -158,7 +158,7 @@ class CommunityController extends BaseController
                     'search_content' => $community->community_name,
                     'type_id' => $search_history_type->id,
                     'from_user_id' => $request->has('visitor_id') ? $request->get('visitor_id') : null,
-                    'notification_id' => $notification->id
+                    'for_notification_id' => $notification->id
                 ]);
             }
         }

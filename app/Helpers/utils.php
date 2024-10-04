@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
@@ -20,6 +21,22 @@ if (!function_exists('getApiURL')) {
     function getApiURL()
     {
         return (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/api';
+    }
+}
+
+// Get APIs URL
+if (!function_exists('isVideoFile')) {
+    function isVideoFile($url)
+    {
+        // Extract file extension
+        $pathInfo = pathinfo($url);
+        $extension = strtolower($pathInfo['extension'] ?? '');
+
+        // List of recognized video extensions
+        $videoExtensions = ['mp4', 'mkv', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mpeg'];
+
+        // Check if the extension is in the list
+        return in_array($extension, $videoExtensions);
     }
 }
 

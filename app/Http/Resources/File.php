@@ -26,6 +26,7 @@ class File extends JsonResource
             'type' => Type::make($this->type),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
+            'type_id' => $this->type_id,
             'post_id' => $this->post_id,
             'message_id' => $this->message_id,
             'event_id' => $this->event_id,

@@ -236,11 +236,11 @@ $(function () {
             url: apiHost + '/user/' + parseInt(currentUser),
             success: function (result) {
                 if (result.data.prefered_theme !== null) {
-                    if (result.data.prefered_theme === 'dark') {
+                    if (result.data.prefered_theme === 'Dark') {
                         themeDark();
 
                     } else {
-                        if (result.data.prefered_theme === 'light') {
+                        if (result.data.prefered_theme === 'Light') {
                             themeLight();
                         } else {
                             themeAuto();
@@ -260,11 +260,11 @@ $(function () {
         });
 
     } else {
-        if (getCookie('theme') === 'dark') {
+        if (getCookie('theme') === 'Dark') {
             themeDark();
 
         } else {
-            if (getCookie('theme') === 'light') {
+            if (getCookie('theme') === 'Light') {
                 themeLight();
             } else {
                 themeAuto();
@@ -287,7 +287,7 @@ $(function () {
                 type: 'PUT',
                 contentType: 'application/json',
                 url: apiHost + '/user/' + currentUser,
-                data: JSON.stringify({ 'id': currentUser, 'prefered_theme': 'light' }),
+                data: JSON.stringify({ 'id': currentUser, 'prefered_theme': 'Light' }),
                 success: function () {
                     $(this).unbind('click');
                     e.stopPropagation();
@@ -316,7 +316,7 @@ $(function () {
                 type: 'PUT',
                 contentType: 'application/json',
                 url: apiHost + '/user/' + currentUser,
-                data: JSON.stringify({ 'id': currentUser, 'prefered_theme': 'dark' }),
+                data: JSON.stringify({ 'id': currentUser, 'prefered_theme': 'Dark' }),
                 success: function () {
                     $(this).unbind('click');
                     e.stopPropagation();
@@ -345,7 +345,7 @@ $(function () {
                 type: 'PUT',
                 contentType: 'application/json',
                 url: apiHost + '/user/' + currentUser,
-                data: JSON.stringify({ 'id': currentUser, 'prefered_theme': 'auto' }),
+                data: JSON.stringify({ 'id': currentUser, 'prefered_theme': 'Auto' }),
                 success: function () {
                     $(this).unbind('click');
                     e.stopPropagation();

@@ -380,7 +380,7 @@ class UserController extends BaseController
                     'search_content' => $user->username,
                     'type_id' => $search_history_type->id,
                     'from_user_id' => $request->has('visitor_id') ? $request->get('visitor_id') : null,
-                    'notification_id' => $notification->id
+                    'for_notification_id' => $notification->id
                 ]);
             }
         }
@@ -1058,7 +1058,7 @@ class UserController extends BaseController
                     'type_id' => $search_history_type->id,
                     'from_user_id' => $request->has('visitor_id') ? $request->get('visitor_id') : null,
                     'to_user_id' => $user->id,
-                    'notification_id' => $notification->id
+                    'for_notification_id' => $notification->id
                 ]);
             }
         }
