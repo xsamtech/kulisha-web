@@ -179,28 +179,32 @@
 							</div>
 
 							<!-- Share feed toolbar START -->
-							<ul class="nav nav-pills nav-stack small fw-normal">
+							<div class="d-flex flex-row mb-2">
+								<a class="flex-fill small bg-light me-2 py-1 px-2 mb-0 text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreateEvents">
+									<i class="bi bi-calendar2-event-fill pe-2 fs-6 text-danger"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.event')</span>
+								</a>
+								<a class="flex-fill small bg-light py-1 px-2 mb-0 text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreatePoll">
+									<i class="bi bi-list-check pe-2 fs-6 text-warning"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.poll.label')</span>
+								</a>
+							</div>
+							<div class="d-flex flex-row">
+								<a class="flex-fill small bg-light me-2 py-1 px-2 mb-0 text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionAnonymousQuestion">
+									<i class="bi bi-question-circle pe-2 fs-6 text-info"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.anonymous_question')</span>
+								</a>
+								<a class="flex-fill small bg-light py-1 px-2 mb-0 text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionArticle">
+									<i class="bi bi-newspaper pe-2 fs-6 text-success"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.article')</span>
+								</a>
+							</div>
+							{{-- <ul class="nav nav-pills nav-stack small fw-normal">
 								<li class="nav-item">
-									<a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreateEvents">
-										<i class="bi bi-calendar2-event-fill pe-2 fs-6 text-danger"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.event')</span>
-									</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreatePoll">
-										<i class="bi bi-list-check pe-2 fs-6 text-warning"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.poll.label')</span>
-									</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionAnonymousQuestion">
-										<i class="bi bi-question-circle pe-2 fs-6 text-info"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.anonymous_question')</span>
-									</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionArticle">
-										<i class="bi bi-newspaper pe-2 fs-6 text-success"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.article')</span>
-									</a>
 								</li>
-							</ul>
+							</ul> --}}
 							<!-- Share feed toolbar END -->
 						</div>
 						<!-- Share feed END -->
