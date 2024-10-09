@@ -148,9 +148,10 @@ class HistoryController extends BaseController
      * @param  int $user_id
      * @param  string $type_alias
      * @param  string $status_alias
+     * @param  int $addressee_id
      * @return \Illuminate\Http\Response
      */
-    public function selectByUser($user_id, $type_alias, $status_alias)
+    public function selectByUser($user_id, $type_alias, $status_alias, $addressee_id)
     {
         $user = User::find($user_id);
 
@@ -171,14 +172,40 @@ class HistoryController extends BaseController
                 return $this->handleError(__('notifications.find_status_404'));
             }
 
-            $histories = History::where([['type_id', $type->id], ['status_id', $status->id], ['to_user_id', $user->id]])->orderByDesc('created_at')->get();
+            if ($addressee_id != 0) {
+                $addressee = User::find($addressee_id);
 
-            return $this->handleResponse(ResourcesHistory::collection($histories), __('notifications.find_all_histories_success'));
+                if (is_null($addressee)) {
+                    return $this->handleError(__('notifications.find_addressee_404'));
+                }
+
+                $histories = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id]])->orderByDesc('created_at')->get();
+
+                return $this->handleResponse(ResourcesHistory::collection($histories), __('notifications.find_all_histories_success'));
+
+            } else {
+                $histories = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id]])->orderByDesc('created_at')->get();
+
+                return $this->handleResponse(ResourcesHistory::collection($histories), __('notifications.find_all_histories_success'));
+            }
 
         } else {
-            $histories = History::where([['type_id', $type->id], ['to_user_id', $user->id]])->orderByDesc('created_at')->get();
+            if ($addressee_id != 0) {
+                $addressee = User::find($addressee_id);
 
-            return $this->handleResponse(ResourcesHistory::collection($histories), __('notifications.find_all_histories_success'));
+                if (is_null($addressee)) {
+                    return $this->handleError(__('notifications.find_addressee_404'));
+                }
+
+                $histories = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id]])->orderByDesc('created_at')->get();
+
+                return $this->handleResponse(ResourcesHistory::collection($histories), __('notifications.find_all_histories_success'));
+
+            } else {
+                $histories = History::where([['type_id', $type->id], ['from_user_id', $user->id]])->orderByDesc('created_at')->get();
+
+                return $this->handleResponse(ResourcesHistory::collection($histories), __('notifications.find_all_histories_success'));
+            }
         }
     }
 
