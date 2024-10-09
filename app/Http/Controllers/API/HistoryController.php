@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\History as ResourcesHistory;
+use App\Models\Type;
 
 /**
  * @author Xanders
@@ -145,15 +146,22 @@ class HistoryController extends BaseController
      * Select all user histories.
      *
      * @param  int $user_id
+     * @param  string $type_alias
      * @param  string $status_alias
      * @return \Illuminate\Http\Response
      */
-    public function selectByUser($user_id, $status_alias)
+    public function selectByUser($user_id, $type_alias, $status_alias)
     {
         $user = User::find($user_id);
 
         if (is_null($user)) {
             return $this->handleError(__('notifications.find_user_404'));
+        }
+
+        $type = Type::where('alias', $type_alias)->first();
+
+        if (is_null($type)) {
+            return $this->handleError(__('notifications.find_type_404'));
         }
 
         if ($status_alias != '0') {
@@ -163,12 +171,12 @@ class HistoryController extends BaseController
                 return $this->handleError(__('notifications.find_status_404'));
             }
 
-            $histories = History::where([['status_id', $status->id], ['to_user_id', $user->id]])->orderByDesc('created_at')->get();
+            $histories = History::where([['type_id', $type->id], ['status_id', $status->id], ['to_user_id', $user->id]])->orderByDesc('created_at')->get();
 
             return $this->handleResponse(ResourcesHistory::collection($histories), __('notifications.find_all_histories_success'));
 
         } else {
-            $histories = History::where('to_user_id', $user->id)->get();
+            $histories = History::where([['type_id', $type->id], ['to_user_id', $user->id]])->orderByDesc('created_at')->get();
 
             return $this->handleResponse(ResourcesHistory::collection($histories), __('notifications.find_all_histories_success'));
         }
