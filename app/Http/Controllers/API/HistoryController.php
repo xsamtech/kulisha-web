@@ -8,6 +8,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\History as ResourcesHistory;
+use App\Models\Cart;
+use App\Models\Community;
+use App\Models\Event;
+use App\Models\Message;
+use App\Models\Post;
+use App\Models\Reaction;
+use App\Models\Session;
+use App\Models\Subscription;
+use App\Models\Team;
 use App\Models\Type;
 
 /**
@@ -205,6 +214,489 @@ class HistoryController extends BaseController
                 $histories = History::where([['type_id', $type->id], ['from_user_id', $user->id]])->orderByDesc('created_at')->get();
 
                 return $this->handleResponse(ResourcesHistory::collection($histories), __('notifications.find_all_histories_success'));
+            }
+        }
+    }
+
+    /**
+     * Select all user histories.
+     *
+     * @param  int $user_id
+     * @param  string $type_alias
+     * @param  string $status_alias
+     * @param  int $addressee_id
+     * @return \Illuminate\Http\Response
+     */
+    public function selectByUserEntity($user_id, $type_alias, $status_alias, $addressee_id, $entity, $entity_id)
+    {
+        $user = User::find($user_id);
+
+        if (is_null($user)) {
+            return $this->handleError(__('notifications.find_user_404'));
+        }
+
+        $type = Type::where('alias', $type_alias)->first();
+
+        if (is_null($type)) {
+            return $this->handleError(__('notifications.find_type_404'));
+        }
+
+        if ($entity == 'post') {
+            $post = Post::find($entity_id);
+
+            if (is_null($post)) {
+                return $this->handleError(__('notifications.find_post_404'));
+            }
+
+            if ($status_alias != '0') {
+                $status = Status::where('alias', $status_alias)->first();
+
+                if (is_null($status)) {
+                    return $this->handleError(__('notifications.find_status_404'));
+                }
+
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['post_id', $post->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['post_id', $post->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+
+            } else {
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['post_id', $post->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['post_id', $post->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+            }
+        }
+
+        if ($entity == 'event') {
+            $event = Event::find($entity_id);
+
+            if (is_null($event)) {
+                return $this->handleError(__('notifications.find_event_404'));
+            }
+
+            if ($status_alias != '0') {
+                $status = Status::where('alias', $status_alias)->first();
+
+                if (is_null($status)) {
+                    return $this->handleError(__('notifications.find_status_404'));
+                }
+
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['event_id', $event->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['event_id', $event->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+
+            } else {
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['event_id', $event->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['event_id', $event->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+            }
+        }
+
+        if ($entity == 'community') {
+            $community = Community::find($entity_id);
+
+            if (is_null($community)) {
+                return $this->handleError(__('notifications.find_community_404'));
+            }
+
+            if ($status_alias != '0') {
+                $status = Status::where('alias', $status_alias)->first();
+
+                if (is_null($status)) {
+                    return $this->handleError(__('notifications.find_status_404'));
+                }
+
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['community_id', $community->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['community_id', $community->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+
+            } else {
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['community_id', $community->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['community_id', $community->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+            }
+        }
+
+        if ($entity == 'message') {
+            $message = Message::find($entity_id);
+
+            if (is_null($message)) {
+                return $this->handleError(__('notifications.find_message_404'));
+            }
+
+            if ($status_alias != '0') {
+                $status = Status::where('alias', $status_alias)->first();
+
+                if (is_null($status)) {
+                    return $this->handleError(__('notifications.find_status_404'));
+                }
+
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['message_id', $message->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['message_id', $message->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+
+            } else {
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['message_id', $message->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['message_id', $message->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+            }
+        }
+
+        if ($entity == 'team') {
+            $team = Team::find($entity_id);
+
+            if (is_null($team)) {
+                return $this->handleError(__('notifications.find_team_404'));
+            }
+
+            if ($status_alias != '0') {
+                $status = Status::where('alias', $status_alias)->first();
+
+                if (is_null($status)) {
+                    return $this->handleError(__('notifications.find_status_404'));
+                }
+
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['team_id', $team->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['team_id', $team->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+
+            } else {
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['team_id', $team->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['team_id', $team->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+            }
+        }
+
+        if ($entity == 'reaction') {
+            $reaction = Reaction::find($entity_id);
+
+            if (is_null($reaction)) {
+                return $this->handleError(__('notifications.find_reaction_404'));
+            }
+
+            if ($status_alias != '0') {
+                $status = Status::where('alias', $status_alias)->first();
+
+                if (is_null($status)) {
+                    return $this->handleError(__('notifications.find_status_404'));
+                }
+
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['reaction_id', $reaction->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['reaction_id', $reaction->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+
+            } else {
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['reaction_id', $reaction->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['reaction_id', $reaction->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+            }
+        }
+
+        if ($entity == 'cart') {
+            $cart = Cart::find($entity_id);
+
+            if (is_null($cart)) {
+                return $this->handleError(__('notifications.find_cart_404'));
+            }
+
+            if ($status_alias != '0') {
+                $status = Status::where('alias', $status_alias)->first();
+
+                if (is_null($status)) {
+                    return $this->handleError(__('notifications.find_status_404'));
+                }
+
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['cart_id', $cart->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['cart_id', $cart->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+
+            } else {
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['cart_id', $cart->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['cart_id', $cart->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+            }
+        }
+
+        if ($entity == 'session') {
+            $session = Session::find($entity_id);
+
+            if (is_null($session)) {
+                return $this->handleError(__('notifications.find_session_404'));
+            }
+
+            if ($status_alias != '0') {
+                $status = Status::where('alias', $status_alias)->first();
+
+                if (is_null($status)) {
+                    return $this->handleError(__('notifications.find_status_404'));
+                }
+
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['session_id', $session->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['session_id', $session->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+
+            } else {
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['session_id', $session->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['session_id', $session->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+            }
+        }
+
+        if ($entity == 'subscription') {
+            $subscription = Subscription::find($entity_id);
+
+            if (is_null($subscription)) {
+                return $this->handleError(__('notifications.find_subscription_404'));
+            }
+
+            if ($status_alias != '0') {
+                $status = Status::where('alias', $status_alias)->first();
+
+                if (is_null($status)) {
+                    return $this->handleError(__('notifications.find_status_404'));
+                }
+
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['subscription_id', $subscription->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['subscription_id', $subscription->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
+
+            } else {
+                if ($addressee_id != 0) {
+                    $addressee = User::find($addressee_id);
+
+                    if (is_null($addressee)) {
+                        return $this->handleError(__('notifications.find_addressee_404'));
+                    }
+
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['subscription_id', $subscription->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+
+                } else {
+                    $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['subscription_id', $subscription->id]])->first();
+
+                    return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
+                }
             }
         }
     }
