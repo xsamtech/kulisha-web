@@ -195,17 +195,6 @@
 									<i class="bi bi-newspaper pe-2 fs-6 text-success"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.article')</span>
 								</a>
 							</div>
-							{{-- <ul class="nav nav-pills nav-stack small fw-normal">
-								<li class="nav-item">
-								</li>
-								<li class="nav-item">
-								</li>
-								<li class="nav-item">
-								</li>
-								<li class="nav-item">
-								</li>
-							</ul> --}}
-							<!-- Share feed toolbar END -->
 						</div>
 						<!-- Share feed END -->
 
