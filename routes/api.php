@@ -180,7 +180,7 @@ Route::group(['middleware' => ['api', 'auth:sanctum', 'localization']], function
     Route::put('notification/switch_status/{notification_id}/{status_alias}', 'App\Http\Controllers\API\NotificationController@switchStatus')->name('notification.api.switch_status');
     Route::put('notification/mark_all_read/{user_id}', 'App\Http\Controllers\API\NotificationController@markAllRead')->name('notification.api.mark_all_read');
     // History
-    Route::get('history/select_by_user/{user_id}/{status_alias}', 'App\Http\Controllers\API\HistoryController@selectByUser')->name('history.api.select_by_user');
+    Route::get('history/select_by_user/{user_id}/{type_alias}/{status_alias}/{addressee_id}', 'App\Http\Controllers\API\HistoryController@selectByUser')->name('history.api.select_by_user');
     Route::put('history/switch_status/{history_id}/{status_alias}', 'App\Http\Controllers\API\HistoryController@switchStatus')->name('history.api.switch_status');
     Route::put('history/mark_all_read/{user_id}', 'App\Http\Controllers\API\HistoryController@markAllRead')->name('history.api.mark_all_read');
     // Message
