@@ -125,9 +125,9 @@ class PostController extends BaseController
         }
 
         // Validate the coverage area
-        if ($inputs['coverage_area_id'] == null OR !is_numeric($inputs['coverage_area_id'])) {
-            return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['coverage_area_id'], __('validation.required', ['field_name' => __('miscellaneous.public.home.posts.boost.coverage_area')]), 400);
-        }
+        // if ($inputs['coverage_area_id'] == null OR !is_numeric($inputs['coverage_area_id'])) {
+        //     return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['coverage_area_id'], __('validation.required', ['field_name' => __('miscellaneous.public.home.posts.boost.coverage_area')]), 400);
+        // }
 
         if ($inputs['type_id'] == $poll_type->id) {
             if (count($request->choices_contents) == 0) {
