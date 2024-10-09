@@ -203,7 +203,7 @@ Route::group(['middleware' => ['api', 'auth:sanctum', 'localization']], function
     Route::get('post/period_views/{post_id}/{period}/{year}/{month}/{day}', 'App\Http\Controllers\API\PostController@periodViews')->name('post.api.period_views');
     Route::put('post/save_for_later/{user_id}/{post_id}/{action}', 'App\Http\Controllers\API\PostController@saveForLater')->name('post.api.save_for_later');
     Route::put('post/boost/{post_id}', 'App\Http\Controllers\API\PostController@boost')->name('post.api.boost');
-    Route::put('post/upload_file/{post_id}', 'App\Http\Controllers\API\PostController@uploadFile')->name('post.api.upload_file');
+    Route::post('post/upload_file/{post_id}', 'App\Http\Controllers\API\PostController@uploadFile')->name('post.api.upload_file');
     // Event
     Route::get('event/find_by_type/{locale}/{type_name}', 'App\Http\Controllers\API\EventController@findByType')->name('event.api.find_by_type');
     Route::get('event/find_by_status/{locale}/{status_name}', 'App\Http\Controllers\API\EventController@findByStatus')->name('event.api.find_by_status');

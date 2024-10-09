@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\History;
-use App\Models\Status;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\History as ResourcesHistory;
 use App\Models\Cart;
 use App\Models\Community;
 use App\Models\Event;
+use App\Models\History;
 use App\Models\Message;
 use App\Models\Post;
 use App\Models\Reaction;
 use App\Models\Session;
+use App\Models\Status;
 use App\Models\Subscription;
 use App\Models\Team;
 use App\Models\Type;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\History as ResourcesHistory;
 
 /**
  * @author Xanders

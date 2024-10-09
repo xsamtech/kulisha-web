@@ -179,25 +179,6 @@ class PostController extends BaseController
             /*
                 HISTORY AND/OR NOTIFICATION MANAGEMENT
             */
-            // Mentions management
-            $mentions = getMentions($post->post_content);
-
-            if (count($mentions) > 0) {
-                foreach ($mentions as $mention):
-                    $mentioned = User::where('username', $mention)->first();
-
-                    if ($mentioned->id != $post->user_id) {
-                        $notification = Notification::create([
-                            'type_id' => $mention_type->id,
-                            'status_id' => $unread_notification_status->id,
-                            'from_user_id' => $post->user_id,
-                            'to_user_id' => $mentioned->id,
-                            'post_id' => $post->id
-                        ]);
-                    }
-                endforeach;
-            }
-
             // If the post is for everybody
             if ($post->visibility_id == $everybody_visibility->id) {
                 // Find all subscribers of the post owner
@@ -278,16 +259,45 @@ class PostController extends BaseController
                     ]);
                 }
             }
+            // Mentions management
+            $mentions = getMentions($post->post_content);
 
-            $notification = Notification::where([['type_id', $new_poll_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+            if (count($mentions) > 0) {
+                foreach ($mentions as $mention):
+                    $mentioned = User::where('username', $mention)->first();
 
-            History::create([
-                'type_id' => $activities_history_type->id,
-                'status_id' => $unread_history_status->id,
-                'from_user_id' => $post->user_id,
-                'post_id' => $post->id,
-                'for_notification_id' => $notification->id
-            ]);
+                    if ($mentioned->id != $post->user_id) {
+                        $notification = Notification::create([
+                            'type_id' => $mention_type->id,
+                            'status_id' => $unread_notification_status->id,
+                            'from_user_id' => $post->user_id,
+                            'to_user_id' => $mentioned->id,
+                            'post_id' => $post->id
+                        ]);
+                    }
+                endforeach;
+
+                $notification = Notification::where([['type_id', $mention_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+
+                History::create([
+                    'type_id' => $activities_history_type->id,
+                    'status_id' => $unread_history_status->id,
+                    'from_user_id' => $post->user_id,
+                    'post_id' => $post->id,
+                    'for_notification_id' => $notification->id
+                ]);
+
+            } else {
+                $notification = Notification::where([['type_id', $new_poll_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+
+                History::create([
+                    'type_id' => $activities_history_type->id,
+                    'status_id' => $unread_history_status->id,
+                    'from_user_id' => $post->user_id,
+                    'post_id' => $post->id,
+                    'for_notification_id' => $notification->id
+                ]);
+            }
 
             return $this->handleResponse(new ResourcesPost($post), __('notifications.create_post_success'));
 
@@ -327,25 +337,6 @@ class PostController extends BaseController
             /*
                 HISTORY AND/OR NOTIFICATION MANAGEMENT
             */
-            // Mentions management
-            $mentions = getMentions($post->post_content);
-
-            if (count($mentions) > 0) {
-                foreach ($mentions as $mention):
-                    $mentioned = User::where('username', $mention)->first();
-
-                    if ($mentioned->id != $post->user_id) {
-                        $notification = Notification::create([
-                            'type_id' => $mention_type->id,
-                            'status_id' => $unread_notification_status->id,
-                            'from_user_id' => $post->user_id,
-                            'to_user_id' => $mentioned->id,
-                            'post_id' => $post->id
-                        ]);
-                    }
-                endforeach;
-            }
-
             // If it's a comment, check if it's a anonymous question or an answer for a post
             if ($post->type_id == $comment_type->id) {
                 $parent_post = Post::find($post->answered_for);
@@ -364,14 +355,34 @@ class PostController extends BaseController
                         'post_id' => $post->id
                     ]);
 
-                    History::create([
-                        'type_id' => $activities_history_type->id,
-                        'status_id' => $unread_history_status->id,
-                        'from_user_id' => $post->user_id,
-                        'to_user_id' => $parent_post->user_id,
-                        'post_id' => $post->id,
-                        'for_notification_id' => $notification->id
-                    ]);
+                    // Mentions management
+                    $mentions = getMentions($post->post_content);
+
+                    if (count($mentions) > 0) {
+                        foreach ($mentions as $mention):
+                            $mentioned = User::where('username', $mention)->first();
+
+                            if ($mentioned->id != $post->user_id) {
+                                $notification = Notification::create([
+                                    'type_id' => $mention_type->id,
+                                    'status_id' => $unread_notification_status->id,
+                                    'from_user_id' => $parent_post->user_id,
+                                    'to_user_id' => $mentioned->id,
+                                    'post_id' => $post->id
+                                ]);
+                            }
+                        endforeach;
+
+                    } else {
+                        History::create([
+                            'type_id' => $activities_history_type->id,
+                            'status_id' => $unread_history_status->id,
+                            'from_user_id' => $post->user_id,
+                            'to_user_id' => $parent_post->user_id,
+                            'post_id' => $post->id,
+                            'for_notification_id' => $notification->id
+                        ]);
+                    }
 
                 // Answer for a post
                 } else {
@@ -383,19 +394,38 @@ class PostController extends BaseController
                         'post_id' => $post->id
                     ]);
 
-                    History::create([
-                        'type_id' => $activities_history_type->id,
-                        'status_id' => $unread_history_status->id,
-                        'from_user_id' => $post->user_id,
-                        'to_user_id' => $parent_post->user_id,
-                        'post_id' => $post->id,
-                        'for_notification_id' => $notification->id
-                    ]);
+                    // Mentions management
+                    $mentions = getMentions($post->post_content);
+
+                    if (count($mentions) > 0) {
+                        foreach ($mentions as $mention):
+                            $mentioned = User::where('username', $mention)->first();
+
+                            if ($mentioned->id != $post->user_id) {
+                                $notification = Notification::create([
+                                    'type_id' => $mention_type->id,
+                                    'status_id' => $unread_notification_status->id,
+                                    'from_user_id' => $parent_post->user_id,
+                                    'to_user_id' => $mentioned->id,
+                                    'post_id' => $post->id
+                                ]);
+                            }
+                        endforeach;
+
+                    } else {
+                        History::create([
+                            'type_id' => $activities_history_type->id,
+                            'status_id' => $unread_history_status->id,
+                            'from_user_id' => $post->user_id,
+                            'to_user_id' => $parent_post->user_id,
+                            'post_id' => $post->id,
+                            'for_notification_id' => $notification->id
+                        ]);
+                    }
                 }
 
                 $subscription = Subscription::where([['user_id', $parent_post->user_id], ['subscriber_id', $post->user_id]])
                                                 ->orWhere([['user_id', $post->user_id], ['subscriber_id', $parent_post->user_id]])->first();
-
 
                 if (is_null($subscription)) {
                     Notification::create([
@@ -490,15 +520,45 @@ class PostController extends BaseController
                         }
                     }
 
-                    $notification = Notification::where([['type_id', $shared_post_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+                    // Mentions management
+                    $mentions = getMentions($post->post_content);
 
-                    History::create([
-                        'type_id' => $activities_history_type->id,
-                        'status_id' => $unread_history_status->id,
-                        'from_user_id' => $post->user_id,
-                        'post_id' => $post->id,
-                        'for_notification_id' => $notification->id
-                    ]);
+                    if (count($mentions) > 0) {
+                        foreach ($mentions as $mention):
+                            $mentioned = User::where('username', $mention)->first();
+
+                            if ($mentioned->id != $post->user_id) {
+                                $notification = Notification::create([
+                                    'type_id' => $mention_type->id,
+                                    'status_id' => $unread_notification_status->id,
+                                    'from_user_id' => $post->user_id,
+                                    'to_user_id' => $mentioned->id,
+                                    'post_id' => $post->id
+                                ]);
+                            }
+                        endforeach;
+
+                        $notification = Notification::where([['type_id', $mention_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+
+                        History::create([
+                            'type_id' => $activities_history_type->id,
+                            'status_id' => $unread_history_status->id,
+                            'from_user_id' => $post->user_id,
+                            'post_id' => $post->id,
+                            'for_notification_id' => $notification->id
+                        ]);
+
+                    } else {
+                        $notification = Notification::where([['type_id', $shared_post_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+
+                        History::create([
+                            'type_id' => $activities_history_type->id,
+                            'status_id' => $unread_history_status->id,
+                            'from_user_id' => $post->user_id,
+                            'post_id' => $post->id,
+                            'for_notification_id' => $notification->id
+                        ]);
+                    }
 
                 } else if ($post->post_url != null) {
                     // If the post is for everybody
@@ -582,15 +642,45 @@ class PostController extends BaseController
                         }
                     }
 
-                    $notification = Notification::where([['type_id', $new_link_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+                    // Mentions management
+                    $mentions = getMentions($post->post_content);
 
-                    History::create([
-                        'type_id' => $activities_history_type->id,
-                        'status_id' => $unread_history_status->id,
-                        'from_user_id' => $post->user_id,
-                        'post_id' => $post->id,
-                        'for_notification_id' => $notification->id
-                    ]);
+                    if (count($mentions) > 0) {
+                        foreach ($mentions as $mention):
+                            $mentioned = User::where('username', $mention)->first();
+
+                            if ($mentioned->id != $post->user_id) {
+                                $notification = Notification::create([
+                                    'type_id' => $mention_type->id,
+                                    'status_id' => $unread_notification_status->id,
+                                    'from_user_id' => $post->user_id,
+                                    'to_user_id' => $mentioned->id,
+                                    'post_id' => $post->id
+                                ]);
+                            }
+                        endforeach;
+
+                        $notification = Notification::where([['type_id', $mention_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+
+                        History::create([
+                            'type_id' => $activities_history_type->id,
+                            'status_id' => $unread_history_status->id,
+                            'from_user_id' => $post->user_id,
+                            'post_id' => $post->id,
+                            'for_notification_id' => $notification->id
+                        ]);
+
+                    } else {
+                        $notification = Notification::where([['type_id', $new_link_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+
+                        History::create([
+                            'type_id' => $activities_history_type->id,
+                            'status_id' => $unread_history_status->id,
+                            'from_user_id' => $post->user_id,
+                            'post_id' => $post->id,
+                            'for_notification_id' => $notification->id
+                        ]);
+                    }
 
                 } else {
                     // If the post is for everybody
@@ -674,15 +764,45 @@ class PostController extends BaseController
                         }
                     }
 
-                    $notification = Notification::where([['type_id', $new_post_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+                    // Mentions management
+                    $mentions = getMentions($post->post_content);
 
-                    History::create([
-                        'type_id' => $activities_history_type->id,
-                        'status_id' => $unread_history_status->id,
-                        'from_user_id' => $post->user_id,
-                        'post_id' => $post->id,
-                        'for_notification_id' => $notification->id
-                    ]);
+                    if (count($mentions) > 0) {
+                        foreach ($mentions as $mention):
+                            $mentioned = User::where('username', $mention)->first();
+
+                            if ($mentioned->id != $post->user_id) {
+                                $notification = Notification::create([
+                                    'type_id' => $mention_type->id,
+                                    'status_id' => $unread_notification_status->id,
+                                    'from_user_id' => $post->user_id,
+                                    'to_user_id' => $mentioned->id,
+                                    'post_id' => $post->id
+                                ]);
+                            }
+                        endforeach;
+
+                        $notification = Notification::where([['type_id', $mention_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+
+                        History::create([
+                            'type_id' => $activities_history_type->id,
+                            'status_id' => $unread_history_status->id,
+                            'from_user_id' => $post->user_id,
+                            'post_id' => $post->id,
+                            'for_notification_id' => $notification->id
+                        ]);
+
+                    } else {
+                        $notification = Notification::where([['type_id', $new_post_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
+
+                        History::create([
+                            'type_id' => $activities_history_type->id,
+                            'status_id' => $unread_history_status->id,
+                            'from_user_id' => $post->user_id,
+                            'post_id' => $post->id,
+                            'for_notification_id' => $notification->id
+                        ]);
+                    }
                 }
             }
 
