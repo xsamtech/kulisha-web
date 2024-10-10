@@ -88,11 +88,30 @@ async function fetchStories() {
       openEffect: true,
       cubeEffect: true,
       list: false,
-      localStorage: false
+      localStorage: true,
+      onView: function (storyId) {
+        // Appel à votre API avec le storyId
+        console.log("Story viewed:", storyId);
+
+        $.ajax({
+          headers: headers,
+          method: 'GET',
+          contentType: 'application/json',
+          url: `${apiHost}/post/${storyId}`,
+          success: (response) => {
+            console.log(response.message);
+          },
+          error: function (xhr, error, status_description) {
+            console.log(xhr.responseJSON);
+            console.log(xhr.status);
+            console.log(error);
+            console.log(status_description);
+          }
+        });
+      }
     });
 
   } catch (err) {
-    // console.error('Erreur lors du chargement des stories', err);
     console.log(err.responseJSON);
     console.log(err.status);
     console.log(err);
