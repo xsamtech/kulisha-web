@@ -55,7 +55,6 @@ async function fetchStories() {
       };
     }));
 
-    console.log("Avatars:", stories.map(story => story.avatar));
     // Formate les données pour Zuck.js
     const zuckStories = stories.map(story => ({
       id: story.id,
@@ -85,21 +84,34 @@ async function fetchStories() {
       paginationArrows: true,
       previousTap: true,
       autoFullScreen: false,
-      openEffect: true,
+      openEffect: false,
       cubeEffect: true,
       list: false,
-      localStorage: true,
+      localStorage: false,
       onView: function (storyId) {
         // Appel à votre API avec le storyId
         console.log("Story viewed:", storyId);
 
         $.ajax({
-          headers: headers,
+          headers: {
+            'Authorization': 'Bearer ' + appRef.split('-')[0],
+            'Accept': $('.mime-type').val(),
+            'X-localization': navigator.language,
+            'X-user-id': currentUser,
+            'X-ip-address': currentIpAddr
+          },
           method: 'GET',
           contentType: 'application/json',
           url: `${apiHost}/post/${storyId}`,
           success: (response) => {
-            console.log(response.message);
+            console.log(`API Response: ${response}`);
+
+            if (response.message) {
+              console.log(`Viewed message: ${response.message}`);
+
+            } else {
+              console.log("Message property not found in response");
+            }
           },
           error: function (xhr, error, status_description) {
             console.log(xhr.responseJSON);

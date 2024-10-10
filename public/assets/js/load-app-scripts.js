@@ -10,11 +10,12 @@
 var navigator = window.navigator;
 var currentLanguage = $('html').attr('lang');
 var currentUser = $('[name="kls-visitor"]').attr('content');
+var currentIpAddr = $('[name="kls-ip"]').attr('content');
 var currentHost = $('[name="kls-url"]').attr('content');
 var apiHost = $('[name="kls-api-url"]').attr('content');
 var appRef = $('[name="kls-ref"]').attr('content');
 var csrfToken = $('[name="csrf-token"]').attr('content');
-var headers = { 'Authorization': 'Bearer ' + appRef.split('-')[0], 'Accept': $('.mime-type').val(), 'X-localization': navigator.language, 'X-user-id': parseInt(currentUser), 'X-ip-address': getIpAdrr() };
+var headers = { 'Authorization': 'Bearer ' + appRef.split('-')[0], 'Accept': $('.mime-type').val(), 'X-localization': navigator.language };
 var kulishaBrand = document.querySelectorAll('.kulisha-brand');
 // Modals
 var modalUser = $('#cropModalUser');
@@ -59,25 +60,31 @@ var scripts = [
     '/assets/js/script.app.js',
 ];
 
-// Get IP address
-function getIpAdrr() {
-    fetch("https://ipinfo.io/json")
-        .then(response => response.json())
-        .then(data => {
-            // Display the IP address on the screen
-            return data.ip;
-        })
-        .catch(error => {
-            console.error("Error fetching IP address:", error);
-            document.getElementById("ip-address").textContent =
-                "Unable to retrieve IP address.";
-        });
-}
-
 // Dynamically load JS files
 function loadJS(url) {
     return $.getScript(currentHost + url);
 }
+
+// async function loadScriptsSequentially() {
+//     for (var script of scripts) {
+//         try {
+//             await loadJS(script);
+//         } catch (error) {
+//             console.error('Erreur lors du chargement du script: ', script);
+//         }
+//     }
+// }
+
+// async function loadScriptsInParallel(scripts) {
+//     const loadPromises = scripts.map(script => {
+//         return loadJS(script).catch(error => {
+//             console.error('Erreur lors du chargement du script: ', script);
+//         });
+//     });
+
+//     // Wait until all promises are resolved
+//     await Promise.all(loadPromises);
+// }
 
 function loadScriptsInParallel(scripts) {
     return Promise.all(scripts.map(src => {
