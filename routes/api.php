@@ -196,6 +196,7 @@ Route::group(['middleware' => ['api', 'auth:sanctum', 'localization']], function
     Route::put('message/mark_all_read_group/{user_id}/{entity}/{entity_id}', 'App\Http\Controllers\API\MessageController@markAllReadGroup')->name('message.api.mark_all_read_group');
     Route::put('message/upload_file/{message_id}', 'App\Http\Controllers\API\MessageController@uploadFile')->name('message.api.upload_file');
     // Post
+    Route::get('post/stories_feed/{user_id}', 'App\Http\Controllers\API\PostController@storiesFeed')->name('post.api.stories_feed');
     Route::get('post/news_feed_community/{type_aliases}/{user_id}', 'App\Http\Controllers\API\PostController@newsFeedCommunity')->name('post.api.news_feed_community');
     Route::get('post/news_feed_event/{type_aliases}/{user_id}', 'App\Http\Controllers\API\PostController@newsFeedEvent')->name('post.api.news_feed_event');
     Route::get('post/reactions/{post_id}', 'App\Http\Controllers\API\PostController@reactions')->name('post.api.reactions');

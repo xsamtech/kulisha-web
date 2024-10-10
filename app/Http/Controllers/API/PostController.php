@@ -33,6 +33,7 @@ use App\Http\Resources\History as ResourcesHistory;
 use App\Http\Resources\Post as ResourcesPost;
 use App\Http\Resources\Session as ResourcesSession;
 use App\Http\Resources\SentReaction as ResourcesSentReaction;
+use App\Http\Resources\User as ResourcesUser;
 use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
 
@@ -662,24 +663,28 @@ class PostController extends BaseController
 
                         $notification = Notification::where([['type_id', $mention_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
 
-                        History::create([
-                            'type_id' => $activities_history_type->id,
-                            'status_id' => $unread_history_status->id,
-                            'from_user_id' => $post->user_id,
-                            'post_id' => $post->id,
-                            'for_notification_id' => $notification->id
-                        ]);
+                        if (!is_null($notification)) {
+                            History::create([
+                                'type_id' => $activities_history_type->id,
+                                'status_id' => $unread_history_status->id,
+                                'from_user_id' => $post->user_id,
+                                'post_id' => $post->id,
+                                'for_notification_id' => $notification->id
+                            ]);
+                        }
 
                     } else {
                         $notification = Notification::where([['type_id', $new_link_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
 
-                        History::create([
-                            'type_id' => $activities_history_type->id,
-                            'status_id' => $unread_history_status->id,
-                            'from_user_id' => $post->user_id,
-                            'post_id' => $post->id,
-                            'for_notification_id' => $notification->id
-                        ]);
+                        if (!is_null($notification)) {
+                            History::create([
+                                'type_id' => $activities_history_type->id,
+                                'status_id' => $unread_history_status->id,
+                                'from_user_id' => $post->user_id,
+                                'post_id' => $post->id,
+                                'for_notification_id' => $notification->id
+                            ]);
+                        }
                     }
 
                 } else {
@@ -784,24 +789,28 @@ class PostController extends BaseController
 
                         $notification = Notification::where([['type_id', $mention_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
 
-                        History::create([
-                            'type_id' => $activities_history_type->id,
-                            'status_id' => $unread_history_status->id,
-                            'from_user_id' => $post->user_id,
-                            'post_id' => $post->id,
-                            'for_notification_id' => $notification->id
-                        ]);
+                        if (!is_null($notification)) {
+                            History::create([
+                                'type_id' => $activities_history_type->id,
+                                'status_id' => $unread_history_status->id,
+                                'from_user_id' => $post->user_id,
+                                'post_id' => $post->id,
+                                'for_notification_id' => $notification->id
+                            ]);
+                        }
 
                     } else {
                         $notification = Notification::where([['type_id', $new_post_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
 
-                        History::create([
-                            'type_id' => $activities_history_type->id,
-                            'status_id' => $unread_history_status->id,
-                            'from_user_id' => $post->user_id,
-                            'post_id' => $post->id,
-                            'for_notification_id' => $notification->id
-                        ]);
+                        if (!is_null($notification)) {
+                            History::create([
+                                'type_id' => $activities_history_type->id,
+                                'status_id' => $unread_history_status->id,
+                                'from_user_id' => $post->user_id,
+                                'post_id' => $post->id,
+                                'for_notification_id' => $notification->id
+                            ]);
+                        }
                     }
                 }
             }
@@ -1065,13 +1074,15 @@ class PostController extends BaseController
 
             $notification = Notification::where([['type_id', $post_price_updated_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
 
-            History::create([
-                'type_id' => $activities_history_type->id,
-                'status_id' => $unread_history_status->id,
-                'from_user_id' => $post->user_id,
-                'post_id' => $post->id,
-                'for_notification_id' => $notification->id
-            ]);
+            if (!is_null($notification)) {
+                History::create([
+                    'type_id' => $activities_history_type->id,
+                    'status_id' => $unread_history_status->id,
+                    'from_user_id' => $post->user_id,
+                    'post_id' => $post->id,
+                    'for_notification_id' => $notification->id
+                ]);
+            }
         }
 
         if ($inputs['currency'] != null) {
@@ -1211,13 +1222,15 @@ class PostController extends BaseController
 
         $notification = Notification::where([['type_id', $post_updated_type->id], ['from_user_id', $post->user_id], ['post_id', $post->id]])->first();
 
-        History::create([
-            'type_id' => $activities_history_type->id,
-            'status_id' => $unread_history_status->id,
-            'from_user_id' => $current_post->user_id,
-            'post_id' => $current_post->id,
-            'for_notification_id' => $notification->id
-        ]);
+        if (!is_null($notification)) {
+            History::create([
+                'type_id' => $activities_history_type->id,
+                'status_id' => $unread_history_status->id,
+                'from_user_id' => $current_post->user_id,
+                'post_id' => $current_post->id,
+                'for_notification_id' => $notification->id
+            ]);
+        }
 
         return $this->handleResponse(new ResourcesPost($post), __('notifications.update_post_success'));
     }
@@ -1364,29 +1377,133 @@ class PostController extends BaseController
                             ->whereIn('posts.type_id', $types_ids)
                             ->where(function ($query) use ($operational_status, $boosted_status) {
                                 $query->where('posts.status_id', $operational_status->id)
-                                        ->orWhere('posts.status_id', $boosted_status->id);
+                                    ->orWhere('posts.status_id', $boosted_status->id);
                             })
-                            ->whereHas('users', function ($query) use ($blocked_member_status) {
-                                $query->where('users.status_id', '<>', $blocked_member_status->id);
-                            })
-                            ->where(function ($query) use ($current_user, $everybody_visibility, $nobody_except_visibility, $connections_only_visibility, $connected_users_ids) {
+                            ->whereDoesntHave('user', function ($query) use ($blocked_member_status) {
+                                $query->where('users.status_id', $blocked_member_status->id);
+                            })->where(function ($query) use ($current_user, $everybody_visibility, $nobody_except_visibility, $connections_only_visibility, $connected_users_ids) {
                                 $query->where('posts.visibility_id', $everybody_visibility->id)
-                                        ->orWhere(function ($q1) use ($current_user, $nobody_except_visibility) {
-                                            $q1->where('posts.visibility_id', $nobody_except_visibility->id)
-                                                ->whereHas('restrictions', function ($q2) use ($current_user, $nobody_except_visibility) {
-                                                    $q2->where([
-                                                        ['restrictions.user_id', $current_user->id],
-                                                        ['restrictions.visibility_id', $nobody_except_visibility->id]
-                                                    ]);
-                                                });
-                                            })
-                                            ->orWhere(function ($q1) use ($connections_only_visibility, $connected_users_ids) {
-                                                $q1->where('posts.visibility_id', $connections_only_visibility->id)
-                                                    ->whereIn('posts.user_id', $connected_users_ids);
-                                                });
-                            })->orderByDesc('posts.created_at')->paginate(10);
+                                    ->orWhere(function ($q1) use ($current_user, $nobody_except_visibility) {
+                                        $q1->where('posts.visibility_id', $nobody_except_visibility->id)
+                                            ->whereHas('restrictions', function ($q2) use ($current_user, $nobody_except_visibility) {
+                                                $q2->where([
+                                                    ['restrictions.user_id', $current_user->id],
+                                                    ['restrictions.visibility_id', $nobody_except_visibility->id]
+                                                ]);
+                                            });
+                                    })
+                                    ->orWhere(function ($q1) use ($connections_only_visibility, $connected_users_ids) {
+                                        $q1->where('posts.visibility_id', $connections_only_visibility->id)
+                                            ->whereIn('posts.user_id', $connected_users_ids);
+                                    });
+                            })
+                            ->orderByDesc('posts.created_at')->paginate(10);
 
             return $this->handleResponse(ResourcesPost::collection($posts), __('notifications.find_all_posts_success'), $posts->lastPage());
+        }
+    }
+
+    /**
+     * Stories feed.
+     *
+     * @param  int $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function storiesFeed($user_id)
+    {
+        // Groups
+        $member_status_group = Group::where('group_name->fr', 'Etat du membre')->first();
+        $post_or_community_status_group = Group::where('group_name->fr', 'Etat du post ou de la communauté')->first();
+        $post_type_group = Group::where('group_name->fr', 'Type de post')->first();
+        $posts_visibility_group = Group::where('group_name->fr', 'Visibilité pour les posts')->first();
+        $reaction_on_member_or_post_group = Group::where('group_name->fr', 'Réaction sur membre ou post')->first();
+        // Statuses
+        $blocked_member_status = Status::where([['status_name->fr', 'Bloqué'], ['group_id', $member_status_group->id]])->first();
+        $operational_status = Status::where([['status_name->fr', 'Opérationnel'], ['group_id', $post_or_community_status_group->id]])->first();
+        $boosted_status = Status::where([['status_name->fr', 'Boosté'], ['group_id', $post_or_community_status_group->id]])->first();
+        // Types
+        $story_type = Type::where([['type_name->fr', 'Story'], ['group_id', $post_type_group->id]])->first();
+        // Visibilities
+        $everybody_visibility = Visibility::where([['visibility_name->fr', 'Tout le monde'], ['group_id', $posts_visibility_group->id]])->first();
+        $nobody_except_visibility = Visibility::where([['visibility_name->fr', 'Personne, sauf …'], ['group_id', $posts_visibility_group->id]])->first();
+        $connections_only_visibility = Visibility::where([['visibility_name->fr', 'Mes connexions uniquement'], ['group_id', $posts_visibility_group->id]])->first();
+        // Reaction
+        $muted_reaction = Reaction::where([['reaction_name->fr', 'En sourdine'], ['group_id', $reaction_on_member_or_post_group->id]])->first();
+        $reported_reaction = Reaction::where([['reaction_name->fr', 'Signalé'], ['group_id', $reaction_on_member_or_post_group->id]])->first();
+
+        // Otherwise, to show each post, check some constraints such as:
+        // -> The post belongs neither to a community, nor to an event;
+        // -> The user did not report the post or the post owner;
+        // -> The user has not muted the post or the post owner;
+        // -> The post is operational or boosted
+        // -> The post doesn't belong to blocked user;
+        // -> The post is visible to everybody, or the owner has reserved it for his connections of which the user is a part, 
+        //    or rather the user is one of the only people who can see this post
+        $current_user = User::find($user_id);
+
+        if (is_null($current_user)) {
+            return $this->handleError(__('notifications.find_user_404'));
+        }
+
+        // Get the IDs of the posts or users that are muted or reported by the current user
+        $with_sent_reactions_post_ids = SentReaction::where([['reaction_id', $muted_reaction->id], ['user_id', $current_user->id]])
+                                                        ->orWhere([['reaction_id', $reported_reaction->id], ['user_id', $current_user->id]])
+                                                        ->pluck('to_post_id')->toArray();
+        $with_sent_reactions_post_ids = $with_sent_reactions_post_ids != null ? $with_sent_reactions_post_ids : [0];
+        $with_sent_reactions_user_ids = SentReaction::where([['reaction_id', $muted_reaction->id], ['user_id', $current_user->id]])
+                                                        ->orWhere([['reaction_id', $reported_reaction->id], ['user_id', $current_user->id]])
+                                                        ->pluck('to_user_id')->toArray();
+        $with_sent_reactions_user_ids = $with_sent_reactions_user_ids != null ? $with_sent_reactions_user_ids : [0];
+        // Get the IDs of the users whose current user is subscribed
+        $with_subscriptions_user_ids = Subscription::where('subscriber_id', $current_user->id)->pluck('user_id')->toArray();
+        // Get the IDs of the users who are subscribed to the current user
+        $with_subscriptions_subscriber_ids = Subscription::where('user_id', $current_user->id)->pluck('subscriber_id')->toArray();
+        // Get the IDs of the users connected to the current user
+        $connected_users_ids = User::whereIn('id', $with_subscriptions_user_ids)->orWhereIn('id', $with_subscriptions_subscriber_ids)->pluck('id')->toArray();
+        // THE MAIN QUERY STATEMENT
+        $posts = Post::with('user')->whereNull('posts.community_id')->whereNull('posts.event_id')
+                        ->whereNotIn('posts.id', $with_sent_reactions_post_ids)->whereNotIn('posts.user_id', $with_sent_reactions_user_ids)
+                        ->whereIn('posts.type_id', [$story_type->id])
+                        ->where(function ($query) use ($operational_status, $boosted_status) {
+                            $query->where('posts.status_id', $operational_status->id)
+                                ->orWhere('posts.status_id', $boosted_status->id);
+                        })
+                        ->whereDoesntHave('user', function ($query) use ($blocked_member_status) {
+                            $query->where('users.status_id', $blocked_member_status->id);
+                        })->where(function ($query) use ($current_user, $everybody_visibility, $nobody_except_visibility, $connections_only_visibility, $connected_users_ids) {
+                            $query->where('posts.visibility_id', $everybody_visibility->id)
+                                ->orWhere(function ($q1) use ($current_user, $nobody_except_visibility) {
+                                    $q1->where('posts.visibility_id', $nobody_except_visibility->id)
+                                        ->whereHas('restrictions', function ($q2) use ($current_user, $nobody_except_visibility) {
+                                            $q2->where([
+                                                ['restrictions.user_id', $current_user->id],
+                                                ['restrictions.visibility_id', $nobody_except_visibility->id]
+                                            ]);
+                                        });
+                                })
+                                ->orWhere(function ($q1) use ($connections_only_visibility, $connected_users_ids) {
+                                    $q1->where('posts.visibility_id', $connections_only_visibility->id)
+                                        ->whereIn('posts.user_id', $connected_users_ids);
+                                });
+                        })
+                        ->get()->groupBy('user_id');
+
+        if ($posts != null) {
+            $groupedPosts = [];
+
+            foreach ($posts as $userPosts) {
+                $user = $userPosts->first()->user;
+
+                $groupedPosts[] = [
+                    'user' => new ResourcesUser($user),
+                    'posts' => ResourcesPost::collection($userPosts)
+                ];
+            }
+
+            return $this->handleResponse($groupedPosts, __('notifications.find_all_posts_success'));
+
+        } else {
+            return $this->handleResponse(ResourcesPost::collection($posts), __('notifications.find_all_posts_success'));
         }
     }
 
