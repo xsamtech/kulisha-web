@@ -264,10 +264,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['post_id', $post->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['post_id', $post->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -282,10 +290,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['post_id', $post->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['post_id', $post->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -315,10 +331,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['event_id', $event->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['event_id', $event->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -333,10 +357,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['event_id', $event->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['event_id', $event->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -366,10 +398,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['community_id', $community->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['community_id', $community->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -384,10 +424,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['community_id', $community->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['community_id', $community->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -417,10 +465,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['message_id', $message->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['message_id', $message->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -435,10 +491,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['message_id', $message->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['message_id', $message->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -468,10 +532,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['team_id', $team->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['team_id', $team->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -486,10 +558,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['team_id', $team->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['team_id', $team->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -519,10 +599,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['reaction_id', $reaction->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['reaction_id', $reaction->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -537,10 +625,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['reaction_id', $reaction->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['reaction_id', $reaction->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -570,10 +666,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['cart_id', $cart->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['cart_id', $cart->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -588,10 +692,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['cart_id', $cart->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['cart_id', $cart->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -621,10 +733,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['session_id', $session->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['session_id', $session->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -639,10 +759,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['session_id', $session->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['session_id', $session->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -672,10 +800,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['subscription_id', $subscription->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['status_id', $status->id], ['from_user_id', $user->id], ['subscription_id', $subscription->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }
@@ -690,10 +826,18 @@ class HistoryController extends BaseController
 
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['to_user_id', $addressee->id], ['subscription_id', $subscription->id]])->first();
 
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
+
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
 
                 } else {
                     $history = History::where([['type_id', $type->id], ['from_user_id', $user->id], ['subscription_id', $subscription->id]])->first();
+
+                    if (is_null($history)) {
+                        return $this->handleError(__('notifications.find_history_404'));
+                    }
 
                     return $this->handleResponse(new ResourcesHistory($history), __('notifications.find_history_success'));
                 }

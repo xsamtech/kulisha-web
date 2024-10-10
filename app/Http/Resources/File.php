@@ -22,7 +22,7 @@ class File extends JsonResource
         return [
             'id' => $this->id,
             'file_name' => $this->file_name,
-            'file_url' => !empty($this->file_url) ? getWebURL() . '/storage/' . $this->file_url : null,
+            'file_url' => !empty($this->file_url) ? getWebURL() . $this->file_url : null,
             'type' => Type::make($this->type),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
