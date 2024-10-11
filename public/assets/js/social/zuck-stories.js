@@ -16,26 +16,29 @@ async function fetchStories() {
     });
 
     const stories = await Promise.all(resultStory.data.map(async (story) => {
+      console.log(`Story for user ${story.user.id}:`, story);
+
       const items = await Promise.all(story.posts.map(async (item) => {
         try {
           const resultConsultation = await $.ajax({
             headers: headers,
             method: 'GET',
             contentType: 'application/json',
-            url: `${apiHost}/history/select_by_user_entity/${currentUser}/consultation_history/0/${story.user.id}/post/${item.id}`
+            url: `${apiHost}/history/select_by_user_entity/${currentUser}/consultation_history/0/${story.user.id}/post/${item.story_id}`
           });
           timestamp = new Date(item.created_at).getTime() / 1000;
 
+          console.log(`Processed item: ${item.id}`);
           return {
-            id: item.id,
+            id: item.story_id,
             type: item.image_type,
             length: 15,
             src: item.image.file_url,
-            preview: '',
-            link: '',
-            linkText: '',
+            // preview: '',
+            // link: '',
+            linkText: item.post_content,
             time: timestamp,
-            seen: resultConsultation.data && resultConsultation.data !== null ? true : false
+            seen: resultConsultation.data ? true : false
           };
         } catch (err) {
           console.log(err.responseJSON);
@@ -72,7 +75,9 @@ async function fetchStories() {
       }))
     }));
 
-    const storiesElement = document.querySelector("#stories");
+    console.log(zuckStories);
+
+    const storiesElement = document.querySelector('#stories');
     // Initialiser Zuck.js
     const zuck = new Zuck(storiesElement, {
       rtl: false,
