@@ -33,7 +33,7 @@ async function fetchStories() {
             id: item.story_id,
             type: item.image_type,
             length: 15,
-            src: item.image.file_url,
+            src: item.image_url,
             // preview: '',
             // link: '',
             linkText: item.post_content,

@@ -1495,7 +1495,10 @@ class PostController extends BaseController
                 $user = $userPosts->first()->user;
 
                 $groupedPosts[] = [
-                    'user' => new ResourcesUser($user),
+                    'user_id' => $user->id,
+                    'firstname' => $user->firstname,
+                    'lastname' => $user->lastname,
+                    'username' => $user->username,
                     'posts' => ResourcesPost::collection($userPosts)
                 ];
             }
