@@ -15,75 +15,79 @@ async function fetchStories() {
       url: `${apiHost}/post/stories_feed/${currentUser}`
     });
 
-    const stories = await Promise.all(resultStory.data.map(async (story) => {
-      console.log(`Story for user ${story.user.id}:`, story);
+    // console.log('Result Story:', resultStory.data);
 
-      const items = await Promise.all(story.posts.map(async (item) => {
+    if (!resultStory.data || !Array.isArray(resultStory.data)) {
+      throw new Error('Unexpected data structure received from API');
+    }
+
+    const apiStories = await Promise.all(resultStory.data.map(async (story) => {
+      const contents = await Promise.all(story.posts.map(async (content) => {
         try {
           const resultConsultation = await $.ajax({
             headers: headers,
             method: 'GET',
             contentType: 'application/json',
-            url: `${apiHost}/history/select_by_user_entity/${currentUser}/consultation_history/0/${story.user.id}/post/${item.story_id}`
+            url: `${apiHost}/history/select_by_user_entity/${currentUser}/consultation_history/0/${story.owner_id}/post/${content.story_id}`
           });
-          timestamp = new Date(item.created_at).getTime() / 1000;
 
-          console.log(`Processed item: ${item.id}`);
+          const timestamp = new Date(content.created_at).getTime() / 1000;
+
+          // console.log(`Processed item: ${content.story_id}`);
+
           return {
-            id: item.story_id,
-            type: item.image_type,
+            id: content.story_id,
+            type: content.image_type,
             length: 15,
-            src: item.image_url,
-            // preview: '',
-            // link: '',
-            linkText: item.post_content,
+            src: content.image_url,
+            preview: '',
+            link: '',
+            linkText: content.post_content,
             time: timestamp,
-            seen: resultConsultation.data ? true : false
+            seen: !!resultConsultation.data
           };
         } catch (err) {
-          console.log(err.responseJSON);
-          console.log(err.status);
-          console.log(err);
+          console.log(`Error fetching consultation for story ID ${content.story_id}:`, err);
           return null; // Ou une valeur par défaut
         }
       }));
 
-      return {
-        id: story.user.id,
-        name: `${story.user.firstname} ${story.user.lastname}`,
-        avatar: story.user.profile_photo_path,
-        link: `${currentHost}/${story.user.username}`,
-        lastUpdated: story.user.updated_at,
-        items: items.filter(item => item) // Enlever les éléments null
-      };
+      // Retourner un objet uniquement si contents a des éléments
+      if (contents.length > 0) {
+        const onwner_timestamp = new Date(story.owner_updated_at).getTime() / 1000;
+
+        return {
+          id: story.owner_id,
+          name: `${story.firstname} ${story.lastname}`,
+          photo: story.profile_photo_path,
+          link: story.owner_link,
+          lastUpdated: onwner_timestamp,
+          items: contents.filter(content => content) // Élimine les éléments null
+        };
+      }
+
+      return null; // Ne pas ajouter d'utilisateur sans items
     }));
 
-    // Formate les données pour Zuck.js
-    const zuckStories = stories.map(story => ({
-      id: story.id,
-      name: story.name,
-      photo: story.avatar,
-      link: story.link, // Si nécessaire
-      lastUpdated: story.lastUpdated,
-      items: story.items.map(item => ({
-        id: item.id,
-        type: item.type,
-        length: item.length,
-        src: item.src,
-        time: item.time,
-        seen: item.seen
-      }))
-    }));
+    // Filtrer les valeurs null et éviter les doublons
+    const uniqueStories = apiStories.filter((story, index, self) =>
+      story !== null && index === self.findIndex(s => s.id === story.id)
+    );
 
-    console.log(zuckStories);
+    // console.log('Final uniqueStories:', JSON.stringify(uniqueStories, null, 2));
 
-    const storiesElement = document.querySelector('#stories');
-    // Initialiser Zuck.js
-    const zuck = new Zuck(storiesElement, {
+    const validUniqueStories = uniqueStories.filter(story => story && story.items.length > 0);
+
+    // console.log('Unique stories:', uniqueStories);
+
+    // Vérifiez la structure de uniqueStories
+    uniqueStories.forEach(story => { console.log('Story:', story); });
+
+    const storiesOptions = {
       rtl: false,
       skin: 'snapgram',
       avatars: true,
-      stories: zuckStories, // Array of story data
+      stories: validUniqueStories, // Array of story data
       backButton: true,
       backNative: false,
       paginationArrows: true,
@@ -94,7 +98,6 @@ async function fetchStories() {
       list: false,
       localStorage: false,
       onView: function (storyId) {
-        // Appel à votre API avec le storyId
         console.log("Story viewed:", storyId);
 
         $.ajax({
@@ -113,26 +116,36 @@ async function fetchStories() {
 
             if (response.message) {
               console.log(`Viewed message: ${response.message}`);
-
             } else {
               console.log("Message property not found in response");
             }
           },
           error: function (xhr, error, status_description) {
-            console.log(xhr.responseJSON);
-            console.log(xhr.status);
+            console.log(xhr.responseJSON ? xhr.responseJSON : xhr.responseText);
+            console.log(xhr.status ? xhr.status : 'no_status');
             console.log(error);
             console.log(status_description);
           }
         });
       }
-    });
+    };
+    const storiesElement = document.querySelector('#stories');
+
+    if (!storiesElement) {
+      console.error('Stories element not found in the DOM');
+      return;
+    }
+
+    console.log('Stories element:', storiesElement);
+
+    // Initialiser Zuck.js
+    const stories = Zuck(storiesElement, storiesOptions);
 
   } catch (err) {
-    console.log(err.responseJSON);
-    console.log(err.status);
-    console.log(err);
+    console.log('Error in fetchStories:', err);
   }
 }
 
-fetchStories();
+document.addEventListener("DOMContentLoaded", async () => {
+  await fetchStories();
+});

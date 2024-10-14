@@ -1495,10 +1495,13 @@ class PostController extends BaseController
                 $user = $userPosts->first()->user;
 
                 $groupedPosts[] = [
-                    'user_id' => $user->id,
+                    'owner_id' => (string) $user->id,
                     'firstname' => $user->firstname,
                     'lastname' => $user->lastname,
                     'username' => $user->username,
+                    'owner_link' => !empty($user->username) ? getWebURL() . '/' . $user->username : getWebURL() . '/' . $user->id,
+                    'profile_photo_path' => !empty($user->profile_photo_path) ? getWebURL() . $user->profile_photo_path : getWebURL() . '/assets/img/avatar-' . $user->gender . '.svg',
+                    'owner_updated_at' => $user->updated_at->format('Y-m-d h:i:s'),
                     'posts' => ResourcesPost::collection($userPosts)
                 ];
             }

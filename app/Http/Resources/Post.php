@@ -36,7 +36,7 @@ class Post extends JsonResource
             $is_video = isVideoFile($file->file_url);
 
             return [
-                'story_id' => $this->id,
+                'story_id' => (string) $this->id,
                 'post_url' => $this->post_url,
                 'post_title' => $this->post_title,
                 'post_content' => $this->post_content,
@@ -58,7 +58,7 @@ class Post extends JsonResource
                 'type_id' => $this->type_id,
                 'category_id' => $this->category_id,
                 'visibility_id' => $this->visibility_id,
-                'owner_id' => $this->user_id,
+                'user_id' => $this->user_id,
                 'coverage_area_id' => $this->coverage_area_id,
                 'budget_id' => $this->budget_id,
                 'community_id' => $this->community_id,
