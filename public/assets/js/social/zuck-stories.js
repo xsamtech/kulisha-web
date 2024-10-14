@@ -21,7 +21,7 @@ async function fetchStories() {
       throw new Error('Unexpected data structure received from API');
     }
 
-    const apiStories = await Promise.all(resultStory.data.map(async (story) => {
+    const apiData = await Promise.all(resultStory.data.map(async (story) => {
       const contents = await Promise.all(story.posts.map(async (content) => {
         try {
           const resultConsultation = await $.ajax({
@@ -35,17 +35,29 @@ async function fetchStories() {
 
           // console.log(`Processed item: ${content.story_id}`);
 
-          return {
-            id: content.story_id,
-            type: content.image_type,
-            length: 15,
-            src: content.image_url,
-            preview: '',
-            link: '',
-            linkText: content.post_content,
-            time: timestamp,
-            seen: !!resultConsultation.data
-          };
+          // return {
+          //   id: content.story_id,
+          //   type: content.image_type,
+          //   length: 15,
+          //   src: content.image_url,
+          //   preview: '',
+          //   link: '',
+          //   linkText: content.post_content,
+          //   time: timestamp,
+          //   seen: !!resultConsultation.data
+          // };
+          return [
+            `${story.owner_id}-story-${content.story_id}`, // Unique ID for the item
+            content.image_type, // Type: "photo" or "video"
+            15, // Length in seconds
+            content.image_url, // Source URL
+            '', // Preview
+            '', // Link
+            content.post_content, // Link text
+            timestamp, // Timestamp
+            !!resultConsultation.data // Seen status
+          ];
+
         } catch (err) {
           console.log(`Error fetching consultation for story ID ${content.story_id}:`, err);
           return null; // Ou une valeur par défaut
@@ -56,34 +68,52 @@ async function fetchStories() {
       if (contents.length > 0) {
         const onwner_timestamp = new Date(story.owner_updated_at).getTime() / 1000;
 
-        return {
-          id: story.owner_id,
-          name: `${story.firstname} ${story.lastname}`,
-          photo: story.profile_photo_path,
-          link: story.owner_link,
-          lastUpdated: onwner_timestamp,
-          items: contents.filter(content => content) // Élimine les éléments null
-        };
+        // return {
+        //   id: story.owner_id,
+        //   name: `${story.firstname} ${story.lastname}`,
+        //   photo: story.profile_photo_path,
+        //   link: story.owner_link,
+        //   lastUpdated: onwner_timestamp,
+        //   items: contents.filter(content => content) // Élimine les éléments null
+        // };
+        return Zuck.buildTimelineItem(
+          story.owner_id,
+          story.profile_photo_path,
+          `${story.firstname} ${story.lastname}`,
+          '', // Story link (leave empty '' for javascript based zuck)
+          onwner_timestamp,
+          contents.filter(content => content)
+        );
       }
 
       return null; // Ne pas ajouter d'utilisateur sans items
     }));
 
     // Filtrer les valeurs null et éviter les doublons
-    const uniqueStories = apiStories.filter((story, index, self) =>
+    const uniqueStories = apiData.filter((story, index, self) =>
       story !== null && index === self.findIndex(s => s.id === story.id)
     );
 
-    // console.log('Final uniqueStories:', JSON.stringify(uniqueStories, null, 2));
+    console.log('Final uniqueStories:', JSON.stringify(uniqueStories, null, 2));
 
     const validUniqueStories = uniqueStories.filter(story => story && story.items.length > 0);
 
     // console.log('Unique stories:', uniqueStories);
 
     // Vérifiez la structure de uniqueStories
-    uniqueStories.forEach(story => { console.log('Story:', story); });
+    // uniqueStories.forEach(story => { console.log('Story:', story); });
 
-    const storiesOptions = {
+    // const storiesElement = document.querySelector('#stories');
+
+    // if (!storiesElement) {
+    //   console.error('Stories element not found in the DOM');
+    //   return;
+    // }
+
+    // console.log('Stories element:', storiesElement);
+
+    // Initialiser Zuck.js
+    let stories = new Zuck('stories', {
       rtl: false,
       skin: 'snapgram',
       avatars: true,
@@ -128,18 +158,7 @@ async function fetchStories() {
           }
         });
       }
-    };
-    const storiesElement = document.querySelector('#stories');
-
-    if (!storiesElement) {
-      console.error('Stories element not found in the DOM');
-      return;
-    }
-
-    console.log('Stories element:', storiesElement);
-
-    // Initialiser Zuck.js
-    const stories = Zuck(storiesElement, storiesOptions);
+    });
 
   } catch (err) {
     console.log('Error in fetchStories:', err);
