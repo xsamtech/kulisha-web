@@ -71,8 +71,6 @@ async function fetchStories() {
       story !== null && index === self.findIndex(s => s.id === story.id)
     );
 
-    console.log('Final uniqueStories:', JSON.stringify(uniqueStories, null, 2));
-
     const validUniqueStories = uniqueStories.filter(story => story && story.items.length > 0);
 
     // Initialize Zuck.js
