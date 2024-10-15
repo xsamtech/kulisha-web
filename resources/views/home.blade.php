@@ -34,7 +34,7 @@
 												<!-- Avatar -->
 												<div class="avatar avatar-lg mt-n5 mb-3">
 													<a href="{{ route('profile.home', ['username' => $current_user['username']]) }}">
-														<img class="avatar-img rounded border border-white border-3" src="{{ asset($current_user['profile_photo_path']) }}" alt>
+														<img class="avatar-img rounded" src="{{ asset($current_user['profile_photo_path']) }}" alt>
 													</a>
 												</div>
 
@@ -50,21 +50,21 @@
 													<!-- User stat item -->
 													<div>
 														<h6 class="mb-0 small">{{ !empty($current_user['regular_posts']) ? thousandsCurrencyFormat(count($current_user['regular_posts'])) : 0 }}</h6>
-														<small class="kls-fs-7">{{ Str::limit(__('miscellaneous.public.profile.statistics.posts'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
+														<small class="kls-fs-7">{{ count($current_user['regular_posts']) > 1 ? Str::limit(__('miscellaneous.public.profile.statistics.posts'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') : Str::limit(__('miscellaneous.public.profile.statistics.post'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
 													</div>
 													<!-- Divider -->
 													<div class="vr" style="z-index: 9999;"></div>
 													<!-- User stat item -->
 													<div>
 														<h6 class="mb-0 small">{{ !empty($current_user['followers']) ? thousandsCurrencyFormat(count($current_user['followers'])) : 0 }}</h6>
-														<small class="kls-fs-7">{{ Str::limit(__('miscellaneous.public.profile.statistics.followers'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
+														<small class="kls-fs-7">{{ count($current_user['followers']) > 1 ? Str::limit(__('miscellaneous.public.profile.statistics.followers'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') : Str::limit(__('miscellaneous.public.profile.statistics.follower'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
 													</div>
 													<!-- Divider -->
 													<div class="vr" style="z-index: 9999;"></div>
 													<!-- User stat item -->
 													<div>
 														<h6 class="mb-0 small">{{ !empty($current_user['following']) ? thousandsCurrencyFormat(count($current_user['following'])) : 0 }}</h6>
-														<small class="kls-fs-7">{{ Str::limit(__('miscellaneous.public.profile.statistics.following'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
+														<small class="kls-fs-7">{{ count($current_user['following']) > 1 ? Str::limit(__('miscellaneous.public.profile.statistics.followings'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') : Str::limit(__('miscellaneous.public.profile.statistics.following'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
 													</div>
 												</div>
 
@@ -75,27 +75,27 @@
 											<!-- Side Nav START -->
 											<ul class="nav nav-link-secondary flex-column fw-bold gap-2">
 												<li class="nav-item">
-													<a class="nav-link" href="{{ route('profile.entity', ['username' => 'tonystark', 'entity' => 'connections']) }}">
-														<i class="fa-solid fa-users me-2 fs-5 align-middle text-danger"></i>
-														<span>@lang('miscellaneous.menu.public.profile.connections')</span>
+													<a class="nav-link" href="{{ route('profile.entity', ['username' => $current_user['username'], 'entity' => 'connections']) }}">
+														<span class="d-inline-block" style="width: 32px;"><i class="fa-solid fa-users fs-5 text-danger"></i></span>
+														@lang('miscellaneous.menu.public.profile.connections')
 													</a>
 												</li>
 												<li class="nav-item">
-													<a class="nav-link" href="{{ route('profile.entity', ['username' => 'tonystark', 'entity' => 'products']) }}">
-														<i class="fa-solid fa-basket-shopping me-3 fs-5 align-middle text-success-emphasis"></i>
-														<span>@lang('miscellaneous.menu.public.profile.products')</span>
+													<a class="nav-link" href="{{ route('profile.entity', ['username' => $current_user['username'], 'entity' => 'products']) }}">
+														<span class="d-inline-block" style="width: 32px;"><i class="fa-solid fa-basket-shopping fs-5 text-success-emphasis"></i></span>
+														@lang('miscellaneous.menu.public.profile.products')
 													</a>
 												</li>
 												<li class="nav-item">
-													<a class="nav-link" href="{{ route('profile.entity', ['username' => 'tonystark', 'entity' => 'services']) }}">
-														<i class="fa-solid fa-people-carry-box me-2 fs-5 align-middle text-warning-emphasis"></i>
-														<span>@lang('miscellaneous.menu.public.profile.services')</span>
+													<a class="nav-link" href="{{ route('profile.entity', ['username' => $current_user['username'], 'entity' => 'services']) }}">
+														<span class="d-inline-block" style="width: 32px;"><i class="fa-solid fa-people-carry-box fs-5 text-warning-emphasis"></i></span>
+														@lang('miscellaneous.menu.public.profile.services')
 													</a>
 												</li>
 												<li class="nav-item">
-													<a class="nav-link" href="{{ route('profile.entity', ['username' => 'tonystark', 'entity' => 'my_activities']) }}">
-														<i class="fa-regular fa-clock-four me-3 fs-5 align-middle text-primary"></i>
-														<span>@lang('miscellaneous.menu.public.profile.my_activities')</span>
+													<a class="nav-link" href="{{ route('profile.entity', ['username' => $current_user['username'], 'entity' => 'my_activities']) }}">
+														<span class="d-inline-block" style="width: 32px;"><i class="fa-regular fa-clock-four fs-5 text-primary"></i></span>
+														@lang('miscellaneous.menu.public.profile.my_activities')
 													</a>
 												</li>
 											</ul>
@@ -105,7 +105,7 @@
 
 										<!-- Card footer -->
 										<div class="card-footer text-center py-2">
-											<a class="btn btn-link btn-sm" href="{{ route('profile.home', ['username' => 'tonystark']) }}">@lang('miscellaneous.public.home.view_profile')</a>
+											<a class="btn btn-link btn-sm" href="{{ route('profile.home', ['username' => $current_user['username']]) }}">@lang('miscellaneous.public.home.view_profile')</a>
 										</div>
 									</div>
 									<!-- Card END -->

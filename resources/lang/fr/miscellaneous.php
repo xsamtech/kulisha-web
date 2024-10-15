@@ -801,9 +801,12 @@ return [
         'profile' => [
             // Statistics
             'statistics' => [
-                'posts' => 'Post',
+                'post' => 'Post',
+                'posts' => 'Posts',
+                'follower' => 'Abonné',
                 'followers' => 'Abonnés',
-                'following' => 'Abonnements',
+                'following' => 'Abonnement',
+                'followings' => 'Abonnements',
             ],
 
             // Products

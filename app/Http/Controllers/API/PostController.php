@@ -1412,12 +1412,14 @@ class PostController extends BaseController
     public function storiesFeed($user_id)
     {
         // Groups
+        $susbcription_status_group = Group::where('group_name->fr', 'Etat de la souscription')->first();
         $member_status_group = Group::where('group_name->fr', 'Etat du membre')->first();
         $post_or_community_status_group = Group::where('group_name->fr', 'Etat du post ou de la communauté')->first();
         $post_type_group = Group::where('group_name->fr', 'Type de post')->first();
         $posts_visibility_group = Group::where('group_name->fr', 'Visibilité pour les posts')->first();
         $reaction_on_member_or_post_group = Group::where('group_name->fr', 'Réaction sur membre ou post')->first();
         // Statuses
+        $accepted_status = Status::where([['status_name->fr', 'Acceptée'], ['group_id', $susbcription_status_group->id]])->first();
         $blocked_member_status = Status::where([['status_name->fr', 'Bloqué'], ['group_id', $member_status_group->id]])->first();
         $operational_status = Status::where([['status_name->fr', 'Opérationnel'], ['group_id', $post_or_community_status_group->id]])->first();
         $boosted_status = Status::where([['status_name->fr', 'Boosté'], ['group_id', $post_or_community_status_group->id]])->first();
@@ -1455,9 +1457,9 @@ class PostController extends BaseController
                                                         ->pluck('to_user_id')->toArray();
         $with_sent_reactions_user_ids = $with_sent_reactions_user_ids != null ? $with_sent_reactions_user_ids : [0];
         // Get the IDs of the users whose current user is subscribed
-        $with_subscriptions_user_ids = Subscription::where('subscriber_id', $current_user->id)->pluck('user_id')->toArray();
+        $with_subscriptions_user_ids = Subscription::where([['subscriber_id', $current_user->id], ['status_id', $accepted_status->id]])->pluck('user_id')->toArray();
         // Get the IDs of the users who are subscribed to the current user
-        $with_subscriptions_subscriber_ids = Subscription::where('user_id', $current_user->id)->pluck('subscriber_id')->toArray();
+        $with_subscriptions_subscriber_ids = Subscription::where([['user_id', $current_user->id], ['status_id', $accepted_status->id]])->pluck('subscriber_id')->toArray();
         // Get the IDs of the users connected to the current user
         $connected_users_ids = User::whereIn('id', $with_subscriptions_user_ids)->orWhereIn('id', $with_subscriptions_subscriber_ids)->pluck('id')->toArray();
         // THE MAIN QUERY STATEMENT
@@ -1468,6 +1470,7 @@ class PostController extends BaseController
                             $query->where('posts.status_id', $operational_status->id)
                                 ->orWhere('posts.status_id', $boosted_status->id);
                         })
+                        ->whereIn('posts.user_id', $with_subscriptions_user_ids)
                         ->whereDoesntHave('user', function ($query) use ($blocked_member_status) {
                             $query->where('users.status_id', $blocked_member_status->id);
                         })->where(function ($query) use ($current_user, $everybody_visibility, $nobody_except_visibility, $connections_only_visibility, $connected_users_ids) {

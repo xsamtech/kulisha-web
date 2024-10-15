@@ -795,9 +795,12 @@ return [
         'profile' => [
             // Statistics
             'statistics' => [
-                'posts' => 'Post',
+                'post' => 'Post',
+                'posts' => 'Posts',
+                'follower' => 'Follower',
                 'followers' => 'Followers',
                 'following' => 'Following',
+                'followings' => 'Following',
             ],
 
             // Products

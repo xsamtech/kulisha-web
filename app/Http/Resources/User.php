@@ -26,17 +26,19 @@ class User extends JsonResource
     public function toArray(Request $request): array
     {
         // Groups
+        $susbcription_status_group = ModelsGroup::where('group_name->fr', 'Etat de la souscription')->first();
         $post_type_group = ModelsGroup::where('group_name->fr', 'Type de post')->first();
         $post_or_community_status_group = ModelsGroup::where('group_name->fr', 'Etat du post ou de la communauté')->first();
         // Statuses
+        $accepted_status = ModelsStatus::where([['status_name->fr', 'Acceptée'], ['group_id', $susbcription_status_group->id]])->first();
         $operational_status = ModelsStatus::where([['status_name->fr', 'Opérationnel'], ['group_id', $post_or_community_status_group->id]])->first();
         $boosted_status = ModelsStatus::where([['status_name->fr', 'Boosté'], ['group_id', $post_or_community_status_group->id]])->first();
         // Types
         $comment_type = ModelsType::where([['type_name->fr', 'Commentaire'], ['group_id', $post_type_group->id]])->first();
         $story_type = ModelsType::where([['type_name->fr', 'Story'], ['group_id', $post_type_group->id]])->first();
         // Requests
-        $followers = ModelsSubscription::whereNotNull('subscriber_id')->where([['user_id', $this->id], ['is_following', 1]])->get();
-        $following = ModelsSubscription::where([['subscriber_id', $this->id], ['is_following', 1]])->get();
+        $followers = ModelsSubscription::whereNotNull('subscriber_id')->where([['user_id', $this->id], ['is_following', 1], ['status_id', $accepted_status->id]])->get();
+        $following = ModelsSubscription::where([['subscriber_id', $this->id], ['is_following', 1], ['status_id', $accepted_status->id]])->get();
         $regular_posts = ModelsPost::where([['user_id', $this->id], ['type_id', '<>', $comment_type->id], ['type_id', '<>', $story_type->id]])->where(function ($query) use ($operational_status, $boosted_status) {
             $query->where('status_id', $operational_status->id)->orWhere('status_id', $boosted_status->id);
         })->get();

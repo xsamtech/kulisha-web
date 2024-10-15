@@ -31,17 +31,17 @@ async function fetchStories() {
 
           const timestamp = new Date(content.created_at).getTime() / 1000;
 
-          return [
-            `${story.owner_id}-story-${content.story_id}`, // Unique ID for the item
-            content.image_type, // Type: "photo" or "video"
-            15, // Length in seconds
-            content.image_url, // Source URL
-            '', // Preview
-            '', // Link
-            content.post_content, // Link text
-            timestamp, // Timestamp
-            !!resultConsultation.data // Seen status
-          ];
+          return {
+            id: `${story.owner_id}-story-${content.story_id}`,
+            type: content.image_type,
+            length: 5,
+            src: content.image_url,
+            preview: '',
+            link: (content.shared_post_id ? `${currentHost}/posts/${content.shared_post_id}` : ''),
+            linkText: content.post_content,
+            time: timestamp,
+            seen: !!resultConsultation.data
+          };
 
         } catch (err) {
           console.log(`Error fetching consultation for story ID ${content.story_id}:`, err);
@@ -53,14 +53,14 @@ async function fetchStories() {
       if (contents.length > 0) {
         const onwner_timestamp = new Date(story.owner_updated_at).getTime() / 1000;
 
-        return Zuck.buildTimelineItem(
-          story.owner_id,
-          story.profile_photo_path,
-          `${story.firstname} ${story.lastname}`,
-          '', // Story link (leave empty '' for javascript based zuck)
-          onwner_timestamp,
-          contents.filter(content => content)
-        );
+        return {
+          id: story.owner_id,
+          name: `${story.firstname} ${story.lastname}`,
+          photo: story.profile_photo_path,
+          link: story.owner_link,
+          lastUpdated: onwner_timestamp,
+          items: contents.filter(content => content) // Élimine les éléments null
+        };
       }
 
       return null; // Don't add user without items
@@ -71,12 +71,14 @@ async function fetchStories() {
       story !== null && index === self.findIndex(s => s.id === story.id)
     );
 
+    // console.log('Final uniqueStories:', JSON.stringify(uniqueStories, null, 2));
+
     const validUniqueStories = uniqueStories.filter(story => story && story.items.length > 0);
 
     // Initialize Zuck.js
     let stories = new Zuck('stories', {
       rtl: false,
-      skin: 'snapgram',
+      skin: 'facesnap',
       avatars: true,
       stories: validUniqueStories, // Array of story data
       backButton: true,
@@ -90,6 +92,10 @@ async function fetchStories() {
       localStorage: false,
       onView: function (storyId) {
         try {
+          const story_id = storyId.split('-')[2];
+
+          console.log(story_id);
+
           const updateConsultationHistory = $.ajax({
             headers: {
               'Authorization': 'Bearer ' + appRef.split('-')[0],

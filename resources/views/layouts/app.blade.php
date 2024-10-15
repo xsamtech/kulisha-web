@@ -48,7 +48,7 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/plyr/plyr.css') }}">
         <!-- Zuck CSS -->
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/zuck.js/dist/zuck.min.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/zuck.js/dist/skins/snapgram.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/zuck.js/dist/skins/facesnap.min.css') }}">
 
         <!-- Theme CSS -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/social/css/style.css') }}">
