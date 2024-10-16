@@ -6,6 +6,10 @@
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
 */
+function addStory() {
+
+}
+
 async function fetchStories() {
   try {
     const resultStory = await $.ajax({
@@ -33,6 +37,7 @@ async function fetchStories() {
 
           return {
             id: `${story.owner_id}-story-${content.story_id}`,
+            apiId: content.story_id,
             type: content.image_type,
             length: 15,
             src: content.image_url,
@@ -73,10 +78,12 @@ async function fetchStories() {
 
     // console.log('Final uniqueStories:', JSON.stringify(uniqueStories, null, 2));
 
+    let currentStoryId = null; // ID of the story currently displayed
+    let currentItemIndex = 0; // Index of the currently displayed item
     const validUniqueStories = uniqueStories.filter(story => story && story.items.length > 0);
     const storiesOptions = {
       rtl: false,
-      skin: 'facesnap',
+      skin: 'snapgram',
       avatars: true,
       stories: validUniqueStories, // Array of stories data
       backButton: true,
@@ -84,34 +91,70 @@ async function fetchStories() {
       paginationArrows: true,
       previousTap: true,
       autoFullScreen: false,
-      openEffect: false,
+      openEffect: true,
       cubeEffect: true,
       list: false,
       localStorage: false,
-      onView: function (storyId) {
-        try {
-          const story_id = storyId.split('-')[2];
+      callbacks:  {
+        onOpen (storyId, callback) {
+          currentStoryId = storyId; // Update the ID of the currently opened story
 
-          console.log(story_id);
+          callback();  // on open story viewer
+        },
+        onView: function (storyId) {
+          const story = validUniqueStories.find(s => s.id === storyId);
 
-          const updateConsultationHistory = $.ajax({
-            headers: {
-              'Authorization': 'Bearer ' + appRef.split('-')[0],
-              'Accept': $('.mime-type').val(),
-              'X-localization': navigator.language,
-              'X-user-id': currentUser,
-              'X-ip-address': currentIpAddr
-            },
-            method: 'GET',
-            contentType: 'application/json',
-            url: `${apiHost}/post/${storyId}`
-          });
+          if (story) {
+            // Retrieve the currently displayed item based on "currentItemIndex"
+            const item = story.items[currentItemIndex];
 
-          console.log(`API Response: ${updateConsultationHistory.data}`);
+            if (item) {
+              console.log('API ID:', item.apiid);
+            }
+          }
 
-        } catch (error) {
-          console.log(`Error viewing story ID ${storyId}: `, error);
-          return null; // Or default value
+          // const updateConsultationHistory = $.ajax({
+          //   headers: {
+          //     'Authorization': 'Bearer ' + appRef.split('-')[0],
+          //     'Accept': $('.mime-type').val(),
+          //     'X-localization': navigator.language,
+          //     'X-user-id': currentUser,
+          //     'X-ip-address': currentIpAddr
+          //   },
+          //   method: 'GET',
+          //   contentType: 'application/json',
+          //   url: `${apiHost}/post/${story_id}`
+          // });
+
+          // console.log(`API Response: ${updateConsultationHistory.data}`);
+        },
+        onEnd (storyId, callback) {
+          callback();  // on end story
+          currentItemIndex = 0; // Reset index when story ends
+        },
+        onClose (storyId, callback) {
+          callback();  // on close story viewer
+          currentItemIndex = 0; // Reset index when closing display
+        },
+        onNavigateItem (storyId, nextStoryId, callback) {
+          const story = validUniqueStories.find(s => s.id === storyId);
+
+          if (story) {
+            // Update "currentItemIndex" based on navigation
+            currentItemIndex = (currentItemIndex + 1) % story.items.length; // Manage the cycle
+          }
+
+          callback();  // on navigate item of story
+
+          // Retrieve current item after navigation
+          const item = story.items[currentItemIndex];
+
+          if (item) {
+            console.log('API ID (navigated):', item.apiid);
+          }
+        },
+        onDataUpdate (currentState, callback) {
+          callback(); // use to update state on your reactive framework
         }
       }
     };
