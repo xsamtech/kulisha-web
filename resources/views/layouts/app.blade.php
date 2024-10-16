@@ -47,8 +47,8 @@
         <!-- Plyr CSS -->
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/plyr/plyr.css') }}">
         <!-- Zuck CSS -->
-		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/zuck.js/dist/zuck.min.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/zuck.js/dist/skins/facesnap.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/zuck.js/dist/zuck.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/zuck.js/dist/skins/facesnap.min.css') }}">
 
         <!-- Theme CSS -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/social/css/style.css') }}">
@@ -275,7 +275,7 @@
         <script src="{{ asset('assets/js/load-app-scripts.js') }}"></script>
 @if (Route::is('home'))
         <!-- Zuck -->
-        <script src="{{ asset('assets/addons/social/zuck.js/dist/zuck.min.js') }}"></script>
+        <script src="{{ asset('assets/addons/custom/zuck.js/dist/zuck.min.js') }}"></script>
         <script src="{{ asset('assets/js/social/zuck-stories.js') }}"></script>
 @endif
         <script src="{{ asset('assets/js/script.app.js') }}"></script>

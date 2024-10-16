@@ -34,7 +34,7 @@ async function fetchStories() {
           return {
             id: `${story.owner_id}-story-${content.story_id}`,
             type: content.image_type,
-            length: 5,
+            length: 15,
             src: content.image_url,
             preview: '',
             link: (content.shared_post_id ? `${currentHost}/posts/${content.shared_post_id}` : ''),
@@ -74,13 +74,11 @@ async function fetchStories() {
     // console.log('Final uniqueStories:', JSON.stringify(uniqueStories, null, 2));
 
     const validUniqueStories = uniqueStories.filter(story => story && story.items.length > 0);
-
-    // Initialize Zuck.js
-    let stories = new Zuck('stories', {
+    const storiesOptions = {
       rtl: false,
       skin: 'facesnap',
       avatars: true,
-      stories: validUniqueStories, // Array of story data
+      stories: validUniqueStories, // Array of stories data
       backButton: true,
       backNative: false,
       paginationArrows: true,
@@ -116,7 +114,16 @@ async function fetchStories() {
           return null; // Or default value
         }
       }
-    });
+    };
+    const storiesElement = document.querySelector('#stories');
+
+    if (!storiesElement) {
+      console.error('Stories element not found in the DOM');
+      return;
+    }
+
+    // Initialize Zuck.js
+    const stories = Zuck(storiesElement, storiesOptions);
 
   } catch (err) {
     console.log('Error in fetchStories:', err);
