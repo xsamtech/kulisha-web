@@ -2935,7 +2935,7 @@ class UserController extends BaseController
 		$user = User::find($id);
 
         $user->update([
-            'profile_photo_path' => $image_url,
+            'profile_photo_path' => '/storage/' . $image_url,
             'updated_at' => now()
         ]);
 
@@ -2974,7 +2974,7 @@ class UserController extends BaseController
 		$user = User::find($id);
 
         $user->update([
-            'cover_photo_path' => $image_url,
+            'cover_photo_path' => '/storage/' . $image_url,
             'cover_coordinates' => $inputs['x'] . '-' . $inputs['y'] . '-' . $inputs['width'] . '-' . $inputs['height'],
             'updated_at' => now()
         ]);

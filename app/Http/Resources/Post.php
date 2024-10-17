@@ -33,7 +33,6 @@ class Post extends JsonResource
 
         if ($this->type_id == $story_type->id) {
             $file = File::collection($this->files)->first();
-            $is_video = isVideoFile($file->file_url);
 
             return [
                 'story_id' => (string) $this->id,
@@ -50,8 +49,8 @@ class Post extends JsonResource
                 'city' => $this->city,
                 'region' => $this->region,
                 'country' => $this->country,
-                'image_type' => $is_video ? 'video' : 'photo',
-                'image_url' => getWebURL() . $file->file_url,
+                'image_type' => !empty($file) ? (isVideoFile($file->file_url) ? 'video' : 'photo') : 'photo',
+                'image_url' => !empty($file) ? getWebURL() . $file->file_url : getWebURL() . '/assets/img/story-placeholder.png',
                 'created_at' => $this->created_at->format('Y-m-d H:i:s'),
                 'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
                 'created_at_ago' => timeAgo($this->created_at->format('Y-m-d H:i:s')),

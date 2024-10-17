@@ -1463,8 +1463,7 @@ class PostController extends BaseController
         // Get the IDs of the users connected to the current user
         $connected_users_ids = User::whereIn('id', $with_subscriptions_user_ids)->orWhereIn('id', $with_subscriptions_subscriber_ids)->pluck('id')->toArray();
         // THE MAIN QUERY STATEMENT
-        $posts = Post::with('user')->whereNull('posts.community_id')->whereNull('posts.event_id')
-                        ->whereNotIn('posts.id', $with_sent_reactions_post_ids)->whereNotIn('posts.user_id', $with_sent_reactions_user_ids)
+        $posts = Post::whereNotIn('posts.id', $with_sent_reactions_post_ids)->whereNotIn('posts.user_id', $with_sent_reactions_user_ids)
                         ->whereIn('posts.type_id', [$story_type->id])
                         ->where(function ($query) use ($operational_status, $boosted_status) {
                             $query->where('posts.status_id', $operational_status->id)
@@ -1488,12 +1487,34 @@ class PostController extends BaseController
                                     $q1->where('posts.visibility_id', $connections_only_visibility->id)
                                         ->whereIn('posts.user_id', $connected_users_ids);
                                 });
-                        })
-                        ->get()->groupBy('user_id');
+                        })->get()->groupBy('user_id');
+        // user stories
+        $user_post = Post::where('user_id', $current_user->id)
+                            ->whereIn('posts.type_id', [$story_type->id])
+                            ->where(function ($query) use ($operational_status, $boosted_status) {
+                                $query->where('posts.status_id', $operational_status->id)
+                                    ->orWhere('posts.status_id', $boosted_status->id);
+                            })->get();
 
         if ($posts != null) {
+            // Merge current user's posts with others
             $groupedPosts = [];
 
+            // Adding current user's posts first
+            if ($user_post->isNotEmpty()) {
+                $groupedPosts[] = [
+                    'owner_id' => (string) $current_user->id,
+                    'firstname' => $current_user->firstname,
+                    'lastname' => $current_user->lastname,
+                    'username' => $current_user->username,
+                    'owner_link' => !empty($current_user->username) ? getWebURL() . '/' . $current_user->username : getWebURL() . '/' . $current_user->id,
+                    'profile_photo_path' => !empty($current_user->profile_photo_path) ? getWebURL() . $current_user->profile_photo_path : getWebURL() . '/assets/img/avatar-' . $current_user->gender . '.svg',
+                    'owner_updated_at' => $current_user->updated_at->format('Y-m-d h:i:s'),
+                    'posts' => ResourcesPost::collection($user_post)
+                ];
+            }
+
+            // Adding other posts
             foreach ($posts as $userPosts) {
                 $user = $userPosts->first()->user;
 

@@ -45,6 +45,7 @@ async function fetchStories() {
             link: (content.shared_post_id ? `${currentHost}/posts/${content.shared_post_id}` : ''),
             linkText: content.post_content,
             time: timestamp,
+            timeAgo: content.created_at_ago,
             seen: !!resultConsultation.data
           };
 
@@ -81,6 +82,9 @@ async function fetchStories() {
     let currentStoryId = null; // ID of the story currently displayed
     let currentItemIndex = 0; // Index of the currently displayed item
     const validUniqueStories = uniqueStories.filter(story => story && story.items.length > 0);
+
+    console.log('Final validUniqueStories:', JSON.stringify(validUniqueStories, null, 2));
+
     const storiesOptions = {
       rtl: false,
       skin: 'snapgram',
@@ -95,10 +99,33 @@ async function fetchStories() {
       cubeEffect: true,
       list: false,
       localStorage: false,
-      callbacks:  {
-        onOpen (storyId, callback) {
+      callbacks: {
+        onOpen(storyId, callback) {
           currentStoryId = storyId; // Update the ID of the currently opened story
+          const story = validUniqueStories.find(s => s.id === storyId);
 
+          if (story) {
+            // Use an event or a delay
+            setTimeout(() => {
+              const items = story.items; // Retreive all items
+              const timeElements = document.querySelectorAll('#zuck-modal-content .story-viewer .head .left .info .time');
+
+              // Ensure there is "timeElement" for each item
+              if (timeElements.length > 0 && items.length > 0) {
+                // console.log(timeElements);
+
+                items.forEach((item, index) => {
+                  // Vérifiez si l'index ne dépasse pas le nombre d'éléments de temps
+                  if (timeElements[index]) {
+                    timeElements[index].innerHTML = item.timeago; // Replace "timestamp" by "timeAgo" for each item
+                  }
+                });
+
+              } else {
+                console.error('No time elements or items found');
+              }
+            }, 300); // Augmentez le délai si nécessaire
+          }
           callback();  // on open story viewer
         },
         onView: function (storyId) {
@@ -108,35 +135,37 @@ async function fetchStories() {
             // Retrieve the currently displayed item based on "currentItemIndex"
             const item = story.items[currentItemIndex];
 
-            if (item) {
-              // const updateConsultationHistory = $.ajax({
-              //   headers: {
-              //     'Authorization': 'Bearer ' + appRef.split('-')[0],
-              //     'Accept': $('.mime-type').val(),
-              //     'X-localization': navigator.language,
-              //     'X-user-id': currentUser,
-              //     'X-ip-address': currentIpAddr
-              //   },
-              //   method: 'GET',
-              //   contentType: 'application/json',
-              //   url: `${apiHost}/post/${item.apiid}`
-              // });
+            console.log(currentIpAddr);
 
-              console.log('API ID:', item.apiid);
+            if (item) {
+              if (!item.seen) {
+                const updateConsultationHistory = $.ajax({
+                  headers: {
+                    'Authorization': 'Bearer ' + appRef.split('-')[0],
+                    'X-localization': navigator.language,
+                    'X-user-id': currentUser,
+                    'X-ip-address': currentIpAddr
+                  },
+                  method: 'GET',
+                  contentType: 'application/json',
+                  url: `${apiHost}/post/${item.apiid}`
+                });
+
+                console.log(`API ID: ${item.apiid}`);
+                console.log(`API Response: ${updateConsultationHistory.data}`);
+              }
             }
           }
-
-          // console.log(`API Response: ${updateConsultationHistory.data}`);
         },
-        onEnd (storyId, callback) {
+        onEnd(storyId, callback) {
           callback();  // on end story
           currentItemIndex = 0; // Reset index when story ends
         },
-        onClose (storyId, callback) {
+        onClose(storyId, callback) {
           callback();  // on close story viewer
           currentItemIndex = 0; // Reset index when closing display
         },
-        onNavigateItem (storyId, nextStoryId, callback) {
+        onNavigateItem(storyId, nextStoryId, callback) {
           const story = validUniqueStories.find(s => s.id === storyId);
 
           if (story) {
@@ -153,7 +182,7 @@ async function fetchStories() {
             console.log('API ID (navigated):', item.apiid);
           }
         },
-        onDataUpdate (currentState, callback) {
+        onDataUpdate(currentState, callback) {
           callback(); // use to update state on your reactive framework
         }
       }
