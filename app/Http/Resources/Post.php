@@ -54,6 +54,8 @@ class Post extends JsonResource
                 'image_url' => getWebURL() . $file->file_url,
                 'created_at' => $this->created_at->format('Y-m-d H:i:s'),
                 'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
+                'created_at_ago' => timeAgo($this->created_at->format('Y-m-d H:i:s')),
+                'updated_at_ago' => timeAgo($this->updated_at->format('Y-m-d H:i:s')),
                 'status_id' => $this->status_id,
                 'type_id' => $this->type_id,
                 'category_id' => $this->category_id,

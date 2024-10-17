@@ -109,22 +109,22 @@ async function fetchStories() {
             const item = story.items[currentItemIndex];
 
             if (item) {
+              // const updateConsultationHistory = $.ajax({
+              //   headers: {
+              //     'Authorization': 'Bearer ' + appRef.split('-')[0],
+              //     'Accept': $('.mime-type').val(),
+              //     'X-localization': navigator.language,
+              //     'X-user-id': currentUser,
+              //     'X-ip-address': currentIpAddr
+              //   },
+              //   method: 'GET',
+              //   contentType: 'application/json',
+              //   url: `${apiHost}/post/${item.apiid}`
+              // });
+
               console.log('API ID:', item.apiid);
             }
           }
-
-          // const updateConsultationHistory = $.ajax({
-          //   headers: {
-          //     'Authorization': 'Bearer ' + appRef.split('-')[0],
-          //     'Accept': $('.mime-type').val(),
-          //     'X-localization': navigator.language,
-          //     'X-user-id': currentUser,
-          //     'X-ip-address': currentIpAddr
-          //   },
-          //   method: 'GET',
-          //   contentType: 'application/json',
-          //   url: `${apiHost}/post/${story_id}`
-          // });
 
           // console.log(`API Response: ${updateConsultationHistory.data}`);
         },
