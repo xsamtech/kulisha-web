@@ -42,7 +42,7 @@ async function fetchStories() {
             length: 15,
             src: content.image_url,
             preview: '',
-            link: (content.shared_post_id ? `${currentHost}/posts/${content.shared_post_id}` : ''),
+            link: (content.shared_post_id ? `${currentHost}/posts/${content.shared_post_id}` : `${currentHost}/${story.username}`),
             linkText: content.post_content,
             time: timestamp,
             timeAgo: content.created_at_ago,
