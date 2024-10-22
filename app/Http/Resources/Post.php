@@ -33,6 +33,7 @@ class Post extends JsonResource
 
         if ($this->type_id == $story_type->id) {
             $file = File::collection($this->files)->first();
+            $user = User::make($this->user);
 
             return [
                 'story_id' => (string) $this->id,
@@ -60,6 +61,12 @@ class Post extends JsonResource
                 'category_id' => $this->category_id,
                 'visibility_id' => $this->visibility_id,
                 'user_id' => $this->user_id,
+                'owner_firstname' => $user->firstname,
+                'owner_lastname' => $user->lastname,
+                'owner_username' => $user->username,
+                'owner_link' => getWebURL() . '/' . $user->username,
+                'owner_avatar' => !empty($user->profile_photo_path) ? getWebURL() . $user->profile_photo_path : null,
+                'owner_last_update' => $user->updated_at->format('Y-m-d H:i:s'),
                 'coverage_area_id' => $this->coverage_area_id,
                 'budget_id' => $this->budget_id,
                 'community_id' => $this->community_id,

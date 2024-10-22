@@ -23,6 +23,8 @@ var modalUser = $('#cropModalUser');
 var retrievedAvatar = document.getElementById('retrieved_image');
 var retrievedImageProfile = document.getElementById('retrieved_image_profile');
 var currentImageProfile = document.querySelector('#profileImageWrapper img');
+var retrievedImageStory = document.getElementById('retrieved_image_story');
+var currentImageStory = document.querySelector('#storyImageWrapper img');
 var retrievedImageRecto = document.getElementById('retrieved_image_recto');
 var currentImageRecto = document.querySelector('#rectoImageWrapper img');
 var retrievedImageVerso = document.getElementById('retrieved_image_verso');
@@ -56,6 +58,7 @@ var scripts = [
     '/assets/addons/custom/jquery/scroll4ever/js/jquery.scroll4ever.js',
     '/assets/js/load-app-scripts.js',
     '/assets/addons/social/zuck.js/dist/zuck.min.js',
+    '/assets/js/classes.js',
     '/assets/js/social/zuck-stories.js',
     '/assets/js/script.app.js',
 ];
@@ -64,27 +67,6 @@ var scripts = [
 function loadJS(url) {
     return $.getScript(currentHost + url);
 }
-
-// async function loadScriptsSequentially() {
-//     for (var script of scripts) {
-//         try {
-//             await loadJS(script);
-//         } catch (error) {
-//             console.error('Erreur lors du chargement du script: ', script);
-//         }
-//     }
-// }
-
-// async function loadScriptsInParallel(scripts) {
-//     const loadPromises = scripts.map(script => {
-//         return loadJS(script).catch(error => {
-//             console.error('Erreur lors du chargement du script: ', script);
-//         });
-//     });
-
-//     // Wait until all promises are resolved
-//     await Promise.all(loadPromises);
-// }
 
 function loadScriptsInParallel(scripts) {
     return Promise.all(scripts.map(src => {
@@ -105,3 +87,4 @@ function initializeComponents() {
 
     dropdowns.forEach(dropdown => new bootstrap.Dropdown(dropdown));
 }
+

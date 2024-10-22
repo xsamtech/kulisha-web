@@ -1508,8 +1508,8 @@ class PostController extends BaseController
                     'lastname' => $current_user->lastname,
                     'username' => $current_user->username,
                     'owner_link' => !empty($current_user->username) ? getWebURL() . '/' . $current_user->username : getWebURL() . '/' . $current_user->id,
-                    'profile_photo_path' => !empty($current_user->profile_photo_path) ? getWebURL() . $current_user->profile_photo_path : getWebURL() . '/assets/img/avatar-' . $current_user->gender . '.svg',
-                    'owner_updated_at' => $current_user->updated_at->format('Y-m-d h:i:s'),
+                    'owner_avatar' => !empty($current_user->profile_photo_path) ? getWebURL() . $current_user->profile_photo_path : getWebURL() . '/assets/img/avatar-' . $current_user->gender . '.svg',
+                    'owner_last_update' => $current_user->updated_at->format('Y-m-d h:i:s'),
                     'posts' => ResourcesPost::collection($user_post)
                 ];
             }
@@ -1524,8 +1524,8 @@ class PostController extends BaseController
                     'lastname' => $user->lastname,
                     'username' => $user->username,
                     'owner_link' => !empty($user->username) ? getWebURL() . '/' . $user->username : getWebURL() . '/' . $user->id,
-                    'profile_photo_path' => !empty($user->profile_photo_path) ? getWebURL() . $user->profile_photo_path : getWebURL() . '/assets/img/avatar-' . $user->gender . '.svg',
-                    'owner_updated_at' => $user->updated_at->format('Y-m-d h:i:s'),
+                    'owner_avatar' => !empty($user->profile_photo_path) ? getWebURL() . $user->profile_photo_path : getWebURL() . '/assets/img/avatar-' . $user->gender . '.svg',
+                    'owner_last_update' => $user->updated_at->format('Y-m-d h:i:s'),
                     'posts' => ResourcesPost::collection($userPosts)
                 ];
             }
