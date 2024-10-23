@@ -100,8 +100,42 @@
         <!-- **************** MAIN CONTENT END **************** -->
 
 
+        <!-- **************** MODALS START **************** -->
+        <!-- Modal create story START -->
+        <div class="modal fade" id="modalCreateStory" tabindex="-1" aria-labelledby="modalLabelCreateStory" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <form id="newPost">
+                        <!-- Modal story header START -->
+                        <div class="modal-header pb-0 border-bottom-0">
+                            <button type="button" class="btn-close btn-secondary-soft p-3 rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <!-- Modal story header END -->
+
+                        <!-- Modal story body START -->
+                        <div class="modal-body pt-3">
+
+                        </div>
+                        <!-- Modal story body END -->
+
+                        <!-- Modal story footer -->
+                        <div class="modal-footer px-3 row justify-content-between">
+                            <!-- Button -->
+                            <div class="col-lg-6 text-sm-end">
+                                <button type="submit" class="btn d-block w-100 btn-primary disabled">
+                                    <i class="bi bi-send me-1"></i> @lang('miscellaneous.post')
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Modal story footer -->
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal create story END -->
+
         <!-- Modal create post START -->
-        <div class="modal fade" id="modalCreateFeed" tabindex="-1" aria-labelledby="modalLabelCreateFeed" aria-hidden="true">
+        <div class="modal fade" id="modalCreatePost" tabindex="-1" aria-labelledby="modalLabelCreatePost" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <form id="newPost">
@@ -241,6 +275,8 @@
             </div>
         </div>
         <!-- Modal create post END -->
+
+        <!-- **************** MODALS END **************** -->
 
         <!-- ======================= JS libraries, plugins and custom scripts -->
         <!-- jQuery JS -->

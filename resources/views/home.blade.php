@@ -174,7 +174,7 @@
 
 								<!-- Post input -->
 								<form class="w-100">
-									<input class="form-control pe-4 border-0" placeholder="@lang('miscellaneous.public.home.posts.new')" data-bs-toggle="modal" data-bs-target="#modalCreateFeed">
+									<input class="form-control pe-4 border-0" placeholder="@lang('miscellaneous.public.home.posts.new')" data-bs-toggle="modal" data-bs-target="#modalCreatePost">
 								</form>
 							</div>
 
