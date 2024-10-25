@@ -78,6 +78,18 @@ return [
         'upload_file' => 'Télécharger fichier',
         'choose_existing_file' => 'Choisir fichier existant'
     ],
+    'edit_text' => [
+        'left' => 'Gauche',
+        'center' => 'Centrer',
+        'right' => 'Droite',
+        'bold' => 'Gras',
+        'italic' => 'Italique',
+        'underline' => 'Souligner',
+        'strikethrough' => 'Barrer',
+        'lowercase' => 'Minuscule',
+        'uppercase' => 'Majuscule',
+        'placeholder' => 'Ecrire ici ...'
+    ],
     'activate' => 'Activer',
     'deactivate' => 'Désactiver',
     'lock' => 'Bloquer',
@@ -681,6 +693,28 @@ return [
             // Stories
             'stories' => [
                 'new' => 'Poster une story',
+                'commands' => [
+                    'upload_record' => 'Télécharger',
+                    'edit' => 'Editer l’image',
+                    'add_text' => 'Texte',
+                    'object' => 'Objet',
+                    'return' => 'Retourner'
+                ],
+                'type' => [
+                    'poll' => [
+                        'label' => 'Sondage',
+                        'choice' => [
+                            'description' => 'Mettez des assertions pour permettre à chacun de choisir une',
+                            'content' => 'Contenu de l’assertion'
+                        ],
+                        'post_error' => 'Veuillez choisir un post'
+                    ],
+                    'anonymous_question' => 'Question anonyme',
+                    'photo' => 'Photo',
+                    'video' => 'Vidéo',
+                    'camera' => 'Caméra',
+                    'live' => 'Direct'
+                ]
             ],
 
             // Trends

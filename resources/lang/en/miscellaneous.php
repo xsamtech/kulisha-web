@@ -78,6 +78,18 @@ return [
         'upload_file' => 'Upload file',
         'choose_existing_file' => 'Choose existing file',
     ],
+    'edit_text' => [
+        'left' => 'Left',
+        'center' => 'Center',
+        'right' => 'Right',
+        'bold' => 'Bold',
+        'italic' => 'Italic',
+        'underline' => 'Underline',
+        'strikethrough' => 'Strikethrough',
+        'lowercase' => 'Lowercase',
+        'uppercase' => 'Uppercase',
+        'placeholder' => 'Type here...'
+    ],
     'activate' => 'Activate',
     'deactivate' => 'Deactivate',
     'lock' => 'Lock',
@@ -681,6 +693,28 @@ return [
             // Stories
             'stories' => [
                 'new' => 'Post a story',
+                'commands' => [
+                    'upload_record' => 'Upload',
+                    'edit' => 'Edit the picture',
+                    'add_text' => 'Text',
+                    'object' => 'Object',
+                    'return' => 'Return'
+                ],
+                'type' => [
+                    'poll' => [
+                        'label' => 'Poll',
+                        'choice' => [
+                            'description' => 'Put assertions to allow everyone to choose one',
+                            'content' => 'Assertion content'
+                        ],
+                        'post_error' => 'Please choose a post',
+                    ],
+                    'anonymous_question' => 'Anonymous question',
+                    'photo' => 'Photo',
+                    'video' => 'Video',
+                    'camera' => 'Camera',
+                    'live' => 'Live'
+                ]
             ],
 
             // Trends

@@ -101,43 +101,146 @@
 
 
         <!-- **************** MODALS START **************** -->
+@if (Route::is('home'))
         <!-- Modal create story START -->
         <div class="modal fade" id="modalCreateStory" tabindex="-1" aria-labelledby="modalLabelCreateStory" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <form id="newPost">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content overflow-x-hidden overflow-y-scroll">
+                    <div id="newStory">
                         <!-- Modal story header START -->
-                        <div class="modal-header pb-0 border-bottom-0">
-                            <button type="button" class="btn-close btn-secondary-soft p-3 rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
+                        <div class="modal-header pb-0 border-bottom-0"></div>
                         <!-- Modal story header END -->
 
                         <!-- Modal story body START -->
-                        <div class="modal-body pt-3">
+                        <div class="modal-body p-0 overflow-x-hidden">
+                            <button type="button" class="btn-close btn-secondary-soft p-3 rounded-circle position-fixed" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')" style="top: 10px; right: 20px;"></button>
+                            <button id="upload-record" class="btn btn-danger rounded-pill px-2 py-0 rounded-circle position-fixed d-none" style="top: 10px; right: 20px; width: 45px; height: 45px; z-index: 10;" data-bs-toggle="tooltip" title="@lang('miscellaneous.public.home.stories.commands.return')">
+                                <i class="bi bi-arrow-left-short fs-3 align-middle"></i>
+                            </button>
+                            <div class="mb-1 position-fixed" style="top: 10px; left: 20px;">
+                                <!-- All commands to edit story -->
+                                <div class="commands">
+                                    <div class="d-inline-block me-2">
+                                        <button id="upload-record" class="btn btn-sm btn-warning rounded-pill rounded-circle" style="padding: 9px 14px 10px 14px;">
+                                            <i class="bi bi-upload fs-6 me-lg-1 align-middle"></i>
+                                            <span class="d-lg-inline d-none">@lang('miscellaneous.public.home.stories.commands.upload_record')</span>
+                                        </button>
+                                    </div>
+                                    <div class="d-inline-block me-2">
+                                        <button id="add-text" class="btn btn-sm btn-warning rounded-pill rounded-circle" style="padding: 9px 13px 10px 13px;">
+                                            <i class="bi bi-input-cursor-text fs-6 me-lg-1 align-middle"></i>
+                                            <span class="d-lg-inline d-none">@lang('miscellaneous.public.home.stories.commands.add_text')</span>
+                                        </button>
+                                    </div>
+                                    <div class="d-inline-block me-2">
+                                        <button id="edit-image" class="btn btn-sm btn-warning rounded-pill rounded-circle" style="padding: 9px 13px 10px 13px;">
+                                            <i class="bi bi-pencil-fill fs-6 me-lg-1 align-middle"></i>
+                                            <span class="d-lg-inline d-none">@lang('miscellaneous.public.home.stories.commands.edit')</span>
+                                        </button>
+                                    </div>
+                                    <div class="d-inline-block me-2">
+                                        <button id="object" class="btn btn-sm btn-warning rounded-pill rounded-circle" style="padding: 9px 13px 10px 13px;">
+                                            <i class="bi bi-emoji-smile fs-6 me-lg-1 align-middle"></i>
+                                            <span class="d-lg-inline d-none">@lang('miscellaneous.public.home.stories.commands.object')</span>
+                                        </button>
+                                    </div>
+                                </div>
 
+                                <!-- Upload or record image -->
+                                <div class="upload-record d-none">
+                                    <div class="d-inline-block me-2">
+                                        <label role="button" for="photo_story" class="btn btn-sm btn-primary rounded-pill rounded-circle" style="padding: 9px 13px 10px 13px;">
+                                            <i class="bi bi-image fs-6 me-lg-1 align-middle"></i>
+                                            <span class="d-lg-inline d-none">@lang('miscellaneous.public.home.stories.type.photo')</span>
+                                            <input type="file" name="photo_story" id="photo_story" class="d-none">
+                                        </label>
+                                        <input type="hidden" name="data_photo_story" id="data_photo_story">
+                                    </div>
+                                    <div class="d-inline-block me-2">
+                                        <label role="button" for="video_story" class="btn btn-sm btn-primary rounded-pill rounded-circle" style="max-height: 43px; padding: 7px 11px 10px 11px;">
+                                            <i class="bi bi-play-fill fs-5 align-middle"></i>
+                                            <span class="d-lg-inline d-none">@lang('miscellaneous.public.home.stories.type.video')</span>
+                                            <input type="file" name="video_story" id="video_story" class="d-none">
+                                        </label>
+                                        <input type="hidden" name="data_video_story" id="data_video_story">
+                                    </div>
+                                    <div class="d-inline-block me-2">
+                                        <button id="camera_story" class="btn btn-sm btn-primary rounded-pill rounded-circle" style="padding: 10px 13px 10px 13px;">
+                                            <i class="bi bi-camera-video fs-6 me-lg-1 align-middle"></i>
+                                            <span class="d-lg-inline d-none">@lang('miscellaneous.public.home.stories.type.camera')</span>
+                                        </button>
+                                    </div>
+                                    <div class="d-inline-block me-2">
+                                        <button id="live_story" class="btn btn-sm btn-primary rounded-pill rounded-circle" style="padding: 10px 13px 10px 13px;">
+                                            <i class="bi bi-broadcast fs-6 me-lg-1 align-middle"></i>
+                                            <span class="d-lg-inline d-none">@lang('miscellaneous.public.home.stories.type.live')</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Edit text -->
+                                <div class="add-text d-flex justify-content-center align-items-center flex-column position-fixed w-100 pe-lg-3 d-none" style="background: rgba(10, 10, 10, 0.5); height: 110vh; top: -20px; left: 0; z-index: 9;">
+                                    <div id="text-tools" class="mb-3">
+                                        <button class="btn text-white p-0 text_left" data-bs-toggle="tooltip" title="@lang('miscellaneous.edit_text.left')">
+                                            <i class="bi bi-text-left fs-3"></i>
+                                        </button>
+                                        <button class="btn text-success mx-1 p-0 text_center" data-bs-toggle="tooltip" title="@lang('miscellaneous.edit_text.center')">
+                                            <i class="bi bi-text-center fs-3"></i>
+                                        </button>
+                                        <button class="btn text-white p-0 text_right" data-bs-toggle="tooltip" title="@lang('miscellaneous.edit_text.right')">
+                                            <i class="bi bi-text-right fs-3"></i>
+                                        </button>
+                                        <button class="btn text-white mx-1 p-0 text_bold" data-bs-toggle="tooltip" title="@lang('miscellaneous.edit_text.bold')">
+                                            <i class="bi bi-type-bold fs-3"></i>
+                                        </button>
+                                        <button class="btn text-white p-0 text_italic" data-bs-toggle="tooltip" title="@lang('miscellaneous.edit_text.italic')">
+                                            <i class="bi bi-type-italic fs-3"></i>
+                                        </button>
+                                        <button class="btn text-white mx-1 p-0 text_underline" data-bs-toggle="tooltip" title="@lang('miscellaneous.edit_text.underline')">
+                                            <i class="bi bi-type-underline fs-3"></i>
+                                        </button>
+                                        <button class="btn text-white p-0 text_strikethrough" data-bs-toggle="tooltip" title="@lang('miscellaneous.edit_text.strikethrough')">
+                                            <i class="bi bi-type-strikethrough fs-3"></i>
+                                        </button>
+                                        <button class="btn text-white p-0 text_uppercase" data-bs-toggle="tooltip" title="@lang('miscellaneous.edit_text.lowercase')">
+                                            <i class="bi bi-type fs-3"></i>
+                                        </button>
+                                    </div>
+                                    <textarea id="text-area" class="bg-transparent mb-3 border-0 text-center fs-4" placeholder="@lang('miscellaneous.edit_text.placeholder')" style="max-width: 300px; max-height: 200px;"></textarea>
+                                    <button class="btn btn-primary">@lang('miscellaneous.register')</button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-sm-5 mx-auto">
+                                    <div id="storyCanvas" class="p-3">
+                                        <img src="{{ asset('assets/img/story-placeholder.png') }}" alt="" class="img-fluid">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- Modal story body END -->
 
                         <!-- Modal story footer -->
-                        <div class="modal-footer px-3 row justify-content-between">
-                            <!-- Button -->
-                            <div class="col-lg-6 text-sm-end">
-                                <button type="submit" class="btn d-block w-100 btn-primary disabled">
-                                    <i class="bi bi-send me-1"></i> @lang('miscellaneous.post')
+                        <div class="modal-footer row d-flex justify-content-center pt-0 border-0">
+                            <div class="col-lg-3 col-sm-5 mx-auto">
+                                <button id="sendStory" class="btn w-100 btn-success-soft border-0 disabled" data-bs-dismiss="modal" aria-label="Register">
+                                    <i class="fa fa-paper-plane me-2"></i>@lang('miscellaneous.post')
                                 </button>
                             </div>
                         </div>
                         <!-- Modal story footer -->
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Modal create story END -->
+@endif
 
         <!-- Modal create post START -->
         <div class="modal fade" id="modalCreatePost" tabindex="-1" aria-labelledby="modalLabelCreatePost" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
+                <div class="modal-content overflow-x-hidden overflow-y-auto">
                     <form id="newPost">
                         <!-- Modal post header START -->
                         <div class="modal-header pb-0 border-bottom-0">
@@ -148,19 +251,21 @@
                         <!-- Modal post body START -->
                         <div class="modal-body pt-3">
                             <!-- Check One Post Type -->
-                            <div id="newPostType" class="mb-3 px-3 py-2 border rounded-pill">
-                                <span class="d-inline-block me-3">@lang('miscellaneous.public.home.posts.choose_type')</span>
-                                <div class="form-check form-check-inline float-end">
-                                    <input class="form-check-input" type="radio" name="post-type" id="postService" value="service">
-                                    <label role="button" class="form-check-label" for="postService">
-                                        @lang('miscellaneous.public.home.posts.type.service')
-                                    </label>
-                                </div>
-                                <div class="form-check form-check-inline float-end">
-                                    <input class="form-check-input" type="radio" name="post-type" id="postProduct" value="product" checked>
-                                    <label role="button" class="form-check-label" for="postProduct">
-                                        @lang('miscellaneous.public.home.posts.type.product')
-                                    </label>
+                            <div id="newPostType" class="d-flex justify-content-lg-between justify-content-center mb-3 px-3 py-2 border rounded-pill">
+                                <span class="d-inline-block">@lang('miscellaneous.public.home.posts.choose_type')</span>
+                                <div>
+                                    <div class="form-check form-check-inline float-end">
+                                        <input class="form-check-input" type="radio" name="post-type" id="postService" value="service">
+                                        <label role="button" class="form-check-label" for="postService">
+                                            @lang('miscellaneous.public.home.posts.type.service')
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline float-end">
+                                        <input class="form-check-input" type="radio" name="post-type" id="postProduct" value="product" checked>
+                                        <label role="button" class="form-check-label" for="postProduct">
+                                            @lang('miscellaneous.public.home.posts.type.product')
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
 
@@ -195,37 +300,17 @@
                             <!-- Select Post categories -->
                             <div class="mt-3 text-center">
                                 <div id="productCategories">
-                                    <input type="checkbox" class="btn-check" id="check-category-product-1" name="check-category-product-1" autocomplete="off" value="1">
-                                    <label for="check-category-product-1" class="small btn btn-secondary-soft m-2 rounded-pill">Matériel d’agriculture</label>
-
-                                    <input type="checkbox" class="btn-check" id="check-category-product-2" name="check-category-product-2" autocomplete="off" value="2">
-                                    <label for="check-category-product-2" class="small btn btn-secondary-soft m-2 rounded-pill">Plante et semence</label>
-
-                                    <input type="checkbox" class="btn-check" id="check-category-product-3" name="check-category-product-3" autocomplete="off" value="3">
-                                    <label for="check-category-product-3" class="small btn btn-secondary-soft m-2 rounded-pill">Produit transformé</label>
-
-                                    <input type="checkbox" class="btn-check" id="check-category-product-4" name="check-category-product-4" autocomplete="off" value="4">
-                                    <label for="check-category-product-4" class="small btn btn-secondary-soft m-2 rounded-pill">Produit extrait</label>
-
-                                    <input type="checkbox" class="btn-check" id="check-category-product-5" name="check-category-product-5" autocomplete="off" value="5">
-                                    <label for="check-category-product-5" class="small btn btn-secondary-soft m-2 rounded-pill">Produit rafffiné</label>
-
-                                    <input type="checkbox" class="btn-check" id="check-category-product-6" name="check-category-product-6" autocomplete="off" value="6">
-                                    <label for="check-category-product-6" class="small btn btn-secondary-soft m-2 rounded-pill">Traitement des plantes</label>
+@foreach ($categories_product as $category)
+                                    <input type="radio" class="btn-check" id="check-category-product-{{ $category['id'] }}" name="check-category-product" autocomplete="off" value="{{ $category['id'] }}">
+                                    <label for="check-category-product-{{ $category['id'] }}" class="btn btn-secondary-soft m-2 rounded-pill" style="font-size: 10pt;">{{ $category['category_name'] }}</label>
+@endforeach
                                 </div>
 
                                 <div id="serviceCategories" class="d-none">
-                                    <input type="checkbox" class="btn-check" id="check-category-service-1" name="check-category-service-1" autocomplete="off" value="20">
-                                    <label for="check-category-service-1" class="small btn btn-secondary-soft m-2 rounded-pill">Transport et livraison</label>
-
-                                    <input type="checkbox" class="btn-check" id="check-category-service-2" name="check-category-service-2" autocomplete="off" value="21">
-                                    <label for="check-category-service-2" class="small btn btn-secondary-soft m-2 rounded-pill">Stockage et conservation</label>
-
-                                    <input type="checkbox" class="btn-check" id="check-category-service-3" name="check-category-service-3" autocomplete="off" value="22">
-                                    <label for="check-category-service-3" class="small btn btn-secondary-soft m-2 rounded-pill">Transformation et raffinerie</label>
-
-                                    <input type="checkbox" class="btn-check" id="check-category-service-4" name="check-category-service-4" autocomplete="off" value="23">
-                                    <label for="check-category-service-4" class="small btn btn-secondary-soft m-2 rounded-pill">Gastronomie bio</label>
+@foreach ($categories_service as $category)
+                                    <input type="radio" class="btn-check" id="check-category-service-{{ $category['id'] }}" name="check-category-service" autocomplete="off" value="{{ $category['id'] }}">
+                                    <label for="check-category-service-{{ $category['id'] }}" class="btn btn-secondary-soft m-2 rounded-pill" style="font-size: 10pt;">{{ $category['category_name'] }}</label>
+@endforeach
                                 </div>
                             </div>
                         </div>
@@ -264,7 +349,7 @@
 
                             <!-- Button -->
                             <div class="col-lg-6 text-sm-end">
-                                <button type="submit" class="btn d-block w-100 btn-primary disabled">
+                                <button type="submit" class="btn d-block w-100 btn-primary-soft disabled">
                                     <i class="bi bi-send me-1"></i> @lang('miscellaneous.post')
                                 </button>
                             </div>

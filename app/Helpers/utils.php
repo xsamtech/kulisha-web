@@ -151,7 +151,7 @@ if (!function_exists('explicitDate')) {
     }
 }
 
-// All days of specific week in month
+// Get start and end of specific week in month
 if (!function_exists('getStartAndEndOfWeekInMonth')) {
     function getStartAndEndOfWeekInMonth($year, $month, $weekNumber)
     {
@@ -327,6 +327,24 @@ if (!function_exists('addItemsToExplodedArray')) {
         $saved = array_merge($explodes, $items);
 
         return implode($separator, $saved);
+    }
+}
+
+// Get columns of a same namme from JSON
+if (!function_exists('getColumnsFromJson')) {
+    function getColumnsFromJson($jsonData, $column)
+    {
+        $jsonString = json_encode($jsonData);
+        $data = json_decode($jsonString, true);
+        $tableColumns = [];
+
+        foreach ($data as $table) {
+            if (isset($table[$column])) {
+                $tableColumns[] = $table[$column];
+            }
+        }
+
+        return $tableColumns;
     }
 }
 

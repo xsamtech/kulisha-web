@@ -3,7 +3,7 @@
 @section('app-content')
 
                     <!-- Sidenav START -->
-					<div id="partial1" class="col-lg-3 mt-0">
+					<div id="partial1" class="col-lg-3 mt-0 d-lg-inline-block d-sm-none d-block">
 						<!-- Advanced filter responsive toggler START -->
 						<div class="d-flex align-items-center d-lg-none mb-3">
 							<button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
@@ -23,6 +23,7 @@
 
 								<!-- Offcanvas body -->
 								<div class="offcanvas-body d-block px-2 px-lg-0">
+									{{-- CURRENT USER --}}
 									<!-- Card START -->
 									<div class="card overflow-hidden">
 										<!-- Cover image -->
@@ -79,7 +80,7 @@
 					<!-- Sidenav END -->
 
 					<!-- Main content START -->
-					<div id="partial2" class="col-lg-6 col-md-8 vstack gap-4 mt-0">
+					<div id="partial2" class="col-lg-6 col-md-8 mx-auto vstack gap-4 mt-0">
 						<!-- Discovery START
 						<div class="">
                         </div> -->
@@ -101,10 +102,10 @@
 					<!-- Main content END -->
 
 					<!-- Right sidebar START -->
-					<div id="partial3" class="col-lg-3 mt-0">
+					<div id="partial3" class="col-lg-3 col-md-4 mx-auto mt-0">
 						<div class="row g-4">
 							<!-- Card follow START -->
-							<div class="col-sm-6 col-lg-12">
+							<div class="col-lg-12">
 								<div class="card">
 									<!-- Card header START -->
 									<div class="card-header pb-0 border-0">

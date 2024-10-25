@@ -15775,7 +15775,7 @@ header {
   .navbar.navbar-icon .navbar-collapse {
     width: 100%;
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
   }
   .navbar.navbar-icon .navbar-collapse .navbar-nav .nav-item {
     padding: 0 10px;
@@ -15784,12 +15784,12 @@ header {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: start;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: start;
     font-size: 1rem;
     padding: 0.2rem 1.2rem;
   }

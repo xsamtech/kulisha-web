@@ -3,7 +3,7 @@
 @section('app-content')
 
 					<!-- Sidenav START -->
-					<div id="partial1" class="col-lg-3 mt-0">
+					<div id="partial1" class="col-lg-3 mt-0 d-lg-inline-block d-sm-none d-block">
 						<!-- Advanced filter responsive toggler START -->
 						<div class="d-flex align-items-center d-lg-none mb-3">
 							<button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
@@ -139,21 +139,16 @@
 					<!-- Sidenav END -->
 
 					<!-- Main content START -->
-					<div id="partial2" class="col-lg-6 col-md-8 vstack gap-4 mt-0">
+					<div id="partial2" class="col-lg-6 col-md-8 mx-auto vstack gap-4 mt-0">
 						<!-- Story START -->
 						<div class="d-flex gap-3 mb-n3">
 							<div class="position-relative text-center">
 								<!-- Card START -->
-								<div class="mb-1">
-									<label role="button" for="image_story" class="stretched-link btn btn-dark rounded-circle icon-xxl rounded-circle">
+								<a role="button" class="small fw-normal text-secondary" data-bs-toggle="modal" data-bs-target="#modalCreateStory">
+									<span class="stretched-link btn btn-dark rounded-circle icon-xxl rounded-circle">
 										<i class="fa-solid fa-plus fs-6"></i>
-										<input type="file" name="image_story" id="image_story" class="d-none">
-									</label>
-									<input type="hidden" name="data_story" id="data_story">
-								</div>
-
-								<a href="#!" class="small fw-normal text-secondary">
-									<p class="d-inline-block kls-line-height-1_25">@lang('miscellaneous.public.home.stories.new')</p>
+									</span>
+									<p class="mb-0 kls-line-height-1_25" style="margin-top: 0.55rem;">@lang('miscellaneous.public.home.stories.new')</p>
 								</a>
 								<!-- Card END -->
 							</div>
@@ -167,8 +162,8 @@
 							<div class="d-flex mb-3">
 								<!-- Avatar -->
 								<div class="avatar avatar-xs me-2">
-									<a href="#">
-										<img class="avatar-img rounded-circle" src="{{ asset('assets/img/template/avatar/07.jpg') }}" alt>
+									<a href="{{ route('profile.home', ['username' => $current_user['username']]) }}">
+										<img class="avatar-img rounded-circle" src="{{ asset($current_user['profile_photo_path']) }}" alt>
 									</a>
 								</div>
 
@@ -180,20 +175,20 @@
 
 							<!-- Share feed toolbar START -->
 							<div class="d-flex flex-row mb-2">
-								<a class="flex-fill small bg-light me-2 py-1 px-2 mb-0 text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreateEvents">
+								<button class="flex-fill small btn-secondary border-0 me-2 py-1 px-2 mb-0 text-start text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreateEvents">
 									<i class="bi bi-calendar2-event-fill pe-2 fs-6 text-danger"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.event')</span>
-								</a>
-								<a class="flex-fill small bg-light py-1 px-2 mb-0 text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreatePoll">
+								</button>
+								<button class="flex-fill small btn-secondary border-0 py-1 px-2 mb-0 text-start text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreatePoll">
 									<i class="bi bi-list-check pe-2 fs-6 text-warning"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.poll.label')</span>
-								</a>
+								</button>
 							</div>
 							<div class="d-flex flex-row">
-								<a class="flex-fill small bg-light me-2 py-1 px-2 mb-0 text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionAnonymousQuestion">
+								<button class="flex-fill small btn-secondary border-0 me-2 py-1 px-2 mb-0 text-start text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionAnonymousQuestion">
 									<i class="bi bi-question-circle pe-2 fs-6 text-info"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.anonymous_question')</span>
-								</a>
-								<a class="flex-fill small bg-light py-1 px-2 mb-0 text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionArticle">
+								</button>
+								<button class="flex-fill small btn-secondary border-0 py-1 px-2 mb-0 text-start text-truncate" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionArticle">
 									<i class="bi bi-newspaper pe-2 fs-6 text-success"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.article')</span>
-								</a>
+								</button>
 							</div>
 						</div>
 						<!-- Share feed END -->
@@ -1676,10 +1671,10 @@
 					<!-- Main content END -->
 
 					<!-- Right sidebar START -->
-					<div id="partial3" class="col-lg-3 mt-0">
+					<div id="partial3" class="col-lg-3 col-md-4 mx-auto mt-0">
 						<div class="row g-4">
 							<!-- Card follow START -->
-							<div class="col-sm-6 col-lg-12">
+							<div class="col-lg-12">
 								<div class="card">
 									<!-- Card header START -->
 									<div class="card-header pb-0 border-0">
@@ -1788,7 +1783,7 @@
 							<!-- Card follow START -->
 
 							<!-- Card News START -->
-							<div class="col-sm-6 col-lg-12">
+							<div class="col-lg-12">
 								<div class="card">
 									<!-- Card header START -->
 									<div class="card-header pb-0 border-0">
