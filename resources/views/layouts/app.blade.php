@@ -273,7 +273,7 @@
                             <div class="d-flex mb-3">
                                 <!-- Avatar -->
                                 <div class="avatar avatar-xs me-2">
-                                    <img class="avatar-img rounded-circle" src="{{ asset('assets/img/template/avatar/07.jpg') }}" alt>
+                                    <img class="avatar-img rounded-circle" src="{{ asset($current_user['profile_photo_path']) }}" alt>
                                 </div>
                                 <!-- Post box  -->
                                 <div class="w-100">
