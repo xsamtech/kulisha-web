@@ -251,19 +251,19 @@
                         <!-- Modal post body START -->
                         <div class="modal-body pt-3">
                             <!-- Check One Post Type -->
-                            <div id="newPostType" class="d-flex justify-content-lg-between justify-content-center mb-3 px-3 py-2 border rounded-pill">
+                            <div id="newPostType" class="d-flex justify-content-sm-between justify-content-center flex-sm-row flex-column text-sm-start text-center mb-3 px-3 py-2 border rounded-pill">
                                 <span class="d-inline-block">@lang('miscellaneous.public.home.posts.choose_type')</span>
-                                <div>
-                                    <div class="form-check form-check-inline float-end">
-                                        <input class="form-check-input" type="radio" name="post-type" id="postService" value="service">
-                                        <label role="button" class="form-check-label" for="postService">
-                                            @lang('miscellaneous.public.home.posts.type.service')
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-check-inline float-end">
+                                <div class="ps-sm-0 ps-2">
+                                    <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="post-type" id="postProduct" value="product" checked>
                                         <label role="button" class="form-check-label" for="postProduct">
                                             @lang('miscellaneous.public.home.posts.type.product')
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="post-type" id="postService" value="service">
+                                        <label role="button" class="form-check-label" for="postService">
+                                            @lang('miscellaneous.public.home.posts.type.service')
                                         </label>
                                     </div>
                                 </div>
@@ -328,7 +328,12 @@
 
                                     <!-- Visibility dropdown menu -->
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="toggleVisibility">
+@foreach ($post_visibilities as $visibility)
                                         <li>
+                                            <a role="button" class="dropdown-item {{ $visibility['alias'] }}"><i class="{{ $visibility['icon_font'] }} me-2"></i>{{ $visibility['visibility_name'] }}</a>
+                                        </li>
+@endforeach
+                                        {{-- <li>
                                             <a role="button" class="dropdown-item everybody"><i class="bi bi-globe-europe-africa me-2"></i>Tout le monde</a>
                                         </li>
                                         <li>
@@ -342,7 +347,7 @@
                                         </li>
                                         <li>
                                             <a role="button" class="dropdown-item connections_only"><i class="fa-solid fa-user-check me-2"></i>Mes connexions uniquement</a>
-                                        </li>
+                                        </li> --}}
                                     </ul>
                                 </div>
                             </div>
