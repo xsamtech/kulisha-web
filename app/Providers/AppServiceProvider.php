@@ -48,19 +48,26 @@ class AppServiceProvider extends ServiceProvider
                 $categories_product_collection = Category::whereHas('fields', function ($query) use ($fields_ids, $product_type) { $query->whereIn('fields.id', $fields_ids); })->where('type_id', $product_type->id)->get();
                 $categories_product_resource = ResourcesCategory::collection($categories_product_collection);
                 $categories_product = $categories_product_resource->toArray(request());
+                $categories_product_type = $categories_product[0]['type']->toArray(request());
                 // Categories for service
                 $categories_service_collection = Category::where('type_id', $service_type->id)->get();
                 $categories_service_resource = ResourcesCategory::collection($categories_service_collection);
                 $categories_service = $categories_service_resource->toArray(request());
+                $categories_service_type = $categories_service[0]['type']->toArray(request());
                 // Visibilities for posts
                 $post_visibilities_collection = Visibility::where('group_id', $post_visibilities_group->id)->get();
                 $post_visibilities_resource = ResourcesVisibility::collection($post_visibilities_collection);
                 $post_visibilities = $post_visibilities_resource->toArray(request());
+                // Default visibility (Everybody)
+                $everybody_visibility = Visibility::where('alias', 'everybody')->first();
 
                 $view->with('current_user', $user_data);
                 $view->with('categories_product', $categories_product);
+                $view->with('categories_product_type', $categories_product_type);
                 $view->with('categories_service', $categories_service);
+                $view->with('categories_service_type', $categories_service_type);
                 $view->with('post_visibilities', $post_visibilities);
+                $view->with('everybody_visibility', $everybody_visibility);
             }
 
             $view->with('current_locale', app()->getLocale());

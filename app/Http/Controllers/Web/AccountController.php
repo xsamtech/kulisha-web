@@ -39,4 +39,14 @@ class AccountController extends Controller
     {
         return view('profile.edit');
     }
+
+    /**
+     * GET: Messages page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function message()
+    {
+        return view('message');
+    }
 }

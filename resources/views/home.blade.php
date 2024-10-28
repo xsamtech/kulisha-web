@@ -256,13 +256,17 @@
 
 								<!-- Feed react START -->
 								<ul class="nav nav-pills nav-pills-light nav-fill nav-stack small border-top border-bottom py-1 my-3">
-									<li class="nav-item">
-										<a class="nav-link mb-0 active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="Frances Guerrero<br> Lori Stevens<br> Billy Vasquez<br> Judy Nguyen<br> Larry Lawson<br> Amanda Reed<br> Louis Crawford">
-											<i class="bi bi-heart pe-1"></i>Liked (56)
+									<li class="reaction-wrapper nav-item">
+										<a class="nav-link mb-0 FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="">
+											<span class="reaction-icon d-inline p-0">
+												<i class="fa-solid fa-thumbs-up"></i>
+												{{-- <img src="{{ asset('assets/img/reaction/i_like_post.png') }}" alt="J’aime" width="15"> --}}
+											</span>
+											<span class="reaction-name d-inline-block ms-1 p-0"> @lang('miscellaneous.like')</span> (56)
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link mb-0" href="#!">
+										<a class="nav-link mb-0">
 											<i class="bi bi-chat-fill pe-1"></i>Comments (12)
 										</a>
 									</li>

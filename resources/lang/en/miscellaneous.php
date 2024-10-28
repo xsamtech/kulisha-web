@@ -44,6 +44,7 @@ return [
     'select_one_more' => 'Select one or more',
     'see_all_notifications' => 'View all notifications',
     'loading' => 'Loading...',
+    'like' => 'Like',
     'yes' => 'Yes',
     'no' => 'No',
     'connection' => 'Connection',
@@ -634,8 +635,7 @@ return [
                 'new' => 'Publish something...',
                 'write' => 'Write here ...',
                 'choose_type' => 'Choose the type of post',
-                'product_categories' => 'Category(ies) of your product',
-                'service_categories' => 'Category(ies) of your service',
+                'choose_category' => 'Choose a category for your <strong>:post_type</strong>',
                 'choose_visibility' => 'Who can see the post?',
                 'create_poll_choices' => 'Create choices for this poll',
 

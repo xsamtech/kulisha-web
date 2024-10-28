@@ -44,6 +44,7 @@ return [
     'select_one_more' => 'Sélectionner un(e) ou plusieurs',
     'see_all_notifications' => 'Voir toutes les notifications',
     'loading' => 'Chargement ...',
+    'like' => 'J’aime',
     'yes' => 'Oui',
     'no' => 'Non',
     'connection' => 'Connexion',
@@ -633,9 +634,8 @@ return [
             'posts' => [
                 'new' => 'Publiez quelque chose ...',
                 'write' => 'Écrivez ici ...',
-                'choose_type' => 'Choisissez le type de post',
-                'product_categories' => 'Catégorie(s) de votre produit',
-                'service_categories' => 'Catégorie(s) de votre service',
+                'choose_type' => 'Choisir le type de post',
+                'choose_category' => 'Choisir une categorie pour votre <strong>:post_type</strong>',
                 'choose_visibility' => 'Qui peut voir ce post ?',
                 'create_poll_choices' => 'Créez des choix pour ce sondage',
 

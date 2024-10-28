@@ -48,6 +48,8 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/plyr/plyr.css') }}">
         <!-- Zuck CSS -->
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/zuck.js/dist/zuck.min.css') }}">
+        <!-- Facebook Reaction CSS -->
+		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/99points-facebook-reactions/stylesheet.css') }}">
 
         <!-- Theme CSS -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/social/css/style.css') }}">
@@ -206,7 +208,7 @@
                                             <i class="bi bi-type fs-3"></i>
                                         </button>
                                     </div>
-                                    <textarea id="text-area" class="bg-transparent mb-3 border-0 text-center fs-4" placeholder="@lang('miscellaneous.edit_text.placeholder')" style="max-width: 300px; max-height: 200px;"></textarea>
+                                    <textarea id="story-textarea" class="bg-transparent mb-3 border-0 text-center fs-4" placeholder="@lang('miscellaneous.edit_text.placeholder')" style="max-width: 300px; max-height: 200px;"></textarea>
                                     <button class="btn btn-primary">@lang('miscellaneous.register')</button>
                                 </div>
                             </div>
@@ -251,7 +253,7 @@
                         <!-- Modal post body START -->
                         <div class="modal-body pt-3">
                             <!-- Check One Post Type -->
-                            <div id="newPostType" class="d-flex justify-content-sm-between justify-content-center flex-sm-row flex-column text-sm-start text-center mb-3 px-3 py-2 border rounded-pill">
+                            <div id="newPostType" class="d-flex justify-content-sm-between justify-content-center flex-sm-row flex-column mb-3 px-3 py-2 border rounded-pill text-sm-start text-center">
                                 <span class="d-inline-block">@lang('miscellaneous.public.home.posts.choose_type')</span>
                                 <div class="ps-sm-0 ps-2">
                                     <div class="form-check form-check-inline">
@@ -277,7 +279,7 @@
                                 </div>
                                 <!-- Post box  -->
                                 <div class="w-100">
-                                    <textarea class="form-control pe-4 fs-3 lh-1 border-0" rows="3" placeholder="@lang('miscellaneous.public.home.posts.write')" autofocus></textarea>
+                                    <textarea id="post-textarea" class="form-control pe-4 fs-3 lh-1 border-0" rows="3" placeholder="@lang('miscellaneous.public.home.posts.write')" onkeyup="unableSubmit(this);" autofocus></textarea>
                                 </div>
                             </div>
 
@@ -298,17 +300,20 @@
                             </div>
 
                             <!-- Select Post categories -->
-                            <div class="mt-3 text-center">
+                            <div class="mt-3 text-center p-3 border rounded-5">
+                                <h6 class="fw-light product-type-title">@lang('miscellaneous.public.home.posts.choose_category', ['post_type' => strtolower($categories_product_type['type_name'])])</h6>
+                                <h6 class="fw-light service-type-title d-none">@lang('miscellaneous.public.home.posts.choose_category', ['post_type' => strtolower($categories_service_type['type_name'])])</h6>
+
                                 <div id="productCategories">
 @foreach ($categories_product as $category)
-                                    <input type="radio" class="btn-check" id="check-category-product-{{ $category['id'] }}" name="check-category-product" autocomplete="off" value="{{ $category['id'] }}">
+                                    <input type="radio" class="btn-check" id="check-category-product-{{ $category['id'] }}" name="check-category" autocomplete="off" value="{{ $category['id'] }}">
                                     <label for="check-category-product-{{ $category['id'] }}" class="btn btn-secondary-soft m-2 rounded-pill" style="font-size: 10pt;">{{ $category['category_name'] }}</label>
 @endforeach
                                 </div>
 
                                 <div id="serviceCategories" class="d-none">
 @foreach ($categories_service as $category)
-                                    <input type="radio" class="btn-check" id="check-category-service-{{ $category['id'] }}" name="check-category-service" autocomplete="off" value="{{ $category['id'] }}">
+                                    <input type="radio" class="btn-check" id="check-category-service-{{ $category['id'] }}" name="check-category" autocomplete="off" value="{{ $category['id'] }}">
                                     <label for="check-category-service-{{ $category['id'] }}" class="btn btn-secondary-soft m-2 rounded-pill" style="font-size: 10pt;">{{ $category['category_name'] }}</label>
 @endforeach
                                 </div>
@@ -317,44 +322,33 @@
                         <!-- Modal post body END -->
 
                         <!-- Modal post footer -->
-                        <div class="modal-footer px-3 row justify-content-between">
-                            <!-- Select -->
-                            <div class="col-lg-4">
-                                <input type="hidden" id="post-visibility" name="post-visibility" value="everybody">
-                                <div class="dropdown d-inline-block" title="@lang('miscellaneous.public.home.posts.choose_visibility')" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                    <a role="button" class="text-secondary dropdown-toggle btn btn-secondary-soft py-1 px-2 rounded-pill" id="toggleVisibility" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-globe-europe-africa fs-6"></i>
-                                    </a>
+                        <div class="modal-footer px-3">
+                            <!-- Select visibility -->
+                            <div class="row g-0 d-flex justify-content-between">
+                                <div id="visibility" class="col-sm-2 col-3">
+                                    <input type="hidden" name="post-visibility" id="post-visibility" value="{{ $everybody_visibility->id }}">
+                                    <div class="dropdown d-inline-block" title="@lang('miscellaneous.public.home.posts.choose_visibility')" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                                        <a role="button" class="text-secondary dropdown-toggle btn btn-secondary-soft py-1 px-2 rounded-pill" id="toggleVisibility" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="{{ $everybody_visibility->icon_font }} fs-6"></i>
+                                        </a>
 
-                                    <!-- Visibility dropdown menu -->
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="toggleVisibility">
+                                        <!-- Visibility dropdown menu -->
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="toggleVisibility">
 @foreach ($post_visibilities as $visibility)
-                                        <li>
-                                            <a role="button" class="dropdown-item {{ $visibility['alias'] }}"><i class="{{ $visibility['icon_font'] }} me-2"></i>{{ $visibility['visibility_name'] }}</a>
-                                        </li>
+                                            <li>
+                                                <a role="button" id="visibility-{{ $visibility['id'] }}" class="dropdown-item{{ $visibility['alias'] == 'everybody' ? ' active' : '' }}" data-icon="{{ $visibility['icon_font'] }}">
+                                                    <span class="d-inline-block" style="width: 30px;"><i class="{{ $visibility['icon_font'] }}"></i></span>{{ $visibility['visibility_name'] }}
+                                                </a>
+                                            </li>
 @endforeach
-                                        {{-- <li>
-                                            <a role="button" class="dropdown-item everybody"><i class="bi bi-globe-europe-africa me-2"></i>Tout le monde</a>
-                                        </li>
-                                        <li>
-                                            <a role="button" class="dropdown-item incognito"><i class="bi bi-incognito me-2"></i>Moi uniquement</a>
-                                        </li>
-                                        <li>
-                                            <a role="button" class="dropdown-item everybody_except"><i class="fa-solid fa-users-gear me-2"></i>Tout le monde, sauf ...</a>
-                                        </li>
-                                        <li>
-                                            <a role="button" class="dropdown-item nobody_except"><i class="fa-solid fa-user-gear me-2"></i>Personne, sauf …</a>
-                                        </li>
-                                        <li>
-                                            <a role="button" class="dropdown-item connections_only"><i class="fa-solid fa-user-check me-2"></i>Mes connexions uniquement</a>
-                                        </li> --}}
-                                    </ul>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Button -->
-                            <div class="col-lg-6 text-sm-end">
-                                <button type="submit" class="btn d-block w-100 btn-primary-soft disabled">
+                            <div class="col-sm-10 col-9 text-sm-end">
+                                <button class="send-post btn d-block w-100 btn-primary-soft disabled">
                                     <i class="bi bi-send me-1"></i> @lang('miscellaneous.post')
                                 </button>
                             </div>
@@ -399,6 +393,8 @@
         <script src="{{ asset('assets/addons/custom/jquery/scroll4ever/js/jquery.scroll4ever.js') }}"></script>
         <!-- Custom scripts -->
         <script src="{{ asset('assets/js/load-app-scripts.js') }}"></script>
+        <!-- Facebook Reaction CSS -->
+        <script src="{{ asset('assets/addons/custom/99points-facebook-reactions/facebook-reactions.js') }}"></script>
         <script src="{{ asset('assets/js/classes.js') }}"></script>
 @if (Route::is('home'))
         <!-- Zuck -->
@@ -408,19 +404,727 @@
         <script src="{{ asset('assets/js/script.app.js') }}"></script>
         <script src="{{ asset('assets/js/navigation.js') }}"></script>
         <script type="text/javascript">
+function navigate(url, element) {
+    ref = element.getAttribute('data-page');
+
+    switch (ref) {
+        case 'home':
+            document.title = '{{ "Kulisha / " . __("miscellaneous.menu.public.news_feed") }}'
+            document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img class="h-50px" src="/assets/img/cover-placeholder.png" class="card-img-top" alt>' +
+                                                                        '<div class="card-body pt-0">' +
+                                                                            '<div class="text-center">' +
+                                                                                '<div class="avatar avatar-lg mt-n5 mb-3">' +
+                                                                                    '<a><img class="avatar-img rounded border border-white border-3" src="/assets/img/avatar-placeholder.png" alt></a>' +
+                                                                                '</div>' +
+                                                                                '<p class="card-text placeholder-glow">' +
+                                                                                    '<span class="placeholder col-7"></span>' +
+                                                                                    '<span class="placeholder col-5"></span>' +
+                                                                                '</p>' +
+                                                                            '</div>' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                            '</div>';
+            break;
+
+        case 'discover':
+            document.title = '{{ "Kulisha / " . __("miscellaneous.menu.discover") }}'
+            document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                        '</div>' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                            '</div>';
+            break;
+
+        case 'cart':
+            document.title = '{{ "Kulisha / " . __("miscellaneous.menu.public.orders.cart.title") }}'
+            document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                        '</div>' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                            '</div>';
+            break;
+
+        case 'notification':
+            document.title = '{{ "Kulisha / " . __("miscellaneous.menu.notifications.title") }}'
+            document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                        '</div>' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                            '</div>';
+            break;
+
+        case 'community':
+            document.title = '{{ __("miscellaneous.menu.public.communities.title") }}'
+            document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                        '</div>' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                            '</div>';
+            break;
+
+        case 'event':
+            document.title = '{{ __("miscellaneous.menu.public.events.title") }}'
+            document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                        '</div>' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                            '</div>';
+            break;
+
+        case 'message':
+            document.title = '{{ __("miscellaneous.menu.messages") }}'
+            document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                        '</div>' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                                '<div class="col-lg-3 mt-0">' +
+                                                                    '<div class="card" aria-hidden="true">' +
+                                                                        '<img src="..." class="card-img-top" alt="...">' +
+                                                                        '<div class="card-body">' +
+                                                                            '<h5 class="card-title placeholder-glow">' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                            '</h5>' +
+                                                                            '<p class="card-text placeholder-glow">' +
+                                                                                '<span class="placeholder col-7"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-4"></span>' +
+                                                                                '<span class="placeholder col-6"></span>' +
+                                                                                '<span class="placeholder col-8"></span>' +
+                                                                            '</p>' +
+                                                                            '<a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-6"></a>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                                            '</div>';
+            break;
+        default:
+            break;
+    }
+
+    fetch(url).then(response => {
+        if (!response.ok) {
+            console.error('*****Response error: ', response.status);
+            throw new Error('<?= __("notifications.network_error") ?>');
+        }
+
+        console.log('*****url: ' + url);
+
+        return response.text();
+
+    }).then(html => {
+        // Using DOMParser to parse HTML
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        const extractedPart1 = doc.querySelector('#partial1').innerHTML; 
+        const extractedPart2 = doc.querySelector('#partial2').innerHTML; 
+        const extractedPart3 = doc.querySelector('#partial3').innerHTML; 
+
+        let columnsHtml = '';
+
+        if (extractedPart3) {
+            if (extractedPart1) {
+                columnsHtml += `<div class="col-lg-3 mt-0">${extractedPart1}</div>`;
+            }
+
+            if (extractedPart2) {
+                columnsHtml += `<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">${extractedPart2}</div>`;
+            }
+
+            if (extractedPart3) {
+                columnsHtml += `<div class="col-lg-3 mt-0">${extractedPart3}</div>`;
+            }
+
+        } else {
+            if (extractedPart1) {
+                columnsHtml += `<div class="col-lg-9 mt-0">${extractedPart1}</div>`;
+            }
+
+            if (extractedPart2) {
+                columnsHtml += `<div class="col-lg-3 mt-0">${extractedPart2}</div>`;
+            }
+        }
+
+        // Insert columns into main content
+        document.getElementById('content').innerHTML = columnsHtml;
+
+        // Update history
+        history.pushState({ url: url }, '', url);
+        // loadScriptsInParallel(scripts).then(initializeComponents);
+        loadScriptsInParallel(scripts).then(() => {
+            initializeComponents();
+            setActiveLink(element);
+        }).catch(error => {
+            console.error('*****Error loading scripts: ', error);
+        });
+
+        setActiveLink(element)
+
+    }).catch(error => {
+        document.getElementById('content').innerHTML = `<div class="col-sm-6 mx-auto pt-5"><div class="mt-5 bg-image d-flex justify-content-center"><img src="/assets/img/logo.png" width="160"><div class="mask"></div></div><h1 class="mb-0 text-center">${error}</h1></div>`;
+    });
+}
+
+window.onpopstate = function(event) {
+    if (event.state) {
+        fetch(event.state.url).then(response => {
+            if (!response.ok) {
+                throw new Error('<?= __("notifications.network_error") ?>');
+            }
+
+            console.log('*****event.state.url: ' + event.state.url);
+            console.log('*****response.text(): ' + response.text());
+
+            return response.text();
+
+        }).then(html => {
+            // Using DOMParser to parse HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            const extractedPart1 = doc.querySelector('#partial1').innerHTML; 
+            const extractedPart2 = doc.querySelector('#partial2').innerHTML; 
+            const extractedPart3 = doc.querySelector('#partial3').innerHTML; 
+
+            let columnsHtml = '';
+
+            if (extractedPart3) {
+                if (extractedPart1) {
+                    columnsHtml += `<div class="col-lg-3 mt-0">${extractedPart1}</div>`;
+                }
+
+                if (extractedPart2) {
+                    columnsHtml += `<div class="col-lg-6 col-md-8 vstack gap-4 mt-0">${extractedPart2}</div>`;
+                }
+
+                if (extractedPart3) {
+                    columnsHtml += `<div class="col-lg-3 mt-0">${extractedPart3}</div>`;
+                }
+
+            } else {
+                if (extractedPart1) {
+                    columnsHtml += `<div class="col-lg-9 mt-0">${extractedPart1}</div>`;
+                }
+
+                if (extractedPart2) {
+                    columnsHtml += `<div class="col-lg-3 mt-0">${extractedPart2}</div>`;
+                }
+            }
+
+            // Insert columns into main content
+            document.getElementById('content').innerHTML = columnsHtml;
+
+            // loadScriptsInParallel(scripts).then(initializeComponents);
+            loadScriptsInParallel(scripts).then(() => {
+                initializeComponents();
+                setActiveLink(element);
+            }).catch(error => {
+                console.error('*****Error loading scripts: ', error);
+            });
+
+            setActiveLink(element)
+
+        }).catch(error => {
+            console.error('*****Error while loading data: ', error);
+        });
+
+    } else {
+        document.getElementById('content').innerHTML = `<div class="col-sm-6 mx-auto pt-5"><div class="mt-5 bg-image d-flex justify-content-center"><img src="/assets/img/logo.png" width="160"><div class="mask"></div></div><h1 class="mb-0 text-center"><div class="spinner-grow" role="status"><span class="visually-hidden">Loading...</span></div></h1></div>`;
+    }
+};
+
+function setActiveLink(element) {
+    // Retrieves the value of data-page
+    const activePage = element.getAttribute('data-page');
+    // All menu links
+    const homeLink = document.getElementById('homeLink');
+    const discoverLink = document.getElementById('discoverLink');
+    const cartLink = document.getElementById('cartLink');
+    const notificationLink = document.getElementById('notificationLink');
+    const communityLink = document.getElementById('communityLink');
+    const eventLink = document.getElementById('eventLink');
+    const messageLink = document.getElementById('messageLink');
+    // Each link icon
+    const iconHome = homeLink.querySelector('i');
+    const iconDiscover = discoverLink.querySelector('i');
+    const iconCart = cartLink.querySelector('i');
+    const iconNotification = notificationLink.querySelector('i');
+    const iconCommunity = communityLink.querySelector('i');
+    const iconEvent = eventLink.querySelector('i');
+    const iconMessage = messageLink.querySelector('i');
+
+    // Removes the "active" class from all links
+    homeLink.classList.remove('active'); 
+    discoverLink.classList.remove('active'); 
+    cartLink.classList.remove('active'); 
+    notificationLink.classList.remove('active'); 
+    communityLink.classList.remove('active'); 
+    eventLink.classList.remove('active'); 
+    messageLink.classList.remove('active'); 
+    // Reset the icons to their default states
+    iconHome.classList.remove('bi-house-fill');
+    iconHome.classList.add('bi-house');
+    iconDiscover.classList.remove('bi-compass-fill');
+    iconDiscover.classList.add('bi-compass');
+    iconCart.classList.remove('bi-basket3-fill');
+    iconCart.classList.add('bi-basket3');
+    iconNotification.classList.remove('bi-bell-fill');
+    iconNotification.classList.add('bi-bell');
+    iconCommunity.classList.remove('bi-people-fill');
+    iconCommunity.classList.add('bi-people');
+    iconEvent.classList.remove( 'bi-calendar-event-fill');
+    iconEvent.classList.add('bi-calendar-event');
+    iconMessage.classList.remove('bi-chat-quote-fill');
+    iconMessage.classList.add('bi-chat-quote');
+
+    switch (activePage) {
+        case 'home':
+            homeLink.classList.add('active');
+            iconHome.classList.add('bi-house-fill');
+            iconHome.classList.remove('bi-house');
+            break;
+
+        case 'discover':
+            discoverLink.classList.add('active');
+            iconDiscover.classList.add('bi-compass-fill');
+            iconDiscover.classList.remove('bi-compass');
+            break;
+
+        case 'cart':
+            cartLink.classList.add('active');
+            iconCart.classList.add('bi-basket3-fill');
+            iconCart.classList.remove('bi-basket3');
+            break;
+
+        case 'notification':
+            notificationLink.classList.add('active');
+            iconNotification.classList.add('bi-bell-fill');
+            iconNotification.classList.remove('bi-bell');
+            break;
+
+        case 'community':
+            communityLink.classList.add('active');
+            iconCommunity.classList.add('bi-people-fill');
+            iconCommunity.classList.remove('bi-people');
+            break;
+
+        case 'event':
+            eventLink.classList.add('active');
+            iconEvent.classList.add('bi-calendar-event-fill');
+            iconEvent.classList.remove('bi-calendar-event');
+            break;
+
+        case 'message':
+            messageLink.classList.add('active');
+            iconMessage.classList.add('bi-chat-quote-fill');
+            iconMessage.classList.remove('bi-chat-quote');
+            break;
+
+        default:
+            break;
+    }
+}
+            // Initiate the reactions
+            $('.FB_reactions').facebookReactions();
+
+            /**
+             * Functions
+             */
+            // Unable "submit" button
+            function unableSubmit(element) {
+                if (element.value.trim() === '') {
+                    $('#newPost .send-post').removeClass('btn-primary');
+                    $('#newPost .send-post').addClass('btn-primary-soft');
+                    $('#newPost .send-post').addClass('disabled');
+
+                } else {
+                    $('#newPost .send-post').removeClass('disabled');
+                    $('#newPost .send-post').removeClass('btn-primary-soft');
+                    $('#newPost .send-post').addClass('btn-primary');
+                }
+            }
+
             $(function () {
+                // Toggle post type
                 $('#newPostType .form-check').each(function () {
                     $(this).on('click', function () {
                         $('[id^="check-category-"]').prop('checked', false);
 
                         if ($('#postService').is(':checked')) {
-                            $('#serviceCategories').removeClass('d-none');
-                            $('#productCategories').addClass('d-none');
+                            $('#serviceCategories, .service-type-title').removeClass('d-none');
+                            $('#productCategories, .product-type-title').addClass('d-none');
 
                         } else {
-                            $('#serviceCategories').addClass('d-none');
-                            $('#productCategories').removeClass('d-none');
+                            $('#serviceCategories, .service-type-title').addClass('d-none');
+                            $('#productCategories, .product-type-title').removeClass('d-none');
                         }
+                    });
+                });
+                // Toggle visibility
+                $('#visibility li a').each(function () {
+                    $(this).on('click', function () {
+                        var visibilityIcon = $(this).attr('data-icon');
+                        var visibilityData = $(this).attr('id');
+                        var visibilityDataArray = visibilityData.split('-');
+
+                        // Change visibility
+                        $('#post-visibility').val(visibilityDataArray[1]);
+                        $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
                     });
                 });
             });

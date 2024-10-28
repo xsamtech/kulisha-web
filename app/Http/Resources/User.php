@@ -87,7 +87,7 @@ class User extends JsonResource
             'tips_at_every_login' => $this->tips_at_every_login,
             'api_token' => $this->api_token,
             'is_online' => $this->is_online,
-            'last_login_at' => $this->last_login_at->format('Y-m-d H:i:s'),
+            'last_login_at' => !empty($this->last_login_at) ? $this->last_login_at->format('Y-m-d H:i:s') : null,
             'status' => Status::make($this->status),
             'type' => Type::make($this->type),
             'visibility' => Visibility::make($this->visibility),
