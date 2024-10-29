@@ -260,7 +260,7 @@
 										<a class="nav-link mb-0 FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="">
 											<span class="reaction-icon d-inline p-0">
 												<i class="fa-solid fa-thumbs-up"></i>
-												{{-- <img src="{{ asset('assets/img/reaction/i_like_post.png') }}" alt="J’aime" width="15"> --}}
+												{{-- <img src="{{ asset('assets/img/reaction/i_like_post.png') }}" alt="" width="15"> --}}
 											</span>
 											<span class="reaction-name d-inline-block ms-1 p-0"> @lang('miscellaneous.like')</span> (56)
 										</a>
