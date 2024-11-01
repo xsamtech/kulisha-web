@@ -465,7 +465,9 @@
                     $('.reaction-icon').removeClass('show')
                 });
 
-                $('.reaction-btn').on('click', function() {
+                $('.reaction-btn').on('click', function(e) {
+                    e.stopPropagation();
+
                     $('.reaction-icon').each(function(i, e) {
                         setTimeout(function() {
                             $(e).addClass('show');
