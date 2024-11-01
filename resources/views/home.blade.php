@@ -257,17 +257,16 @@
 								<!-- Feed react START -->
 								<ul class="nav nav-pills nav-pills-light nav-fill nav-stack small border-top border-bottom py-1 my-3">
 									<li class="nav-item">
-										<a class="nav-link mb-0 reaction-btn" data-reactions-type='horizontal' data-unique-id="1">
+										<a class="nav-link mb-0 reaction-btn" data-reactions-type='horizontal' data-post-id="1">
 											<div class="reaction-box">
 		@foreach ($reactions as $reaction)
-												<div class="reaction-icon {{ $reaction['alias'] }}">
+												<div class="reaction-icon {{ $reaction['alias'] }}" data-reaction-id="{{ $reaction['id'] }}" data-reaction-alias="{{ $reaction['alias'] }}" data-reaction-name="{{ $reaction['reaction_name'] }}">
 													<label>{{ $reaction['reaction_name'] }}</label>
 												</div>
 		@endforeach
 											</div>
-											<span class="current-icon d-inline p-0">
+											<span class="current-reaction d-inline p-0" data-current-reaction="">
 												<i class="fa-solid fa-thumbs-up"></i>
-												{{-- <img src="{{ asset('assets/img/reaction/i_like_post.png') }}" alt="" width="15"> --}}
 											</span>
 											<span class="reaction-name d-inline-block ms-1 p-0"> @lang('miscellaneous.like')</span> (56)
 										</a>
@@ -706,8 +705,20 @@
 							<ul
 								class="nav nav-pills nav-pills-light nav-fill nav-stack small border-top border-bottom py-1 mb-3">
 								<li class="nav-item">
-								<a class="nav-link mb-0 active" href="#!"> <i
-									class="bi bi-heart pe-1"></i>Liked (56)</a>
+									<a class="nav-link mb-0 reaction-btn" data-reactions-type='horizontal' data-post-id="2">
+										<div class="reaction-box">
+	@foreach ($reactions as $reaction)
+											<div class="reaction-icon {{ $reaction['alias'] }}">
+												<label>{{ $reaction['reaction_name'] }}</label>
+											</div>
+	@endforeach
+										</div>
+										<span class="current-reaction d-inline p-0">
+											<i class="fa-solid fa-thumbs-up"></i>
+											{{-- <img src="{{ asset('assets/img/reaction/i_like_post.png') }}" alt="" width="15"> --}}
+										</span>
+										<span class="reaction-name d-inline-block ms-1 p-0"> @lang('miscellaneous.like')</span> (56)
+									</a>
 								</li>
 								<li class="nav-item">
 								<a class="nav-link mb-0" href="#!"> <i

@@ -455,23 +455,46 @@
                 });
 
                 // Reactions
-                $('.reaction-btn').hover(function() {
-                    $('.reaction-icon').each(function(i, e) {
-                        setTimeout(function() {
-                            $(e).addClass('show');
-                        }, i * 100);
+                $('.reaction-btn').each(function () {
+                    var reactionIcon = $(this).find('.reaction-icon');
+                    var currentReaction = $(this).find('.current-reaction');
+                    var currentReactionData = currentReaction.attr('data-current-reaction');
+                    var reactionName = $(this).find('.reaction-name');
+
+                    $(this).hover(function() {
+                        reactionIcon.each(function(i, e) {
+                            setTimeout(function() {
+                                $(e).addClass('show');
+                            }, i * 100);
+                        });
+                    }, function() {
+                        reactionIcon.removeClass('show');
                     });
-                }, function() {
-                    $('.reaction-icon').removeClass('show')
-                });
 
-                $('.reaction-btn').on('click', function(e) {
-                    e.stopPropagation();
+                    $(this).on('click', '.reaction-icon', function() {
+                        var reactionIconDataId = $(this).attr('data-reaction-id');
+                        var reactionIconDataAlias = $(this).attr('data-reaction-alias');
+                        var reactionIconDataName = $(this).attr('data-reaction-name');
 
-                    $('.reaction-icon').each(function(i, e) {
-                        setTimeout(function() {
-                            $(e).addClass('show');
-                        }, i * 100);
+                        if (currentReactionData.trim() === null) {
+                            $(currentReaction).html(`<img src="${currentHost}/assets/img/reaction/${reactionIconDataAlias}.png" alt="">`);
+                            $(currentReaction).attr('data-current-reaction', currentReactionData);
+                            $(reactionName).html(reactionIconDataName);
+
+                        } else {
+                            $(currentReaction).html('<i class="fa-solid fa-thumbs-up"></i>');
+                            currentName.html(`<?= __('miscellaneous.like') ?>`);
+                        }
+                    });
+
+                    $(this).on('click', function(e) {
+                        e.stopPropagation();
+
+                        reactionIcon.each(function(i, e) {
+                            setTimeout(function() {
+                                $(e).addClass('show');
+                            }, i * 100);
+                        });
                     });
                 });
             });
