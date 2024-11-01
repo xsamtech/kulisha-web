@@ -476,19 +476,18 @@
                         var reactionIconDataAlias = $(this).attr('data-reaction-alias');
                         var reactionIconDataName = $(this).attr('data-reaction-name');
 
-                        if (currentReactionData.trim() === null) {
-                            $(currentReaction).html(`<img src="${currentHost}/assets/img/reaction/${reactionIconDataAlias}.png" alt="">`);
-                            $(currentReaction).attr('data-current-reaction', currentReactionData);
-                            $(reactionName).html(reactionIconDataName);
-
-                        } else {
-                            $(currentReaction).html('<i class="fa-solid fa-thumbs-up"></i>');
-                            currentName.html(`<?= __('miscellaneous.like') ?>`);
-                        }
+                        $(currentReaction).html(`<img src="${currentHost}/assets/img/reaction/${reactionIconDataAlias}.png" alt="">`);
+                        $(currentReaction).attr('data-current-reaction', currentReactionData);
+                        $(reactionName).html(reactionIconDataName);
                     });
 
                     $(this).on('click', function(e) {
                         e.stopPropagation();
+
+                        if (currentReactionData.trim() !== null) {
+                            $(currentReaction).html('<i class="fa-solid fa-thumbs-up"></i>');
+                            currentName.html(`<?= __('miscellaneous.like') ?>`);
+                        }
 
                         reactionIcon.each(function(i, e) {
                             setTimeout(function() {
