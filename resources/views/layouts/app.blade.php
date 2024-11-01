@@ -48,19 +48,19 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/plyr/plyr.css') }}">
         <!-- Zuck CSS -->
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/zuck.js/dist/zuck.min.css') }}">
-        <!-- Facebook Reaction CSS -->
-		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/99points-facebook-reactions/stylesheet.css') }}">
-
+        <!-- Reaction CSS -->
+		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/reactions/css/style.css') }}">
         <!-- Theme CSS -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/social/css/style.css') }}">
-
         <!-- Custom CSS -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.custom.css') }}">
+
         <style>
             .kls-fs-7 { font-size: 0.7rem; }
             .kls-text-secondary { color: var(--bs-secondary-text-emphasis); }
             .btn-check:checked + .btn-secondary-soft, :not(.btn-check) + .btn-secondary-soft:active, .btn-secondary-soft:first-child:active, .btn-secondary-soft.active, .btn-secondary-soft.show { color: #fff!important; background-color: #14191e !important; border-color: #14191e !important; }
             [data-bs-theme=dark] .btn-check:checked + .btn-secondary-soft, [data-bs-theme=dark] :not(.btn-check) + .btn-secondary-soft:active, [data-bs-theme=dark] .btn-secondary-soft:first-child:active, [data-bs-theme=dark] .btn-secondary-soft.active, [data-bs-theme=dark] .btn-secondary-soft.show { color: var(--bs-body-bg)!important; background-color: rgba(var(--bs-secondary-rgb)) !important; border-color: transparent !important; }
+            /* Stories */
             #zuck-modal-content .story-viewer .tip {text-transform: inherit!important;}
         </style>
 
@@ -393,8 +393,8 @@
         <script src="{{ asset('assets/addons/custom/jquery/scroll4ever/js/jquery.scroll4ever.js') }}"></script>
         <!-- Custom scripts -->
         <script src="{{ asset('assets/js/load-app-scripts.js') }}"></script>
-        <!-- Facebook Reaction CSS -->
-        <script src="{{ asset('assets/addons/custom/99points-facebook-reactions/facebook-reactions.js') }}"></script>
+        <!-- Reaction CSS -->
+        <script src="{{ asset('assets/addons/custom/reactions/js/scripts.js') }}"></script>
         <script src="{{ asset('assets/js/classes.js') }}"></script>
 @if (Route::is('home'))
         <!-- Zuck -->
@@ -404,11 +404,8 @@
         <script src="{{ asset('assets/js/script.app.js') }}"></script>
         <script src="{{ asset('assets/js/navigation.js') }}"></script>
         <script type="text/javascript">
-            // Initiate the reactions
-            $('.FB_reactions').facebookReactions();
-
             /**
-             * Functions
+             * Native functions
              */
             // Unable "submit" button
             function unableSubmit(element) {
@@ -424,6 +421,9 @@
                 }
             }
 
+            /**
+             * jQuery data
+             */
             $(function () {
                 // Toggle post type
                 $('#newPostType .form-check').each(function () {
@@ -440,6 +440,7 @@
                         }
                     });
                 });
+ 
                 // Toggle visibility
                 $('#visibility li a').each(function () {
                     $(this).on('click', function () {
@@ -452,6 +453,78 @@
                         $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
                     });
                 });
+
+                // // Reactions
+                // $('.reaction-btn').each(function () {
+                //     $(this).hover(function() {
+                //         var $reactionBox = $(this).find('.reaction-box');
+
+                //         $reactionBox.show(); // Show or hide the ".reaction-box"
+
+                //         $.ajax({
+                //             headers: headers,
+                //             method: 'GET',
+                //             contentType: 'application/json',
+                //             url: `${apiHost}/reaction/find_by_group/fr/Réaction sur post`
+                //         }).done(function(data) {
+                //             $reactionBox.empty(); // Set empty the box before adding reactions
+
+                //             data.data.map(function(reaction) {
+                //                 $reactionBox.append(`<div class="reaction-icon">
+                //                                         <img src="${reaction.icon_font}" alt="">
+                //                                         <label>${reaction.reaction_name}</label>
+                //                                     </div>`);
+                //             });
+
+                //         }).fail(function(jqXHR, textStatus, errorThrown) {
+                //             console.error('Erreur lors de la récupération des réactions:', textStatus, errorThrown);
+                //         });
+
+                //         $('.reaction-icon').each(function(index, element) {
+                //             setTimeout(function() {
+                //                 $(element).addClass('show-icon');
+                //             }, index * 100);
+                //         });
+
+                //     }, function () {
+                //         var $reactionBox = $(this).find('.reaction-box');
+
+                //         $reactionBox.hide();
+                //         $reactionBox.empty();
+                //         $('.reaction-icon').removeClass('show-icon')
+                //     });
+
+                //     $(this).on('click', function(event) {
+                //         event.stopPropagation();
+
+                //         var $reactionBox = $(this).find('.reaction-box');
+
+                //         $(this).find('.reaction-box').toggle(); // Show or hide the ".reaction-box"
+
+                //         $.ajax({
+                //             headers: headers,
+                //             method: 'GET',
+                //             contentType: 'application/json',
+                //             url: `${apiHost}/reaction/find_by_group/fr/Réaction sur post`
+                //         }).done(function(data) {
+                //             $reactionBox.empty(); // Vider la boîte avant d'ajouter de nouvelles réactions
+
+                //             data.data.map(function(reaction) {
+                //                 $reactionBox.append(`<div class="reaction-icon">
+                //                                         <img src="${reaction.icon_font}" alt="">
+                //                                         <label>${reaction.reaction_name}</label>
+                //                                     </div>`);
+                //             });
+                //         }).fail(function(jqXHR, textStatus, errorThrown) {
+                //             console.error('Erreur lors de la récupération des réactions:', textStatus, errorThrown);
+                //         });
+                //     });
+                // });
+
+                // // Click outside of ".reaction-btn"
+                // $(document).on('click', function() {
+                //     $('.reaction-box').hide(); // Hide the ".reaction-box"
+                // });
             });
         </script>
     </body>

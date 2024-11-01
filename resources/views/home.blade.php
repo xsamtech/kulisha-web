@@ -256,8 +256,9 @@
 
 								<!-- Feed react START -->
 								<ul class="nav nav-pills nav-pills-light nav-fill nav-stack small border-top border-bottom py-1 my-3">
-									<li class="reaction-wrapper nav-item">
-										<a class="nav-link mb-0 FB_reactions" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="">
+									<li class="nav-item">
+										<a class="nav-link mb-0 reaction-btn" data-reactions-type='horizontal' data-unique-id="1" data-emoji-class="">
+											<div class="reaction-box"></div>
 											<span class="reaction-icon d-inline p-0">
 												<i class="fa-solid fa-thumbs-up"></i>
 												{{-- <img src="{{ asset('assets/img/reaction/i_like_post.png') }}" alt="" width="15"> --}}
