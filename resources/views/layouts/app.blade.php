@@ -454,77 +454,18 @@
                     });
                 });
 
+                // Reactions
+
                 // // Reactions
-                // $('.reaction-btn').each(function () {
-                //     $(this).hover(function() {
-                //         var $reactionBox = $(this).find('.reaction-box');
-
-                //         $reactionBox.show(); // Show or hide the ".reaction-box"
-
-                //         $.ajax({
-                //             headers: headers,
-                //             method: 'GET',
-                //             contentType: 'application/json',
-                //             url: `${apiHost}/reaction/find_by_group/fr/Réaction sur post`
-                //         }).done(function(data) {
-                //             $reactionBox.empty(); // Set empty the box before adding reactions
-
-                //             data.data.map(function(reaction) {
-                //                 $reactionBox.append(`<div class="reaction-icon">
-                //                                         <img src="${reaction.icon_font}" alt="">
-                //                                         <label>${reaction.reaction_name}</label>
-                //                                     </div>`);
-                //             });
-
-                //         }).fail(function(jqXHR, textStatus, errorThrown) {
-                //             console.error('Erreur lors de la récupération des réactions:', textStatus, errorThrown);
-                //         });
-
-                //         $('.reaction-icon').each(function(index, element) {
-                //             setTimeout(function() {
-                //                 $(element).addClass('show-icon');
-                //             }, index * 100);
-                //         });
-
-                //     }, function () {
-                //         var $reactionBox = $(this).find('.reaction-box');
-
-                //         $reactionBox.hide();
-                //         $reactionBox.empty();
-                //         $('.reaction-icon').removeClass('show-icon')
-                //     });
-
-                //     $(this).on('click', function(event) {
-                //         event.stopPropagation();
-
-                //         var $reactionBox = $(this).find('.reaction-box');
-
-                //         $(this).find('.reaction-box').toggle(); // Show or hide the ".reaction-box"
-
-                //         $.ajax({
-                //             headers: headers,
-                //             method: 'GET',
-                //             contentType: 'application/json',
-                //             url: `${apiHost}/reaction/find_by_group/fr/Réaction sur post`
-                //         }).done(function(data) {
-                //             $reactionBox.empty(); // Vider la boîte avant d'ajouter de nouvelles réactions
-
-                //             data.data.map(function(reaction) {
-                //                 $reactionBox.append(`<div class="reaction-icon">
-                //                                         <img src="${reaction.icon_font}" alt="">
-                //                                         <label>${reaction.reaction_name}</label>
-                //                                     </div>`);
-                //             });
-                //         }).fail(function(jqXHR, textStatus, errorThrown) {
-                //             console.error('Erreur lors de la récupération des réactions:', textStatus, errorThrown);
-                //         });
-                //     });
-                // });
-
-                // // Click outside of ".reaction-btn"
-                // $(document).on('click', function() {
-                //     $('.reaction-box').hide(); // Hide the ".reaction-box"
-                // });
+                $('.reaction-btn').hover(function() {
+                    $('.reaction-icon').each(function(i, e) {
+                        setTimeout(function() {
+                            $(e).addClass('show');
+                        }, i * 100);
+                    });
+                }, function() {
+                    $('.reaction-icon').removeClass('show')
+                });
             });
         </script>
     </body>
