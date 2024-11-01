@@ -484,10 +484,10 @@
                     $(this).on('click', function(e) {
                         e.stopPropagation();
 
-                        if (currentReactionData.trim() !== null) {
-                            $(currentReaction).html('<i class="fa-solid fa-thumbs-up"></i>');
-                            currentName.html(`<?= __('miscellaneous.like') ?>`);
-                        }
+                        // if (currentReactionData.trim() !== null) {
+                        //     $(currentReaction).html('<i class="fa-solid fa-thumbs-up"></i>');
+                        //     $(reactionName).html(`<?= __('miscellaneous.like') ?>`);
+                        // }
 
                         reactionIcon.each(function(i, e) {
                             setTimeout(function() {
