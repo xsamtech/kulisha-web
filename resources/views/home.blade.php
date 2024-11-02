@@ -260,7 +260,7 @@
 										<a class="nav-link mb-0 reaction-btn" data-reactions-type='horizontal' data-post-id="1">
 											<div class="reaction-box">
 		@foreach ($reactions as $reaction)
-												<div class="reaction-icon {{ $reaction['alias'] }}" data-reaction-id="{{ $reaction['id'] }}" data-reaction-alias="{{ $reaction['alias'] }}" data-reaction-name="{{ $reaction['reaction_name'] }}">
+												<div class="reaction-icon {{ $reaction['alias'] }}" data-reaction-id="{{ $reaction['id'] }}" data-reaction-alias="{{ $reaction['alias'] }}" data-reaction-name="{{ $reaction['reaction_name'] }}" data-reaction-color="{{ $reaction['color'] }}">
 													<label>{{ $reaction['reaction_name'] }}</label>
 												</div>
 		@endforeach

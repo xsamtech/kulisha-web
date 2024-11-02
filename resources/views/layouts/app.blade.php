@@ -48,12 +48,11 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/plyr/plyr.css') }}">
         <!-- Zuck CSS -->
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/zuck.js/dist/zuck.min.css') }}">
-        <!-- Reaction CSS -->
-		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/reactions/css/style.css') }}">
         <!-- Theme CSS -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/social/css/style.css') }}">
         <!-- Custom CSS -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.custom.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/reactions.css') }}">
 
         <style>
             .kls-fs-7 { font-size: 0.7rem; }
@@ -393,8 +392,6 @@
         <script src="{{ asset('assets/addons/custom/jquery/scroll4ever/js/jquery.scroll4ever.js') }}"></script>
         <!-- Custom scripts -->
         <script src="{{ asset('assets/js/load-app-scripts.js') }}"></script>
-        <!-- Reaction CSS -->
-        <script src="{{ asset('assets/addons/custom/reactions/js/scripts.js') }}"></script>
         <script src="{{ asset('assets/js/classes.js') }}"></script>
 @if (Route::is('home'))
         <!-- Zuck -->
@@ -475,10 +472,12 @@
                         var reactionIconDataId = $(this).attr('data-reaction-id');
                         var reactionIconDataAlias = $(this).attr('data-reaction-alias');
                         var reactionIconDataName = $(this).attr('data-reaction-name');
+                        var reactionIconDataColor = $(this).attr('data-reaction-color');
 
-                        $(currentReaction).html(`<img src="${currentHost}/assets/img/reaction/${reactionIconDataAlias}.png" alt="">`);
-                        $(currentReaction).attr('data-current-reaction', currentReactionData);
-                        $(reactionName).html(reactionIconDataName);
+                        currentReaction.html(`<img src="${currentHost}/assets/img/reaction/${reactionIconDataAlias}.png" alt="">`);
+                        currentReaction.attr('data-current-reaction', currentReactionData);
+                        reactionName.html(reactionIconDataName);
+                        reactionName.css('color', reactionIconDataColor);
                     });
 
                     $(this).on('click', function(e) {

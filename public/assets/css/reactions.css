@@ -7,6 +7,7 @@
 */
 .reaction-btn {
     position: relative;
+    height: 39.5px;
     cursor: pointer;
 }
 
@@ -94,20 +95,28 @@
     visibility: hidden;
 }
 
-.reaction-btn:hover .reaction-box, .reaction-btn:active .reaction-box {
+.reaction-btn:hover .reaction-box,
+.reaction-btn:active .reaction-box {
     display: block;
 }
 
-.reaction-btn:hover .reaction-box .reaction-icon.show, .reaction-btn:active .reaction-box .reaction-icon.show {
+.reaction-btn:hover .reaction-box .reaction-icon.show,
+.reaction-btn:active .reaction-box .reaction-icon.show {
     opacity: 1;
     transform: translate(0, 0) scale(1);
 }
 
-.reaction-btn:hover .reaction-box .reaction-icon:hover, .reaction-btn:active .reaction-box .reaction-icon:hover {
+.reaction-btn:hover .reaction-box .reaction-icon:hover,
+.reaction-btn:active .reaction-box .reaction-icon:hover {
     transform: scale(1.4);
     transform-origin: bottom;
 }
 
-.reaction-btn:hover .reaction-box .reaction-icon:hover label, .reaction-btn:active .reaction-box .reaction-icon:hover label {
+.reaction-btn:hover .reaction-box .reaction-icon:hover label,
+.reaction-btn:active .reaction-box .reaction-icon:hover label {
     visibility: visible;
 }
+
+/* .reaction-btn .reaction-box:active {
+    display: none;
+} */
