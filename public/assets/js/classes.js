@@ -6,9 +6,10 @@
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
  */
-/*
-    Add a post
-*/
+
+/**
+ * (1) "AddPost" class to add a new post
+ */
 class AddPost {
     constructor() {
         // Ordinary post data
@@ -35,13 +36,41 @@ class AddPost {
         this.event_id = null;
         this.user_id = null;
 
-        // Data in array form
+        // Data in array for poll
         this.choices_contents = [];
         this.icons_fonts = [];
         this.images_urls = [];
+
+        // Data in array for visibility
+        this.exceptions_ids = [];
     }
 
-    // Method to store ordinary post data
+    /**
+     * Method to store ordinary post data
+     * 
+     * @param string post_url
+     * @param string post_title
+     * @param string post_content
+     * @param int shared_post_id
+     * @param float price
+     * @param string currency
+     * @param int quantity
+     * @param int answered_for
+     * @param string latitude
+     * @param string longitude
+     * @param string city
+     * @param string region
+     * @param string country
+     * @param int type_id
+     * @param int category_id
+     * @param int status_id
+     * @param int visibility_id
+     * @param int coverage_area_id
+     * @param int budget_id
+     * @param int community_id
+     * @param int event_id
+     * @param int user_id
+     */
     setUniqueVariables(post_url, post_title, post_content, shared_post_id, price, currency, quantity, answered_for, latitude, longitude, city, region, country, type_id, category_id, status_id, visibility_id, coverage_area_id, budget_id, community_id, event_id, user_id) {
         this.post_url = post_url;
         this.post_title = post_title;
@@ -67,14 +96,31 @@ class AddPost {
         this.user_id = user_id;
     }
 
-    // Method to store data in array form
+    /**
+     * Method to store data in array for poll
+     * 
+     * @param string choiceContent
+     * @param string iconFont
+     * @param string imageUrl
+     */
     addPollData(choiceContent, iconFont, imageUrl) {
         this.choices_contents.push(choiceContent);
         this.icons_fonts.push(iconFont);
         this.images_urls.push(imageUrl);
     }
 
-    // Method to send all data
+    /**
+     * Method to store data in array for visibility
+     * 
+     * @param int userId
+     */
+    addRestrictionData(userId) {
+        this.exceptions_ids.push(userId);
+    }
+
+    /**
+     * Method to send all data
+     */
     sendData() {
         try {
             var retrieve_data = {
@@ -102,7 +148,8 @@ class AddPost {
                 user_id: this.user_id,
                 choices_contents: this.choices_contents,
                 icons_fonts: this.icons_fonts,
-                images_urls: this.images_urls
+                images_urls: this.images_urls,
+                exceptions_ids: this.exceptions_ids
             };
 
             return $.ajax({

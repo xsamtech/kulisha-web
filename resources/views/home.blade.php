@@ -708,14 +708,13 @@
 									<a class="nav-link mb-0 reaction-btn" data-reactions-type='horizontal' data-post-id="2">
 										<div class="reaction-box">
 	@foreach ($reactions as $reaction)
-											<div class="reaction-icon {{ $reaction['alias'] }}">
+											<div class="reaction-icon {{ $reaction['alias'] }}" data-reaction-id="{{ $reaction['id'] }}" data-reaction-alias="{{ $reaction['alias'] }}" data-reaction-name="{{ $reaction['reaction_name'] }}" data-reaction-color="{{ $reaction['color'] }}">
 												<label>{{ $reaction['reaction_name'] }}</label>
 											</div>
 	@endforeach
 										</div>
-										<span class="current-reaction d-inline p-0">
+										<span class="current-reaction d-inline p-0" data-current-reaction="">
 											<i class="fa-solid fa-thumbs-up"></i>
-											{{-- <img src="{{ asset('assets/img/reaction/i_like_post.png') }}" alt="" width="15"> --}}
 										</span>
 										<span class="reaction-name d-inline-block ms-1 p-0"> @lang('miscellaneous.like')</span> (56)
 									</a>

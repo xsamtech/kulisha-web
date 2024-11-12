@@ -636,7 +636,10 @@ return [
                 'write' => 'Écrivez ici ...',
                 'choose_type' => 'Choisir le type de post',
                 'choose_category' => 'Choisir une categorie pour votre <strong>:post_type</strong>',
-                'choose_visibility' => 'Qui peut voir ce post ?',
+                'choose_visibility' => [
+                    'title' => 'Qui peut voir ce post ?',
+                    'description' => 'Veuillez choisir qui peut être en mesure de voir votre post.'
+                ],
                 'create_poll_choices' => 'Créez des choix pour ce sondage',
 
                 // Type

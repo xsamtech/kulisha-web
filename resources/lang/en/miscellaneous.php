@@ -636,7 +636,10 @@ return [
                 'write' => 'Write here ...',
                 'choose_type' => 'Choose the type of post',
                 'choose_category' => 'Choose a category for your <strong>:post_type</strong>',
-                'choose_visibility' => 'Who can see the post?',
+                'choose_visibility' => [
+                    'title' => 'Who can see the post?',
+                    'description' => 'Please choose who may be able to see your post.'
+                ],
                 'create_poll_choices' => 'Create choices for this poll',
 
                 // Type
