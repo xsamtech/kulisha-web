@@ -239,7 +239,7 @@
                                             <li class="dropdown-divider"></li>
 @foreach ($post_visibilities as $visibility)
                                             <li>
-                                                <a role="button" id="visibility-{{ $visibility['id'] }}" class="dropdown-item{{ $visibility['alias'] == 'everybody' ? ' active' : '' }}" data-icon="{{ $visibility['icon_font'] }}"{{ $visibility['alias'] == 'everybody_except' || $visibility['alias'] == 'nobody_except' ? ' data-bs-toggle="modal" data-bs-target="#modalSelectRestrictions"' : '' }}>
+                                                <a role="button" id="visibility-{{ $visibility['id'] }}" class="dropdown-item{{ $visibility['alias'] == 'everybody' ? ' active' : '' }}" data-icon="{{ $visibility['icon_font'] }}" data-alias="{{ $visibility['alias'] }}">
                                                     <span class="d-inline-block align-middle" style="width: 30px;"><i class="{{ $visibility['icon_font'] }}"></i></span>
                                                     <span class="d-inline-block align-middle text-truncate" style="width: 210px;">{{ $visibility['visibility_name'] }}</span>
                                                     <span class="d-inline-block align-middle opacity-{{ $visibility['alias'] == 'everybody' ? '100' : '0' }} is-checked" style="width: 20px;"><i class="bi bi-check fs-5"></i></span>

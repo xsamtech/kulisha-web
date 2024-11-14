@@ -186,6 +186,7 @@
                 $('#visibility li a').each(function () {
                     $(this).on('click', function () {
                         var isChecked = $(this).find('.is-checked');
+                        var alias = $(this).data('alias');
 
                         $('#visibility li a .is-checked').removeClass('opacity-100').addClass('opacity-0');
                         isChecked.removeClass('opacity-0').addClass('opacity-100');
@@ -199,6 +200,12 @@
                         // Change visibility
                         $('#post-visibility').val(visibilityDataArray[1]);
                         $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
+
+                        if (alias === 'everybody_except' || alias === 'nobody_except') {
+                            var modal = new bootstrap.Modal(document.getElementById('modalSelectRestrictions'), { keyboard: false });
+
+                            modal.show();
+                        }
                     });
                 });
 

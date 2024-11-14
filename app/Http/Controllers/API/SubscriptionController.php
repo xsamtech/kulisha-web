@@ -6,6 +6,8 @@ use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\Subscription as ResourcesSubscription;
+use App\Models\Group;
+use App\Models\Status;
 
 /**
  * @author Xanders
@@ -160,6 +162,31 @@ class SubscriptionController extends BaseController
     }
 
     // ==================================== CUSTOM METHODS ====================================
+    /**
+     * User subscribers
+     *
+     * @param  int $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function userSubscribers($user_id)
+    {
+        // Group
+        $susbcription_status_group = Group::where('group_name->fr', 'Etat de la souscription')->first();
+        // Status
+        $accepted_status = Status::where([['status_name->fr', 'Acceptée'], ['group_id', $susbcription_status_group->id]])->first();
+        // Request
+        $user = User::find($user_id);
+
+        if (is_null($user)) {
+            return $this->handleError(__('notifications.find_user_404'));
+        }
+
+        $subscriptions = Subscription::where([['user_id', $user->id], ['status_id', $accepted_status->id]])->orderByDesc('created_at')->paginate(10);
+        $count_all = Subscription::where([['user_id', $user->id], ['status_id', $accepted_status->id]])->count();
+
+        return $this->handleResponse(ResourcesSubscription::collection($subscriptions), __('notifications.find_all_subscriptions_success'), $subscriptions->lastPage(), $count_all);
+    }
+
     /**
      * Change invited contact to a member
      *

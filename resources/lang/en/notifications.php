@@ -309,6 +309,7 @@ return [
     'delete_community_success' => 'Community deleted',
     // Subscription
     'find_all_subscriptions_success' => 'Subscriptions found',
+    'find_all_subscribers_success' => 'User subscribers found',
     'find_subscription_success' => 'Subscription found',
     'find_subscription_404' => 'Subscription not found',
     'create_subscription_success' => 'Subscription created',
