@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Group;
+use App\Models\Status;
 use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\Subscription as ResourcesSubscription;
-use App\Models\Group;
-use App\Models\Status;
 
 /**
  * @author Xanders
