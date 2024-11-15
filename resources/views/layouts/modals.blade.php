@@ -278,8 +278,16 @@
 
                         <!-- Modal post body START -->
                         <div class="modal-body pt-3">
-                            <div class="row">
+                            <!-- Users list -->
+                            <div id="user-list" style="max-height: 400px; overflow-y: auto;">
+                                <!-- Users will be loaded here -->
+                            </div>
 
+                            <!-- Chargement indicatif -->
+                            <div id="loading-spinner" class="text-center" style="display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">@lang('miscellaneous.loading')</span>
+                                </div>
                             </div>
                         </div>
                         <!-- Modal post body END -->

@@ -227,6 +227,7 @@ Route::group(['middleware' => ['api', 'auth:sanctum', 'localization']], function
     Route::put('community/update_cover/{community_id}', 'App\Http\Controllers\API\CommunityController@updateCover')->name('community.api.update_cover');
     // Subscription
     Route::get('subscription/user_subscribers/{user_id}', 'App\Http\Controllers\API\SubscriptionController@userSubscribers')->name('subscription.api.user_subscribers');
+    Route::get('subscription/user_subscriptions/{user_id}', 'App\Http\Controllers\API\SubscriptionController@userSubscriptions')->name('subscription.api.user_subscriptions');
     Route::put('subscription/change_contact_to_member/{visitor_id}', 'App\Http\Controllers\API\SubscriptionController@changeContactToMember')->name('subscription.api.change_contact_to_member');
     // SentReaction
     Route::get('sent_reaction/select_by_entity/{entity}/{entity_id}', 'App\Http\Controllers\API\SentReactionController@selectByEntity')->name('sent_reaction.api.select_by_entity');
