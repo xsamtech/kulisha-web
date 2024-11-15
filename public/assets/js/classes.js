@@ -11,7 +11,7 @@
  * (1) "User" class to handle users
  */
 class User {
-    constructor(firstModalId, currentModalId, userListId, loadingSpinnerId) {
+    constructor(firstModalId, currentModalId, apiURL, userListId, loadingSpinnerId) {
         this.page = 1;  // Initialize page to 1
         this.loading = false;  // Indicator to check if a query is in progress
         this.firstModalId = firstModalId;

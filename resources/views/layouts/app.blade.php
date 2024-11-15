@@ -204,9 +204,14 @@
                         // Choose restrictions from users list
                         if (alias === 'everybody_except' || alias === 'nobody_except') {
                             // Create an instance of the User class
-                            const userModal = new User('modalCreatePost', 'modalSelectRestrictions', 'modalSelectRestrictions .user-list', 'modalSelectRestrictions .loading-spinner');
+                            const firstModalId = 'modalCreatePost';
+                            const currentModalId = 'modalSelectRestrictions';
+                            const apiURL = `${apiURL}/api/user_subscribers/${currentUser}`;
+                            const userListId = 'modalSelectRestrictions .user-list';
+                            const loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
+                            const userModal = new User(firstModalId, currentModalId, apiURL, userListId, loadingSpinnerId);
 
-                            // Opens the modal and loads users
+                            // Open the modal and load users
                             userModal.openModal();
                         }
                     });
