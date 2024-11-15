@@ -201,10 +201,13 @@
                         $('#post-visibility').val(visibilityDataArray[1]);
                         $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
 
+                        // Choose restrictions from users list
                         if (alias === 'everybody_except' || alias === 'nobody_except') {
-                            var modal = new bootstrap.Modal(document.getElementById('modalSelectRestrictions'), { keyboard: false });
+                            // Create an instance of the User class
+                            const userModal = new User('modalCreatePost', 'modalSelectRestrictions', 'modalSelectRestrictions .user-list', 'modalSelectRestrictions .loading-spinner');
 
-                            modal.show();
+                            // Opens the modal and loads users
+                            userModal.openModal();
                         }
                     });
                 });

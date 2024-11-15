@@ -8,9 +8,101 @@
  */
 
 /**
- * (1) "AddPost" class to add a new post
+ * (1) "User" class to handle users
  */
-class AddPost {
+class User {
+    constructor(firstModalId, currentModalId, userListId, loadingSpinnerId) {
+        this.page = 1;  // Initialize page to 1
+        this.loading = false;  // Indicator to check if a query is in progress
+        this.firstModalId = firstModalId;
+        this.currentModalId = currentModalId;
+        this.apiURL = apiURL;
+        this.userListId = userListId;
+        this.loadingSpinnerId = loadingSpinnerId;
+        this.currentModal = new bootstrap.Modal(document.getElementById(this.currentModalId), { keyboard: false });
+
+        // Linking events
+        this.setupEventListeners();
+    }
+
+    // Function to load users
+    loadUsers() {
+        if (this.loading) return;  // Do not send multiple requests if one is in progress
+
+        this.loading = true;  // Mark that a request is in progress
+
+        // Show loading spinner
+        document.querySelector(this.loadingSpinnerId).style.display = 'block';
+
+        $.ajax({
+            url: this.apiURL,  // The API URL to retrieve users
+            data: { page: this.page },  // Skip page number
+            method: 'GET',
+            success: (response) => {
+                this.page++;
+
+                // Add users to list
+                response.data.forEach(user => {
+                    document.getElementById(this.userListId).innerHTML += `
+                        <div class="user">
+                            <h6>${user.name}</h6>
+                            <p>${user.email}</p>
+                        </div>
+                    `;
+                });
+
+                // Check if the following page exists
+                if (this.page >= response.data.lastPage) {
+                    $(window).off('scroll');  // Disable infinite scroll if no next page
+
+                } else {
+                    this.page++;  // Go to next page
+                }
+
+                // Hide the spinner
+                document.querySelector(this.loadingSpinnerId).style.display = 'none';
+
+                this.loading = false;  // Reset loading state
+            },
+            error: () => {
+                // If error occurs, hide the spinner and reset the loading flag
+                document.querySelector(this.loadingSpinnerId).style.display = 'none';
+
+                this.loading = false;
+            }
+        });
+    }
+
+    // Function to manage the opening of the modal
+    openModal() {
+        // Close the first modal (if exist) before opening the current modal
+        const firstModal = new bootstrap.Modal(document.getElementById(this.firstModalId));
+
+        firstModal.hide();  // Close the first modal
+        this.currentModal.show(); // Open the current modal
+    }
+
+    // Function to handle scroll event in user list
+    setupEventListeners() {
+        // Listen to the modal opening event
+        $(`#${this.currentModalId}`).on('shown.bs.modal', () => {
+            this.loadUsers();  // Load users upon opening the modal
+        });
+
+        // Handle scroll for infinite scroll inside modal
+        $(`#${this.userListId}`).on('scroll', () => {
+            // Check if the user has reached the bottom of the modal
+            if ($(`#${this.userListId}`).scrollTop() + $(`#${this.userListId}`).innerHeight() >= $(`#${this.userListId}`)[0].scrollHeight - 50) {
+                this.loadUsers();  // Load more users when near the bottom
+            }
+        });
+    }
+}
+
+/**
+ * (2) "Post" class to handle posts
+ */
+class Post {
     constructor() {
         // Ordinary post data
         this.post_url = null;

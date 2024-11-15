@@ -284,8 +284,8 @@ $('#cropModal_story #crop_story').on('click', function () {
 const sendStory = document.getElementById('sendStory');
 
 sendStory.addEventListener('click', async () => {
-  // "AddPost" object
-  const post = new AddPost();
+  // "Post" object
+  const post = new Post();
   // Form data
   const postUrl = document.getElementById('postUrl');
   const postTitle = document.getElementById('postTitle');

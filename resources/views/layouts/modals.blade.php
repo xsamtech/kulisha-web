@@ -272,20 +272,20 @@
                     <form id="newPost">
                         <!-- Modal post header START -->
                         <div class="modal-header pb-0 border-bottom-0">
-                            <button type="button" class="btn-close btn-secondary-soft p-3 rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-secondary-soft p-3 rounded-circle" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
                         </div>
                         <!-- Modal post header END -->
 
                         <!-- Modal post body START -->
                         <div class="modal-body pt-3">
                             <!-- Users list -->
-                            <div id="user-list" style="max-height: 400px; overflow-y: auto;">
+                            <div class="user-list" style="max-height: 400px; overflow-y: auto;">
                                 <!-- Users will be loaded here -->
                             </div>
 
-                            <!-- Chargement indicatif -->
-                            <div id="loading-spinner" class="text-center" style="display: none;">
-                                <div class="spinner-border text-primary" role="status">
+                            <!-- Indicative loading -->
+                            <div class="text-center loading-spinner" style="display: none;">
+                                <div class="spinner-grow text-primary" role="status">
                                     <span class="visually-hidden">@lang('miscellaneous.loading')</span>
                                 </div>
                             </div>
@@ -293,9 +293,9 @@
                         <!-- Modal post body END -->
 
                         <!-- Modal post footer -->
-                        <div class="modal-footer">
-                            <button id="cancelRestriction" type="button" class="btn btn-secondary" data-bs-dismiss="modal">@lang('miscellaneous.cancel')</button>
-                            <button type="button" class="btn btn-primary">@lang('miscellaneous.register')</button>                    
+                        <div class="modal-footer border-0 d-flex justify-content-center">
+                            <button id="cancelRestriction" type="button" class="btn btn-secondary" data-bs-target="#modalCreatePost" data-bs-toggle="modal">@lang('miscellaneous.cancel')</button>
+                            <button type="button" class="btn btn-primary" data-bs-target="#modalCreatePost" data-bs-toggle="modal">@lang('miscellaneous.register')</button>                    
                         </div>
                         <!-- Modal post footer -->
                     </form>
