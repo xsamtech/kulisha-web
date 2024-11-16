@@ -94,7 +94,8 @@ class User {
 
                     userItem.innerHTML = `
                         <img src="${user.follower.profile_photo_path}" alt="" width="50" class="me-3 rounded-circle float-start">
-                        <input type="checkbox" name="followers_ids" id="follower-${user.follower.id}" class="form-check-input float-end" value="${user.follower.id}">
+                        <input type="checkbox" name="followers_ids" id="follower-${user.follower.id}" class="form-check-input float-end" value="${user.follower.id}" 
+                            data-firstname="${user.follower.firstname}" data-lastname="${user.follower.lastname}" data-avatar="${user.follower.profile_photo_path}">
                         <div>
                             <h6 class="mb-0">${user.follower.firstname} ${user.follower.lastname}</h6>
                             <small>@${user.follower.username}</small>

@@ -217,16 +217,29 @@
 
                                 // Récupération des cases à cocher sélectionnées
                                 document.querySelectorAll('[name="followers_ids"]:checked').forEach(item => {
-                                    followers.push(parseInt(item.value));
+                                    // Collecte des données associées à chaque utilisateur
+                                    let follower = {
+                                        id: parseInt(item.value),
+                                        firstname: item.dataset.firstname,
+                                        lastname: item.dataset.lastname,
+                                        avatar: item.dataset.avatar
+                                    };
+
+                                    // Ajout de l'utilisateur dans le tableau followers
+                                    followers.push(follower);
                                 });
 
-                                // Ajout des IDs des followers dans le FormData
+                                // Ajout des données dans FormData
                                 followers.forEach((follower, i) => {
-                                    formData.append('followers_ids[' + i + ']', follower);
+                                    formData.append('followers_ids[' + i + '][id]', follower.id);
+                                    formData.append('followers_ids[' + i + '][firstname]', follower.firstname);
+                                    formData.append('followers_ids[' + i + '][lastname]', follower.lastname);
+                                    formData.append('followers_ids[' + i + '][avatar]', follower.avatar);
                                 });
 
                                 // Affichage des données du FormData dans une alerte
                                 let formDataEntries = [];
+
                                 formData.forEach((value, key) => {
                                     formDataEntries.push(key + ': ' + value);
                                 });
@@ -239,6 +252,58 @@
                             $('#post-visibility').val(visibilityDataArray[1]);
                             $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
                         }
+                    });
+                });
+
+                $('#retry-select-restrictions').click(function (e) { 
+                    e.preventDefault();
+
+                    // Create an instance of the User class
+                    const currentModalId = 'modalSelectRestrictions';
+                    const apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
+                    const userListId = 'modalSelectRestrictions .user-list';
+                    const loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
+                    const userModal = new User(currentModalId, apiURL, userListId, loadingSpinnerId);
+
+                    // Open the modal and load users
+                    userModal.openModal();
+
+                    $('form#chooseFollowers').submit(function (e) {
+                        e.preventDefault();
+
+                        let formData = new FormData(this);
+                        let followers = [];
+
+                        // Récupération des cases à cocher sélectionnées
+                        document.querySelectorAll('[name="followers_ids"]:checked').forEach(item => {
+                            // Collecte des données associées à chaque utilisateur
+                            let follower = {
+                                id: parseInt(item.value),
+                                firstname: item.dataset.firstname,
+                                lastname: item.dataset.lastname,
+                                avatar: item.dataset.avatar
+                            };
+
+                            // Ajout de l'utilisateur dans le tableau followers
+                            followers.push(follower);
+                        });
+
+                        // Ajout des données dans FormData
+                        followers.forEach((follower, i) => {
+                            formData.append('followers_ids[' + i + '][id]', follower.id);
+                            formData.append('followers_ids[' + i + '][firstname]', follower.firstname);
+                            formData.append('followers_ids[' + i + '][lastname]', follower.lastname);
+                            formData.append('followers_ids[' + i + '][avatar]', follower.avatar);
+                        });
+
+                        // Affichage des données du FormData dans une alerte
+                        let formDataEntries = [];
+
+                        formData.forEach((value, key) => {
+                            formDataEntries.push(key + ': ' + value);
+                        });
+
+                        alert('Form Data:\n' + formDataEntries.join('\n'));
                     });
                 });
 

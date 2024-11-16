@@ -220,7 +220,31 @@
                         <!-- Modal post footer -->
                         <div class="modal-footer px-3">
                             <!-- Select visibility -->
-                            <div class="row g-0 d-flex justify-content-between">
+                            <div class="row g-0">
+                                <div id="restrictions" class="col-12 mb-3">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <div class="d-flex flex-row">
+                                            <div class="restrict-user-1">
+                                                <input type="hidden" name="restrict-user-1" id="restrict-user-1" value="1">
+                                                <img src="{{ asset('assets/img/avatar-M.svg') }}" alt="" width="30" class="rounded-circle me-1" title="Daniel Craig">
+                                            </div>
+                                            <div class="restrict-user-2">
+                                                <input type="hidden" name="restrict-user-2" id="restrict-user-2" value="2">
+                                                <img src="{{ asset('assets/img/avatar-F.svg') }}" alt="" width="30" class="rounded-circle me-1" title="Hanne Hataway">
+                                            </div>
+                                            <div class="restrict-user-1">
+                                                <input type="hidden" name="restrict-user-1" id="restrict-user-1" value="3">
+                                                <img src="{{ asset('assets/img/avatar-M.svg') }}" alt="" width="30" class="rounded-circle me-1" title="Frederick Nollan">
+                                            </div>
+                                            <p class="m-0 ms-1">
+                                                <span class="btn btn-light px-2 pt-1 pb-0 rounded-pill">+5</span>
+                                            </p>
+                                        </div>
+                                        <a role="button" id="retry-select-restrictions" class="d-inline-block ms-3">
+                                            <i class="fa-solid fa-pencil"></i> @lang('miscellaneous.restart')
+                                        </a>
+                                    </div>
+                                </div>
                                 <div id="visibility" class="col-sm-2 col-3">
                                     <input type="hidden" name="post-visibility" id="post-visibility" value="{{ $everybody_visibility->id }}">
                                     <div class="dropdown d-inline-block" title="@lang('miscellaneous.public.home.posts.choose_visibility.title')" data-bs-toggle="tooltip" data-bs-placement="bottom">
@@ -249,13 +273,13 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Button -->
-                            <div class="col-sm-10 col-9 text-sm-end">
-                                <button class="send-post btn d-block w-100 btn-primary-soft disabled">
-                                    <i class="bi bi-send me-1"></i> @lang('miscellaneous.post')
-                                </button>
+                                <!-- Button -->
+                                <div class="col-sm-10 col-9">
+                                    <button class="send-post btn d-block w-100 btn-primary-soft disabled">
+                                        <i class="bi bi-send me-1"></i> @lang('miscellaneous.post')
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <!-- Modal post footer -->
