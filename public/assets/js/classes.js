@@ -65,7 +65,8 @@ class User {
         this.loading = true;  // Mark that a request is in progress
 
         // Show loading spinner
-        document.querySelector(`#${this.loadingSpinnerId}`).style.display = 'block';
+        document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-0');
+        document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-1');
 
         $.ajax({
             headers: headers,
@@ -78,16 +79,18 @@ class User {
                 // If no data is returned, stop loading
                 if (response.data.length === 0) {
                     console.log('No more users to load');
-                    $(`#${this.userListId}`).off('scroll');
+                    $(window).off('scroll');
+
                     return;
                 }
 
                 // Loop through users and add them to the list
                 response.data.forEach(user => {
                     const userItem = document.createElement('label');
+
                     userItem.setAttribute('for', `follower-${user.follower.id}`);
                     userItem.setAttribute('role', 'button');
-                    userItem.classList.add('form-check-label', 'd-block', 'mb-3');
+                    userItem.classList.add('form-check-label', 'd-block', 'mb-4');
 
                     userItem.innerHTML = `
                         <img src="${user.follower.profile_photo_path}" alt="" width="50" class="me-3 rounded-circle float-start">
@@ -98,8 +101,11 @@ class User {
                         </div>
                     `;
 
-                    // Append the new user to the list
-                    document.querySelector(`#${this.userListId}`).appendChild(userItem);
+                    // Check if item with id "follower-{user.follower.id}" already exists
+                    if (!document.querySelector(`#follower-${user.follower.id}`)) {
+                        // If the element does not already exist, it is added to the list
+                        document.querySelector(`#${this.userListId}`).appendChild(userItem);
+                    }
                 });
 
                 // Check if the last page has been reached
@@ -112,13 +118,15 @@ class User {
                 }
 
                 // Hide loading spinner
-                document.querySelector(`#${this.loadingSpinnerId}`).style.display = 'none';
+                document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-1');
+                document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-0');
 
                 this.loading = false;  // Reset the "loading" status
             },
             error: () => {
                 // If an error occurs, hide the spinner and reset the "loading" status
-                document.querySelector(`#${this.loadingSpinnerId}`).style.display = 'none';
+                document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-1');
+                document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-0');
                 this.loading = false;
             }
         });

@@ -280,21 +280,21 @@
                             <h6 class="h6 mb-4 text-center fw-normal">@lang('miscellaneous.public.home.posts.choose_visibility.among_followers')</h6>
 
                             <!-- Users list -->
-                            <div class="user-list" style="max-height: 370px; overflow-y: auto;">
+                            <div class="user-list" style="max-height: 50px; overflow-y: auto;">
                                 <!-- Users will be loaded here -->
                             </div>
                         </div>
                         <!-- Modal post body END -->
 
                         <!-- Modal post footer -->
-                        <div class="modal-footer border-0 d-flex justify-content-center">
+                        <div class="modal-footer border-0 d-flex justify-content-between">
+                            <button id="cancelRestriction" type="button" class="btn btn-secondary-soft-hover" data-bs-dismiss="modal">@lang('miscellaneous.cancel')</button>
                             <!-- Indicative loading -->
-                            <div class="text-center loading-spinner" style="display: none;">
+                            <div class="text-center loading-spinner opacity-0">
                                 <div class="spinner-grow spinner-grow-sm text-primary" role="status">
                                     <span class="visually-hidden">@lang('miscellaneous.loading')</span>
                                 </div>
                             </div>
-                            <button id="cancelRestriction" type="button" class="btn btn-secondary-soft-hover" data-bs-dismiss="modal">@lang('miscellaneous.cancel')</button>
                             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">@lang('miscellaneous.register')</button>                    
                         </div>
                         <!-- Modal post footer -->
