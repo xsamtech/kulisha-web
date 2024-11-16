@@ -148,6 +148,7 @@ Route::group(['middleware' => ['api', 'auth:sanctum', 'localization']], function
     // Budget
     Route::get('budget/find_by_entity/{entity}', 'App\Http\Controllers\API\BudgetController@findByEntity')->name('budget.api.find_by_entity');
     // User
+    Route::get('user/select_by_ids/{ids}', 'App\Http\Controllers\API\UserController@selectByIds')->name('user.api.select_by_ids');
     Route::get('user/find_by_role/{locale}/{role_name}', 'App\Http\Controllers\API\UserController@findByRole')->name('user.api.find_by_role');
     Route::get('user/find_by_not_role/{locale}/{role_name}', 'App\Http\Controllers\API\UserController@findByNotRole')->name('user.api.find_by_not_role');
     Route::get('user/find_by_status/{alias}', 'App\Http\Controllers\API\UserController@findByStatus')->name('user.api.find_by_status');

@@ -143,12 +143,12 @@ $(function () {
     /* Auto-resize textarea */
     autosize($('textarea'));
 
-    /* Perfect scrollbar */
-    var ps = new PerfectScrollbar('.perfect-scrollbar', {
-        wheelSpeed: 2,
-        wheelPropagation: true,
-        minScrollbarLength: 20
-    });
+    // /* Perfect scrollbar */
+    // var ps = new PerfectScrollbar('.perfect-scrollbar', {
+    //     wheelSpeed: 2,
+    //     wheelPropagation: true,
+    //     minScrollbarLength: 20
+    // });
 
     /* Bootstrap Tooltip */
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -414,7 +414,7 @@ $(function () {
             reader.readAsDataURL(blob);
             reader.onloadend = function () {
                 var base64_data = reader.result;
-                var mUrl = apiURL + '/api/user/update_avatar_picture/' + parseInt(currentUser);
+                var mUrl = apiHost + '/api/user/update_avatar_picture/' + parseInt(currentUser);
                 var datas = JSON.stringify({ 'id': parseInt(currentUser), 'user_id': currentUser, 'image_64': base64_data });
 
                 $.ajax({

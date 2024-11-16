@@ -638,7 +638,8 @@ return [
                 'choose_category' => 'Choisir une categorie pour votre <strong>:post_type</strong>',
                 'choose_visibility' => [
                     'title' => 'Qui peut voir ce post ?',
-                    'description' => 'Veuillez choisir qui peut être en mesure de voir votre post.'
+                    'description' => 'Veuillez choisir qui peut être en mesure de voir votre post.',
+                    'among_followers' => 'Choisir parmi vos followers',
                 ],
                 'create_poll_choices' => 'Créez des choix pour ce sondage',
 

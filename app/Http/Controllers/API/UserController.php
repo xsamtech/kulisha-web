@@ -977,6 +977,20 @@ class UserController extends BaseController
 
     // ==================================== CUSTOM METHODS ====================================
     /**
+     * All users by IDs.
+     *
+     * @param  string $ids
+     * @return \Illuminate\Http\Response
+     */
+    public function selectByIds($ids)
+    {
+        $users_ids = explode(',', $ids);
+        $users = User::whereIn('id', $users_ids)->get();
+
+        return $this->handleResponse(ResourcesUser::collection($users), __('notifications.find_all_users_success'));
+    }
+
+    /**
      * Search a member
      *
      * @param  string $data

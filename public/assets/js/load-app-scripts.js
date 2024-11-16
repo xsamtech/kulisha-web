@@ -54,8 +54,6 @@ var scripts = [
     '/assets/addons/social/dropzone/dist/min/dropzone.min.js',
     '/assets/js/social/functions.js',
     '/assets/addons/custom/autosize/js/autosize.min.js',
-    '/assets/addons/custom/perfect-scrollbar/dist/perfect-scrollbar.min.js',
-    '/assets/addons/custom/jquery/scroll4ever/js/jquery.scroll4ever.js',
     '/assets/js/load-app-scripts.js',
     '/assets/addons/social/zuck.js/dist/zuck.min.js',
     '/assets/js/classes.js',

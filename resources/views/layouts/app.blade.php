@@ -197,22 +197,47 @@
                         var visibilityData = $(this).attr('id');
                         var visibilityDataArray = visibilityData.split('-');
 
-                        // Change visibility
-                        $('#post-visibility').val(visibilityDataArray[1]);
-                        $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
-
                         // Choose restrictions from users list
                         if (alias === 'everybody_except' || alias === 'nobody_except') {
                             // Create an instance of the User class
-                            const firstModalId = 'modalCreatePost';
                             const currentModalId = 'modalSelectRestrictions';
-                            const apiURL = `${apiURL}/api/user_subscribers/${currentUser}`;
+                            const apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
                             const userListId = 'modalSelectRestrictions .user-list';
                             const loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
-                            const userModal = new User(firstModalId, currentModalId, apiURL, userListId, loadingSpinnerId);
+                            const userModal = new User(currentModalId, apiURL, userListId, loadingSpinnerId);
 
                             // Open the modal and load users
                             userModal.openModal();
+
+                            $('form#chooseFollowers').submit(function (e) {
+                                e.preventDefault();
+
+                                let formData = new FormData(this);
+                                let followers = [];
+
+                                // Récupération des cases à cocher sélectionnées
+                                document.querySelectorAll('[name="followers_ids"]:checked').forEach(item => {
+                                    followers.push(parseInt(item.value));
+                                });
+
+                                // Ajout des IDs des followers dans le FormData
+                                followers.forEach((follower, i) => {
+                                    formData.append('followers_ids[' + i + ']', follower);
+                                });
+
+                                // Affichage des données du FormData dans une alerte
+                                let formDataEntries = [];
+                                formData.forEach((value, key) => {
+                                    formDataEntries.push(key + ': ' + value);
+                                });
+
+                                alert('Form Data:\n' + formDataEntries.join('\n'));
+                            });
+
+                        } else {
+                            // Change visibility
+                            $('#post-visibility').val(visibilityDataArray[1]);
+                            $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
                         }
                     });
                 });

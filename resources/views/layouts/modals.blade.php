@@ -267,35 +267,35 @@
 
         <!-- Modal select restrictions START -->
         <div class="modal fade" id="modalSelectRestrictions" tabindex="-1" aria-labelledby="modalLabelSelectRestrictions" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-sm">
                 <div class="modal-content overflow-x-hidden overflow-y-auto">
-                    <form id="newPost">
+                    <form id="chooseFollowers">
                         <!-- Modal post header START -->
-                        <div class="modal-header pb-0 border-bottom-0">
-                            <button type="button" class="btn-close btn-secondary-soft p-3 rounded-circle" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
+                        <div class="modal-header p-0 border-bottom-0">
                         </div>
                         <!-- Modal post header END -->
 
                         <!-- Modal post body START -->
                         <div class="modal-body pt-3">
-                            <!-- Users list -->
-                            <div class="user-list" style="max-height: 400px; overflow-y: auto;">
-                                <!-- Users will be loaded here -->
-                            </div>
+                            <h6 class="h6 mb-4 text-center fw-normal">@lang('miscellaneous.public.home.posts.choose_visibility.among_followers')</h6>
 
-                            <!-- Indicative loading -->
-                            <div class="text-center loading-spinner" style="display: none;">
-                                <div class="spinner-grow text-primary" role="status">
-                                    <span class="visually-hidden">@lang('miscellaneous.loading')</span>
-                                </div>
+                            <!-- Users list -->
+                            <div class="user-list" style="max-height: 370px; overflow-y: auto;">
+                                <!-- Users will be loaded here -->
                             </div>
                         </div>
                         <!-- Modal post body END -->
 
                         <!-- Modal post footer -->
                         <div class="modal-footer border-0 d-flex justify-content-center">
-                            <button id="cancelRestriction" type="button" class="btn btn-secondary" data-bs-target="#modalCreatePost" data-bs-toggle="modal">@lang('miscellaneous.cancel')</button>
-                            <button type="button" class="btn btn-primary" data-bs-target="#modalCreatePost" data-bs-toggle="modal">@lang('miscellaneous.register')</button>                    
+                            <!-- Indicative loading -->
+                            <div class="text-center loading-spinner" style="display: none;">
+                                <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+                                    <span class="visually-hidden">@lang('miscellaneous.loading')</span>
+                                </div>
+                            </div>
+                            <button id="cancelRestriction" type="button" class="btn btn-secondary-soft-hover" data-bs-dismiss="modal">@lang('miscellaneous.cancel')</button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">@lang('miscellaneous.register')</button>                    
                         </div>
                         <!-- Modal post footer -->
                     </form>

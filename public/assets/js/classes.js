@@ -11,10 +11,9 @@
  * (1) "User" class to handle users
  */
 class User {
-    constructor(firstModalId, currentModalId, apiURL, userListId, loadingSpinnerId) {
+    constructor(currentModalId, apiURL, userListId, loadingSpinnerId) {
         this.page = 1;  // Initialize page to 1
         this.loading = false;  // Indicator to check if a query is in progress
-        this.firstModalId = firstModalId;
         this.currentModalId = currentModalId;
         this.apiURL = apiURL;
         this.userListId = userListId;
@@ -25,75 +24,102 @@ class User {
         this.setupEventListeners();
     }
 
-    // Function to load users
-    loadUsers() {
-        if (this.loading) return;  // Do not send multiple requests if one is in progress
-
-        this.loading = true;  // Mark that a request is in progress
-
-        // Show loading spinner
-        document.querySelector(this.loadingSpinnerId).style.display = 'block';
-
-        $.ajax({
-            url: this.apiURL,  // The API URL to retrieve users
-            data: { page: this.page },  // Skip page number
-            method: 'GET',
-            success: (response) => {
-                this.page++;
-
-                // Add users to list
-                response.data.forEach(user => {
-                    document.getElementById(this.userListId).innerHTML += `
-                        <div class="user">
-                            <h6>${user.name}</h6>
-                            <p>${user.email}</p>
-                        </div>
-                    `;
-                });
-
-                // Check if the following page exists
-                if (this.page >= response.data.lastPage) {
-                    $(window).off('scroll');  // Disable infinite scroll if no next page
-
-                } else {
-                    this.page++;  // Go to next page
-                }
-
-                // Hide the spinner
-                document.querySelector(this.loadingSpinnerId).style.display = 'none';
-
-                this.loading = false;  // Reset loading state
-            },
-            error: () => {
-                // If error occurs, hide the spinner and reset the loading flag
-                document.querySelector(this.loadingSpinnerId).style.display = 'none';
-
-                this.loading = false;
-            }
-        });
-    }
-
     // Function to manage the opening of the modal
     openModal() {
-        // Close the first modal (if exist) before opening the current modal
-        const firstModal = new bootstrap.Modal(document.getElementById(this.firstModalId));
-
-        firstModal.hide();  // Close the first modal
-        this.currentModal.show(); // Open the current modal
+        this.currentModal.show();
     }
 
     // Function to handle scroll event in user list
     setupEventListeners() {
-        // Listen to the modal opening event
+        // Open the modal and load the users
         $(`#${this.currentModalId}`).on('shown.bs.modal', () => {
-            this.loadUsers();  // Load users upon opening the modal
+            this.page = 1;  // Reset page number
+            $(`#${this.userListId}`).empty();  // Empty the list before loading new users
+            this.loadUsers();  // Load users when opening modal
         });
 
-        // Handle scroll for infinite scroll inside modal
+        // Reset user list when modal is closed
+        $(`#${this.currentModalId}`).on('hidden.bs.modal', () => {
+            // Reset user list contents
+            $(`#${this.userListId}`).empty();  // Use ".empty()" to remove all child elements
+            this.page = 1;  // Reset page number
+            this.loading = false;  // Reset loading state
+            $(window).off('scroll');  // Disable scroll event to avoid calls after closing
+        });
+
+        // Handle scroll for infinite loading inside modal
         $(`#${this.userListId}`).on('scroll', () => {
-            // Check if the user has reached the bottom of the modal
+            // Check if the user is at the bottom of the list
             if ($(`#${this.userListId}`).scrollTop() + $(`#${this.userListId}`).innerHeight() >= $(`#${this.userListId}`)[0].scrollHeight - 50) {
-                this.loadUsers();  // Load more users when near the bottom
+                if (!this.loading) { // Make sure there is not already a call in progress
+                    this.loadUsers();  // Load more users if needed
+                }
+            }
+        });
+    }
+
+    // Function to load users
+    loadUsers() {
+        if (this.loading) return;  // Prevent multiple requests if a request is already in progress
+
+        this.loading = true;  // Mark that a request is in progress
+
+        // Show loading spinner
+        document.querySelector(`#${this.loadingSpinnerId}`).style.display = 'block';
+
+        $.ajax({
+            headers: headers,
+            type: 'GET',
+            contentType: 'application/json',
+            url: this.apiURL,  // The API URL to retrieve users
+            dataType: 'json',
+            data: { page: this.page },  // Send page number
+            success: (response) => {
+                // If no data is returned, stop loading
+                if (response.data.length === 0) {
+                    console.log('No more users to load');
+                    $(`#${this.userListId}`).off('scroll');
+                    return;
+                }
+
+                // Loop through users and add them to the list
+                response.data.forEach(user => {
+                    const userItem = document.createElement('label');
+                    userItem.setAttribute('for', `follower-${user.follower.id}`);
+                    userItem.setAttribute('role', 'button');
+                    userItem.classList.add('form-check-label', 'd-block', 'mb-3');
+
+                    userItem.innerHTML = `
+                        <img src="${user.follower.profile_photo_path}" alt="" width="50" class="me-3 rounded-circle float-start">
+                        <input type="checkbox" name="followers_ids" id="follower-${user.follower.id}" class="form-check-input float-end" value="${user.follower.id}">
+                        <div>
+                            <h6 class="mb-0">${user.follower.firstname} ${user.follower.lastname}</h6>
+                            <small>@${user.follower.username}</small>
+                        </div>
+                    `;
+
+                    // Append the new user to the list
+                    document.querySelector(`#${this.userListId}`).appendChild(userItem);
+                });
+
+                // Check if the last page has been reached
+                if (this.page < response.lastPage) {
+                    this.page++;  // Go to next page
+                } else {
+                    // If you are on the last page, disable scrolling
+                    $(`#${this.userListId}`).off('scroll');
+                    console.log('All pages have been loaded');
+                }
+
+                // Hide loading spinner
+                document.querySelector(`#${this.loadingSpinnerId}`).style.display = 'none';
+
+                this.loading = false;  // Reset the "loading" status
+            },
+            error: () => {
+                // If an error occurs, hide the spinner and reset the "loading" status
+                document.querySelector(`#${this.loadingSpinnerId}`).style.display = 'none';
+                this.loading = false;
             }
         });
     }
@@ -246,7 +272,7 @@ class Post {
 
             return $.ajax({
                 headers: headers,
-                method: 'POST',
+                type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(retrieve_data),
                 url: `${apiHost}/post`
