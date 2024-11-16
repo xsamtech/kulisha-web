@@ -66,7 +66,7 @@ class User {
 
         // Show loading spinner
         document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-0');
-        document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-1');
+        document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-100');
 
         $.ajax({
             headers: headers,
@@ -118,14 +118,14 @@ class User {
                 }
 
                 // Hide loading spinner
-                document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-1');
+                document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-100');
                 document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-0');
 
                 this.loading = false;  // Reset the "loading" status
             },
             error: () => {
                 // If an error occurs, hide the spinner and reset the "loading" status
-                document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-1');
+                document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-100');
                 document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-0');
                 this.loading = false;
             }
