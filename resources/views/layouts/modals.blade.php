@@ -280,7 +280,7 @@
                             <h6 class="h6 mb-4 text-center fw-normal">@lang('miscellaneous.public.home.posts.choose_visibility.among_followers')</h6>
 
                             <!-- Users list -->
-                            <div class="user-list" style="max-height: 50px; overflow-y: auto;">
+                            <div class="user-list" style="max-height: 370px; overflow-y: auto;">
                                 <!-- Users will be loaded here -->
                             </div>
                         </div>
