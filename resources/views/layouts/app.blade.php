@@ -206,6 +206,7 @@
                             $('form#chooseFollowers').submit(function (e) {
                                 e.preventDefault();
 
+                                const _this = $(this).get(0)
                                 let formData = new FormData(this);
                                 let followers = [];
 
@@ -260,19 +261,32 @@
                                 $('#restrictions .users-list').html(htmlContent);
                                 $('#restrictions').removeClass('d-none');
 
-                                // Pour voir ce qui a été collecté, vous pouvez aussi afficher les données dans la console
-                                console.log(formData);
+                                // Set selected link to "active"
+                                $('#visibility li a .is-checked').removeClass('opacity-100').addClass('opacity-0');
+                                isChecked.removeClass('opacity-0').addClass('opacity-100');
+                                $('#visibility li a').removeClass('active');
+                                $(_this).addClass('active');
+
+                                // Change visibility icon at the toggle button
+                                $('#post-visibility').val(visibilityDataArray[1]);
+                                $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
                             });
 
                         } else {
+                            // Set selected link to "active"
                             $('#visibility li a .is-checked').removeClass('opacity-100').addClass('opacity-0');
                             isChecked.removeClass('opacity-0').addClass('opacity-100');
                             $('#visibility li a').removeClass('active');
                             $(this).addClass('active');
 
-                            // Change visibility
+                            // Change visibility icon at the toggle button
                             $('#post-visibility').val(visibilityDataArray[1]);
                             $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
+
+                            if (!$('#restrictions').hasClass('d-none')) {
+                                $('#restrictions .users-list').html(htmlContent);
+                                $('#restrictions').addClass('d-none');
+                            }
                         }
                     });
                 });
