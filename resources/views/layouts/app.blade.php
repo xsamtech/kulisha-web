@@ -187,12 +187,6 @@
                     $(this).on('click', function () {
                         var isChecked = $(this).find('.is-checked');
                         var alias = $(this).data('alias');
-
-                        $('#visibility li a .is-checked').removeClass('opacity-100').addClass('opacity-0');
-                        isChecked.removeClass('opacity-0').addClass('opacity-100');
-                        $('#visibility li a').removeClass('active');
-                        $(this).addClass('active');
-
                         var visibilityIcon = $(this).attr('data-icon');
                         var visibilityData = $(this).attr('id');
                         var visibilityDataArray = visibilityData.split('-');
@@ -237,17 +231,45 @@
                                     formData.append('followers_ids[' + i + '][avatar]', follower.avatar);
                                 });
 
-                                // Affichage des données du FormData dans une alerte
-                                let formDataEntries = [];
+                                // Limiter l'affichage à 3 utilisateurs
+                                let htmlContent = '<input type="hidden" name="restrict-users" id="restrict-users" value="' + followers.map(f => f.id).join(',') + '">';
 
-                                formData.forEach((value, key) => {
-                                    formDataEntries.push(key + ': ' + value);
-                                });
+                                htmlContent += '<div class="d-flex flex-row">';
 
-                                alert('Form Data:\n' + formDataEntries.join('\n'));
+                                // Affichage des 3 premiers utilisateurs
+                                for (let i = 0; i < Math.min(3, followers.length); i++) {
+                                    let follower = followers[i];
+
+                                    htmlContent += `<div class="restrict-user-${i + 1}">
+                                                        <img src="${follower.avatar}" alt="${follower.firstname} ${follower.lastname}" width="30" class="rounded-circle me-1" title="${follower.firstname} ${follower.lastname}">
+                                                    </div>`;
+                                }
+
+                                // Si il y a plus de 3 utilisateurs, afficher le nombre restant
+                                if (followers.length > 3) {
+                                    let remainingCount = followers.length - 3;
+
+                                    htmlContent += `<p class="m-0 ms-1">
+                                                        <span class="btn btn-light px-2 pt-1 pb-0 rounded-pill">+${remainingCount}</span>
+                                                    </p>`;
+                                }
+
+                                htmlContent += '</div>';
+
+                                // Ajouter le contenu généré à ".users-list"
+                                $('#restrictions .users-list').html(htmlContent);
+                                $('#restrictions').removeClass('d-none');
+
+                                // Pour voir ce qui a été collecté, vous pouvez aussi afficher les données dans la console
+                                console.log(formData);
                             });
 
                         } else {
+                            $('#visibility li a .is-checked').removeClass('opacity-100').addClass('opacity-0');
+                            isChecked.removeClass('opacity-0').addClass('opacity-100');
+                            $('#visibility li a').removeClass('active');
+                            $(this).addClass('active');
+
                             // Change visibility
                             $('#post-visibility').val(visibilityDataArray[1]);
                             $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
@@ -296,14 +318,37 @@
                             formData.append('followers_ids[' + i + '][avatar]', follower.avatar);
                         });
 
-                        // Affichage des données du FormData dans une alerte
-                        let formDataEntries = [];
+                        // Limiter l'affichage à 3 utilisateurs
+                        let htmlContent = '<input type="hidden" name="restrict-users" id="restrict-users" value="' + followers.map(f => f.id).join(',') + '">';
 
-                        formData.forEach((value, key) => {
-                            formDataEntries.push(key + ': ' + value);
-                        });
+                        htmlContent += '<div class="d-flex flex-row">';
 
-                        alert('Form Data:\n' + formDataEntries.join('\n'));
+                        // Affichage des 3 premiers utilisateurs
+                        for (let i = 0; i < Math.min(3, followers.length); i++) {
+                            let follower = followers[i];
+
+                            htmlContent += `<div class="restrict-user-${i + 1}">
+                                                <img src="${follower.avatar}" alt="${follower.firstname} ${follower.lastname}" width="30" class="rounded-circle me-1" title="${follower.firstname} ${follower.lastname}">
+                                            </div>`;
+                        }
+
+                        // Si il y a plus de 3 utilisateurs, afficher le nombre restant
+                        if (followers.length > 3) {
+                            let remainingCount = followers.length - 3;
+
+                            htmlContent += `<p class="m-0 ms-1">
+                                                <span class="btn btn-light px-2 pt-1 pb-0 rounded-pill">+${remainingCount}</span>
+                                            </p>`;
+                        }
+
+                        htmlContent += '</div>';
+
+                        // Ajouter le contenu généré à ".users-list"
+                        $('#restrictions .users-list').html(htmlContent);
+                        $('#restrictions').removeClass('d-none');
+
+                        // Pour voir ce qui a été collecté, vous pouvez aussi afficher les données dans la console
+                        console.log(formData);
                     });
                 });
 
