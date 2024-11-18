@@ -84,6 +84,30 @@
         <!-- Responsive navbar toggler -->
         <button class="close-navbar-toggler navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"></button>
 
+        <!-- Responsive navbar toggler -->
+        <div id="successMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999;">
+            <div class="row">
+                <div class="col-lg-4 col-sm-6 col-11 ms-auto">
+                    <div class="alert alert-success alert-dismissible d-flex align-items-center" role="alert">
+                        <i class="bi bi-info-circle me-3 fs-5"></i>
+                        <div class="custom-message"></div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="errorMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999;">
+            <div class="row">
+                <div class="col-lg-4 col-sm-6 col-11 ms-auto">
+                    <div class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
+                        <div class="custom-message"></div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 @include('layouts.navigation')
 
         <!-- **************** MAIN CONTENT START **************** -->
@@ -132,8 +156,8 @@
         <script src="{{ asset('assets/addons/custom/autosize/js/autosize.min.js') }}"></script>
         <!-- Perfect scrollbar -->
         <script src="{{ asset('assets/addons/custom/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>
-        <!-- Scroll forever -->
-        <script src="{{ asset('assets/addons/custom/jquery/scroll4ever/js/jquery.scroll4ever.js') }}"></script>
+        <!-- PDF.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
         <!-- Custom scripts -->
         <script src="{{ asset('assets/js/load-app-scripts.js') }}"></script>
         <script src="{{ asset('assets/js/classes.js') }}"></script>
@@ -148,7 +172,9 @@
             /**
              * Native functions
              */
+            // -----------------------
             // Unable "submit" button
+            // -----------------------
             function unableSubmit(element) {
                 if (element.value.trim() === '') {
                     $('#newPost .send-post').removeClass('btn-primary');
@@ -166,7 +192,9 @@
              * jQuery data
              */
             $(function () {
+                // -----------------
                 // Toggle post type
+                // -----------------
                 $('#newPostType .form-check').each(function () {
                     $(this).on('click', function () {
                         $('[id^="check-category-"]').prop('checked', false);
@@ -182,9 +210,12 @@
                     });
                 });
  
+                // ------------------
                 // Toggle visibility
+                // ------------------
                 $('#visibility li a').each(function () {
                     $(this).on('click', function () {
+                        var _this = $(this);
                         var isChecked = $(this).find('.is-checked');
                         var alias = $(this).data('alias');
                         var visibilityIcon = $(this).attr('data-icon');
@@ -206,13 +237,12 @@
                             $('form#chooseFollowers').submit(function (e) {
                                 e.preventDefault();
 
-                                const _this = $(this).get(0)
                                 let formData = new FormData(this);
                                 let followers = [];
 
-                                // Récupération des cases à cocher sélectionnées
+                                // Retrieving selected checkboxes
                                 document.querySelectorAll('[name="followers_ids"]:checked').forEach(item => {
-                                    // Collecte des données associées à chaque utilisateur
+                                    // Collection of data associated with each user
                                     let follower = {
                                         id: parseInt(item.value),
                                         firstname: item.dataset.firstname,
@@ -220,11 +250,11 @@
                                         avatar: item.dataset.avatar
                                     };
 
-                                    // Ajout de l'utilisateur dans le tableau followers
+                                    // Adding user to followers ARRAY
                                     followers.push(follower);
                                 });
 
-                                // Ajout des données dans FormData
+                                // Adding data to FormData
                                 followers.forEach((follower, i) => {
                                     formData.append('followers_ids[' + i + '][id]', follower.id);
                                     formData.append('followers_ids[' + i + '][firstname]', follower.firstname);
@@ -232,12 +262,12 @@
                                     formData.append('followers_ids[' + i + '][avatar]', follower.avatar);
                                 });
 
-                                // Limiter l'affichage à 3 utilisateurs
+                                // Limit display to 3 users
                                 let htmlContent = '<input type="hidden" name="restrict-users" id="restrict-users" value="' + followers.map(f => f.id).join(',') + '">';
 
                                 htmlContent += '<div class="d-flex flex-row">';
 
-                                // Affichage des 3 premiers utilisateurs
+                                // Showing the first 3 users
                                 for (let i = 0; i < Math.min(3, followers.length); i++) {
                                     let follower = followers[i];
 
@@ -246,7 +276,7 @@
                                                     </div>`;
                                 }
 
-                                // Si il y a plus de 3 utilisateurs, afficher le nombre restant
+                                // If there are more than 3 users, display the remaining number
                                 if (followers.length > 3) {
                                     let remainingCount = followers.length - 3;
 
@@ -257,7 +287,7 @@
 
                                 htmlContent += '</div>';
 
-                                // Ajouter le contenu généré à ".users-list"
+                                // Add generated content to ".users-list"
                                 $('#restrictions .users-list').html(htmlContent);
                                 $('#restrictions').removeClass('d-none');
 
@@ -265,7 +295,7 @@
                                 $('#visibility li a .is-checked').removeClass('opacity-100').addClass('opacity-0');
                                 isChecked.removeClass('opacity-0').addClass('opacity-100');
                                 $('#visibility li a').removeClass('active');
-                                $(_this).addClass('active');
+                                _this.addClass('active');
 
                                 // Change visibility icon at the toggle button
                                 $('#post-visibility').val(visibilityDataArray[1]);
@@ -284,7 +314,7 @@
                             $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
 
                             if (!$('#restrictions').hasClass('d-none')) {
-                                $('#restrictions .users-list').html(htmlContent);
+                                $('#restrictions .users-list').html('');
                                 $('#restrictions').addClass('d-none');
                             }
                         }
@@ -310,9 +340,9 @@
                         let formData = new FormData(this);
                         let followers = [];
 
-                        // Récupération des cases à cocher sélectionnées
+                        // Retrieving selected checkboxes
                         document.querySelectorAll('[name="followers_ids"]:checked').forEach(item => {
-                            // Collecte des données associées à chaque utilisateur
+                            // Collection of data associated with each user
                             let follower = {
                                 id: parseInt(item.value),
                                 firstname: item.dataset.firstname,
@@ -320,11 +350,11 @@
                                 avatar: item.dataset.avatar
                             };
 
-                            // Ajout de l'utilisateur dans le tableau followers
+                            // Adding user to followers ARRAY
                             followers.push(follower);
                         });
 
-                        // Ajout des données dans FormData
+                        // Adding data to FormData
                         followers.forEach((follower, i) => {
                             formData.append('followers_ids[' + i + '][id]', follower.id);
                             formData.append('followers_ids[' + i + '][firstname]', follower.firstname);
@@ -332,12 +362,12 @@
                             formData.append('followers_ids[' + i + '][avatar]', follower.avatar);
                         });
 
-                        // Limiter l'affichage à 3 utilisateurs
+                        // Limit display to 3 users
                         let htmlContent = '<input type="hidden" name="restrict-users" id="restrict-users" value="' + followers.map(f => f.id).join(',') + '">';
 
                         htmlContent += '<div class="d-flex flex-row">';
 
-                        // Affichage des 3 premiers utilisateurs
+                        // Showing the first 3 users
                         for (let i = 0; i < Math.min(3, followers.length); i++) {
                             let follower = followers[i];
 
@@ -346,7 +376,7 @@
                                             </div>`;
                         }
 
-                        // Si il y a plus de 3 utilisateurs, afficher le nombre restant
+                        // If there are more than 3 users, display the remaining number
                         if (followers.length > 3) {
                             let remainingCount = followers.length - 3;
 
@@ -357,13 +387,126 @@
 
                         htmlContent += '</div>';
 
-                        // Ajouter le contenu généré à ".users-list"
+                        // Add generated content to ".users-list"
                         $('#restrictions .users-list').html(htmlContent);
                         $('#restrictions').removeClass('d-none');
 
                         // Pour voir ce qui a été collecté, vous pouvez aussi afficher les données dans la console
                         console.log(formData);
                     });
+                });
+
+                // ------------
+                // Upload file
+                // ------------
+                // 1. Images
+                // ------------
+                // When the user clicks the button to select the files
+                $('#uploadImages').on('click', function() {
+                    $('#imagesInput').click();
+                });
+
+                // When a file is selected
+                $('#imagesInput').on('change', function(event) {
+                    var files = event.target.files;
+                    var previewContainer = $('#imagesPreviews');
+                    previewContainer.empty(); // Clear existing previews
+
+                    // Browsing selected files
+                    Array.from(files).forEach(function(file) {
+                        var reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            var previewItem = $('<div class="previewItem"></div>');
+                            var fileElement;
+
+                            // Check the file type (image or video)
+                            if (file.type.startsWith('image')) {
+                                fileElement = $('<img src="' + e.target.result + '" alt="Preview">');
+                            } else if (file.type.startsWith('video')) {
+                                fileElement = $('<video controls><source src="' + e.target.result + '" type="' + file.type + '"></video>');
+                            }
+
+                            // Add a button to remove the preview item
+                            var removeBtn = $('<button type="button" class="removeBtn">X</button>').on('click', function() {
+                                previewItem.remove();
+                            });
+
+                            previewItem.append(fileElement).append(removeBtn);
+                            previewContainer.append(previewItem);
+                        };
+
+                        // Read the file
+                        reader.readAsDataURL(file);
+                    });
+                });
+
+                // -------------
+                // 2. Documents
+                // -------------
+                // When the user clicks the button to select the files
+                $('#uploadDocuments').on('click', function() {
+                    $('#fileInput').click();
+                });
+
+                // When a file is selected
+                $('#fileInput').on('change', function(event) {
+                    var files = event.target.files;
+                    var previewContainer = $('#documentsPreviews');
+                    previewContainer.empty(); // Clear existing previews
+
+                    // File type validation (PDF only)
+                    var validFiles = Array.from(files).filter(function(file) {
+                        return file.type === 'application/pdf';
+                    });
+
+                    if (validFiles.length === 0) {
+                        $('#errorMessageWrapper').removeClass('d-none');
+						$('#errorMessageWrapper .custom-message').html('Please select only PDF files.');
+
+                        return;
+                    }
+
+                    // Browsing selected files
+                    validFiles.forEach(function(file) {
+                        var reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            var fileData = e.target.result;
+
+                            // Using PDF.js to preview PDF
+                            var previewItem = $('<div class="previewItem"></div>');
+                            var removeBtn = $('<button type="button" class="removeBtn">X</button>').on('click', function() {
+                                previewItem.remove();
+                            });
+
+                            // Creating a canvas element to display the PDF
+                            var canvas = $('<canvas></canvas>');
+                            previewItem.append(canvas).append(removeBtn);
+                            previewContainer.append(previewItem);
+
+                            // Load and display the first page of the PDF
+                            var loadingTask = pdfjsLib.getDocument(fileData);
+                            loadingTask.promise.then(function(pdf) {
+                                pdf.getPage(1).then(function(page) {
+                                    var viewport = page.getViewport({ scale: 0.5 });
+                                    var context = canvas[0].getContext('2d');
+                                    canvas[0].height = viewport.height;
+                                    canvas[0].width = viewport.width;
+
+                                    // Rendering the first page on the canvas
+                                    page.render({ canvasContext: context, viewport: viewport });
+                                });
+                            });
+                        };
+
+                        // Read file as DataURL
+                        reader.readAsArrayBuffer(file);
+                    });
+                });
+
+                // Send post
+                $('#modalCreatePost').on('submit', function(event) {
                 });
 
                 // Reactions

@@ -115,7 +115,6 @@ class User {
                 } else {
                     // If you are on the last page, disable scrolling
                     $(`#${this.userListId}`).off('scroll');
-                    console.log('All pages have been loaded');
                 }
 
                 // Hide loading spinner

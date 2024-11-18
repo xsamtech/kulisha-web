@@ -179,18 +179,35 @@
                                 </div>
                             </div>
 
+                            <!-- Images input -->
+                            <input type="file" name="images[]" id="imagesInput" multiple class="d-none">
+                            <!-- Document input -->
+                            <input type="file" name="documents[]" id="documentsInput" multiple class="d-none">
+                            <!-- Location -->
+                            <input type="hidden" name="latitude" id="latitude" value="">
+                            <input type="hidden" name="longitude" id="longitude" value="">
+                            <input type="hidden" name="city" id="city" value="">
+                            <input type="hidden" name="region" id="region" value="">
+                            <input type="hidden" name="country" id="country" value="">
+
+                            <!-- Images previews -->
+                            <div id="imagesPreviews" class="pt-3 d-none"></div>
+
+                            <!-- Images previews -->
+                            <div id="documentsPreviews" class="pt-3 d-none"></div>
+
                             <!-- Other Post Data -->
                             <div class="hstack gap-2 justify-content-center">
-                                <a class="icon-md bg-success bg-opacity-10 rounded-circle text-success" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('miscellaneous.public.home.posts.other_data.image')">
+                                <a role="button" id="uploadImages" class="icon-md bg-success bg-opacity-10 rounded-circle text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('miscellaneous.public.home.posts.other_data.image')">
                                     <i class="bi bi-image"></i>
                                 </a>
-                                <a class="icon-md bg-info bg-opacity-10 rounded-circle text-info" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('miscellaneous.public.home.posts.other_data.document')">
+                                <a role="button" id="uploadDocuments" class="icon-md bg-info bg-opacity-10 rounded-circle text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('miscellaneous.public.home.posts.other_data.document')">
                                     <i class="bi bi-file-earmark-text"></i>
                                 </a>
-                                <a class="icon-md bg-danger bg-opacity-10 rounded-circle text-danger" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('miscellaneous.public.home.posts.other_data.location')">
+                                <a role="button" id="detectLocation" class="icon-md bg-danger bg-opacity-10 rounded-circle text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('miscellaneous.public.home.posts.other_data.location')">
                                     <i class="bi bi-geo-alt-fill"></i>
                                 </a>
-                                <a class="icon-md bg-warning bg-opacity-10 rounded-circle text-warning" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('miscellaneous.public.home.posts.other_data.emoji')">
+                                <a role="button" id="selectEmoji" class="icon-md bg-warning bg-opacity-10 rounded-circle text-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('miscellaneous.public.home.posts.other_data.emoji')">
                                     <i class="bi bi-emoji-smile-fill"></i>
                                 </a>
                             </div>

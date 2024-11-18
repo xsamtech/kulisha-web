@@ -55,7 +55,7 @@ var scripts = [
     '/assets/js/social/functions.js',
     '/assets/addons/custom/autosize/js/autosize.min.js',
     '/assets/addons/custom/perfect-scrollbar/dist/perfect-scrollbar.min.js',
-    '/assets/addons/custom/jquery/scroll4ever/js/jquery.scroll4ever.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js',
     '/assets/js/load-app-scripts.js',
     '/assets/addons/social/zuck.js/dist/zuck.min.js',
     '/assets/js/classes.js',

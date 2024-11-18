@@ -8,7 +8,7 @@ textarea {
     resize: none!important;
 }
 
-/* border */
+/********** border **********/
 .kls-border-blue {
     border-color: #0595be !important;
 }
@@ -21,7 +21,7 @@ textarea {
     border-color: #a4da22 !important;
 }
 
-/* border-radius */
+/********** border-radius **********/
 .kls-rounded {
     -webkit-border-radius: 1.4rem;
     border-radius: 1.4rem;
@@ -34,7 +34,7 @@ textarea {
     border-bottom-right-radius: 1.4rem;
 }
 
-/* Text */
+/********** Text **********/
 .kls-blue-text {
     color: #0595be!important;
 }
@@ -55,7 +55,7 @@ textarea {
     font-size: 0.8rem;
 }
 
-/* Button */
+/********** Button **********/
 .kls-btn-blue {
     background: #0595be;
 }
@@ -128,7 +128,7 @@ textarea {
     border: solid 1px #95c91e;
 }
 
-/* paragraph */
+/********** paragraph **********/
 .kls-line-height-1 {
     line-height: 1;
 }
@@ -161,7 +161,7 @@ textarea {
     line-height: 1.5;
 }
 
-/* stretched link */
+/********** stretched link **********/
 .card-body + .stretched-link::after {
     background-color: rgba(70, 100, 150, 0.2)!important;
     opacity: 0;
@@ -205,3 +205,36 @@ textarea {
 .modal-backdrop.show:nth-of-type(even) {
     z-index: 1051 !important;
 }
+
+/********** Typographie **********/
+#imagesPreviews,
+#documentsPreviews {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.previewItem {
+    position: relative;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.previewItem img,
+.previewItem video,
+.previewItem canvas {
+    max-width: 100px;
+    max-height: 100px;
+    border: 1px solid #ccc;
+}
+
+.previewItem .removeBtn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
