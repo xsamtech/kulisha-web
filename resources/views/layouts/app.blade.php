@@ -87,7 +87,7 @@
         <!-- Responsive navbar toggler -->
         <div id="successMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999;">
             <div class="row">
-                <div class="col-lg-4 col-sm-6 col-11 ms-auto">
+                <div class="col-lg-4 col-sm-6 col-11 mx-auto">
                     <div class="alert alert-success alert-dismissible d-flex align-items-center" role="alert">
                         <i class="bi bi-info-circle me-3 fs-5"></i>
                         <div class="custom-message"></div>
@@ -98,7 +98,7 @@
         </div>
         <div id="errorMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999;">
             <div class="row">
-                <div class="col-lg-4 col-sm-6 col-11 ms-auto">
+                <div class="col-lg-4 col-sm-6 col-11 mx-auto">
                     <div class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
                         <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
                         <div class="custom-message"></div>
@@ -171,10 +171,12 @@
         <script type="text/javascript">
             /**
              * Native functions
+             * 
+             * I. Unable "submit" button
              */
-            // -----------------------
-            // Unable "submit" button
-            // -----------------------
+            // -------------------------
+            // I. Unable "submit" button
+            // -------------------------
             function unableSubmit(element) {
                 if (element.value.trim() === '') {
                     $('#newPost .send-post').removeClass('btn-primary');
@@ -190,10 +192,18 @@
 
             /**
              * jQuery data
+             * 
+             * I. Toggle post type
+             * II. Toggle visibility
+             * III. Upload file
+             *    III.1. Images
+             *    III.2. Documents
+             * IV. Send post
+             * V. Reactions
              */
             $(function () {
                 // -----------------
-                // Toggle post type
+                // I. Toggle post type
                 // -----------------
                 $('#newPostType .form-check').each(function () {
                     $(this).on('click', function () {
@@ -211,7 +221,7 @@
                 });
  
                 // ------------------
-                // Toggle visibility
+                // II. Toggle visibility
                 // ------------------
                 $('#visibility li a').each(function () {
                     $(this).on('click', function () {
@@ -396,11 +406,11 @@
                     });
                 });
 
-                // ------------
-                // Upload file
-                // ------------
-                // 1. Images
-                // ------------
+                // ----------------
+                // III. Upload file
+                // ----------------
+                // III.1. Images
+                // -------------
                 // When the user clicks the button to select the files
                 $('#uploadImages').on('click', function() {
                     $('#imagesInput').click();
@@ -441,16 +451,16 @@
                     });
                 });
 
-                // -------------
-                // 2. Documents
-                // -------------
+                // ----------------
+                // III.2. Documents
+                // ----------------
                 // When the user clicks the button to select the files
                 $('#uploadDocuments').on('click', function() {
-                    $('#fileInput').click();
+                    $('#documentsInput').click();
                 });
 
                 // When a file is selected
-                $('#fileInput').on('change', function(event) {
+                $('#documentsInput').on('change', function(event) {
                     var files = event.target.files;
                     var previewContainer = $('#documentsPreviews');
                     previewContainer.empty(); // Clear existing previews
@@ -505,11 +515,15 @@
                     });
                 });
 
-                // Send post
+                // -------------
+                // IV. Send post
+                // -------------
                 $('#modalCreatePost').on('submit', function(event) {
                 });
 
-                // Reactions
+                // ------------
+                // V. Reactions
+                // ------------
                 $('.reaction-btn').each(function () {
                     var reactionIcon = $(this).find('.reaction-icon');
                     var currentReaction = $(this).find('.current-reaction');

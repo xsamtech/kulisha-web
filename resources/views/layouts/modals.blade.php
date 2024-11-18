@@ -153,13 +153,13 @@
                                 <span class="d-inline-block">@lang('miscellaneous.public.home.posts.choose_type')</span>
                                 <div class="ps-sm-0 ps-2">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="post-type" id="postProduct" value="product" checked>
+                                        <input class="form-check-input" type="radio" name="post-type" id="postProduct" value="product">
                                         <label role="button" class="form-check-label" for="postProduct">
                                             @lang('miscellaneous.public.home.posts.type.product')
                                         </label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="post-type" id="postService" value="service">
+                                        <input class="form-check-input" type="radio" name="post-type" id="postService" value="service" checked>
                                         <label role="button" class="form-check-label" for="postService">
                                             @lang('miscellaneous.public.home.posts.type.service')
                                         </label>
@@ -217,14 +217,14 @@
                                 <h6 class="fw-light product-type-title">@lang('miscellaneous.public.home.posts.choose_category', ['post_type' => strtolower($categories_product_type['type_name'])])</h6>
                                 <h6 class="fw-light service-type-title d-none">@lang('miscellaneous.public.home.posts.choose_category', ['post_type' => strtolower($categories_service_type['type_name'])])</h6>
 
-                                <div id="productCategories">
+                                <div id="productCategories" class="d-none">
 @foreach ($categories_product as $category)
                                     <input type="radio" class="btn-check" id="check-category-product-{{ $category['id'] }}" name="check-category" autocomplete="off" value="{{ $category['id'] }}">
                                     <label for="check-category-product-{{ $category['id'] }}" class="btn btn-secondary-soft m-2 rounded-pill" style="font-size: 10pt;">{{ $category['category_name'] }}</label>
 @endforeach
                                 </div>
 
-                                <div id="serviceCategories" class="d-none">
+                                <div id="serviceCategories">
 @foreach ($categories_service as $category)
                                     <input type="radio" class="btn-check" id="check-category-service-{{ $category['id'] }}" name="check-category" autocomplete="off" value="{{ $category['id'] }}">
                                     <label for="check-category-service-{{ $category['id'] }}" class="btn btn-secondary-soft m-2 rounded-pill" style="font-size: 10pt;">{{ $category['category_name'] }}</label>
