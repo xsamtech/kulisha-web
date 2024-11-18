@@ -167,22 +167,10 @@
                                 </div>
                             </div>
 
-                            <!-- Add Post Text -->
-                            <div class="d-flex mb-3">
-                                <!-- Avatar -->
-                                <div class="avatar avatar-xs me-2">
-                                    <img class="avatar-img rounded-circle" src="{{ asset($current_user['profile_photo_path']) }}" alt>
-                                </div>
-                                <!-- Post box  -->
-                                <div class="w-100">
-                                    <textarea id="post-textarea" class="form-control pe-4 fs-3 lh-1 border-0" rows="3" placeholder="@lang('miscellaneous.public.home.posts.write')" onkeyup="unableSubmit(this);" autofocus></textarea>
-                                </div>
-                            </div>
-
                             <!-- Images input -->
-                            <input type="file" name="images[]" id="imagesInput" multiple class="d-none">
+                            <input type="file" name="images[]" id="imagesInput" multiple class="d-none" onchange="unableSubmitFiles(this.id);">
                             <!-- Document input -->
-                            <input type="file" name="documents[]" id="documentsInput" multiple class="d-none">
+                            <input type="file" name="documents[]" id="documentsInput" multiple class="d-none" onchange="unableSubmitFiles(this.id);">
                             <!-- Location -->
                             <input type="hidden" name="latitude" id="latitude" value="">
                             <input type="hidden" name="longitude" id="longitude" value="">
@@ -190,11 +178,28 @@
                             <input type="hidden" name="region" id="region" value="">
                             <input type="hidden" name="country" id="country" value="">
 
+                            <!-- A spinner before previews -->
+                            <div id="previewsSpinner" class="spinner-grow d-none float-end" role="status">
+                                <span class="visually-hidden">@lang('miscellaneous.loading')</span>
+                            </div>
+
                             <!-- Images previews -->
                             <div id="imagesPreviews" class="pt-3 d-none"></div>
 
                             <!-- Images previews -->
                             <div id="documentsPreviews" class="pt-3 d-none"></div>
+
+                            <!-- Add Post Text -->
+                            <div class="d-flex my-3">
+                                <!-- Avatar -->
+                                <div class="avatar avatar-xs me-2">
+                                    <img class="avatar-img rounded-circle" src="{{ asset($current_user['profile_photo_path']) }}" alt>
+                                </div>
+                                <!-- Post box  -->
+                                <div class="w-100">
+                                    <textarea id="post-textarea" class="form-control pe-4 fs-3 lh-1 border-0" rows="3" placeholder="@lang('miscellaneous.public.home.posts.write')" onkeyup="unableSubmitText(this);" autofocus></textarea>
+                                </div>
+                            </div>
 
                             <!-- Other Post Data -->
                             <div class="hstack gap-2 justify-content-center">

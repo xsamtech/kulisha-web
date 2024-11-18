@@ -5,7 +5,7 @@
 */
 /********** Typographie **********/
 textarea {
-    resize: none!important;
+    resize: none !important;
 }
 
 /********** border **********/
@@ -36,15 +36,15 @@ textarea {
 
 /********** Text **********/
 .kls-blue-text {
-    color: #0595be!important;
+    color: #0595be !important;
 }
 
 .kls-dark-green-text {
-    color: #056526!important;
+    color: #056526 !important;
 }
 
 .kls-lime-green-text {
-    color: #a4da22!important;
+    color: #a4da22 !important;
 }
 
 .kls-font-weight-700 {
@@ -162,18 +162,19 @@ textarea {
 }
 
 /********** stretched link **********/
-.card-body + .stretched-link::after {
-    background-color: rgba(70, 100, 150, 0.2)!important;
+.card-body+.stretched-link::after {
+    background-color: rgba(70, 100, 150, 0.2) !important;
     opacity: 0;
     transition: .3s;
 }
 
-.card-body + .stretched-link.changed::after {
+.card-body+.stretched-link.changed::after {
     opacity: 1;
 }
 
 /* FROM TABLET TO LARGE SCREEN */
 @media screen and (min-width: 768px) {
+
     /*
         CUSTOM COMPONENTS
     */
@@ -191,9 +192,7 @@ textarea {
 }
 
 /* SMARTPHONE SCREEN */
-@media screen and (max-width: 767px) {
-    
-}
+@media screen and (max-width: 767px) {}
 
 /*
     A modal over another modal
@@ -232,9 +231,20 @@ textarea {
     position: absolute;
     top: 5px;
     right: 5px;
+    width: 20px;
+    height: 20px;
+    padding: 0 2px;
     background-color: rgba(255, 0, 0, 0.7);
     color: white;
     border: none;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
     cursor: pointer;
+    transition: .3s ease-in-out all;
 }
 
+.previewItem .removeBtn:hover {
+    background-color: rgba(100, 0, 0, 0.7);
+}

@@ -173,12 +173,21 @@
              * Native functions
              * 
              * I. Unable "submit" button
+             *    I.1. Textarea
+             *    I.2. Files
+             * II. Remove a file from the input file
+             * III. Check if all files have been loaded
              */
             // -------------------------
             // I. Unable "submit" button
             // -------------------------
-            function unableSubmit(element) {
-                if (element.value.trim() === '') {
+            // I.1. Textarea
+            // -------------
+            function unableSubmitText(element) {
+                var imagesFiles = document.getElementById('imagesInput');
+                var documentsFiles = document.getElementById('documentsInput');
+
+                if (element.value.trim() === '' && imagesFiles.files.length === 0 && documentsFiles.files.length === 0) {
                     $('#newPost .send-post').removeClass('btn-primary');
                     $('#newPost .send-post').addClass('btn-primary-soft');
                     $('#newPost .send-post').addClass('disabled');
@@ -188,6 +197,59 @@
                     $('#newPost .send-post').removeClass('btn-primary-soft');
                     $('#newPost .send-post').addClass('btn-primary');
                 }
+            }
+
+            // ----------
+            // I.2. Files
+            // ----------
+            function unableSubmitFiles(element_id) {
+                var elem = document.getElementById(element_id);
+                var imagesFiles = document.getElementById('imagesInput');
+                var documentsFiles = document.getElementById('documentsInput');
+                var textarea = document.getElementById('post-textarea');
+
+                if (element_id === 'imagesInput') {
+                    if (textarea.value.trim() === '' && elem.files.length === 0 && documentsFiles.files.length === 0) {
+                        $('#newPost .send-post').removeClass('btn-primary');
+                        $('#newPost .send-post').addClass('btn-primary-soft');
+                        $('#newPost .send-post').addClass('disabled');
+                    } else {
+                        $('#newPost .send-post').removeClass('disabled');
+                        $('#newPost .send-post').removeClass('btn-primary-soft');
+                        $('#newPost .send-post').addClass('btn-primary');
+                    }
+                }
+
+                if (element_id === 'documentsInput') {
+                    if (textarea.value.trim() === '' && elem.files.length === 0 && imagesFiles.files.length === 0) {
+                        $('#newPost .send-post').removeClass('btn-primary');
+                        $('#newPost .send-post').addClass('btn-primary-soft');
+                        $('#newPost .send-post').addClass('disabled');
+                    } else {
+                        $('#newPost .send-post').removeClass('disabled');
+                        $('#newPost .send-post').removeClass('btn-primary-soft');
+                        $('#newPost .send-post').addClass('btn-primary');
+                    }
+                }
+            }
+
+            // -------------------------------------
+            // II. Remove a file from the input file
+            // -------------------------------------
+            function removeFileFromInput(file, element) {
+                var input = $(element)[0];
+                var files = Array.from(input.files);
+                var newFiles = files.filter(function(f) {
+                    return f !== file;
+                });
+
+                // Resetting the input file with remaining files
+                var dataTransfer = new DataTransfer();
+
+                newFiles.forEach(function(f) {
+                    dataTransfer.items.add(f);
+                });
+                input.files = dataTransfer.files;
             }
 
             /**
@@ -420,7 +482,34 @@
                 $('#imagesInput').on('change', function(event) {
                     var files = event.target.files;
                     var previewContainer = $('#imagesPreviews');
+                    var validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'mp4', 'avi', 'ogg'];
+
                     previewContainer.empty(); // Clear existing previews
+                    previewContainer.removeClass('d-none');
+                    $('#previewsSpinner').removeClass('d-none');
+
+                    // File type validation (Image only)
+                    var validFiles = Array.from(files).filter(function(file) {
+                        var extension = file.name.split('.').pop().toLowerCase(); // Retrieves the file extension
+
+                        return validExtensions.includes(extension); // Check if the extension is valid
+                    });
+
+                    if (validFiles.length === 0) {
+                        $('#errorMessageWrapper').removeClass('d-none');
+                        $('#errorMessageWrapper .custom-message').html('Please select only image files.');
+                        $('#previewsSpinner').addClass('d-none'); // Hide spinner if no valid files
+
+                        return;
+
+                    } else {
+                        if (!$('#errorMessageWrapper').hasClass('d-none')) {
+                            $('#errorMessageWrapper').addClass('d-none');
+                        }
+                    }
+
+                    // Counter to track number of files loaded
+                    var filesLoaded = 0;
 
                     // Browsing selected files
                     Array.from(files).forEach(function(file) {
@@ -434,16 +523,34 @@
                             if (file.type.startsWith('image')) {
                                 fileElement = $('<img src="' + e.target.result + '" alt="Preview">');
                             } else if (file.type.startsWith('video')) {
-                                fileElement = $('<video controls><source src="' + e.target.result + '" type="' + file.type + '"></video>');
+                                fileElement = $('<video><source src="' + e.target.result + '" type="' + file.type + '"></video>');
                             }
 
                             // Add a button to remove the preview item
-                            var removeBtn = $('<button type="button" class="removeBtn">X</button>').on('click', function() {
+                            var removeBtn = $('<button type="button" class="removeBtn"><i class="bi bi-x"></i></button>').on('click', function() {
+                                // Delete the preview
                                 previewItem.remove();
+                                // Delete file from input when clicking "x"
+                                removeFileFromInput(file, '#imagesInput');
+                                // Check submit
+                                unableSubmitFiles('imagesInput');
+
+                                // Check if the preview container is empty and hide it if so
+                                if (previewContainer.children().length === 0) {
+                                    previewContainer.addClass('d-none');
+                                }
                             });
 
                             previewItem.append(fileElement).append(removeBtn);
                             previewContainer.append(previewItem);
+
+                            // Increment the counter when a file is successfully loaded
+                            filesLoaded++;
+
+                            // Once all files are loaded, hide the spinner
+                            if (filesLoaded === files.length) {
+                                $('#previewsSpinner').addClass('d-none'); // Hide the spinner when all files are processed
+                            }
                         };
 
                         // Read the file
@@ -463,51 +570,96 @@
                 $('#documentsInput').on('change', function(event) {
                     var files = event.target.files;
                     var previewContainer = $('#documentsPreviews');
-                    previewContainer.empty(); // Clear existing previews
+                    var validExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx'];
 
-                    // File type validation (PDF only)
+                    previewContainer.empty(); // Clear existing previews
+                    previewContainer.removeClass('d-none');
+                    $('#previewsSpinner').removeClass('d-none');
+
+                    // File type validation (Document only)
                     var validFiles = Array.from(files).filter(function(file) {
-                        return file.type === 'application/pdf';
+                        var extension = file.name.split('.').pop().toLowerCase(); // Retrieves the file extension
+
+                        return validExtensions.includes(extension); // Check if the extension is valid
                     });
 
                     if (validFiles.length === 0) {
-                        $('#errorMessageWrapper').removeClass('d-none');
-						$('#errorMessageWrapper .custom-message').html('Please select only PDF files.');
+                        if ($('#errorMessageWrapper').hasClass('d-none')) {
+                            $('#errorMessageWrapper').removeClass('d-none');
+
+                        } else {
+                            $('#errorMessageWrapper').addClass('d-none');
+                            $('#errorMessageWrapper').removeClass('d-none');
+                        }
+
+						$('#errorMessageWrapper .custom-message').html('Please select only Document files.');
 
                         return;
                     }
+
+                    // Counter to track number of files loaded
+                    var filesLoaded = 0;
 
                     // Browsing selected files
                     validFiles.forEach(function(file) {
                         var reader = new FileReader();
 
                         reader.onload = function(e) {
+                            var fileElement;
                             var fileData = e.target.result;
+                            var previewItem = $('<div class="previewItem"></div>');
+                            var removeBtn = $('<button type="button" class="removeBtn"><i class="bi bi-x"></i></button>').on('click', function() {
+                                // Delete the preview
+                                previewItem.remove();
+                                // Delete file from input when clicking "x"
+                                removeFileFromInput(file, '#documentsInput');
+                                // Check submit
+                                unableSubmitFiles('documentsInput');
+
+                                // Check if the preview container is empty and hide it if so
+                                if (previewContainer.children().length === 0) {
+                                    previewContainer.addClass('d-none');
+                                }
+                            });
 
                             // Using PDF.js to preview PDF
-                            var previewItem = $('<div class="previewItem"></div>');
-                            var removeBtn = $('<button type="button" class="removeBtn">X</button>').on('click', function() {
-                                previewItem.remove();
-                            });
+                            if (file.type === 'application/pdf') {
+                                // Creating a canvas element to display the PDF
+                                var canvas = $('<canvas></canvas>');
 
-                            // Creating a canvas element to display the PDF
-                            var canvas = $('<canvas></canvas>');
-                            previewItem.append(canvas).append(removeBtn);
-                            previewContainer.append(previewItem);
+                                previewItem.append(canvas).append(removeBtn);
+                                previewContainer.append(previewItem);
 
-                            // Load and display the first page of the PDF
-                            var loadingTask = pdfjsLib.getDocument(fileData);
-                            loadingTask.promise.then(function(pdf) {
-                                pdf.getPage(1).then(function(page) {
-                                    var viewport = page.getViewport({ scale: 0.5 });
-                                    var context = canvas[0].getContext('2d');
-                                    canvas[0].height = viewport.height;
-                                    canvas[0].width = viewport.width;
+                                // Load and display the first page of the PDF
+                                var loadingTask = pdfjsLib.getDocument(fileData);
 
-                                    // Rendering the first page on the canvas
-                                    page.render({ canvasContext: context, viewport: viewport });
+                                loadingTask.promise.then(function(pdf) {
+                                    pdf.getPage(1).then(function(page) {
+                                        var viewport = page.getViewport({ scale: 0.5 });
+                                        var context = canvas[0].getContext('2d');
+                                        canvas[0].height = viewport.height;
+                                        canvas[0].width = viewport.width;
+
+                                        // Rendering the first page on the canvas
+                                        page.render({ canvasContext: context, viewport: viewport });
+                                    });
                                 });
-                            });
+
+                            } else {
+                                fileElement = $('<img src="' + fileData + '" alt="Preview">');
+                                fileElement = $('<span class="d-inline-block px-4 py-2 bg-light border-secondary"><small>' + file.name + '</small></span>');
+
+                                previewItem.append(fileElement).append(removeBtn);
+                                previewContainer.append(previewItem);
+                            }
+
+                            // Increment the counter when a file is successfully loaded
+                            filesLoaded++;
+
+                            // Once all files are loaded, hide the spinner
+                            if (filesLoaded === files.length) {
+                                $('#previewsSpinner').addClass('d-none'); // Hide the spinner when all files are processed
+                            }
                         };
 
                         // Read file as DataURL
