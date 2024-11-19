@@ -10,7 +10,7 @@
                             <h1 class="mb-4 kls-lime-green-text">@lang('miscellaneous.login_title2')</h1>
 
                             <!-- Form START -->
-                            <form id="login_form" onkeyup="event.preventDefault(); unableSubmit('login');">
+                            <form id="login_form" onkeyup="event.preventDefault(); toggleSubmit('login');">
                                 <!-- Email, Phone or Username -->
                                 <div class="mt-4 mb-3 input-group-lg">
                                     <input type="text" name="username" id="username" class="form-control" placeholder="@lang('miscellaneous.login_username')" autofocus>

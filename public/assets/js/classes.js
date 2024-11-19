@@ -11,13 +11,19 @@
  * (1) "User" class to handle users
  */
 class User {
-    constructor(currentModalId, apiURL, userListId, loadingSpinnerId) {
+    constructor(action, currentModalId = null, apiURL = null, userListId = null, loadingSpinnerId = null, firstname = null) {
         this.page = 1;  // Initialize page to 1
         this.loading = false;  // Indicator to check if a query is in progress
-        this.currentModalId = currentModalId;
-        this.apiURL = apiURL;
-        this.userListId = userListId;
-        this.loadingSpinnerId = loadingSpinnerId;
+
+        // If a parameter is "null", use a default value
+        this.action = action;
+        this.currentModalId = currentModalId || '';
+        this.apiURL = apiURL || '';
+        this.userListId = userListId || '';
+        this.loadingSpinnerId = loadingSpinnerId || '';
+        this.firstname = firstname || '';
+
+        // Creating the modal
         this.currentModal = new bootstrap.Modal(document.getElementById(this.currentModalId), { keyboard: false });
 
         // Linking events
@@ -31,35 +37,37 @@ class User {
 
     // Function to handle scroll event in user list
     setupEventListeners() {
-        // Open the modal and load the users
-        $(`#${this.currentModalId}`).on('shown.bs.modal', () => {
-            this.page = 1;  // Reset page number
-            $(`#${this.userListId}`).empty();  // Empty the list before loading new users
-            this.loadUsers();  // Load users when opening modal
-        });
+        if (this.action === 'choose-among-users') {
+            // Open the modal and load the users
+            $(`#${this.currentModalId}`).on('shown.bs.modal', () => {
+                this.page = 1;  // Reset page number
+                $(`#${this.userListId}`).empty();  // Empty the list before loading new users
+                this.loadUsersToCheck();  // Load users when opening modal
+            });
 
-        // Reset user list when modal is closed
-        $(`#${this.currentModalId}`).on('hidden.bs.modal', () => {
-            // Reset user list contents
-            $(`#${this.userListId}`).empty();  // Use ".empty()" to remove all child elements
-            this.page = 1;  // Reset page number
-            this.loading = false;  // Reset loading state
-            $(window).off('scroll');  // Disable scroll event to avoid calls after closing
-        });
+            // Reset user list when modal is closed
+            $(`#${this.currentModalId}`).on('hidden.bs.modal', () => {
+                // Reset user list contents
+                $(`#${this.userListId}`).empty();  // Use ".empty()" to remove all child elements
+                this.page = 1;  // Reset page number
+                this.loading = false;  // Reset loading state
+                $(window).off('scroll');  // Disable scroll event to avoid calls after closing
+            });
 
-        // Handle scroll for infinite loading inside modal
-        $(`#${this.userListId}`).on('scroll', () => {
-            // Check if the user is at the bottom of the list
-            if ($(`#${this.userListId}`).scrollTop() + $(`#${this.userListId}`).innerHeight() >= $(`#${this.userListId}`)[0].scrollHeight - 50) {
-                if (!this.loading) { // Make sure there is not already a call in progress
-                    this.loadUsers();  // Load more users if needed
+            // Handle scroll for infinite loading inside modal
+            $(`#${this.userListId}`).on('scroll', () => {
+                // Check if the user is at the bottom of the list
+                if ($(`#${this.userListId}`).scrollTop() + $(`#${this.userListId}`).innerHeight() >= $(`#${this.userListId}`)[0].scrollHeight - 50) {
+                    if (!this.loading) { // Make sure there is not already a call in progress
+                        this.loadUsersToCheck();  // Load more users if needed
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     // Function to load users
-    loadUsers() {
+    loadUsersToCheck() {
         if (this.loading) return;  // Prevent multiple requests if a request is already in progress
 
         this.loading = true;  // Mark that a request is in progress
@@ -94,8 +102,9 @@ class User {
 
                     userItem.innerHTML = `
                         <img src="${user.follower.profile_photo_path}" alt="" width="50" class="me-3 rounded-circle float-start">
-                        <input type="checkbox" name="followers_ids" id="follower-${user.follower.id}" class="form-check-input float-end" value="${user.follower.id}" 
-                            data-firstname="${user.follower.firstname}" data-lastname="${user.follower.lastname}" data-avatar="${user.follower.profile_photo_path}">
+                        <input type="checkbox" name="followers_ids" id="follower-${user.follower.id}" class="form-check-input float-end" 
+                            value="${user.follower.id}" data-firstname="${user.follower.firstname}" data-lastname="${user.follower.lastname}" 
+                            data-avatar="${user.follower.profile_photo_path}" onchange="toggleSubmitCheckboxes('user-list', 'sendCheckedUsers')">
                         <div>
                             <h6 class="mb-0">${user.follower.firstname} ${user.follower.lastname}</h6>
                             <small>@${user.follower.username}</small>

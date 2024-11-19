@@ -154,7 +154,7 @@
         <script src="{{ asset('assets/js/load-guest-scripts.js') }}"></script>
         <script src="{{ asset('assets/js/script.guest.js') }}"></script>
         <script type="text/javascript">
-            const unableSubmit = (form) => {
+            const toggleSubmit = (form) => {
                 if (form == 'login') {
                     const loginUsername = document.getElementById('username');
                     const loginPassword = document.getElementById('password');

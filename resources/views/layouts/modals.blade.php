@@ -168,9 +168,9 @@
                             </div>
 
                             <!-- Images input -->
-                            <input type="file" name="images[]" id="imagesInput" multiple class="d-none" onchange="unableSubmitFiles(this.id);">
+                            <input type="file" name="images[]" id="imagesInput" multiple class="d-none" onchange="toggleSubmitFiles(this.id);">
                             <!-- Document input -->
-                            <input type="file" name="documents[]" id="documentsInput" multiple class="d-none" onchange="unableSubmitFiles(this.id);">
+                            <input type="file" name="documents[]" id="documentsInput" multiple class="d-none" onchange="toggleSubmitFiles(this.id);">
                             <!-- Location -->
                             <input type="hidden" name="latitude" id="latitude" value="">
                             <input type="hidden" name="longitude" id="longitude" value="">
@@ -197,9 +197,12 @@
                                 </div>
                                 <!-- Post box  -->
                                 <div class="w-100">
-                                    <textarea id="post-textarea" class="form-control pe-4 fs-3 lh-1 border-0" rows="3" placeholder="@lang('miscellaneous.public.home.posts.write')" onkeyup="unableSubmitText(this);" autofocus></textarea>
+                                    <textarea id="post-textarea" class="form-control pe-4 fs-3 lh-1 border-0" rows="3" placeholder="@lang('miscellaneous.public.home.posts.write')" onkeyup="toggleSubmitText(this);" autofocus></textarea>
                                 </div>
                             </div>
+
+                            <!-- Location info -->
+                            <div id="locationInfo"></div>
 
                             <!-- Other Post Data -->
                             <div class="hstack gap-2 justify-content-center">
@@ -324,7 +327,7 @@
                                     <span class="visually-hidden">@lang('miscellaneous.loading')</span>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">@lang('miscellaneous.register')</button>                    
+                            <button type="submit" id="sendCheckedUsers" class="btn btn-primary-soft disabled" data-bs-dismiss="modal">@lang('miscellaneous.register')</button>                    
                         </div>
                         <!-- Modal post footer -->
                     </form>

@@ -11,6 +11,7 @@
         <meta name="kls-visitor" content="{{ !empty(Auth::user()) ? Auth::user()->id : null }}">
         <meta name="kls-ip" content="{{ Request::ip() }}">
         <meta name="kls-ref" content="{{ (!empty(Auth::user()) ? Auth::user()->api_token : 'nat') . '-' . (request()->has('app_id') ? request()->get('app_id') : 'nai') }}">
+        <meta name="kls-ipinfo-token" content="{{ config('services.ipinfo.access_token') }}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="description" content="">
 
@@ -175,6 +176,7 @@
              * I. Unable "submit" button
              *    I.1. Textarea
              *    I.2. Files
+             *    I.3. Checkboxes
              * II. Remove a file from the input file
              * III. Check if all files have been loaded
              */
@@ -183,7 +185,7 @@
             // -------------------------
             // I.1. Textarea
             // -------------
-            function unableSubmitText(element) {
+            function toggleSubmitText(element) {
                 var imagesFiles = document.getElementById('imagesInput');
                 var documentsFiles = document.getElementById('documentsInput');
 
@@ -202,7 +204,7 @@
             // ----------
             // I.2. Files
             // ----------
-            function unableSubmitFiles(element_id) {
+            function toggleSubmitFiles(element_id) {
                 var elem = document.getElementById(element_id);
                 var imagesFiles = document.getElementById('imagesInput');
                 var documentsFiles = document.getElementById('documentsInput');
@@ -233,6 +235,31 @@
                 }
             }
 
+            // ---------------
+            // I.3. Checkboxes
+            // ---------------
+            function toggleSubmitCheckboxes(checkboxesWrapperId, submitButtonId) {
+                // Checks if at least one box is checked
+                const anyChecked = $(`#${checkboxesWrapperId} .form-check-input:checked`).length > 0;
+
+                // If at least one box is checked, activates the button (removes the "disabled" class)
+                if (anyChecked) {
+                    $(`#${submitButtonId}`).removeClass('disabled');
+                    $(`#${submitButtonId}`).removeClass('btn-primary');
+                    $(`#${submitButtonId}`).addClass('btn-primary-soft');
+
+                // Otherwise, disable the button (add the class "disabled")
+                } else {
+                    $(`#${submitButtonId}`).addClass('disabled');
+                    $(`#${submitButtonId}`).addClass('btn-primary');
+                    $(`#${submitButtonId}`).removeClass('btn-primary-soft');
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                toggleSubmitCheckboxes('user-list', 'sendCheckedUsers');  // Applique la vérification de l'état des cases au moment du chargement
+            });
+
             // -------------------------------------
             // II. Remove a file from the input file
             // -------------------------------------
@@ -260,8 +287,9 @@
              * III. Upload file
              *    III.1. Images
              *    III.2. Documents
-             * IV. Send post
-             * V. Reactions
+             * IV. Location detection
+             * V. Send post
+             * VI. Reactions
              */
             $(function () {
                 // -----------------
@@ -297,11 +325,12 @@
                         // Choose restrictions from users list
                         if (alias === 'everybody_except' || alias === 'nobody_except') {
                             // Create an instance of the User class
+                            const action = 'choose-among-users';
                             const currentModalId = 'modalSelectRestrictions';
                             const apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
                             const userListId = 'modalSelectRestrictions .user-list';
                             const loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
-                            const userModal = new User(currentModalId, apiURL, userListId, loadingSpinnerId);
+                            const userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
 
                             // Open the modal and load users
                             userModal.openModal();
@@ -397,11 +426,12 @@
                     e.preventDefault();
 
                     // Create an instance of the User class
+                    const action = 'choose-among-users';
                     const currentModalId = 'modalSelectRestrictions';
                     const apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
                     const userListId = 'modalSelectRestrictions .user-list';
                     const loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
-                    const userModal = new User(currentModalId, apiURL, userListId, loadingSpinnerId);
+                    const userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
 
                     // Open the modal and load users
                     userModal.openModal();
@@ -462,9 +492,6 @@
                         // Add generated content to ".users-list"
                         $('#restrictions .users-list').html(htmlContent);
                         $('#restrictions').removeClass('d-none');
-
-                        // Pour voir ce qui a été collecté, vous pouvez aussi afficher les données dans la console
-                        console.log(formData);
                     });
                 });
 
@@ -533,7 +560,7 @@
                                 // Delete file from input when clicking "x"
                                 removeFileFromInput(file, '#imagesInput');
                                 // Check submit
-                                unableSubmitFiles('imagesInput');
+                                toggleSubmitFiles('imagesInput');
 
                                 // Check if the preview container is empty and hide it if so
                                 if (previewContainer.children().length === 0) {
@@ -614,7 +641,7 @@
                                 // Delete file from input when clicking "x"
                                 removeFileFromInput(file, '#documentsInput');
                                 // Check submit
-                                unableSubmitFiles('documentsInput');
+                                toggleSubmitFiles('documentsInput');
 
                                 // Check if the preview container is empty and hide it if so
                                 if (previewContainer.children().length === 0) {
@@ -667,14 +694,51 @@
                     });
                 });
 
+                // ----------------------
+                // IV. Location detection
+                // ----------------------
+                $("#detectLocation").click(function() {
+                });
+
+                $("#detectLocation").click(function() {
+                    // AJAX request to "ipinfo.io"
+                    $.ajax({
+                        url: `https://ipinfo.io/66.87.125.72/json?token=${ipinfoToken}`,
+                        method: 'GET',
+                        success: function(data) {
+                            var loc = data.loc.split(',');
+                            var latitude = loc[0];
+                            var longitude = loc[1];
+                            var info = `
+                                        <p><strong>Pays:</strong> ${data.country}</p>
+                                        <p><strong>Ville:</strong> ${data.city}</p>
+                                        <p><strong>Latitude/Longitude:</strong> ${data.loc}</p>
+                                        <p><strong>Organisation:</strong> ${data.org}</p>
+                                    `;
+
+                            // Retrieve and display data
+                            $("#locationInfo").html(info);
+                            // Assign values ​​to hidden inputs
+                            $("#latitude").val(latitude);
+                            $("#longitude").val(longitude);
+                            $("#city").val(data.city);
+                            $("#region").val(data.region);
+                            $("#country").val(data.country);
+                        },
+                        error: function(error) {
+                            console.log(`Location error: ${error}`);
+                        }
+                    });
+                });
+
                 // -------------
-                // IV. Send post
+                // V. Send post
                 // -------------
                 $('#modalCreatePost').on('submit', function(event) {
                 });
 
                 // ------------
-                // V. Reactions
+                // VI. Reactions
                 // ------------
                 $('.reaction-btn').each(function () {
                     var reactionIcon = $(this).find('.reaction-icon');
