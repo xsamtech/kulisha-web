@@ -11,6 +11,7 @@ use App\Models\Group;
 use App\Models\Reaction;
 use App\Models\Type;
 use App\Models\Visibility;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -41,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
             $service_type = Type::where([['alias', 'service'], ['group_id', $post_type_group->id]])->first();
 
             if (Auth::check()) {
+                // Guzzle client for some API requests
+                $client = new Client();
                 // Current user
                 $current_user = new ResourcesUser(Auth::user());
                 $user_data = $current_user->toArray(request());
@@ -67,6 +70,10 @@ class AppServiceProvider extends ServiceProvider
                 $reactions_collection = Reaction::where('group_id', $post_reactions_group->id)->get();
                 $reactions_resource = ResourcesReaction::collection($reactions_collection);
                 $reactions = $reactions_resource->toArray(request());
+                // IpInfo location data
+                $ipinfoIp = request()->ip();
+                $ipinfoResponse = $client->get("https://ipinfo.io/{$ipinfoIp}/json");
+                $ipinfoData = json_decode($ipinfoResponse->getBody()->getContents(), true);
 
                 $view->with('current_user', $user_data);
                 $view->with('categories_product', $categories_product);
@@ -76,6 +83,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('post_visibilities', $post_visibilities);
                 $view->with('everybody_visibility', $everybody_visibility);
                 $view->with('reactions', $reactions);
+                $view->with('ipinfoData', response()->json($ipinfoData));
             }
 
             $view->with('current_locale', app()->getLocale());

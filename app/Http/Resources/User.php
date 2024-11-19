@@ -84,6 +84,8 @@ class User extends JsonResource
             'allow_search_engine' => $this->allow_search_engine,
             'allow_search_by_email' => $this->allow_search_by_email,
             'allow_sponsored_messages' => $this->allow_sponsored_messages,
+            'allow_messages_not_connected' => $this->allow_messages_not_connected,
+            'allow_location_detection' => $this->allow_location_detection,
             'tips_at_every_login' => $this->tips_at_every_login,
             'api_token' => $this->api_token,
             'is_online' => $this->is_online,

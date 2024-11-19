@@ -1,3 +1,4 @@
+{{ dd($ipinfoData) }}
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
     <head>
@@ -8,10 +9,11 @@
         <meta name="keywords" content="@lang('miscellaneous.keywords')">
         <meta name="kls-url" content="{{ getWebURL() }}">
         <meta name="kls-api-url" content="{{ getApiURL() }}">
-        <meta name="kls-visitor" content="{{ !empty(Auth::user()) ? Auth::user()->id : null }}">
+        <meta name="kls-visitor" content="{{ Auth::check() ? $current_user['id'] : null }}">
         <meta name="kls-ip" content="{{ Request::ip() }}">
-        <meta name="kls-ref" content="{{ (!empty(Auth::user()) ? Auth::user()->api_token : 'nat') . '-' . (request()->has('app_id') ? request()->get('app_id') : 'nai') }}">
+        <meta name="kls-ref" content="{{ (Auth::check() ? $current_user['api_token'] : 'nat') . '-' . (request()->has('app_id') ? request()->get('app_id') : 'nai') }}">
         <meta name="kls-ipinfo-token" content="{{ config('services.ipinfo.access_token') }}">
+        <meta name="kls-location-allowed" content="{{ $current_user['allow_location_detection'] }}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="description" content="">
 
@@ -245,19 +247,19 @@
                 // If at least one box is checked, activates the button (removes the "disabled" class)
                 if (anyChecked) {
                     $(`#${submitButtonId}`).removeClass('disabled');
-                    $(`#${submitButtonId}`).removeClass('btn-primary');
-                    $(`#${submitButtonId}`).addClass('btn-primary-soft');
+                    $(`#${submitButtonId}`).removeClass('btn-primary-soft');
+                    $(`#${submitButtonId}`).addClass('btn-primary');
 
                 // Otherwise, disable the button (add the class "disabled")
                 } else {
                     $(`#${submitButtonId}`).addClass('disabled');
-                    $(`#${submitButtonId}`).addClass('btn-primary');
-                    $(`#${submitButtonId}`).removeClass('btn-primary-soft');
+                    $(`#${submitButtonId}`).removeClass('btn-primary');
+                    $(`#${submitButtonId}`).addClass('btn-primary-soft');
                 }
             }
 
             document.addEventListener('DOMContentLoaded', function() {
-                toggleSubmitCheckboxes('user-list', 'sendCheckedUsers');  // Applique la vérification de l'état des cases au moment du chargement
+                toggleSubmitCheckboxes('modalSelectRestrictions .user-list', 'sendCheckedUsers');
             });
 
             // -------------------------------------
@@ -322,7 +324,7 @@
                         var visibilityData = $(this).attr('id');
                         var visibilityDataArray = visibilityData.split('-');
 
-                        // Choose restrictions from users list
+                        // If exception exist, check excepted users before switching visibility
                         if (alias === 'everybody_except' || alias === 'nobody_except') {
                             // Create an instance of the User class
                             const action = 'choose-among-users';
@@ -401,8 +403,13 @@
                                 // Change visibility icon at the toggle button
                                 $('#post-visibility').val(visibilityDataArray[1]);
                                 $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
+                                // Disable submit button after sending
+                                $('#sendCheckedUsers').addClass('disabled');
+                                $('#sendCheckedUsers').removeClass('btn-primary');
+                                $('#sendCheckedUsers').addClass('btn-primary-soft');
                             });
 
+                        // Otherwise, switch visibility directly
                         } else {
                             // Set selected link to "active"
                             $('#visibility li a .is-checked').removeClass('opacity-100').addClass('opacity-0');
@@ -492,6 +499,10 @@
                         // Add generated content to ".users-list"
                         $('#restrictions .users-list').html(htmlContent);
                         $('#restrictions').removeClass('d-none');
+                        // Disable submit button after sending
+                        $('#sendCheckedUsers').addClass('disabled');
+                        $('#sendCheckedUsers').removeClass('btn-primary');
+                        $('#sendCheckedUsers').addClass('btn-primary-soft');
                     });
                 });
 
@@ -698,13 +709,10 @@
                 // IV. Location detection
                 // ----------------------
                 $("#detectLocation").click(function() {
-                });
-
-                $("#detectLocation").click(function() {
                     // AJAX request to "ipinfo.io"
                     $.ajax({
                         url: `https://ipinfo.io/66.87.125.72/json?token=${ipinfoToken}`,
-                        method: 'GET',
+                        type: 'GET',
                         success: function(data) {
                             var loc = data.loc.split(',');
                             var latitude = loc[0];
@@ -726,7 +734,7 @@
                             $("#country").val(data.country);
                         },
                         error: function(error) {
-                            console.log(`Location error: ${error}`);
+                            console.log(`Location error: ${JSON.stringify(error)}`);
                         }
                     });
                 });

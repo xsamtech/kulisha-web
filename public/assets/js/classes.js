@@ -104,7 +104,7 @@ class User {
                         <img src="${user.follower.profile_photo_path}" alt="" width="50" class="me-3 rounded-circle float-start">
                         <input type="checkbox" name="followers_ids" id="follower-${user.follower.id}" class="form-check-input float-end" 
                             value="${user.follower.id}" data-firstname="${user.follower.firstname}" data-lastname="${user.follower.lastname}" 
-                            data-avatar="${user.follower.profile_photo_path}" onchange="toggleSubmitCheckboxes('user-list', 'sendCheckedUsers')">
+                            data-avatar="${user.follower.profile_photo_path}" onchange="toggleSubmitCheckboxes('modalSelectRestrictions .user-list', 'sendCheckedUsers')">
                         <div>
                             <h6 class="mb-0">${user.follower.firstname} ${user.follower.lastname}</h6>
                             <small>@${user.follower.username}</small>
@@ -130,7 +130,8 @@ class User {
                 document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-100');
                 document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-0');
 
-                this.loading = false;  // Reset the "loading" status
+                // Reset the "loading" status
+                this.loading = false;
             },
             error: () => {
                 // If an error occurs, hide the spinner and reset the "loading" status
