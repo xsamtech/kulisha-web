@@ -289,6 +289,31 @@
                 input.files = dataTransfer.files;
             }
 
+            // ----------------------------------
+            // III. Set location data from IpInfo
+            // ----------------------------------
+            function handleLocationData(data) {
+                // Extract information from JSON
+                var location = data.loc.split(',');  // Separate latitude and longitude
+                var latitude = location[0];
+                var longitude = location[1];
+                var city = data.city;
+                var region = data.region;
+                var country = data.country;
+
+                // Update hidden inputs
+                $('#latitude').val(latitude);
+                $('#longitude').val(longitude);
+                $('#city').val(city);
+                $('#region').val(region);
+                $('#country').val(country);
+
+                // Show information in div
+                $('#locationInfo').html(`<span class="d-inline-block px-1 py-3 bg-secondary">
+                                            <h5 class="h5 mb-1">${city}</h5><h4 class="h4 m-0">${country}</h4>
+                                        </span>`);
+            }
+
             /**
              * jQuery data
              * 
@@ -725,6 +750,7 @@
                         modalAllowLocation.show();
 
                     } else {
+                        var $
                         // If the user has allowed location, access the data directly
                         handleLocationData(window.Laravel.data.ipinfo);
                     }
