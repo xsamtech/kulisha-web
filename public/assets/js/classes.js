@@ -101,6 +101,10 @@ class User {
 
                     $(window).off('scroll');
 
+                    // Hide loading spinner
+                    document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-100');
+                    document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-0');
+
                     // Reset the "loading" status
                     this.loading = false;
 
