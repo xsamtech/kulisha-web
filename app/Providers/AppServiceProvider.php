@@ -13,6 +13,7 @@ use App\Models\Type;
 use App\Models\Visibility;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,9 +34,9 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(Request $request): void
+    public function boot(): void
     {
-        view()->composer('*', function ($view, $request) {
+        view()->composer('*', function ($view) {
             $post_type_group = Group::where('group_name->fr', 'Type de post')->first();
             $post_visibilities_group = Group::where('group_name->fr', 'Visibilité pour les posts')->first();
             $post_reactions_group = Group::where('group_name->fr', 'Réaction sur post')->first();
@@ -76,6 +77,7 @@ class AppServiceProvider extends ServiceProvider
                 // $ipinfo_token = config('services.ipinfo.access_token');
                 // $ipinfo_response = $client->get("https://ipinfo.io/{$ipinfo_ip}/json?token={$ipinfo_token}");
                 // $ipinfo_data = json_decode($ipinfo_response->getBody()->getContents(), true);
+                $request = App::make(Request::class);
 
                 $view->with('current_user', $user_data);
                 $view->with('categories_product', $categories_product);
