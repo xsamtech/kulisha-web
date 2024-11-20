@@ -86,8 +86,23 @@ class User {
             success: (response) => {
                 // If no data is returned, stop loading
                 if (response.data.length === 0) {
-                    console.log('No more users to load');
+                    const userItem = document.createElement('p');
+
+                    userItem.setAttribute('id', 'empty-text');
+                    userItem.setAttribute('class', 'm-0 text-center');
+
+                    // Empty list text
+                    userItem.innerHTML = window.Laravel.lang.empty_list;
+
+                    if (!document.querySelector('#empty-text')) {
+                        // If the element does not already exist, it is added to the list
+                        document.querySelector(`#${this.userListId}`).appendChild(userItem);
+                    }
+
                     $(window).off('scroll');
+
+                    // Reset the "loading" status
+                    this.loading = false;
 
                     return;
                 }

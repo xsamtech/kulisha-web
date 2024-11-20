@@ -159,6 +159,7 @@
         <!-- PDF.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
         <!-- Custom scripts -->
+@include('layouts.injected_datas')
         <script src="{{ asset('assets/js/load-app-scripts.js') }}"></script>
         <script src="{{ asset('assets/js/classes.js') }}"></script>
 @if (Route::is('home'))
@@ -167,19 +168,7 @@
         <script src="{{ asset('assets/js/social/zuck-stories.js') }}"></script>
 @endif
         <script src="{{ asset('assets/js/script.app.js') }}"></script>
-        <script type="text/javascript">
-            /**
-             * Injected data
-             */
-            window.Laravel = {
-                data: {
-                    user: @json($current_user),
-                    ipinfo: @json($ipinfo_data),
-                }
-            };
-
-            console.log(window.Laravel.data.user);
-            
+        <script type="text/javascript">            
             /**
              * Native functions
              * 

@@ -647,7 +647,8 @@ return [
                 'create_poll_choices' => 'Create choices for this poll',
                 'location_detection' => [
                     'title' => 'Your location',
-                    'description' => 'Would you like to allow your location to be detected?',
+                    'security_info' => 'We respect your privacy!',
+                    'description' => 'Would you like to allow your current location to be detected?',
                 ],
 
                 // Type

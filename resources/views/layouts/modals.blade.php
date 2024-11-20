@@ -344,7 +344,8 @@
                         <h5 class="modal-title m-0" id="allowLocationModalLabel"><i class="bi bi-geo-alt me-2"></i>@lang('miscellaneous.public.home.posts.location_detection.title')</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body text-center">
+                        <p class="small">@lang('miscellaneous.public.home.posts.location_detection.security_info')</p>
                         <p class="m-0">@lang('miscellaneous.public.home.posts.location_detection.description')</p>
                     </div>
                     <div class="modal-footer">
