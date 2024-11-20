@@ -6,6 +6,7 @@
                 lang: {
                     empty_list: "@lang('miscellaneous.empty_list')",
                     menu: {
+                        news_feed: "@lang('miscellaneous.menu.public.news_feed')",
                         home: "@lang('miscellaneous.menu.home')",
                         discover: "@lang('miscellaneous.menu.discover')",
                         orders: "@lang('miscellaneous.menu.public.orders.title')",

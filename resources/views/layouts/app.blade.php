@@ -239,7 +239,7 @@
             // ---------------
             function toggleSubmitCheckboxes(checkboxesWrapperId, submitButtonId) {
                 // Checks if at least one box is checked
-                const anyChecked = $(`#${checkboxesWrapperId} .form-check-input:checked`).length > 0;
+                var anyChecked = $(`#${checkboxesWrapperId} .form-check-input:checked`).length > 0;
 
                 // If at least one box is checked, activates the button (removes the "disabled" class)
                 if (anyChecked) {
@@ -347,12 +347,12 @@
                         // If exception exist, check excepted users before switching visibility
                         if (alias === 'everybody_except' || alias === 'nobody_except') {
                             // Create an instance of the User class
-                            const action = 'choose-among-users';
-                            const currentModalId = 'modalSelectRestrictions';
-                            const apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
-                            const userListId = 'modalSelectRestrictions .user-list';
-                            const loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
-                            const userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
+                            var action = 'choose-among-users';
+                            var currentModalId = 'modalSelectRestrictions';
+                            var apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
+                            var userListId = 'modalSelectRestrictions .user-list';
+                            var loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
+                            var userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
 
                             // Open the modal and load users
                             userModal.openModal();
@@ -360,13 +360,13 @@
                             $('form#chooseFollowers').submit(function (e) {
                                 e.preventDefault();
 
-                                let formData = new FormData(this);
-                                let followers = [];
+                                var formData = new FormData(this);
+                                var followers = [];
 
                                 // Retrieving selected checkboxes
                                 document.querySelectorAll('[name="followers_ids"]:checked').forEach(item => {
                                     // Collection of data associated with each user
-                                    let follower = {
+                                    var follower = {
                                         id: parseInt(item.value),
                                         firstname: item.dataset.firstname,
                                         lastname: item.dataset.lastname,
@@ -386,13 +386,13 @@
                                 });
 
                                 // Limit display to 3 users
-                                let htmlContent = '<input type="hidden" name="restrict-users" id="restrict-users" value="' + followers.map(f => f.id).join(',') + '">';
+                                var htmlContent = '<input type="hidden" name="restrict-users" id="restrict-users" value="' + followers.map(f => f.id).join(',') + '">';
 
                                 htmlContent += '<div class="d-flex flex-row">';
 
                                 // Showing the first 3 users
-                                for (let i = 0; i < Math.min(3, followers.length); i++) {
-                                    let follower = followers[i];
+                                for (var i = 0; i < Math.min(3, followers.length); i++) {
+                                    var follower = followers[i];
 
                                     htmlContent += `<div class="restrict-user-${i + 1}">
                                                         <img src="${follower.avatar}" alt="${follower.firstname} ${follower.lastname}" width="30" class="rounded-circle me-1" title="${follower.firstname} ${follower.lastname}">
@@ -401,7 +401,7 @@
 
                                 // If there are more than 3 users, display the remaining number
                                 if (followers.length > 3) {
-                                    let remainingCount = followers.length - 3;
+                                    var remainingCount = followers.length - 3;
 
                                     htmlContent += `<p class="m-0 ms-1">
                                                         <span class="btn btn-light px-2 pt-1 pb-0 rounded-pill">+${remainingCount}</span>
@@ -453,12 +453,12 @@
                     e.preventDefault();
 
                     // Create an instance of the User class
-                    const action = 'choose-among-users';
-                    const currentModalId = 'modalSelectRestrictions';
-                    const apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
-                    const userListId = 'modalSelectRestrictions .user-list';
-                    const loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
-                    const userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
+                    var action = 'choose-among-users';
+                    var currentModalId = 'modalSelectRestrictions';
+                    var apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
+                    var userListId = 'modalSelectRestrictions .user-list';
+                    var loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
+                    var userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
 
                     // Open the modal and load users
                     userModal.openModal();
@@ -466,13 +466,13 @@
                     $('form#chooseFollowers').submit(function (e) {
                         e.preventDefault();
 
-                        let formData = new FormData(this);
-                        let followers = [];
+                        var formData = new FormData(this);
+                        var followers = [];
 
                         // Retrieving selected checkboxes
                         document.querySelectorAll('[name="followers_ids"]:checked').forEach(item => {
                             // Collection of data associated with each user
-                            let follower = {
+                            var follower = {
                                 id: parseInt(item.value),
                                 firstname: item.dataset.firstname,
                                 lastname: item.dataset.lastname,
@@ -492,13 +492,13 @@
                         });
 
                         // Limit display to 3 users
-                        let htmlContent = '<input type="hidden" name="restrict-users" id="restrict-users" value="' + followers.map(f => f.id).join(',') + '">';
+                        var htmlContent = '<input type="hidden" name="restrict-users" id="restrict-users" value="' + followers.map(f => f.id).join(',') + '">';
 
                         htmlContent += '<div class="d-flex flex-row">';
 
                         // Showing the first 3 users
-                        for (let i = 0; i < Math.min(3, followers.length); i++) {
-                            let follower = followers[i];
+                        for (var i = 0; i < Math.min(3, followers.length); i++) {
+                            var follower = followers[i];
 
                             htmlContent += `<div class="restrict-user-${i + 1}">
                                                 <img src="${follower.avatar}" alt="${follower.firstname} ${follower.lastname}" width="30" class="rounded-circle me-1" title="${follower.firstname} ${follower.lastname}">
@@ -507,7 +507,7 @@
 
                         // If there are more than 3 users, display the remaining number
                         if (followers.length > 3) {
-                            let remainingCount = followers.length - 3;
+                            var remainingCount = followers.length - 3;
 
                             htmlContent += `<p class="m-0 ms-1">
                                                 <span class="btn btn-light px-2 pt-1 pb-0 rounded-pill">+${remainingCount}</span>

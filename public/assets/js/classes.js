@@ -86,7 +86,7 @@ class User {
             success: (response) => {
                 // If no data is returned, stop loading
                 if (response.data.length === 0) {
-                    const userItem = document.createElement('p');
+                    var userItem = document.createElement('p');
 
                     userItem.setAttribute('id', 'empty-text');
                     userItem.setAttribute('class', 'm-0 text-center');
@@ -113,7 +113,7 @@ class User {
 
                 // Loop through users and add them to the list
                 response.data.forEach(user => {
-                    const userItem = document.createElement('label');
+                    var userItem = document.createElement('label');
 
                     userItem.setAttribute('for', `follower-${user.follower.id}`);
                     userItem.setAttribute('role', 'button');

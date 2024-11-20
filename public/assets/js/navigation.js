@@ -11,7 +11,7 @@ function navigate(url, element) {
 
     switch (ref) {
         case 'home':
-            document.title = '{{ "Kulisha / " . __("miscellaneous.menu.public.news_feed") }}'
+            document.title = `Kulisha / ${window.Laravel.lang.menu.news_feed}`;
             document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
                                                                     '<div class="card" aria-hidden="true">' +
                                                                         '<img class="h-50px" src="/assets/img/cover-placeholder.png" class="card-img-top" alt>' +
@@ -78,7 +78,7 @@ function navigate(url, element) {
             break;
 
         case 'discover':
-            document.title = '{{ "Kulisha / " . __("miscellaneous.menu.discover") }}'
+            document.title = `Kulisha / ${window.Laravel.lang.menu.discover}`;
             document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
                                                                     '<div class="card" aria-hidden="true">' +
                                                                         '<div class="card-body">' +
@@ -141,7 +141,7 @@ function navigate(url, element) {
             break;
 
         case 'cart':
-            document.title = '{{ "Kulisha / " . __("miscellaneous.menu.public.orders.cart.title") }}'
+            document.title = `Kulisha / ${window.Laravel.lang.menu.orders}`;
             document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
                                                                     '<div class="card" aria-hidden="true">' +
                                                                         '<div class="card-body">' +
@@ -204,7 +204,7 @@ function navigate(url, element) {
             break;
 
         case 'notification':
-            document.title = '{{ "Kulisha / " . __("miscellaneous.menu.notifications.title") }}'
+            document.title = `Kulisha / ${window.Laravel.lang.menu.notifications}`;
             document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
                                                                     '<div class="card" aria-hidden="true">' +
                                                                         '<div class="card-body">' +
@@ -267,7 +267,7 @@ function navigate(url, element) {
             break;
 
         case 'community':
-            document.title = '{{ __("miscellaneous.menu.public.communities.title") }}'
+            document.title = `Kulisha / ${window.Laravel.lang.menu.communities}`;
             document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
                                                                     '<div class="card" aria-hidden="true">' +
                                                                         '<div class="card-body">' +
@@ -330,7 +330,7 @@ function navigate(url, element) {
             break;
 
         case 'event':
-            document.title = '{{ __("miscellaneous.menu.public.events.title") }}'
+            document.title = `Kulisha / ${window.Laravel.lang.menu.events}`;
             document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
                                                                     '<div class="card" aria-hidden="true">' +
                                                                         '<div class="card-body">' +
@@ -393,7 +393,7 @@ function navigate(url, element) {
             break;
 
         case 'message':
-            document.title = '{{ __("miscellaneous.menu.messages") }}'
+            document.title = `Kulisha / ${window.Laravel.lang.menu.messages}`;
             document.getElementById('content').innerHTML = '<div class="col-lg-3 mt-0">' +
                                                                     '<div class="card" aria-hidden="true">' +
                                                                         '<div class="card-body">' +
@@ -477,7 +477,7 @@ function navigate(url, element) {
         const extractedPart2 = doc.querySelector('#partial2').innerHTML; 
         const extractedPart3 = doc.querySelector('#partial3').innerHTML; 
 
-        let columnsHtml = '';
+        var columnsHtml = '';
 
         if (extractedPart3) {
             if (extractedPart1) {
@@ -543,7 +543,7 @@ window.onpopstate = function(event) {
             const extractedPart2 = doc.querySelector('#partial2').innerHTML; 
             const extractedPart3 = doc.querySelector('#partial3').innerHTML; 
 
-            let columnsHtml = '';
+            var columnsHtml = '';
 
             if (extractedPart3) {
                 if (extractedPart1) {

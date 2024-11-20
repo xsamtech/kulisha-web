@@ -6,11 +6,11 @@
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
 */
-let stories;
+var stories;
 
 async function fetchStories() {
   try {
-    const resultStory = await $.ajax({
+    var resultStory = await $.ajax({
       headers: headers,
       method: 'GET',
       contentType: 'application/json',
@@ -21,17 +21,17 @@ async function fetchStories() {
       throw new Error('Unexpected data structure received from API');
     }
 
-    const apiData = await Promise.all(resultStory.data.map(async (story) => {
-      const contents = await Promise.all(story.posts.map(async (content) => {
+    var apiData = await Promise.all(resultStory.data.map(async (story) => {
+      var contents = await Promise.all(story.posts.map(async (content) => {
         try {
-          const resultConsultation = await $.ajax({
+          var resultConsultation = await $.ajax({
             headers: headers,
             method: 'GET',
             contentType: 'application/json',
             url: `${apiHost}/history/select_by_user_entity/${currentUser}/consultation_history/0/${story.owner_id}/post/${content.story_id}`
           });
 
-          const timestamp = new Date(content.created_at).getTime() / 1000;
+          var timestamp = new Date(content.created_at).getTime() / 1000;
 
           return {
             id: `${story.owner_id}-story-${content.story_id}`,
@@ -55,7 +55,7 @@ async function fetchStories() {
 
       // Return a unique object if "contents" has elements
       if (contents.length > 0) {
-        const onwner_timestamp = new Date(story.owner_last_update).getTime() / 1000;
+        var onwner_timestamp = new Date(story.owner_last_update).getTime() / 1000;
 
         return {
           id: story.owner_id,
@@ -71,19 +71,19 @@ async function fetchStories() {
     }));
 
     // Filter null values and avoid duplicates
-    const uniqueStories = apiData.filter((story, index, self) =>
+    var uniqueStories = apiData.filter((story, index, self) =>
       story !== null && index === self.findIndex(s => s.id === story.id)
     );
 
     // console.log('Final uniqueStories:', JSON.stringify(uniqueStories, null, 2));
 
-    let currentStoryId = null; // ID of the story currently displayed
-    let currentItemIndex = 0; // Index of the currently displayed item
-    const validUniqueStories = uniqueStories.filter(story => story && story.items.length > 0);
+    var currentStoryId = null; // ID of the story currently displayed
+    var currentItemIndex = 0; // Index of the currently displayed item
+    var validUniqueStories = uniqueStories.filter(story => story && story.items.length > 0);
 
     // console.log('Final validUniqueStories:', JSON.stringify(validUniqueStories, null, 2));
 
-    const storiesOptions = {
+    var storiesOptions = {
       rtl: false,
       skin: 'snapgram',
       avatars: true,
@@ -100,13 +100,13 @@ async function fetchStories() {
       callbacks: {
         onOpen(storyId, callback) {
           currentStoryId = storyId; // Update the ID of the currently opened story
-          const story = validUniqueStories.find(s => s.id === storyId);
+          var story = validUniqueStories.find(s => s.id === storyId);
 
           if (story) {
             // Use an event or a delay
             setTimeout(() => {
-              const items = story.items; // Retreive all items
-              const timeElements = document.querySelectorAll('#zuck-modal-content .story-viewer .head .left .info .time');
+              var items = story.items; // Retreive all items
+              var timeElements = document.querySelectorAll('#zuck-modal-content .story-viewer .head .left .info .time');
 
               // Ensure there is "timeElement" for each item
               if (timeElements.length > 0 && items.length > 0) {
@@ -127,17 +127,17 @@ async function fetchStories() {
           callback();  // on open story viewer
         },
         onView: function (storyId) {
-          const story = validUniqueStories.find(s => s.id === storyId);
+          var story = validUniqueStories.find(s => s.id === storyId);
 
           if (story) {
             // Retrieve the currently displayed item based on "currentItemIndex"
-            const item = story.items[currentItemIndex];
+            var item = story.items[currentItemIndex];
 
             console.log(currentIpAddr);
 
             if (item) {
               if (!item.seen) {
-                const updateConsultationHistory = $.ajax({
+                var updateConsultationHistory = $.ajax({
                   headers: {
                     'Authorization': 'Bearer ' + appRef.split('-')[0],
                     'X-localization': navigator.language,
@@ -164,7 +164,7 @@ async function fetchStories() {
           currentItemIndex = 0; // Reset index when closing display
         },
         onNavigateItem(storyId, nextStoryId, callback) {
-          const story = validUniqueStories.find(s => s.id === storyId);
+          var story = validUniqueStories.find(s => s.id === storyId);
 
           if (story) {
             // Update "currentItemIndex" based on navigation
@@ -174,7 +174,7 @@ async function fetchStories() {
           callback();  // on navigate item of story
 
           // Retrieve current item after navigation
-          const item = story.items[currentItemIndex];
+          var item = story.items[currentItemIndex];
 
           if (item) {
             console.log('API ID (navigated):', item.apiid);
@@ -185,7 +185,7 @@ async function fetchStories() {
         }
       }
     };
-    const storiesElement = document.querySelector('#stories');
+    var storiesElement = document.querySelector('#stories');
 
     if (!storiesElement) {
       console.error('Stories element not found in the DOM');
@@ -201,7 +201,7 @@ async function fetchStories() {
 }
 
 async function addStoryFromPost(post) {
-  const storyData = {
+  var storyData = {
     id: post.story_id,
     name: `${post.owner_firstname} ${post.owner_lastname}`,
     photo: post.owner_avatar,
@@ -281,34 +281,34 @@ $('#cropModal_story #crop_story').on('click', function () {
   });
 });
 
-const sendStory = document.getElementById('sendStory');
+var sendStory = document.getElementById('sendStory');
 
 sendStory.addEventListener('click', async () => {
   // "Post" object
-  const post = new Post();
+  var post = new Post();
   // Form data
-  const postUrl = document.getElementById('postUrl');
-  const postTitle = document.getElementById('postTitle');
-  const postContent = document.getElementById('postContent');
-  const sharedPostId = document.getElementById('sharedPostId');
-  const price = document.getElementById('price');
-  const currency = document.getElementById('currency');
-  const quantity = document.getElementById('quantity');
-  const answeredFor = document.getElementById('answeredFor');
-  const latitude = document.getElementById('latitude');
-  const longitude = document.getElementById('longitude');
-  const city = document.getElementById('city');
-  const region = document.getElementById('region');
-  const country = document.getElementById('country');
-  const typeId = document.getElementById('typeId');
-  const categoryId = document.getElementById('categoryId');
-  const statusId = document.getElementById('statusId');
-  const visibilityId = document.getElementById('visibilityId');
-  const coverageAreaId = document.getElementById('coverageAreaId');
-  const budgetId = document.getElementById('budgetId');
-  const communityId = document.getElementById('communityId');
-  const eventId = document.getElementById('eventId');
-  const userId = document.getElementById('userId');
+  var postUrl = document.getElementById('postUrl');
+  var postTitle = document.getElementById('postTitle');
+  var postContent = document.getElementById('postContent');
+  var sharedPostId = document.getElementById('sharedPostId');
+  var price = document.getElementById('price');
+  var currency = document.getElementById('currency');
+  var quantity = document.getElementById('quantity');
+  var answeredFor = document.getElementById('answeredFor');
+  var latitude = document.getElementById('latitude');
+  var longitude = document.getElementById('longitude');
+  var city = document.getElementById('city');
+  var region = document.getElementById('region');
+  var country = document.getElementById('country');
+  var typeId = document.getElementById('typeId');
+  var categoryId = document.getElementById('categoryId');
+  var statusId = document.getElementById('statusId');
+  var visibilityId = document.getElementById('visibilityId');
+  var coverageAreaId = document.getElementById('coverageAreaId');
+  var budgetId = document.getElementById('budgetId');
+  var communityId = document.getElementById('communityId');
+  var eventId = document.getElementById('eventId');
+  var userId = document.getElementById('userId');
 
   post.setUniqueVariables(
     (postUrl ? postUrl.value : null), (postUrl ? postTitle.value : null), (postContent ? postContent.value : null),
@@ -320,17 +320,17 @@ sendStory.addEventListener('click', async () => {
     (communityId ? communityId.value : null), (eventId ? eventId.value : null), (userId ? userId.value : null)
   );
 
-  const choicesContents = document.querySelectorAll('[name="choicesContents"]');
-  const iconsFonts = document.querySelectorAll('[name="iconsFonts"]');
-  const imagesUrls = document.querySelectorAll('[name="imagesUrls"]');
+  var choicesContents = document.querySelectorAll('[name="choicesContents"]');
+  var iconsFonts = document.querySelectorAll('[name="iconsFonts"]');
+  var imagesUrls = document.querySelectorAll('[name="imagesUrls"]');
 
   if (choicesContents.length > 0) {
-    for (let i = 0; i < choicesContents.length; i++) {
+    for (var i = 0; i < choicesContents.length; i++) {
       post.addPollData(choicesContents[i], iconsFonts[i], imagesUrls[i]);
     }
   }
 
-  const savedPost = await post.sendData(); // Register post and retreive response
+  var savedPost = await post.sendData(); // Register post and retreive response
 
   await addStoryFromPost(savedPost.data); // Add a new story
 });
