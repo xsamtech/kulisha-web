@@ -40,8 +40,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
+        dd($request->ipinfo->country_name);
+
         return view('home');
     }
 
