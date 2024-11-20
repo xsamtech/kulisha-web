@@ -4,15 +4,15 @@
              */
             window.Laravel = {
                 lang: {
-                    empty_list: @json(@lang('miscellaneous.empty_list')),
+                    empty_list: "@lang('miscellaneous.empty_list')",
                     menu: {
-                        home: @json(@lang('miscellaneous.menu.home')),
-                        discover: @json(@lang('miscellaneous.menu.discover')),
-                        orders: @json(@lang('miscellaneous.menu.public.orders.title')),
-                        notifications: @json(@lang('miscellaneous.menu.notifications.title')),
-                        communities: @json(@lang('miscellaneous.menu.public.communities.title')),
-                        events: @json(@lang('miscellaneous.menu.public.events.title')),
-                        messages: @json(@lang('miscellaneous.menu.messages')),
+                        home: "@lang('miscellaneous.menu.home')",
+                        discover: "@lang('miscellaneous.menu.discover')",
+                        orders: "@lang('miscellaneous.menu.public.orders.title')",
+                        notifications: "@lang('miscellaneous.menu.notifications.title')",
+                        communities: "@lang('miscellaneous.menu.public.communities.title')",
+                        events: "@lang('miscellaneous.menu.public.events.title')",
+                        messages: "@lang('miscellaneous.menu.messages')",
                     },
                 },
                 data: {
