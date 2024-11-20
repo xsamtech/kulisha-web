@@ -94,13 +94,13 @@ class User {
                     // Empty list text
                     userItem.innerHTML = window.Laravel.lang.empty_list;
 
+                    // If the element does not already exist, it is added to the list
                     if (!document.querySelector('#empty-text')) {
-                        // If the element does not already exist, it is added to the list
                         document.querySelector(`#${this.userListId}`).appendChild(userItem);
                     }
 
+                    // Stop scroll loading
                     $(window).off('scroll');
-
                     // Hide loading spinner
                     document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-100');
                     document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-0');
