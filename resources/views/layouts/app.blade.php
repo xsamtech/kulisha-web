@@ -188,7 +188,7 @@
              *    I.2. Files
              *    I.3. Checkboxes
              * II. Remove a file from the input file
-             * III. Check if all files have been loaded
+             * III. Set location data from IpInfo
              */
             // -------------------------
             // I. Unable "submit" button
@@ -299,7 +299,7 @@
                 var longitude = location[1];
                 var city = data.city;
                 var region = data.region;
-                var country = data.country_name;
+                var country = data.country;
 
                 // Update hidden inputs
                 $('#latitude').val(latitude);
@@ -309,9 +309,7 @@
                 $('#country').val(country);
 
                 // Show information in div
-                $('#locationInfo').html(`<span class="d-inline-block px-1 py-3 bg-secondary">
-                                            <h5 class="h5 mb-1">${city}</h5><h4 class="h4 m-0">${country}</h4>
-                                        </span>`);
+                $('#locationInfo').html(`<h5 class="h5 mb-1">${city} (${country})</h5>`);
             }
 
             /**
