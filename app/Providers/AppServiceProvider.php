@@ -72,11 +72,6 @@ class AppServiceProvider extends ServiceProvider
                 $reactions_collection = Reaction::where('group_id', $post_reactions_group->id)->get();
                 $reactions_resource = ResourcesReaction::collection($reactions_collection);
                 $reactions = $reactions_resource->toArray(request());
-                // IpInfo location data
-                // $ipinfo_ip = request()->ip();
-                // $ipinfo_token = config('services.ipinfo.access_token');
-                // $ipinfo_response = $client->get("https://ipinfo.io/{$ipinfo_ip}/json?token={$ipinfo_token}");
-                // $ipinfo_data = json_decode($ipinfo_response->getBody()->getContents(), true);
                 $request = App::make(Request::class);
 
                 $view->with('current_user', $user_data);

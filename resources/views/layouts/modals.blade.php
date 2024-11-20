@@ -202,7 +202,7 @@
                             </div>
 
                             <!-- Location info -->
-                            <div id="locationInfo"></div>
+                            <div id="locationInfo" class="mb-3 text-center"></div>
 
                             <!-- Other Post Data -->
                             <div class="hstack gap-2 justify-content-center">
