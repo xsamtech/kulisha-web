@@ -646,7 +646,7 @@ return [
                 ],
                 'create_poll_choices' => 'Créez des choix pour ce sondage',
                 'location_detection' => [
-                    'title' => 'Détection de votre localisation',
+                    'title' => 'Votre localisation',
                     'description' => 'Souhaitez-vous autoriser la détection de votre localisation ?',
                 ],
 

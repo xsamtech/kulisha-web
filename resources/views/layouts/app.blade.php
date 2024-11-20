@@ -309,7 +309,7 @@
                 $('#country').val(country);
 
                 // Show information in div
-                $('#locationInfo').html(`<h6 class="h6 m-0">${city}</h6><p class="m-0">${country}</p>`);
+                $('#locationInfo').html(`<h5 class="h5 m-0">${city}</h5><p class="m-0">${country}</p>`);
             }
 
             /**
