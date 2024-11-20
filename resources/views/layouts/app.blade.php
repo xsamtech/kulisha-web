@@ -299,7 +299,7 @@
                 var longitude = location[1];
                 var city = data.city;
                 var region = data.region;
-                var country = data.country;
+                var country = data.country_name;
 
                 // Update hidden inputs
                 $('#latitude').val(latitude);
