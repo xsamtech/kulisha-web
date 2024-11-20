@@ -12,6 +12,7 @@ use App\Models\Reaction;
 use App\Models\Type;
 use App\Models\Visibility;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,9 +33,9 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(Request $request): void
     {
-        view()->composer('*', function ($view) {
+        view()->composer('*', function ($view, $request) {
             $post_type_group = Group::where('group_name->fr', 'Type de post')->first();
             $post_visibilities_group = Group::where('group_name->fr', 'Visibilité pour les posts')->first();
             $post_reactions_group = Group::where('group_name->fr', 'Réaction sur post')->first();
@@ -71,10 +72,10 @@ class AppServiceProvider extends ServiceProvider
                 $reactions_resource = ResourcesReaction::collection($reactions_collection);
                 $reactions = $reactions_resource->toArray(request());
                 // IpInfo location data
-                $ipinfo_ip = request()->ip();
-                $ipinfo_token = config('services.ipinfo.access_token');
-                $ipinfo_response = $client->get("https://ipinfo.io/{$ipinfo_ip}/json?token={$ipinfo_token}");
-                $ipinfo_data = json_decode($ipinfo_response->getBody()->getContents(), true);
+                // $ipinfo_ip = request()->ip();
+                // $ipinfo_token = config('services.ipinfo.access_token');
+                // $ipinfo_response = $client->get("https://ipinfo.io/{$ipinfo_ip}/json?token={$ipinfo_token}");
+                // $ipinfo_data = json_decode($ipinfo_response->getBody()->getContents(), true);
 
                 $view->with('current_user', $user_data);
                 $view->with('categories_product', $categories_product);
@@ -84,7 +85,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('post_visibilities', $post_visibilities);
                 $view->with('everybody_visibility', $everybody_visibility);
                 $view->with('reactions', $reactions);
-                $view->with('ipinfo_data', $ipinfo_data);
+                $view->with('ipinfo_data', $request->ipinfo);
             }
 
             $view->with('current_locale', app()->getLocale());
