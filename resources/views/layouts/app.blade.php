@@ -745,7 +745,7 @@
                 $("#detectLocation").on('click', function(e) {
                     e.preventDefault();
 
-                    if (window.Laravel.user.data.allow_location_detection === 0) {
+                    if (window.Laravel.data.user.allow_location_detection === 0) {
                         // If user has not allowed localization, show modal
                         modalAllowLocation.show();
 
