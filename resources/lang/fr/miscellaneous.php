@@ -645,6 +645,10 @@ return [
                     'among_followers' => 'Choisir parmi vos followers',
                 ],
                 'create_poll_choices' => 'Créez des choix pour ce sondage',
+                'location_detection' => [
+                    'title' => 'Détection de votre localisation',
+                    'description' => 'Souhaitez-vous autoriser la détection de votre localisation ?',
+                ],
 
                 // Type
                 'type' => [

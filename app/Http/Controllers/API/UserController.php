@@ -500,6 +500,7 @@ class UserController extends BaseController
             'allow_search_by_email' => $request->allow_search_by_email,
             'allow_sponsored_messages' => $request->allow_sponsored_messages,
             'allow_messages_not_connected' => $request->allow_messages_not_connected,
+            'allow_location_detection' => $request->allow_location_detection,
             'tips_at_every_login' => $request->tips_at_every_login,
             'is_online' => $request->is_online,
             'status_id' => $request->status_id,
@@ -874,6 +875,13 @@ class UserController extends BaseController
         if ($inputs['allow_messages_not_connected'] != null) {
             $user->update([
                 'allow_messages_not_connected' => $inputs['allow_messages_not_connected'],
+                'updated_at' => now(),
+            ]);
+        }
+
+        if ($inputs['allow_location_detection'] != null) {
+            $user->update([
+                'allow_location_detection' => $inputs['allow_location_detection'],
                 'updated_at' => now(),
             ]);
         }

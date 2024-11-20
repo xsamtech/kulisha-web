@@ -1,4 +1,3 @@
-{{ dd($ipinfoData) }}
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
     <head>
@@ -12,8 +11,6 @@
         <meta name="kls-visitor" content="{{ Auth::check() ? $current_user['id'] : null }}">
         <meta name="kls-ip" content="{{ Request::ip() }}">
         <meta name="kls-ref" content="{{ (Auth::check() ? $current_user['api_token'] : 'nat') . '-' . (request()->has('app_id') ? request()->get('app_id') : 'nai') }}">
-        <meta name="kls-ipinfo-token" content="{{ config('services.ipinfo.access_token') }}">
-        <meta name="kls-location-allowed" content="{{ $current_user['allow_location_detection'] }}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="description" content="">
 
@@ -170,8 +167,19 @@
         <script src="{{ asset('assets/js/social/zuck-stories.js') }}"></script>
 @endif
         <script src="{{ asset('assets/js/script.app.js') }}"></script>
-        <script src="{{ asset('assets/js/navigation.js') }}"></script>
         <script type="text/javascript">
+            /**
+             * Injected data
+             */
+            window.Laravel = {
+                data: {
+                    user: @json($current_user),
+                    ipinfo: @json($ipinfo_data),
+                }
+            };
+
+            console.log(window.Laravel.data.user);
+            
             /**
              * Native functions
              * 
@@ -708,35 +716,29 @@
                 // ----------------------
                 // IV. Location detection
                 // ----------------------
-                $("#detectLocation").click(function() {
-                    // AJAX request to "ipinfo.io"
-                    $.ajax({
-                        url: `https://ipinfo.io/66.87.125.72/json?token=${ipinfoToken}`,
-                        type: 'GET',
-                        success: function(data) {
-                            var loc = data.loc.split(',');
-                            var latitude = loc[0];
-                            var longitude = loc[1];
-                            var info = `
-                                        <p><strong>Pays:</strong> ${data.country}</p>
-                                        <p><strong>Ville:</strong> ${data.city}</p>
-                                        <p><strong>Latitude/Longitude:</strong> ${data.loc}</p>
-                                        <p><strong>Organisation:</strong> ${data.org}</p>
-                                    `;
+                // When the user clicks the location detection button
+                $("#detectLocation").on('click', function(e) {
+                    e.preventDefault();
 
-                            // Retrieve and display data
-                            $("#locationInfo").html(info);
-                            // Assign values ​​to hidden inputs
-                            $("#latitude").val(latitude);
-                            $("#longitude").val(longitude);
-                            $("#city").val(data.city);
-                            $("#region").val(data.region);
-                            $("#country").val(data.country);
-                        },
-                        error: function(error) {
-                            console.log(`Location error: ${JSON.stringify(error)}`);
-                        }
-                    });
+                    if (window.Laravel.user.data.allow_location_detection === 0) {
+                        // If user has not allowed localization, show modal
+                        modalAllowLocation.show();
+
+                    } else {
+                        // If the user has allowed location, access the data directly
+                        handleLocationData(window.Laravel.data.ipinfo);
+                    }
+                });
+
+                // If the user accepts the localization in the modal
+                $('#allow-location-btn').on('click', function (e) {
+                    e.preventDefault();
+
+                    // Close the modal
+                    modalAllowLocation.hide();
+
+                    // Access location data
+                    handleLocationData(window.Laravel.data.ipinfo);
                 });
 
                 // -------------
@@ -793,5 +795,6 @@
                 });
             });
         </script>
+        <script src="{{ asset('assets/js/navigation.js') }}"></script>
     </body>
 </html>

@@ -335,3 +335,23 @@
             </div>
         </div>
         <!-- Modal select restrictions END -->
+
+        <!-- Modal location permission START -->
+        <div class="modal fade" id="allowLocationModal" tabindex="-1" aria-labelledby="allowLocationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title m-0" id="allowLocationModalLabel">@lang('miscellaneous.public.home.posts.location_detection.title')</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="m-0">@lang('miscellaneous.public.home.posts.location_detection.description')</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary-soft-hover" data-bs-dismiss="modal">@lang('miscellaneous.no')</button>
+                        <button type="button" id="allow-location-btn" class="btn btn-primary">@lang('miscellaneous.yes')</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal location permission END -->

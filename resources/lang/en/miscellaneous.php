@@ -645,6 +645,10 @@ return [
                     'among_followers' => 'Choosing among your followers',
                 ],
                 'create_poll_choices' => 'Create choices for this poll',
+                'location_detection' => [
+                    'title' => 'Detecting your location',
+                    'description' => 'Would you like to allow your location to be detected?',
+                ],
 
                 // Type
                 'type' => [

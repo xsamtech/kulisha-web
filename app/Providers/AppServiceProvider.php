@@ -71,9 +71,10 @@ class AppServiceProvider extends ServiceProvider
                 $reactions_resource = ResourcesReaction::collection($reactions_collection);
                 $reactions = $reactions_resource->toArray(request());
                 // IpInfo location data
-                $ipinfoIp = request()->ip();
-                $ipinfoResponse = $client->get("https://ipinfo.io/{$ipinfoIp}/json");
-                $ipinfoData = json_decode($ipinfoResponse->getBody()->getContents(), true);
+                $ipinfo_ip = request()->ip();
+                $ipinfo_token = config('services.ipinfo.access_token');
+                $ipinfo_response = $client->get("https://ipinfo.io/{$ipinfo_ip}/json?token={$ipinfo_token}");
+                $ipinfo_data = json_decode($ipinfo_response->getBody()->getContents(), true);
 
                 $view->with('current_user', $user_data);
                 $view->with('categories_product', $categories_product);
@@ -83,7 +84,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('post_visibilities', $post_visibilities);
                 $view->with('everybody_visibility', $everybody_visibility);
                 $view->with('reactions', $reactions);
-                $view->with('ipinfoData', response()->json($ipinfoData));
+                $view->with('ipinfo_data', $ipinfo_data);
             }
 
             $view->with('current_locale', app()->getLocale());
