@@ -18,14 +18,14 @@ var csrfToken = $('[name="csrf-token"]').attr('content');
 var headers = { 'Authorization': 'Bearer ' + appRef.split('-')[0], 'Accept': $('.mime-type').val(), 'X-localization': navigator.language };
 var kulishaBrand = document.querySelectorAll('.kulisha-brand');
 // Modals
-var modalUser = $('#cropModalUser');
+var modalUser = $('#cropModal_avatar');
 var modalAllowLocation = new bootstrap.Modal(document.getElementById('allowLocationModal'), { keyboard: false });
 // Preview images
-var retrievedAvatar = document.getElementById('retrieved_image');
+var retrievedAvatar = document.getElementById('retrieved_image_avatar');
 var retrievedImageProfile = document.getElementById('retrieved_image_profile');
 var currentImageProfile = document.querySelector('#profileImageWrapper img');
-var retrievedImageStory = document.getElementById('retrieved_image_story');
-var currentImageStory = document.querySelector('#storyImageWrapper img');
+var retrievedImageCover = document.getElementById('retrieved_image_cover');
+var currentImageCover = document.querySelector('#coverImageWrapper img');
 var retrievedImageRecto = document.getElementById('retrieved_image_recto');
 var currentImageRecto = document.querySelector('#rectoImageWrapper img');
 var retrievedImageVerso = document.getElementById('retrieved_image_verso');

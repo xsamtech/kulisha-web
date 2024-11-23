@@ -44,6 +44,8 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/dropzone/dist/min/dropzone.min.css') }}">
         <!-- Flatpickr CSS -->
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/flatpickr/dist/flatpickr.min.css') }}">
+        <!-- CropperJS -->
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/cropper/css/cropper.min.css') }}">
         <!-- Plyr CSS -->
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/plyr/plyr.css') }}">
         <!-- Zuck CSS -->
@@ -151,6 +153,8 @@
         <script src="{{ asset('assets/addons/social/glightbox-master/dist/js/glightbox.min.js') }}"></script>
         <!-- Flatpickr -->
         <script src="{{ asset('assets/addons/social/flatpickr/dist/flatpickr.min.js') }}"></script>
+        <!-- CropperJS -->
+        <script src="{{ asset('assets/addons/custom/cropper/js/cropper.min.js') }}"></script>
         <!-- Plyr -->
         <script src="{{ asset('assets/addons/social/plyr/plyr.js') }}"></script>
         <!-- Dropzone -->

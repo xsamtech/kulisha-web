@@ -383,14 +383,14 @@
 
                         <!-- Modal event body START -->
                         <div class="modal-body p-0 overflow-x-hidden overflow-y-auto">
-                            <div id="eventCover" class="position-relative overflow-hidden" style="max-height: 200px;">
-                                <img src="{{ asset('assets/img/cover-placeholder-black-transparent.png') }}" alt="" class="cover img-fluid rounded-0">
+                            <div id="coverImageWrapper" class="position-relative overflow-hidden" style="max-height: 200px;">
+                                <img src="{{ asset('assets/img/cover-placeholder-black-transparent.png') }}" alt="" class="cover-image img-fluid rounded-0">
                                 <div class="position-absolute w-100" style="bottom: 0.7rem; padding: 0 0.7rem;">
-                                    <label role="button" for="event_cover" class="btn btn-dark p-0 float-end" style="padding: 3px 4px 3px 3px!important;">
+                                    <label role="button" for="image_cover" class="btn btn-dark p-0 float-end" style="padding: 3px 4px 3px 3px!important;">
                                         <i class="bi bi-file-earmark-plus me-2 align-middle fs-5"></i>@lang('miscellaneous.add')
-                                        <input type="file" name="event_cover" id="event_cover" class="d-none">
+                                        <input type="file" name="image_cover" id="image_cover" class="d-none">
                                     </label>
-                                    <input type="hidden" name="data_event_cover" id="data_event_cover">
+                                    <input type="hidden" name="data_cover" id="data_cover">
                                 </div>
                             </div>
                             <div class="p-3">
@@ -420,7 +420,7 @@
                                 <!-- Start/End date/hour -->
                                 <div class="row g-sm-3">
                                     <div class="col-sm-6">
-                                        <div class="form-floating mb-3">
+                                        <div class="form-floa ting mb-3">
                                             <input type="text" name="start_at" id="start_at" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_start.label')" value="{{ date('Y-m-d H:i') }}">
                                             <label for="start_at">@lang('miscellaneous.public.events.new.data.date_start.label')</label>
                                         </div>
@@ -485,3 +485,73 @@
             </div>
         </div>
         <!-- Modal new event END -->
+
+        <!-- Modal crop cover START -->
+        <div class="modal fade" id="cropModal_cover" tabindex="-1" aria-labelledby="cropModal_coverLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!-- Modal cover header START -->
+                    <div class="modal-header d-block text-center position-relative">
+                        <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
+                        <h5 class="modal-title m-0" id="cropModal_coverLabel">@lang('miscellaneous.crop_before_save')</h5>
+                    </div>
+                    <!-- Modal cover header END -->
+
+                    <!-- Modal cover body START -->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 mb-sm-0 mb-4">
+                                    <div class="bg-image">
+                                        <img src="" id="retrieved_image_cover" class="img-fluid">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal cover body END -->
+
+                    <!-- Modal cover footer START -->
+                    <div class="modal-footer border-0">
+                        <button type="button" id="crop_cover" class="btn btn-primary w-100" data-bs-dismiss="modal">@lang('miscellaneous.register')</button>
+                    </div>
+                    <!-- Modal cover footer END -->
+                </div>
+            </div>
+        </div>
+        <!-- Modal crop cover END -->
+
+        <!-- Modal crop avatar START -->
+        <div class="modal fade" id="cropModal_avatar" tabindex="-1" aria-labelledby="cropModal_avatarLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!-- Modal avatar header START -->
+                    <div class="modal-header d-block text-center position-relative">
+                        <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
+                        <h5 class="modal-title m-0" id="cropModal_avatarLabel">@lang('miscellaneous.crop_before_save')</h5>
+                    </div>
+                    <!-- Modal avatar header END -->
+
+                    <!-- Modal avatar body START -->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 mb-sm-0 mb-4">
+                                    <div class="bg-image">
+                                        <img src="" id="retrieved_image_avatar" class="img-fluid">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal avatar body END -->
+
+                    <!-- Modal avatar footer START -->
+                    <div class="modal-footer border-0">
+                        <button type="button" id="crop_avatar" class="btn btn-primary w-100" data-bs-dismiss="modal">@lang('miscellaneous.register')</button>
+                    </div>
+                    <!-- Modal avatar footer END -->
+                </div>
+            </div>
+        </div>
+        <!-- Modal crop avatar END -->

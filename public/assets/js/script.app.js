@@ -137,35 +137,17 @@ $(function () {
     $('.navbar, .card, .btn').addClass('shadow-0');
     $('.btn').css({ textTransform: 'inherit', paddingBottom: '0.5rem' });
     $('.back-to-top').click(function (e) {
-        $("html, body").animate({ scrollTop: "0" });
+        $("html, body").animate({ scrollTop: '0' });
     });
 
     /* Auto-resize textarea */
     autosize($('textarea'));
-
-    // /* Perfect scrollbar */
-    // var ps = new PerfectScrollbar('.perfect-scrollbar', {
-    //     wheelSpeed: 2,
-    //     wheelPropagation: true,
-    //     minScrollbarLength: 20
-    // });
 
     /* Bootstrap Tooltip */
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     });
-
-    // /* jQuery scroll4ever */
-    // $('#scope').scroll4ever({
-    //     trigger: '.next-page-link',
-    //     container: '#items',
-    //     selector: '.item',
-    //     distance: 100,
-    //     debug: true,
-    //     start: function () { $('.next-page-link').html('<div class="loader"><div class="loaderBar"></div></div>'); },
-    //     complete: function () { }
-    // });
 
     /* On select change, update de country phone code */
     $('#select_country1').on('change', function () {
@@ -203,17 +185,6 @@ $(function () {
     });
 
     /* On check, show/hide some blocs */
-    // OFFER TYPE
-    $('#donationType .form-check-input').each(function () {
-        $(this).on('click', function () {
-            if ($('#anonyme').is(':checked')) {
-                $('#donorIdentity, #otherDonation').addClass('d-none');
-
-            } else {
-                $('#donorIdentity, #otherDonation').removeClass('d-none');
-            }
-        });
-    });
     // TRANSACTION TYPE
     $('#paymentMethod .form-check-input').each(function () {
         $(this).on('click', function () {
@@ -367,7 +338,7 @@ $(function () {
         var files = e.target.files;
         var done = function (url) {
             retrievedAvatar.src = url;
-            var modal = new bootstrap.Modal(document.getElementById('cropModalUser'), { keyboard: false });
+            var modal = new bootstrap.Modal(document.getElementById('cropModal_avatar'), { keyboard: false });
 
             modal.show();
         };
@@ -386,7 +357,7 @@ $(function () {
         cropper = new Cropper(retrievedAvatar, {
             aspectRatio: 1,
             viewMode: 3,
-            preview: '#cropModalUser .preview',
+            preview: '#cropModal_avatar .preview',
             done: function (data) { console.log(data); },
             error: function (data) { console.log(data); }
         });
@@ -397,7 +368,7 @@ $(function () {
         cropper = null;
     });
 
-    $('#cropModalUser #crop_avatar').click(function () {
+    $('#cropModal_avatar #crop_avatar').click(function () {
         // Ajax loading image to tell user to wait
         $('.user-image').attr('src', currentHost + '/assets/img/ajax-loading.gif');
 
@@ -414,7 +385,7 @@ $(function () {
             reader.readAsDataURL(blob);
             reader.onloadend = function () {
                 var base64_data = reader.result;
-                var mUrl = apiHost + '/api/user/update_avatar_picture/' + parseInt(currentUser);
+                var mUrl = apiHost + '/user/update_avatar_picture/' + parseInt(currentUser);
                 var datas = JSON.stringify({ 'id': parseInt(currentUser), 'user_id': currentUser, 'image_64': base64_data });
 
                 $.ajax({
@@ -488,6 +459,59 @@ $(function () {
 
                 $(currentImageProfile).attr('src', base64_data);
                 $('#data_profile').attr('value', base64_data);
+            };
+        });
+    });
+
+    // COVER
+    $('#image_cover').on('change', function (e) {
+        var files = e.target.files;
+        var done = function (url) {
+            retrievedImageCover.src = url;
+            var modal = new bootstrap.Modal(document.getElementById('cropModal_cover'), { keyboard: false });
+
+            modal.show();
+        };
+
+        if (files && files.length > 0) {
+            var reader = new FileReader();
+
+            reader.onload = function () {
+                done(reader.result);
+            };
+            reader.readAsDataURL(files[0]);
+        }
+    });
+
+    $('#cropModal_cover').on('shown.bs.modal', function () {
+        cropper = new Cropper(retrievedImageCover, {
+            aspectRatio: 2.39 / 1,
+            viewMode: 3,
+            preview: '#cropModal_cover .preview'
+        });
+
+    }).on('hidden.bs.modal', function () {
+        cropper.destroy();
+
+        cropper = null;
+    });
+
+    $('#cropModal_cover #crop_cover').on('click', function () {
+        var canvas = cropper.getCroppedCanvas({
+            width: 1672,
+            height: 700
+        });
+
+        canvas.toBlob(function (blob) {
+            URL.createObjectURL(blob);
+            var reader = new FileReader();
+
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+                var base64_data = reader.result;
+
+                $(currentImageCover).attr('src', base64_data);
+                $('#data_cover').attr('value', base64_data);
             };
         });
     });
