@@ -67,6 +67,9 @@ class EventController extends BaseController
             'event_description' => $request->event_description,
             'start_at' => $request->start_at,
             'end_at' => $request->end_at,
+            'timezone' => isset($request->timezone) ? $request->timezone : 1,
+            'is_virtual' => isset($request->is_virtual) ? $request->is_virtual : 1,
+            'event_place' => $request->event_place,
             'type_id' => isset($request->type_id) ? $request->type_id : $public_type->id,
             'status_id' => isset($request->status_id) ? $request->status_id : $in_preparation_for_status->id,
             'user_id' => $request->user_id
@@ -80,9 +83,13 @@ class EventController extends BaseController
             return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['start_at'], __('miscellaneous.public.events.data.date_start.error'), 400);
         }
 
-        if (trim($inputs['end_at']) == null) {
-            return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['end_at'], __('miscellaneous.public.events.data.date_end.error'), 400);
-        }
+        // if (trim($inputs['end_at']) == null) {
+        //     return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['end_at'], __('miscellaneous.public.events.data.date_end.error'), 400);
+        // }
+
+        $request->validate([
+            'timezone' => 'required|timezone'
+        ]);
 
         $event = Event::create($inputs);
 
@@ -271,6 +278,9 @@ class EventController extends BaseController
             'event_description' => $request->event_description,
             'start_at' => $request->start_at,
             'end_at' => $request->end_at,
+            'timezone' => $request->timezone,
+            'is_virtual' => $request->is_virtual,
+            'event_place' => $request->event_place,
             'type_id' => $request->type_id,
             'status_id' => $request->status_id,
             'user_id' => $request->user_id
@@ -360,6 +370,31 @@ class EventController extends BaseController
 
             $event->update([
                 'end_at' => $inputs['end_at'],
+                'updated_at' => now()
+            ]);
+        }
+
+        if ($inputs['timezone'] != null) {
+            $request->validate([
+                'timezone' => 'required|timezone'
+            ]);
+
+            $event->update([
+                'timezone' => $inputs['timezone'],
+                'updated_at' => now()
+            ]);
+        }
+
+        if ($inputs['is_virtual'] != null) {
+            $event->update([
+                'is_virtual' => $inputs['is_virtual'],
+                'updated_at' => now()
+            ]);
+        }
+
+        if ($inputs['event_place'] != null) {
+            $event->update([
+                'event_place' => $inputs['event_place'],
                 'updated_at' => now()
             ]);
         }

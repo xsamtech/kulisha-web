@@ -54,6 +54,14 @@ class User extends Authenticatable
     }
 
     /**
+     * A mutator to make sure the timezone is always in valid format.
+     */
+    public function setTimezoneAttribute($value)
+    {
+        $this->attributes['timezone'] = $value ?: 'UTC'; // 'UTC' is default value if empty
+    }
+
+    /**
      * MANY-TO-MANY
      * Several roles for several users
      * 

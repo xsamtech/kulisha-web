@@ -55,12 +55,17 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/reactions.css') }}">
 
         <style>
+            .btn, .btn-close { transition: .5s ease all; }
             .kls-fs-7 { font-size: 0.7rem; }
             .kls-text-secondary { color: var(--bs-secondary-text-emphasis); }
             .btn-check:checked + .btn-secondary-soft, :not(.btn-check) + .btn-secondary-soft:active, .btn-secondary-soft:first-child:active, .btn-secondary-soft.active, .btn-secondary-soft.show { color: #fff!important; background-color: #14191e !important; border-color: #14191e !important; }
             [data-bs-theme=dark] .btn-check:checked + .btn-secondary-soft, [data-bs-theme=dark] :not(.btn-check) + .btn-secondary-soft:active, [data-bs-theme=dark] .btn-secondary-soft:first-child:active, [data-bs-theme=dark] .btn-secondary-soft.active, [data-bs-theme=dark] .btn-secondary-soft.show { color: var(--bs-body-bg)!important; background-color: rgba(var(--bs-secondary-rgb)) !important; border-color: transparent !important; }
             /* Stories */
-            #zuck-modal-content .story-viewer .tip {text-transform: inherit!important;}
+            #zuck-modal-content .story-viewer .tip { text-transform: inherit!important; }
+            @media (min-width: 768px) {
+                #addEndDateHour > .btn { margin-top: 0.7rem; }
+                #modalCreatePost .modal-body, #newEventModal .modal-body { max-height: 370px; }
+            }
         </style>
 
         <title>
@@ -184,19 +189,39 @@
             // -------------------------
             // I.1. Textarea
             // -------------
-            function toggleSubmitText(element) {
-                var imagesFiles = document.getElementById('imagesInput');
-                var documentsFiles = document.getElementById('documentsInput');
+            function toggleSubmitText(element, ref) {
+                if (ref === 'post') {
+                    var imagesFiles = document.getElementById('imagesInput');
+                    var documentsFiles = document.getElementById('documentsInput');
 
-                if (element.value.trim() === '' && imagesFiles.files.length === 0 && documentsFiles.files.length === 0) {
-                    $('#newPost .send-post').removeClass('btn-primary');
-                    $('#newPost .send-post').addClass('btn-primary-soft');
-                    $('#newPost .send-post').addClass('disabled');
+                    if (element.value.trim() === '' && imagesFiles.files.length === 0 && documentsFiles.files.length === 0) {
+                        $('#newPost .send-post').removeClass('btn-primary');
+                        $('#newPost .send-post').addClass('btn-primary-soft');
+                        $('#newPost .send-post').addClass('disabled');
 
-                } else {
-                    $('#newPost .send-post').removeClass('disabled');
-                    $('#newPost .send-post').removeClass('btn-primary-soft');
-                    $('#newPost .send-post').addClass('btn-primary');
+                    } else {
+                        $('#newPost .send-post').removeClass('disabled');
+                        $('#newPost .send-post').removeClass('btn-primary-soft');
+                        $('#newPost .send-post').addClass('btn-primary');
+                    }
+                }
+
+                if (ref === 'event') {
+                    // Checks if at least one box is checked
+                    var elem = document.getElementById(element);
+                    var details = document.getElementById('event_descritpion');
+                    var anyChecked = $('#choose_fields .form-check-input:checked').length > 0;
+
+                    if (elem.value.trim() === '' || details.value.trim() === '' || anyChecked) {
+                        $('#newEvent .send-event').removeClass('btn-primary');
+                        $('#newEvent .send-event').addClass('btn-primary-soft');
+                        $('#newEvent .send-event').addClass('disabled');
+
+                    } else {
+                        $('#newEvent .send-event').removeClass('disabled');
+                        $('#newEvent .send-event').removeClass('btn-primary-soft');
+                        $('#newEvent .send-event').addClass('btn-primary');
+                    }
                 }
             }
 

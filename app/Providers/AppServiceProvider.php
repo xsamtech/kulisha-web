@@ -3,10 +3,13 @@
 namespace App\Providers;
 
 use App\Http\Resources\Category as ResourcesCategory;
+use App\Http\Resources\Field as ResourcesField;
 use App\Http\Resources\Reaction as ResourcesReaction;
+use App\Http\Resources\Type as ResourcesType;
 use App\Http\Resources\User as ResourcesUser;
 use App\Http\Resources\Visibility as ResourcesVisibility;
 use App\Models\Category;
+use App\Models\Field;
 use App\Models\Group;
 use App\Models\Reaction;
 use App\Models\Type;
@@ -37,15 +40,25 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->composer('*', function ($view) {
+            // Fields
+            $fields_collection = Field::all();
+            $fields_resource = ResourcesField::collection($fields_collection);
+            $fields = $fields_resource->toArray(request());
+            // Groups
             $post_type_group = Group::where('group_name->fr', 'Type de post')->first();
+            $access_type_group = Group::where('group_name->fr', 'Type d’accès')->first();
             $post_visibilities_group = Group::where('group_name->fr', 'Visibilité pour les posts')->first();
             $post_reactions_group = Group::where('group_name->fr', 'Réaction sur post')->first();
+            // Types
             $product_type = Type::where([['alias', 'product'], ['group_id', $post_type_group->id]])->first();
             $service_type = Type::where([['alias', 'service'], ['group_id', $post_type_group->id]])->first();
+            $access_types_collection = Type::where('group_id', $access_type_group->id)->get();
+            $access_types_resource = ResourcesType::collection($access_types_collection);
+            $access_types = $access_types_resource->toArray(request());
 
             if (Auth::check()) {
-                // Guzzle client for some API requests
-                $client = new Client();
+                // Calling the request
+                $request = App::make(Request::class);
                 // Current user
                 $current_user = new ResourcesUser(Auth::user());
                 $user_data = $current_user->toArray(request());
@@ -72,8 +85,9 @@ class AppServiceProvider extends ServiceProvider
                 $reactions_collection = Reaction::where('group_id', $post_reactions_group->id)->get();
                 $reactions_resource = ResourcesReaction::collection($reactions_collection);
                 $reactions = $reactions_resource->toArray(request());
-                $request = App::make(Request::class);
 
+                $view->with('all_fields', $fields);
+                $view->with('access_types', $access_types);
                 $view->with('current_user', $user_data);
                 $view->with('categories_product', $categories_product);
                 $view->with('categories_product_type', $categories_product_type);

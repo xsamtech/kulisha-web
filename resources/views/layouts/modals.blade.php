@@ -137,17 +137,19 @@
 
         <!-- Modal create post START -->
         <div class="modal fade" id="modalCreatePost" tabindex="-1" aria-labelledby="modalLabelCreatePost" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content overflow-x-hidden overflow-y-auto">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
                     <form id="newPost">
                         <!-- Modal post header START -->
-                        <div class="modal-header pb-0 border-bottom-0">
-                            <button type="button" class="btn-close btn-secondary-soft p-3 rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-header d-block text-center position-relative">
+                            <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
+                            <h4 class="product-type-title modal-title m-0">@lang('miscellaneous.public.home.posts.new.title', ['post_type' => strtolower($categories_product_type['type_name'])])</h4>
+                            <h4 class="service-type-title modal-title m-0 d-none">@lang('miscellaneous.public.home.posts.new.title', ['post_type' => strtolower($categories_service_type['type_name'])])</h4>
                         </div>
                         <!-- Modal post header END -->
 
                         <!-- Modal post body START -->
-                        <div class="modal-body pt-3">
+                        <div class="modal-body pt-3 overflow-x-hidden overflow-y-auto">
                             <!-- Check One Post Type -->
                             <div id="newPostType" class="d-flex justify-content-sm-between justify-content-center flex-sm-row flex-column mb-3 px-3 py-2 border rounded-pill text-sm-start text-center">
                                 <span class="d-inline-block">@lang('miscellaneous.public.home.posts.choose_type')</span>
@@ -197,7 +199,7 @@
                                 </div>
                                 <!-- Post box  -->
                                 <div class="w-100">
-                                    <textarea id="post-textarea" class="form-control pe-4 fs-3 lh-1 border-0" rows="3" placeholder="@lang('miscellaneous.public.home.posts.write')" onkeyup="toggleSubmitText(this);" autofocus></textarea>
+                                    <textarea id="post-textarea" class="form-control pe-4 fs-3 lh-1 border-0" rows="3" placeholder="@lang('miscellaneous.public.home.posts.write')" onkeyup="toggleSubmitText(this, 'post');" autofocus></textarea>
                                 </div>
                             </div>
 
@@ -240,6 +242,11 @@
                                 </div>
                             </div>
 
+                        </div>
+                        <!-- Modal post body -->
+
+                        <!-- Modal post footer -->
+                        <div class="modal-footer d-block pt-0 border-0">
                             <!-- Select visibility -->
                             <div class="row g-0">
                                 <div id="restrictions" class="col-12 mt-3 d-none">
@@ -281,15 +288,12 @@
 
                                 <!-- Button -->
                                 <div class="col-sm-10 col-9 mt-3">
-                                    <button class="send-post btn d-block w-100 btn-primary-soft disabled">
+                                    <button type="submit" class="send-post btn d-block w-100 btn-primary-soft disabled">
                                         <i class="bi bi-send me-1"></i> @lang('miscellaneous.post')
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- Modal post body -->
-                        <!-- Modal post footer -->
-                        <div class="modal-footer m-0 p-0"></div>
                         <!-- Modal post footer -->
                     </form>
                 </div>
@@ -302,12 +306,12 @@
             <div class="modal-dialog modal-sm">
                 <div class="modal-content overflow-x-hidden overflow-y-auto">
                     <form id="chooseFollowers">
-                        <!-- Modal post header START -->
+                        <!-- Modal restrictions header START -->
                         <div class="modal-header p-0 border-bottom-0">
                         </div>
-                        <!-- Modal post header END -->
+                        <!-- Modal restrictions header END -->
 
-                        <!-- Modal post body START -->
+                        <!-- Modal restrictions body START -->
                         <div class="modal-body pt-3">
                             <h6 class="h6 mb-4 text-center fw-normal">@lang('miscellaneous.public.home.posts.choose_visibility.among_followers')</h6>
 
@@ -316,9 +320,9 @@
                                 <!-- Users will be loaded here -->
                             </div>
                         </div>
-                        <!-- Modal post body END -->
+                        <!-- Modal restrictions body END -->
 
-                        <!-- Modal post footer -->
+                        <!-- Modal restrictions footer -->
                         <div class="modal-footer border-0 d-flex justify-content-between">
                             <button id="cancelRestriction" type="button" class="btn btn-secondary-soft-hover" data-bs-dismiss="modal">@lang('miscellaneous.cancel')</button>
                             <!-- Indicative loading -->
@@ -329,7 +333,7 @@
                             </div>
                             <button type="submit" id="sendCheckedUsers" class="btn btn-primary-soft disabled" data-bs-dismiss="modal">@lang('miscellaneous.register')</button>                    
                         </div>
-                        <!-- Modal post footer -->
+                        <!-- Modal restrictions footer -->
                     </form>
                 </div>
             </div>
@@ -340,19 +344,144 @@
         <div class="modal fade" id="allowLocationModal" tabindex="-1" aria-labelledby="allowLocationModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
+                    <!-- Modal location header START -->
                     <div class="modal-header">
                         <h5 class="modal-title m-0" id="allowLocationModalLabel"><i class="bi bi-geo-alt me-2"></i>@lang('miscellaneous.public.home.posts.location_detection.title')</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
                     </div>
+                    <!-- Modal location header END -->
+
+                    <!-- Modal location body START -->
                     <div class="modal-body text-center">
                         <p class="small">@lang('miscellaneous.public.home.posts.location_detection.security_info')</p>
                         <p class="m-0">@lang('miscellaneous.public.home.posts.location_detection.description')</p>
                     </div>
+                    <!-- Modal location body END -->
+
+                    <!-- Modal location footer START -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary-soft-hover" data-bs-dismiss="modal">@lang('miscellaneous.no')</button>
                         <button type="button" id="allow-location-btn" class="btn btn-primary">@lang('miscellaneous.yes')</button>
                     </div>
+                    <!-- Modal location footer END -->
                 </div>
             </div>
         </div>
         <!-- Modal location permission END -->
+
+        <!-- Modal new event START -->
+        <div class="modal fade" id="newEventModal" tabindex="-1" aria-labelledby="newEventModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form id="newEvent">
+                        <!-- Modal event header START -->
+                        <div class="modal-header d-block text-center position-relative">
+                            <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
+                            <h4 class="modal-title m-0" id="newEventModalLabel">@lang('miscellaneous.public.events.new.title')</h4>
+                        </div>
+                        <!-- Modal event header END -->
+
+                        <!-- Modal event body START -->
+                        <div class="modal-body p-0 overflow-x-hidden overflow-y-auto">
+                            <div id="eventCover" class="position-relative overflow-hidden" style="max-height: 200px;">
+                                <img src="{{ asset('assets/img/cover-placeholder-black-transparent.png') }}" alt="" class="cover img-fluid rounded-0">
+                                <div class="position-absolute w-100" style="bottom: 0.7rem; padding: 0 0.7rem;">
+                                    <label role="button" for="event_cover" class="btn btn-dark p-0 float-end" style="padding: 3px 4px 3px 3px!important;">
+                                        <i class="bi bi-file-earmark-plus me-2 align-middle fs-5"></i>@lang('miscellaneous.add')
+                                        <input type="file" name="event_cover" id="event_cover" class="d-none">
+                                    </label>
+                                    <input type="hidden" name="data_event_cover" id="data_event_cover">
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <!-- Event title -->
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="event_title" id="event_title" class="form-control form-counter" maxlength="100" placeholder="@lang('miscellaneous.public.events.new.data.event_title.label')" onkeyup="toggleSubmitText(this.id, 'event');">
+                                    <label for="event_title">@lang('miscellaneous.public.events.new.data.event_title.label')</label>
+                                </div>
+
+                                <!-- Is virtual -->
+                                <div id="isVirtual" class="p-3 mb-3 rounded border text-center">
+@foreach ($access_types as $type)
+    @if ($type['alias'] === 'access_public')
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" name="type_id" id="type_id-{{ $type['id'] }}" class="form-check-input" value="{{ $type['id'] }}" checked>
+                                        <label role="button" class="form-check-label" for="type_id-{{ $type['id'] }}">@lang('miscellaneous.public.events.new.data.access_type.public')</label>
+                                    </div>
+    @else
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" name="type_id" id="type_id-{{ $type['id'] }}" class="form-check-input" value="{{ $type['id'] }}">
+                                        <label role="button" class="form-check-label" for="type_id-{{ $type['id'] }}">@lang('miscellaneous.public.events.new.data.access_type.private')</label>
+                                    </div>
+    @endif
+@endforeach
+                                </div>
+
+                                <!-- Start/End date/hour -->
+                                <div class="row g-sm-3">
+                                    <div class="col-sm-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="start_at" id="start_at" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_start.label')" value="{{ date('Y-m-d H:i') }}">
+                                            <label for="start_at">@lang('miscellaneous.public.events.new.data.date_start.label')</label>
+                                        </div>
+                                    </div>
+                                    <div id="addEndDateHour" class="col-sm-6">
+                                        <a role="button" class="btn btn-link mb-sm-0 mb-1"><i class="bi bi-plus-circle fs-4 me-2 align-middle"></i><small>@lang('miscellaneous.public.events.new.data.date_end.add')</small></a>
+                                    </div>
+                                    <div id="endDateHour" class="col-sm-6 d-none">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="end_at" id="end_at" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_end.label')" value="{{ date('Y-m-d H:i') }}">
+                                            <label for="end_at">@lang('miscellaneous.public.events.new.data.date_end.label')</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Timezone -->
+                                <div class="form-floating mb-3">
+                                    <select name="timezone" id="timezone" class="form-select" aria-label="@lang('miscellaneous.public.events.new.data.timezone')">
+@foreach (DateTimeZone::listIdentifiers() as $timezone)
+                                        <option value="{{ $timezone }}" {{ $current_user['timezone'] == $timezone ? 'selected' : '' }}>{{ $timezone }}</option>
+@endforeach
+                                    </select>
+                                    <label for="timezone">@lang('miscellaneous.public.events.new.data.timezone')</label>
+                                </div>
+
+                                <!-- Fields -->
+                                <div id="choose_fields" class="mb-3 p-3 rounded border">
+                                    <p class="small text-center">@lang('miscellaneous.public.events.new.data.fields')</p>
+                                    <hr>
+                                    <div class="text-center">
+@foreach ($all_fields as $field)
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" name="fields_ids[]" id="fields_ids-{{ $field['id'] }}" class="form-check-input" value="{{ $field['id'] }}"{{ $current_user['last_field']->id == $field['id'] ? ' checked' : ''}}>
+                                            <label role="button" class="form-check-label" for="fields_ids-{{ $field['id'] }}">{{ $field['field_name'] }}</label>
+                                        </div>
+@endforeach
+                                    </div>
+                                </div>
+
+                                <!-- Event place -->
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="event_place" id="event_place" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.place')" onkeyup="toggleSubmitText('event_title', 'event');">
+                                    <label for="event_place">@lang('miscellaneous.public.events.new.data.place')</label>
+                                </div>
+
+                                <!-- Event description -->
+                                <div class="form-floating">
+                                    <textarea id="event_descritpion" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.event_description')" onkeyup="toggleSubmitText('event_title', 'event');"></textarea>
+                                    <label for="event_descritpion">@lang('miscellaneous.public.events.new.data.event_description')</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal event body END -->
+
+                        <!-- Modal event footer START -->
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-primary-soft w-100 send-event disabled">@lang('miscellaneous.public.events.new.run')</button>
+                        </div>
+                        <!-- Modal event footer END -->
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal new event END -->

@@ -635,7 +635,10 @@ return [
 
             // Posts
             'posts' => [
-                'new' => 'Publish something...',
+                'new' => [
+                    'title' => 'New :post_type',
+                    'description' => 'Publish something...'
+                ],
                 'write' => 'Write here ...',
                 'choose_type' => 'Choose the type of post',
                 'choose_category' => 'Choose a category for your <strong>:post_type</strong>',
@@ -806,18 +809,38 @@ return [
 
         // events
         'events' => [
-            // Data
-            'data' => [
-                'event_title' => [
-                    'label' => 'Event title',
-                    'error' => 'You must give a title to your event',
+            // Create new event
+            'new' => [
+                'title' => 'Create an event',
+                'run' => 'Create the event',
+
+                'data' => [
+                    'event_title' => [
+                        'label' => 'Event title',
+                        'error' => 'You must give a title to your event',
+                    ],
+                    'event_description' => 'Details about the event',
+                    'date_start' => [
+                        'label' => 'Starting date/hour',
+                        'error' => 'Please give the starting date/hour'
+                    ],
+                    'date_end' => [
+                        'add' => 'Add ending date/hour',
+                        'label' => 'Ending date/hour',
+                        'error' => 'Please give the ending date/hour'
+                    ],
+                    'timezone' => 'Timezone',
+                    'is_virtual' => [
+                        'yes' => 'Virtual event',
+                        'no' => 'In-person event',
+                    ],
+                    'place' => 'Address or place of the event',
+                    'access_type' => [
+                        'public' => 'Public event',
+                        'private' => 'Private event',
+                    ],
+                    'fields' => 'Field(s) of your event',
                 ],
-                'event_description' => [
-                    'label' => 'Description',
-                    'placeholder' => 'Describe your event'
-                ],
-                'date_start' => 'Starting date/hour',
-                'date_end' => 'Ending date/hour'
             ],
 
             // Yours

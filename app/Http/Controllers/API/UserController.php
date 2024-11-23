@@ -106,7 +106,8 @@ class UserController extends BaseController
             'prefered_language' => !isset($request->prefered_language) ? app()->getLocale() : $request->prefered_language,
             'status_id' => is_null($activated_status) ? (isset($request->status_id) ? $request->status_id : null) : $activated_status->id,
             'type_id' => is_null($ordinary_member_type) ? (isset($request->type_id) ? $request->type_id : null) : $ordinary_member_type->id,
-            'visibility_id' => isset($request->visibility_id) ? $request->visibility_id : (!is_null($everybody_on_kulisha_visibility) ? $everybody_on_kulisha_visibility->id : null)
+            'visibility_id' => isset($request->visibility_id) ? $request->visibility_id : (!is_null($everybody_on_kulisha_visibility) ? $everybody_on_kulisha_visibility->id : null),
+            'timezone' => isset($request->timezone) ? $request->timezone : 'UTC'
         ];
         $password_resets = PasswordResetToken::all();
         // $basic = new \Vonage\Client\Credentials\Basic(config('vonage.api_key'), config('vonage.api_secret'));
@@ -266,6 +267,12 @@ class UserController extends BaseController
                     // }
                 }
             }
+        }
+
+        if ($inputs['timezone'] != null) {
+            $request->validate([
+                'timezone' => 'required|timezone'
+            ]);
         }
 
         $user = User::create($inputs);
@@ -505,7 +512,8 @@ class UserController extends BaseController
             'is_online' => $request->is_online,
             'status_id' => $request->status_id,
             'type_id' => $request->type_id,
-            'visibility_id' => $request->visibility_id
+            'visibility_id' => $request->visibility_id,
+            'timezone' => $request->timezone
         ];
         $users = User::all();
         $current_user = User::find($inputs['id']);
@@ -918,6 +926,17 @@ class UserController extends BaseController
             $user->update([
                 'visibility_id' => $inputs['visibility_id'],
                 'updated_at' => now(),
+            ]);
+        }
+
+        if ($inputs['timezone'] != null) {
+            $request->validate([
+                'timezone' => 'required|timezone'
+            ]);
+
+            $user->update([
+                'timezone' => $inputs['timezone'],
+                'updated_at' => now()
             ]);
         }
 

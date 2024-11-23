@@ -2985,7 +2985,7 @@ textarea.form-control-lg {
   z-index: -1;
   height: 1.5em;
   content: "";
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 0.4rem;
 }
 .form-floating > .form-control:not(:-ms-input-placeholder) ~ label::after {
@@ -2994,7 +2994,7 @@ textarea.form-control-lg {
   z-index: -1;
   height: 1.5em;
   content: "";
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 0.4rem;
 }
 .form-floating > .form-control:focus ~ label::after,
@@ -3006,7 +3006,7 @@ textarea.form-control-lg {
   z-index: -1;
   height: 1.5em;
   content: "";
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 0.4rem;
 }
 .form-floating > .form-control:-webkit-autofill ~ label {

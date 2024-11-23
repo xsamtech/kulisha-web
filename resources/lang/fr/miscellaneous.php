@@ -635,7 +635,10 @@ return [
 
             // Posts
             'posts' => [
-                'new' => 'Publiez quelque chose ...',
+                'new' => [
+                    'title' => 'Nouveau :post_type',
+                    'description' => 'Publiez quelque chose ...'
+                ],
                 'write' => 'Écrivez ici ...',
                 'choose_type' => 'Choisir le type de post',
                 'choose_category' => 'Choisir une categorie pour votre <strong>:post_type</strong>',
@@ -806,24 +809,38 @@ return [
 
         // events
         'events' => [
-            // Data
-            'data' => [
-                'event_title' => [
-                    'label' => 'Titre de l’événement',
-                    'error' => 'Vous devez donner un nom à votre événement',
+            // Create new event
+            'new' => [
+                'title' => 'Créer un événement',
+                'run' => 'Créer l’événement',
+
+                'data' => [
+                    'event_title' => [
+                        'label' => 'Titre de l’événement',
+                        'error' => 'Vous devez donner un nom à votre événement',
+                    ],
+                    'event_description' => 'Détails sur l’événement',
+                    'date_start' =>  [
+                        'label' => 'Date/Heure de début',
+                        'error' => 'Veuillez donner la date/heure de début',
+                    ],
+                    'date_end' => [
+                        'add' => 'Ajouter date/heure de fin',
+                        'label' => 'Date/Heure de fin',
+                        'error' => 'Veuillez donner la date/heure de fin',
+                    ],
+                    'timezone' => 'Fuseau horaire',
+                    'is_virtual' => [
+                        'yes' => 'Evénement virtuel',
+                        'no' => 'Evénement en personne',
+                    ],
+                    'place' => 'Adresse ou lieu de l’événement',
+                    'access_type' => [
+                        'public' => 'Evénement public',
+                        'private' => 'Evénement privé',
+                    ],
+                    'fields' => 'Secteur(s) de votre événement',
                 ],
-                'event_description' => [
-                    'label' => 'Description',
-                    'placeholder' => 'Decrivez votre événement'
-                ],
-                'date_start' =>  [
-                    'label' => 'Date/Heure de début',
-                    'error' => 'Veuillez donner la date/heure de début'
-                ],
-                'date_end' => [
-                    'label' => 'Date/Heure de fin',
-                    'error' => 'Veuillez donner la date/heure de fin'
-                ]
             ],
 
             // Yours

@@ -93,8 +93,9 @@ class User extends JsonResource
             'status' => Status::make($this->status),
             'type' => Type::make($this->type),
             'visibility' => Visibility::make($this->visibility),
-            'roles' => Role::collection($this->roles),
+            'last_field' => $last_field,
             'fields' => Field::collection($this->fields)->sortByDesc('created_at')->toArray(),
+            'roles' => Role::collection($this->roles),
             'websites' => Website::collection($this->websites),
             'files' => File::collection($this->files),
             'carts' => Cart::collection($this->carts)->sortByDesc('created_at')->toArray(),
@@ -102,6 +103,7 @@ class User extends JsonResource
             'followers' => $followers,
             'following' => $following,
             'regular_posts' => $regular_posts,
+            'timezone' => $this->timezone,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s')
         ];
