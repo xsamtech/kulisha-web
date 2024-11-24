@@ -396,7 +396,7 @@
                             <div class="p-3">
                                 <!-- Event title -->
                                 <div class="form-floating mb-3">
-                                    <input type="text" name="event_title" id="event_title" class="form-control form-counter" maxlength="100" placeholder="@lang('miscellaneous.public.events.new.data.event_title.label')" onkeyup="toggleSubmitText(this.id, 'event');">
+                                    <input type="text" name="event_title" id="event_title" class="form-control form-counter" maxlength="100" placeholder="@lang('miscellaneous.public.events.new.data.event_title.label')">
                                     <label for="event_title">@lang('miscellaneous.public.events.new.data.event_title.label')</label>
                                 </div>
 
@@ -420,18 +420,20 @@
                                 <!-- Start/End date/hour -->
                                 <div class="row g-sm-3">
                                     <div class="col-sm-6">
-                                        <div class="form-floa ting mb-3">
-                                            <input type="text" name="start_at" id="start_at" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_start.label')" value="{{ date('Y-m-d H:i') }}">
-                                            <label for="start_at">@lang('miscellaneous.public.events.new.data.date_start.label')</label>
+                                        <input type="hidden" name="start_at" id="start_at" value="{{ date('Y-m-d H:i') }}">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="date_start" id="date_start" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_start.label')" value="{{ explicitDateTime(date('Y-m-d H:i:s')) }}">
+                                            <label for="date_start">@lang('miscellaneous.public.events.new.data.date_start.label')</label>
                                         </div>
                                     </div>
                                     <div id="addEndDateHour" class="col-sm-6">
                                         <a role="button" class="btn btn-link mb-sm-0 mb-1"><i class="bi bi-plus-circle fs-4 me-2 align-middle"></i><small>@lang('miscellaneous.public.events.new.data.date_end.add')</small></a>
                                     </div>
                                     <div id="endDateHour" class="col-sm-6 d-none">
+                                        <input type="hidden" name="end_at" id="end_at" value="{{ date('Y-m-d H:i') }}">
                                         <div class="form-floating mb-3">
-                                            <input type="text" name="end_at" id="end_at" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_end.label')" value="{{ date('Y-m-d H:i') }}">
-                                            <label for="end_at">@lang('miscellaneous.public.events.new.data.date_end.label')</label>
+                                            <input type="text" name="date_end" id="date_end" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_end.label')" value="{{ explicitDateTime(date('Y-m-d H:i:s')) }}">
+                                            <label for="date_end">@lang('miscellaneous.public.events.new.data.date_end.label')</label>
                                         </div>
                                     </div>
                                 </div>
@@ -439,8 +441,8 @@
                                 <!-- Timezone -->
                                 <div class="form-floating mb-3">
                                     <select name="timezone" id="timezone" class="form-select" aria-label="@lang('miscellaneous.public.events.new.data.timezone')">
-@foreach (DateTimeZone::listIdentifiers() as $timezone)
-                                        <option value="{{ $timezone }}" {{ $current_user['timezone'] == $timezone ? 'selected' : '' }}>{{ $timezone }}</option>
+@foreach ($timezones as $timezone => $formattedTimezone)
+                                        <option value="{{ $timezone }}" {{ $current_user['timezone'] == $timezone ? 'selected' : '' }}>{{ $formattedTimezone }}</option>
 @endforeach
                                     </select>
                                     <label for="timezone">@lang('miscellaneous.public.events.new.data.timezone')</label>
@@ -462,13 +464,13 @@
 
                                 <!-- Event place -->
                                 <div class="form-floating mb-3">
-                                    <input type="text" name="event_place" id="event_place" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.place')" onkeyup="toggleSubmitText('event_title', 'event');">
+                                    <input type="text" name="event_place" id="event_place" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.place')">
                                     <label for="event_place">@lang('miscellaneous.public.events.new.data.place')</label>
                                 </div>
 
                                 <!-- Event description -->
                                 <div class="form-floating">
-                                    <textarea id="event_descritpion" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.event_description')" onkeyup="toggleSubmitText('event_title', 'event');"></textarea>
+                                    <textarea name="event_descritpion" id="event_descritpion" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.event_description')"></textarea>
                                     <label for="event_descritpion">@lang('miscellaneous.public.events.new.data.event_description')</label>
                                 </div>
                             </div>
@@ -477,7 +479,7 @@
 
                         <!-- Modal event footer START -->
                         <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-primary-soft w-100 send-event disabled">@lang('miscellaneous.public.events.new.run')</button>
+                            <button type="submit" class="btn btn-primary-soft w-100 send-event disabled">@lang('miscellaneous.public.events.new.run')</button>
                         </div>
                         <!-- Modal event footer END -->
                     </form>

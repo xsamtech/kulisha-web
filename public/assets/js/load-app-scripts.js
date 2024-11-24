@@ -9,6 +9,8 @@
 // Common variables
 var navigator = window.navigator;
 var currentLanguage = $('html').attr('lang');
+var dateFormat = currentLanguage === 'fr' ? 'j M Y à H:i' : 'M j, Y \\a\\t H:i K';
+var locale = currentLanguage === 'fr' ? 'fr' : 'en';
 var currentUser = $('[name="kls-visitor"]').attr('content');
 var currentIpAddr = $('[name="kls-ip"]').attr('content');
 var currentHost = $('[name="kls-url"]').attr('content');

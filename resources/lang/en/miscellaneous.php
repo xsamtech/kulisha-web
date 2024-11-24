@@ -36,6 +36,7 @@ return [
     'icon_svg' => 'SVG icon',
     'image_url' => 'Image URL',
     'your_language' => 'Your language',
+    'time_zone' => ':city time',
     'your_activation_code' => 'Your activation code: ',
     'back_home' => 'Return to the home',
     'back_list' => 'Return to the list',

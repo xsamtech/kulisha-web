@@ -124,21 +124,21 @@ return [
     |
     */
     'available_locales' => [
-        'Afrikaans' => 'af',
-        'Allemand' => 'de',
-        'عرب' => 'ar',
-        '中国人' => 'zh',
+        // 'Afrikaans' => 'af',
+        // 'Allemand' => 'de',
+        // 'عرب' => 'ar',
+        // '中国人' => 'zh',
         'English' => 'en',
-        'Español' => 'es',
+        // 'Español' => 'es',
         'Français' => 'fr',
-        'Italiano' => 'it',
-        '日本語' => 'ja',
+        // 'Italiano' => 'it',
+        // '日本語' => 'ja',
         'Lingala' => 'ln',
-        'Nederlands' => 'nl',
-        'Русский' => 'ru',
-        'Swahili' => 'sw',
-        'Türkçe' => 'tr',
-        'čeština' => 'cs'
+        // 'Nederlands' => 'nl',
+        // 'Русский' => 'ru',
+        // 'Swahili' => 'sw',
+        // 'Türkçe' => 'tr',
+        // 'čeština' => 'cs'
     ],
 
     /*

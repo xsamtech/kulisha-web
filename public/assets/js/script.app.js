@@ -490,10 +490,16 @@ $(function () {
             preview: '#cropModal_cover .preview'
         });
 
+        $('#newEventModal').css('z-index', '1040');
+        $(this).css('z-index', '1060');
+
     }).on('hidden.bs.modal', function () {
         cropper.destroy();
 
         cropper = null;
+
+        $('#newEventModal').css('z-index', '1060');
+        $(this).css('z-index', '1040');
     });
 
     $('#cropModal_cover #crop_cover').on('click', function () {

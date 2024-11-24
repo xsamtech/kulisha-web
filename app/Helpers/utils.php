@@ -135,9 +135,13 @@ if (!function_exists('explicitMonth')) {
 if (!function_exists('explicitDayMonth')) {
     function explicitDayMonth($date)
     {
-        setlocale(LC_ALL, app()->getLocale());
+        $locale = app()->getLocale();
+        $currentDate = Carbon::parse($date);
+        $format = $locale === 'fr' ? 'j F' : 'F j';
 
-        return utf8_encode(Carbon::parse($date)->formatLocalized('%d %B'));
+        Carbon::setlocale($locale);
+
+        return $currentDate->translatedFormat($format);
     }
 }
 
@@ -145,9 +149,27 @@ if (!function_exists('explicitDayMonth')) {
 if (!function_exists('explicitDate')) {
     function explicitDate($date)
     {
-        setlocale(LC_ALL, app()->getLocale());
+        $locale = app()->getLocale();
+        $currentDate = Carbon::parse($date);
+        $format = $locale === 'fr' ? 'D j F Y à H:i' : 'D, F j, Y g:i A';
 
-        return utf8_encode(Carbon::parse($date)->formatLocalized('%A %d %B %Y'));
+        Carbon::setlocale($locale);
+
+        return $currentDate->translatedFormat($format);
+    }
+}
+
+// Date/Time fully readable
+if (!function_exists('explicitDateTime')) {
+    function explicitDateTime($date)
+    {
+        $locale = app()->getLocale();
+        $currentDate = Carbon::parse($date);
+        $format = $locale === 'fr' ? 'j M Y à H:i' : 'M j, Y \a\t g:i A';
+
+        Carbon::setlocale($locale);
+
+        return $currentDate->translatedFormat($format);
     }
 }
 

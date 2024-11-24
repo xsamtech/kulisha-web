@@ -62,7 +62,6 @@
             .kls-text-secondary { color: var(--bs-secondary-text-emphasis); }
             .btn-check:checked + .btn-secondary-soft, :not(.btn-check) + .btn-secondary-soft:active, .btn-secondary-soft:first-child:active, .btn-secondary-soft.active, .btn-secondary-soft.show { color: #fff!important; background-color: #14191e !important; border-color: #14191e !important; }
             [data-bs-theme=dark] .btn-check:checked + .btn-secondary-soft, [data-bs-theme=dark] :not(.btn-check) + .btn-secondary-soft:active, [data-bs-theme=dark] .btn-secondary-soft:first-child:active, [data-bs-theme=dark] .btn-secondary-soft.active, [data-bs-theme=dark] .btn-secondary-soft.show { color: var(--bs-body-bg)!important; background-color: rgba(var(--bs-secondary-rgb)) !important; border-color: transparent !important; }
-            /* Stories */
             #zuck-modal-content .story-viewer .tip { text-transform: inherit!important; }
             @media (min-width: 768px) {
                 #addEndDateHour > .btn { margin-top: 0.7rem; }
@@ -153,6 +152,7 @@
         <script src="{{ asset('assets/addons/social/glightbox-master/dist/js/glightbox.min.js') }}"></script>
         <!-- Flatpickr -->
         <script src="{{ asset('assets/addons/social/flatpickr/dist/flatpickr.min.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/fr.js"></script>
         <!-- CropperJS -->
         <script src="{{ asset('assets/addons/custom/cropper/js/cropper.min.js') }}"></script>
         <!-- Plyr -->
@@ -341,6 +341,7 @@
              * IV. Location detection
              * V. Send post
              * VI. Reactions
+             * VII. Date picker
              */
             $(function () {
                 // -----------------
@@ -834,6 +835,59 @@
                             }, i * 100);
                         });
                     });
+                });
+
+                // ----------------
+                // VII. Date picker
+                // ----------------
+                $('#newEventModal').on('shown.bs.modal', function () {
+                    setTimeout(function() {
+                        flatpickr('#date_start', {
+                            minDate: new Date(),  // Forbidden dates before now
+                            maxDate: '2030-12-31',  // Authorized ending date
+                            dateFormat: dateFormat,  // Format for user display
+                            locale: locale,  // Locale setting
+                            enableTime: true,  // Enable time selection
+                            noCalendar: false,  // Allows date selection
+                            defaultDate: $('#date_start').val(),  // Set default date for Flatpickr
+                            onChange: function(selectedDates, dateStr, instance) {
+                                // Formatting before sending to server
+                                const formattedDate = instance.formatDate(selectedDates[0], 'Y-m-d H:i:s');
+                                $('#start_at').val(formattedDate);
+                            }
+                        });
+
+                        flatpickr('#date_end', {
+                            minDate: new Date(),  // Forbidden dates before now
+                            maxDate: '2030-12-31',  // Authorized ending date
+                            dateFormat: dateFormat,  // Format for user display
+                            locale: locale,  // Locale setting
+                            enableTime: true,  // Enable time selection
+                            noCalendar: false,  // Allows date selection
+                            defaultDate: $('#date_end').val(),  // Set default date for Flatpickr
+                            onChange: function(selectedDates, dateStr, instance) {
+                                // Formatting before sending to server
+                                const formattedDate = instance.formatDate(selectedDates[0], 'Y-m-d H:i:s');
+                                $('#end_at').val(formattedDate);
+                            }
+                        });
+                    }, 1000);
+
+                    // Make sure certain criteria are met before activating the button to create
+                    function validateForm() {
+                        var isTitleFilled = $('#event_title').val().trim() !== '';
+                        var isPlaceFilled = $('#event_place').val().trim() !== '';
+                        var isDescriptionFilled = $('#event_descritpion').val().trim() !== '';
+                        var isCheckboxChecked = $('#newEvent .form-check-input:checked').length > 0;
+
+                        if (isTitleFilled && isPlaceFilled && isDescriptionFilled && isCheckboxChecked) {
+                            $('#newEvent [type="submit"]').removeClass('disabled btn-primary-soft').addClass('btn-primary');
+                        } else {
+                            $('#newEvent [type="submit"]').removeClass('btn-primary').addClass('btn-primary-soft disabled');
+                        }
+                    }
+                    $('#newEvent input, #newEvent textarea').on('keyup change', validateForm);
+                    $('#newEvent .form-check-input').on('change click', validateForm);
                 });
             });
         </script>

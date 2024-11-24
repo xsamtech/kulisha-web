@@ -14,7 +14,8 @@ use App\Models\Group;
 use App\Models\Reaction;
 use App\Models\Type;
 use App\Models\Visibility;
-use GuzzleHttp\Client;
+use Carbon\Carbon;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,31 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->composer('*', function ($view) {
+            // Available time zones
+            $timezones = DateTimeZone::listIdentifiers();
+            // Prepare an ARRAY for time zones with their offset
+            $timezoneList = [];
+
+            foreach ($timezones as $timezone) {
+                // Créer un objet Carbon pour obtenir l'offset UTC de chaque fuseau horaire
+                $carbonTimezone = Carbon::now(new DateTimeZone($timezone));
+                // Récupérer l'offset UTC (ex : +01:00)
+                $offset = $carbonTimezone->format('P');
+
+                // Vérifier si le fuseau horaire contient un '/'
+                if (strpos($timezone, '/') !== false) {
+                    // Extraire le nom de la ville à partir du fuseau horaire
+                    $cityName = explode('/', $timezone)[1];
+                    // Remplacer les underscores par des espaces pour rendre le texte plus lisible
+                    $cityName = str_replace('_', ' ', $cityName);  
+                    // Building a descriptive string
+                    $timezoneList[$timezone] = __('miscellaneous.time_zone', ['city' => $cityName]) . ' (UTC' . $offset . ')';
+                } else {
+                    // Building a descriptive string
+                    $timezoneList[$timezone] = $timezone . ' (UTC' . $offset . ')';
+                }
+            }
+
             // Fields
             $fields_collection = Field::all();
             $fields_resource = ResourcesField::collection($fields_collection);
@@ -99,6 +125,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('ipinfo_data', $request->ipinfo);
             }
 
+            $view->with('timezones', $timezoneList);
             $view->with('current_locale', app()->getLocale());
             $view->with('available_locales', config('app.available_locales'));
         });
