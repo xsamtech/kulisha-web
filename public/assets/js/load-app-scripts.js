@@ -16,6 +16,7 @@ var currentIpAddr = $('[name="kls-ip"]').attr('content');
 var currentHost = $('[name="kls-url"]').attr('content');
 var apiHost = $('[name="kls-api-url"]').attr('content');
 var appRef = $('[name="kls-ref"]').attr('content');
+var emojiRef = $('[name="kls-emoji-ref"]').attr('content');
 var csrfToken = $('[name="csrf-token"]').attr('content');
 var headers = { 'Authorization': 'Bearer ' + appRef.split('-')[0], 'Accept': $('.mime-type').val(), 'X-localization': navigator.language };
 var kulishaBrand = document.querySelectorAll('.kulisha-brand');

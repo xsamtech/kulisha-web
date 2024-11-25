@@ -669,12 +669,11 @@ return [
                         'choice' => [
                             'title' => 'Assertions',
                             'new' => 'Add another assertion',
-                            'description' => 'Description of your poll',
+                            'description' => 'Ask your question',
                             'content' => 'Assertion content'
                         ],
                         'choice_type' => [
                             'text' => 'Text',
-                            'image' => 'Image',
                             'emoji' => 'Emoji',
                             'sticker' => 'Sticker'
                         ],
@@ -735,7 +734,7 @@ return [
                         'choice' => [
                             'title' => 'Assertions',
                             'new' => 'Add another assertion',
-                            'description' => 'Description of your poll',
+                            'description' => 'Ask your question',
                             'content' => 'Assertion content'
                         ],
                         'choice_type' => [

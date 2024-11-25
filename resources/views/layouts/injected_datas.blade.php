@@ -5,6 +5,7 @@
             window.Laravel = {
                 lang: {
                     empty_list: "@lang('miscellaneous.empty_list')",
+                    error_label: "@lang('miscellaneous.error_label')",
                     upload: {
                         use_camera: "@lang('miscellaneous.upload.use_camera')",
                         upload_file: "@lang('miscellaneous.upload.upload_file')",

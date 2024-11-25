@@ -207,7 +207,7 @@
                             <div id="locationInfo" class="mb-3 text-center"></div>
 
                             <!-- Other Post Data -->
-                            <div class="hstack gap-2 justify-content-center">
+                            <div class="hstack gap-2 justify-content-center position-relative">
                                 <a role="button" id="uploadImages" class="icon-md bg-success bg-opacity-10 rounded-circle text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('miscellaneous.public.home.posts.other_data.image')">
                                     <i class="bi bi-image"></i>
                                 </a>
@@ -220,6 +220,12 @@
                                 <a role="button" id="selectEmoji" class="icon-md bg-warning bg-opacity-10 rounded-circle text-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('miscellaneous.public.home.posts.other_data.emoji')">
                                     <i class="bi bi-emoji-smile-fill"></i>
                                 </a>
+
+                                <div id="emojiDropdown" class="emoji-dropdown rounded top-0 end-0 text-center">
+                                    <div class="spinner-grow" role="status">
+                                        <span class="visually-hidden">@lang('miscellaneous.loading')</span>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Select Post categories -->

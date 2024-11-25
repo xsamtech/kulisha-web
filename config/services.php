@@ -48,4 +48,8 @@ return [
         'access_token' => env('IPINFO_SECRET'),
     ],
 
+    'open_emoji' => [
+        'api_key' => env('OPEN_EMOJI_API_KEY'),
+    ],
+
 ];

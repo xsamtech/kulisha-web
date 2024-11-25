@@ -10,6 +10,7 @@
         <meta name="kls-api-url" content="{{ getApiURL() }}">
         <meta name="kls-visitor" content="{{ Auth::check() ? $current_user['id'] : null }}">
         <meta name="kls-ip" content="{{ Request::ip() }}">
+        <meta name="kls-emoji-ref" content="{{ config('services.open_emoji.api_key') }}">
         <meta name="kls-ref" content="{{ (Auth::check() ? $current_user['api_token'] : 'nat') . '-' . (request()->has('app_id') ? request()->get('app_id') : 'nai') }}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="description" content="">
@@ -67,6 +68,11 @@
                 #addEndDateHour > .btn { margin-top: 0.7rem; }
                 #modalCreatePost .modal-body, #newEventModal .modal-body, #pollModal .modal-body { max-height: 370px; }
             }
+            /* Emojis */
+            .emoji-dropdown { display: none; position: absolute; width: 300px; max-height: 250px; background-color: white; padding: 5px; border: 1px solid #ccc; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden; overflow-y: auto; }
+            [data-bs-theme=dark] .emoji-dropdown { background-color: var(--bs-black); border: 1px solid var(--bs-black); }
+            .emoji { font-size: 24px; cursor: pointer; padding: 5px; margin: 5px; }
+            .emoji:hover { background-color: #f0f0f0; }
         </style>
 
         <title>
@@ -187,6 +193,7 @@
              *    I.3. Checkboxes
              * II. Remove a file from the input file
              * III. Set location data from IpInfo
+             * IX. Show emojis picker in dropdown
              */
             // -------------------------
             // I. Unable "submit" button
@@ -264,11 +271,6 @@
                 }
             }
 
-            document.addEventListener('DOMContentLoaded', function() {
-                toggleSubmitCheckboxes('modalSelectRestrictions .users-list', 'sendCheckedUsers1');
-                toggleSubmitCheckboxes('modalSelectSpeakers .users-list', 'sendCheckedUsers2');
-            });
-
             // -------------------------------------
             // II. Remove a file from the input file
             // -------------------------------------
@@ -310,6 +312,66 @@
                 // Show information in div
                 $('#locationInfo').html(`<h5 class="h5 m-0">${city}</h5><p class="m-0">${country}</p>`);
             }
+
+            // -----------------------------------
+            // IX. Show emojis picker in dropdown
+            // -----------------------------------
+            // Handle shown emoji
+            function handleEmoji(buttonId, inputId) {
+                var emojiButton = document.getElementById(buttonId);
+                var emojiInput = document.getElementById(inputId);
+                var emojiDropdown = document.getElementById('emojiDropdown');
+
+                // Show or hide emoji dropdown
+                emojiButton.addEventListener('click', function () {
+                    if (emojiDropdown.style.display === 'block') {
+                        emojiDropdown.style.display = 'none';
+                    } else {
+                        emojiDropdown.style.display = 'block';
+                        loadEmojis(emojiDropdown, emojiInput); // Load emojis when menu is displayed
+                    }
+                });
+
+                // Hide emoji dropdown if user clicks elsewhere
+                document.addEventListener('click', function (event) {
+                    if (!emojiButton.contains(event.target) && !emojiDropdown.contains(event.target)) {
+                        emojiDropdown.style.display = 'none';
+                    }
+                });
+            }
+
+            // Function to retrieve emojis via an API
+            function loadEmojis(emojiDropdown, emojiInput) {
+                var emojiAPI = `https://emoji-api.com/emojis?access_key=${emojiRef}`;
+
+                fetch(emojiAPI).then(response => response.json()).then(data => {
+                    emojiDropdown.innerHTML = ''; // Empty the dropdown before filling it
+                    data.forEach(emoji => {
+                        var emojiElem = document.createElement('span');
+
+                        emojiElem.style.display = 'inline-block';
+                        emojiElem.style.margin = '3px';
+                        emojiElem.classList.add('emoji');
+                        emojiElem.textContent = emoji.character;
+                        emojiElem.setAttribute('data-emoji', emoji.character);
+                        emojiDropdown.appendChild(emojiElem);
+
+                        // Add an event to insert the emoji into the textarea
+                        emojiElem.addEventListener('click', function () {
+                            emojiInput.value += emoji.character;
+                            // emojiDropdown.style.display = 'none';
+                        });
+                    });
+                })
+                .catch(error => console.error(`${window.Laravel.lang.error_label} ${error}`));
+            }
+
+            // Run some scripts on DOM content is loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                handleEmoji('selectEmoji', 'post-textarea')
+                toggleSubmitCheckboxes('modalSelectRestrictions .users-list', 'sendCheckedUsers1');
+                toggleSubmitCheckboxes('modalSelectSpeakers .users-list', 'sendCheckedUsers2');
+            });
 
             /**
              * jQuery data

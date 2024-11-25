@@ -669,7 +669,7 @@ return [
                         'choice' => [
                             'title' => 'Assertions',
                             'new' => 'Ajouter une autre assertion',
-                            'description' => 'Description de votre sondage',
+                            'description' => 'Posez votre question',
                             'content' => 'Contenu de l’assertion'
                         ],
                         'choice_type' => [
@@ -735,7 +735,7 @@ return [
                         'choice' => [
                             'title' => 'Assertions',
                             'new' => 'Ajouter une autre assertion',
-                            'description' => 'Description de votre sondage',
+                            'description' => 'Posez votre question',
                             'content' => 'Contenu de l’assertion'
                         ],
                         'choice_type' => [
