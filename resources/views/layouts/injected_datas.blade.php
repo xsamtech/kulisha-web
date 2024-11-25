@@ -12,6 +12,15 @@
                         image_error: "@lang('miscellaneous.upload.image_error')",
                         document_error: "@lang('miscellaneous.upload.document_error')",
                     },
+                    public: {
+                        events: {
+                            new: {
+                                data: {
+                                    speakers: "@lang('miscellaneous.public.events.new.data.speakers')",
+                                },
+                            },
+                        },
+                    },
                     menu: {
                         news_feed: "@lang('miscellaneous.menu.public.news_feed')",
                         home: "@lang('miscellaneous.menu.home')",

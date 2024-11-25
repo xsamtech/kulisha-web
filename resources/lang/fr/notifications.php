@@ -158,6 +158,7 @@ return [
     'delete_budget_success' => 'Budget supprimé',
     // User
     'find_all_users_success' => 'Utilisateurs trouvés',
+    'find_all_connections_success' => 'Connexions trouvées',
     'find_all_profile_views_success' => 'Vues de profil trouvées',
     'find_user_success' => 'Utilisateur trouvé',
     'find_api_token_success' => 'Jeton d’API trouvé',

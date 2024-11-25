@@ -158,6 +158,7 @@ return [
     'delete_budget_success' => 'Budget deleted',
     // User
     'find_all_users_success' => 'Users found',
+    'find_all_connections_success' => 'Connections found',
     'find_all_profile_views_success' => 'Profile views found',
     'find_user_success' => 'User found',
     'find_api_token_success' => 'API token found',

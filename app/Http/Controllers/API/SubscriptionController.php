@@ -8,6 +8,7 @@ use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\Subscription as ResourcesSubscription;
+use App\Http\Resources\User as ResourcesUser;
 
 /**
  * @author Xanders
@@ -210,6 +211,38 @@ class SubscriptionController extends BaseController
         $count_all = Subscription::where([['subscriber_id', $user->id], ['status_id', $accepted_status->id]])->count();
 
         return $this->handleResponse(ResourcesSubscription::collection($subscriptions), __('notifications.find_all_subscriptions_success'), $subscriptions->lastPage(), $count_all);
+    }
+
+    /**
+     * User connections
+     *
+     * @param  int $user_id
+     * @return \Illuminate\Http\Response
+     */
+    public function userConnections($user_id)
+    {
+        // Group
+        $susbcription_status_group = Group::where('group_name->fr', 'Etat de la souscription')->first();
+        // Status
+        $accepted_status = Status::where([['status_name->fr', 'Acceptée'], ['group_id', $susbcription_status_group->id]])->first();
+        // Request
+        $user = User::find($user_id);
+
+        if (is_null($user)) {
+            return $this->handleError(__('notifications.find_user_404'));
+        }
+
+        $subscriptions = Subscription::where([['subscriber_id', $user->id], ['status_id', $accepted_status->id]])->orWhere([['user_id', $user->id], ['status_id', $accepted_status->id]])->orderByDesc('created_at')->get();
+        $user_ids = $subscriptions->pluck('user_id');
+        $subscriber_ids = $subscriptions->pluck('subscriber_id');
+        // Merge user connections IDs eliminating duplicates
+        $unique_ids = $user_ids->merge($subscriber_ids)->unique();
+
+        // Retrieve all connections of the user except the user himself
+        $connections = User::whereIn('id', $unique_ids)->where('id', '<>', $user->id)->paginate(10);
+        $count_all = User::whereIn('id', $unique_ids)->where('id', '<>', $user->id)->count();
+
+        return $this->handleResponse(ResourcesUser::collection($connections), __('notifications.find_all_connections_success'), $connections->lastPage(), $count_all);
     }
 
     /**

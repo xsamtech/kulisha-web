@@ -265,7 +265,8 @@
             }
 
             document.addEventListener('DOMContentLoaded', function() {
-                toggleSubmitCheckboxes('modalSelectRestrictions .user-list', 'sendCheckedUsers');
+                toggleSubmitCheckboxes('modalSelectRestrictions .users-list', 'sendCheckedUsers1');
+                toggleSubmitCheckboxes('modalSelectSpeakers .users-list', 'sendCheckedUsers2');
             });
 
             // -------------------------------------
@@ -321,7 +322,8 @@
              * IV. Location detection
              * V. Send post
              * VI. Reactions
-             * VII. Date picker
+             * VII. Date/Time picker
+             * VIII. Choose speakers
              */
             $(function () {
                 // -----------------
@@ -341,7 +343,7 @@
                         }
                     });
                 });
- 
+
                 // ------------------
                 // II. Toggle visibility
                 // ------------------
@@ -357,10 +359,10 @@
                         // If exception exist, check excepted users before switching visibility
                         if (alias === 'everybody_except' || alias === 'nobody_except') {
                             // Create an instance of the User class
-                            var action = 'choose-among-users';
+                            var action = 'restrictions-among-users';
                             var currentModalId = 'modalSelectRestrictions';
                             var apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
-                            var userListId = 'modalSelectRestrictions .user-list';
+                            var userListId = 'modalSelectRestrictions .users-list';
                             var loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
                             var userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
 
@@ -434,9 +436,7 @@
                                 $('#post-visibility').val(visibilityDataArray[1]);
                                 $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
                                 // Disable submit button after sending
-                                $('#sendCheckedUsers').addClass('disabled');
-                                $('#sendCheckedUsers').removeClass('btn-primary');
-                                $('#sendCheckedUsers').addClass('btn-primary-soft');
+                                $('#sendCheckedUsers1').addClass('disabled').removeClass('btn-primary').addClass('btn-primary-soft');
                             });
 
                         // Otherwise, switch visibility directly
@@ -463,10 +463,10 @@
                     e.preventDefault();
 
                     // Create an instance of the User class
-                    var action = 'choose-among-users';
+                    var action = 'restrictions-among-users';
                     var currentModalId = 'modalSelectRestrictions';
                     var apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
-                    var userListId = 'modalSelectRestrictions .user-list';
+                    var userListId = 'modalSelectRestrictions .users-list';
                     var loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
                     var userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
 
@@ -530,9 +530,7 @@
                         $('#restrictions .users-list').html(htmlContent);
                         $('#restrictions').removeClass('d-none');
                         // Disable submit button after sending
-                        $('#sendCheckedUsers').addClass('disabled');
-                        $('#sendCheckedUsers').removeClass('btn-primary');
-                        $('#sendCheckedUsers').addClass('btn-primary-soft');
+                        $('#sendCheckedUsers1').addClass('disabled').removeClass('btn-primary').addClass('btn-primary-soft');
                     });
                 });
 
@@ -770,9 +768,9 @@
                 $('#modalCreatePost').on('submit', function(event) {
                 });
 
-                // ------------
+                // -------------
                 // VI. Reactions
-                // ------------
+                // -------------
                 $('.reaction-btn').each(function () {
                     var reactionIcon = $(this).find('.reaction-icon');
                     var currentReaction = $(this).find('.current-reaction');
@@ -817,9 +815,9 @@
                     });
                 });
 
-                // ----------------
-                // VII. Date picker
-                // ----------------
+                // ---------------------
+                // VII. Date/Time picker
+                // ---------------------
                 $('#newEventModal').on('shown.bs.modal', function () {
                     setTimeout(function() {
                         flatpickr('#date_start', {
@@ -868,6 +866,94 @@
                     }
                     $('#newEvent input, #newEvent textarea').on('keyup change', validateForm);
                     $('#newEvent .form-check-input').on('change click', validateForm);
+                });
+
+                // ---------------------
+                // VIII. Choose speakers
+                // ---------------------
+                $('#select-speakers').click(function (e) { 
+                    e.preventDefault();
+
+                    // Create an instance of the User class
+                    var action = 'speakers-among-users';
+                    var currentModalId = 'modalSelectSpeakers';
+                    var apiURL = `${apiHost}/subscription/user_connections/${currentUser}`;
+                    var userListId = 'modalSelectSpeakers .users-list';
+                    var loadingSpinnerId = 'modalSelectSpeakers .loading-spinner';
+                    var userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
+
+                    // Open the modal and load users
+                    userModal.openModal();
+
+                    $('form#chooseFollowers').submit(function (e) {
+                        e.preventDefault();
+
+                        var formData = new FormData(this);
+                        var connections = [];
+
+                        // Retrieving selected checkboxes
+                        document.querySelectorAll('[name="connections_ids"]:checked').forEach(item => {
+                            // Collection of data associated with each user
+                            var connection = {
+                                id: parseInt(item.value),
+                                firstname: item.dataset.firstname,
+                                lastname: item.dataset.lastname,
+                                avatar: item.dataset.avatar
+                            };
+
+                            // Adding user to connections ARRAY
+                            connections.push(connection);
+                        });
+
+                        // Adding data to FormData
+                        connections.forEach((connection, i) => {
+                            formData.append('connections_ids[' + i + '][id]', connection.id);
+                            formData.append('connections_ids[' + i + '][firstname]', connection.firstname);
+                            formData.append('connections_ids[' + i + '][lastname]', connection.lastname);
+                            formData.append('connections_ids[' + i + '][avatar]', connection.avatar);
+                        });
+
+                        // Limit display to 3 users
+                        var htmlContent = '<input type="hidden" name="connections" id="connections" value="' + connections.map(f => f.id).join(',') + '">';
+
+                        htmlContent += '<div class="d-flex flex-row">';
+                        htmlContent += `<span class="d-inline-block me-2 pt-1">${window.Laravel.lang.public.events.new.data.speakers}</span>`;
+
+                        // Showing the first 3 users
+                        for (var i = 0; i < Math.min(3, connections.length); i++) {
+                            var connection = connections[i];
+
+                            htmlContent += `<div class="connection-${i + 1}">
+                                                <img src="${connection.avatar}" alt="${connection.firstname} ${connection.lastname}" width="30" class="rounded-circle me-1" title="${connection.firstname} ${connection.lastname}">
+                                            </div>`;
+                        }
+
+                        // If there are more than 3 users, display the remaining number
+                        if (connections.length > 3) {
+                            var remainingCount = connections.length - 3;
+
+                            htmlContent += `<p class="m-0 ms-1">
+                                                <span class="btn btn-light px-2 pt-1 pb-0 rounded-pill">+${remainingCount}</span>
+                                            </p>`;
+                        }
+
+                        htmlContent += '</div>';
+
+                        // Add generated content to ".users-list"
+                        $('#speackers .users-list').html(htmlContent);
+                        $('#speackers').removeClass('d-none');
+                        // Disable submit button after sending
+                        $('#sendCheckedUsers').addClass('disabled').removeClass('btn-primary').addClass('btn-primary-soft');
+                    });
+
+                    $('#modalSelectSpeakers').on('shown.bs.modal', function () {
+                        $('#newEventModal').css('z-index', '1040');
+                        $(this).css('z-index', '1060');
+
+                    }).on('hidden.bs.modal', function () {
+                        $('#newEventModal').css('z-index', '1060');
+                        $(this).css('z-index', '1040');
+                    });
                 });
             });
         </script>

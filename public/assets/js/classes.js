@@ -37,7 +37,7 @@ class User {
 
     // Function to handle scroll event in user list
     setupEventListeners() {
-        if (this.action === 'choose-among-users') {
+        if (this.action === 'restrictions-among-users' || this.action === 'speakers-among-users') {
             // Open the modal and load the users
             $(`#${this.currentModalId}`).on('shown.bs.modal', () => {
                 this.page = 1;  // Reset page number
@@ -115,25 +115,50 @@ class User {
                 response.data.forEach(user => {
                     var userItem = document.createElement('label');
 
-                    userItem.setAttribute('for', `follower-${user.follower.id}`);
-                    userItem.setAttribute('role', 'button');
-                    userItem.classList.add('form-check-label', 'd-block', 'mb-4');
+                    if (this.action === 'restrictions-among-users') {
+                        userItem.setAttribute('for', `follower-${user.follower.id}`);
+                        userItem.setAttribute('role', 'button');
+                        userItem.classList.add('form-check-label', 'd-block', 'mb-4');
 
-                    userItem.innerHTML = `
-                        <img src="${user.follower.profile_photo_path}" alt="" width="50" class="me-3 rounded-circle float-start">
-                        <input type="checkbox" name="followers_ids" id="follower-${user.follower.id}" class="form-check-input float-end" 
-                            value="${user.follower.id}" data-firstname="${user.follower.firstname}" data-lastname="${user.follower.lastname}" 
-                            data-avatar="${user.follower.profile_photo_path}" onchange="toggleSubmitCheckboxes('modalSelectRestrictions .user-list', 'sendCheckedUsers')">
-                        <div>
-                            <h6 class="mb-0">${user.follower.firstname} ${user.follower.lastname}</h6>
-                            <small>@${user.follower.username}</small>
-                        </div>
-                    `;
+                        userItem.innerHTML = `
+                            <img src="${user.follower.profile_photo_path}" alt="" width="50" class="me-3 rounded-circle float-start">
+                            <input type="checkbox" name="followers_ids" id="follower-${user.follower.id}" class="form-check-input float-end" 
+                                value="${user.follower.id}" data-firstname="${user.follower.firstname}" data-lastname="${user.follower.lastname}" 
+                                data-avatar="${user.follower.profile_photo_path}" onchange="toggleSubmitCheckboxes('modalSelectRestrictions .users-list', 'sendCheckedUsers1')">
+                            <div>
+                                <h6 class="mb-0">${user.follower.firstname} ${user.follower.lastname}</h6>
+                                <small>@${user.follower.username}</small>
+                            </div>
+                        `;
 
-                    // Check if item with id "follower-{user.follower.id}" already exists
-                    if (!document.querySelector(`#follower-${user.follower.id}`)) {
-                        // If the element does not already exist, it is added to the list
-                        document.querySelector(`#${this.userListId}`).appendChild(userItem);
+                        // Check if item with id "follower-{user.follower.id}" already exists
+                        if (!document.querySelector(`#follower-${user.follower.id}`)) {
+                            // If the element does not already exist, it is added to the list
+                            document.querySelector(`#${this.userListId}`).appendChild(userItem);
+                        }
+                    }
+
+                    if (this.action === 'speakers-among-users') {
+                        userItem.setAttribute('for', `connection-${user.id}`);
+                        userItem.setAttribute('role', 'button');
+                        userItem.classList.add('form-check-label', 'd-block', 'mb-4');
+
+                        userItem.innerHTML = `
+                            <img src="${user.profile_photo_path}" alt="" width="50" class="me-3 rounded-circle float-start">
+                            <input type="checkbox" name="connections_ids" id="connection-${user.id}" class="form-check-input float-end" 
+                                value="${user.id}" data-firstname="${user.firstname}" data-lastname="${user.lastname}" 
+                                data-avatar="${user.profile_photo_path}" onchange="toggleSubmitCheckboxes('modalSelectSpeakers .users-list', 'sendCheckedUsers2')">
+                            <div>
+                                <h6 class="mb-0">${user.firstname} ${user.lastname}</h6>
+                                <small>@${user.username}</small>
+                            </div>
+                        `;
+
+                        // Check if item with id "connection-{user.id}" already exists
+                        if (!document.querySelector(`#connection-${user.id}`)) {
+                            // If the element does not already exist, it is added to the list
+                            document.querySelector(`#${this.userListId}`).appendChild(userItem);
+                        }
                     }
                 });
 

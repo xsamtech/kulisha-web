@@ -635,6 +635,8 @@ return [
         'home' => [
             'view_profile' => 'View profile',
             'help' => 'Help and support',
+            'among_followers' => 'Choosing among your followers',
+            'among_connections' => 'Choisir parmi vos connections',
 
             // Posts
             'posts' => [
@@ -648,7 +650,6 @@ return [
                 'choose_visibility' => [
                     'title' => 'Who can see the post?',
                     'description' => 'Please choose who may be able to see your post.',
-                    'among_followers' => 'Choosing among your followers',
                 ],
                 'create_poll_choices' => 'Create choices for this poll',
                 'location_detection' => [
@@ -843,6 +844,7 @@ return [
                         'private' => 'Private event',
                     ],
                     'fields' => 'Field(s) of your event',
+                    'speakers' => 'Speaker(s)',
                 ],
             ],
 

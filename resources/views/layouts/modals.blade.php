@@ -302,7 +302,7 @@
         <!-- Modal create post END -->
 
         <!-- Modal select restrictions START -->
-        <div class="modal fade" id="modalSelectRestrictions" tabindex="-1" aria-labelledby="modalLabelSelectRestrictions" aria-hidden="true">
+        <div class="modal fade" id="modalSelectRestrictions" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content overflow-x-hidden overflow-y-auto">
                     <form id="chooseFollowers">
@@ -313,10 +313,10 @@
 
                         <!-- Modal restrictions body START -->
                         <div class="modal-body pt-3">
-                            <h6 class="h6 mb-4 text-center fw-normal">@lang('miscellaneous.public.home.posts.choose_visibility.among_followers')</h6>
+                            <h6 class="h6 mb-4 text-center fw-normal">@lang('miscellaneous.public.home.among_followers')</h6>
 
                             <!-- Users list -->
-                            <div class="user-list" style="max-height: 370px; overflow-y: auto;">
+                            <div class="users-list" style="max-height: 370px; overflow-y: auto;">
                                 <!-- Users will be loaded here -->
                             </div>
                         </div>
@@ -331,7 +331,7 @@
                                     <span class="visually-hidden">@lang('miscellaneous.loading')</span>
                                 </div>
                             </div>
-                            <button type="submit" id="sendCheckedUsers" class="btn btn-primary-soft disabled" data-bs-dismiss="modal">@lang('miscellaneous.register')</button>                    
+                            <button type="submit" id="sendCheckedUsers1" class="btn btn-primary-soft disabled" data-bs-dismiss="modal">@lang('miscellaneous.register')</button>                    
                         </div>
                         <!-- Modal restrictions footer -->
                     </form>
@@ -417,35 +417,16 @@
 @endforeach
                                 </div>
 
-                                <!-- Start/End date/hour -->
-                                <div class="row g-sm-3">
-                                    <div class="col-sm-6">
-                                        <input type="hidden" name="start_at" id="start_at" value="{{ date('Y-m-d H:i') }}">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" name="date_start" id="date_start" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_start.label')" value="{{ explicitDateTime(date('Y-m-d H:i:s')) }}">
-                                            <label for="date_start">@lang('miscellaneous.public.events.new.data.date_start.label')</label>
-                                        </div>
-                                    </div>
-                                    <div id="addEndDateHour" class="col-sm-6">
-                                        <a role="button" class="btn btn-link mb-sm-0 mb-1"><i class="bi bi-plus-circle fs-4 me-2 align-middle"></i><small>@lang('miscellaneous.public.events.new.data.date_end.add')</small></a>
-                                    </div>
-                                    <div id="endDateHour" class="col-sm-6 d-none">
-                                        <input type="hidden" name="end_at" id="end_at" value="{{ date('Y-m-d H:i') }}">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" name="date_end" id="date_end" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_end.label')" value="{{ explicitDateTime(date('Y-m-d H:i:s')) }}">
-                                            <label for="date_end">@lang('miscellaneous.public.events.new.data.date_end.label')</label>
-                                        </div>
-                                    </div>
+                                <!-- Event place -->
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="event_place" id="event_place" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.place')">
+                                    <label for="event_place">@lang('miscellaneous.public.events.new.data.place')</label>
                                 </div>
 
-                                <!-- Timezone -->
+                                <!-- Event description -->
                                 <div class="form-floating mb-3">
-                                    <select name="timezone" id="timezone" class="form-select" aria-label="@lang('miscellaneous.public.events.new.data.timezone')">
-@foreach ($timezones as $timezone => $formattedTimezone)
-                                        <option value="{{ $timezone }}" {{ $current_user['timezone'] == $timezone ? 'selected' : '' }}>{{ $formattedTimezone }}</option>
-@endforeach
-                                    </select>
-                                    <label for="timezone">@lang('miscellaneous.public.events.new.data.timezone')</label>
+                                    <textarea name="event_descritpion" id="event_descritpion" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.event_description')"></textarea>
+                                    <label for="event_descritpion">@lang('miscellaneous.public.events.new.data.event_description')</label>
                                 </div>
 
                                 <!-- Fields -->
@@ -462,23 +443,60 @@
                                     </div>
                                 </div>
 
-                                <!-- Event place -->
-                                <div class="form-floating mb-3">
-                                    <input type="text" name="event_place" id="event_place" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.place')">
-                                    <label for="event_place">@lang('miscellaneous.public.events.new.data.place')</label>
+                                <!-- Start/End date/hour -->
+                                <div class="row g-sm-3 mb-3">
+                                    <div class="col-sm-6">
+                                        <input type="hidden" name="start_at" id="start_at" value="{{ date('Y-m-d H:i') }}">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="date_start" id="date_start" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_start.label')" value="{{ explicitDateTime(date('Y-m-d H:i:s')) }}">
+                                            <label for="date_start">@lang('miscellaneous.public.events.new.data.date_start.label')</label>
+                                        </div>
+                                    </div>
+                                    <div id="addEndDateHour" class="col-sm-6">
+                                        <a role="button" class="btn btn-link mb-sm-0 mb-1" onclick="event.preventDefault(); document.getElementById('addEndDateHour').classList.add('d-none'); document.getElementById('endDateHour').classList.remove('d-none');">
+                                            <i class="bi bi-plus-circle fs-4 me-2 align-middle"></i><small>@lang('miscellaneous.public.events.new.data.date_end.add')</small>
+                                        </a>
+                                    </div>
+                                    <div id="endDateHour" class="col-sm-6 d-none">
+                                        <input type="hidden" name="end_at" id="end_at">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="date_end" id="date_end" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.date_end.label')">
+                                            <label for="date_end">@lang('miscellaneous.public.events.new.data.date_end.label')</label>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <!-- Event description -->
-                                <div class="form-floating">
-                                    <textarea name="event_descritpion" id="event_descritpion" class="form-control" placeholder="@lang('miscellaneous.public.events.new.data.event_description')"></textarea>
-                                    <label for="event_descritpion">@lang('miscellaneous.public.events.new.data.event_description')</label>
+                                <div class="row g-sm-3">
+                                    <!-- Timezone -->
+                                    <div class="col-sm-6">
+                                        <div class="form-floating">
+                                            <select name="timezone" id="timezone" class="form-select" aria-label="@lang('miscellaneous.public.events.new.data.timezone')">
+@foreach ($timezones as $timezone => $formattedTimezone)
+                                                <option value="{{ $timezone }}" {{ $current_user['timezone'] == $timezone ? 'selected' : '' }}>{{ $formattedTimezone }}</option>
+@endforeach
+                                            </select>
+                                            <label for="timezone">@lang('miscellaneous.public.events.new.data.timezone')</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Select speackers -->
+                                    <div class="col-sm-6">
+                                        <a role="button" id="select-speakers" class="btn btn-secondary-soft mt-sm-2 mt-0 w-100">
+                                            <i class="bi bi-person-video3 me-2"></i>@lang('miscellaneous.public.events.new.data.speakers')
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Modal event body END -->
 
                         <!-- Modal event footer START -->
-                        <div class="modal-footer border-0">
+                        <div class="modal-footer d-block border-0">
+                            <div id="speackers" class="mb-3 d-none">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="users-list"></div>
+                                </div>
+                            </div>
                             <button type="submit" class="btn btn-primary-soft w-100 send-event disabled">@lang('miscellaneous.public.events.new.run')</button>
                         </div>
                         <!-- Modal event footer END -->
@@ -487,6 +505,45 @@
             </div>
         </div>
         <!-- Modal new event END -->
+
+        <!-- Modal select speakers START -->
+        <div class="modal fade" id="modalSelectSpeakers" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content overflow-x-hidden overflow-y-auto">
+                    <form id="chooseFollowers">
+                        <!-- Modal speakers header START -->
+                        <div class="modal-header p-0 border-bottom-0">
+                        </div>
+                        <!-- Modal speakers header END -->
+
+                        <!-- Modal speakers body START -->
+                        <div class="modal-body pt-3">
+                            <h6 class="h6 mb-4 text-center fw-normal">@lang('miscellaneous.public.home.among_connections')</h6>
+
+                            <!-- Users list -->
+                            <div class="users-list" style="max-height: 370px; overflow-y: auto;">
+                                <!-- Users will be loaded here -->
+                            </div>
+                        </div>
+                        <!-- Modal speakers body END -->
+
+                        <!-- Modal speakers footer -->
+                        <div class="modal-footer border-0 d-flex justify-content-between">
+                            <button id="cancelRestriction" type="button" class="btn btn-secondary-soft-hover" data-bs-dismiss="modal">@lang('miscellaneous.cancel')</button>
+                            <!-- Indicative loading -->
+                            <div class="text-center loading-spinner opacity-0">
+                                <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+                                    <span class="visually-hidden">@lang('miscellaneous.loading')</span>
+                                </div>
+                            </div>
+                            <button type="submit" id="sendCheckedUsers2" class="btn btn-primary-soft disabled" data-bs-dismiss="modal">@lang('miscellaneous.register')</button>                    
+                        </div>
+                        <!-- Modal speakers footer -->
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal select speakers END -->
 
         <!-- Modal crop cover START -->
         <div class="modal fade" id="cropModal_cover" tabindex="-1" aria-labelledby="cropModal_coverLabel" aria-hidden="true">
