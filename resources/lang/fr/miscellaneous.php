@@ -665,9 +665,18 @@ return [
                     'event' => 'Evénement',
                     'poll' => [
                         'label' => 'Sondage',
+                        'new' => 'Créer un sondage',
                         'choice' => [
-                            'description' => 'Mettez des assertions pour permettre à chacun de choisir une',
+                            'title' => 'Assertions',
+                            'new' => 'Ajouter une autre assertion',
+                            'description' => 'Description de votre sondage',
                             'content' => 'Contenu de l’assertion'
+                        ],
+                        'choice_type' => [
+                            'text' => 'Texte',
+                            'image' => 'Image',
+                            'emoji' => 'Émoji',
+                            'sticker' => 'Autocollant'
                         ],
                         'post_error' => 'Veuillez choisir un post'
                     ],
@@ -722,9 +731,18 @@ return [
                 'type' => [
                     'poll' => [
                         'label' => 'Sondage',
+                        'new' => 'Créer un sondage',
                         'choice' => [
-                            'description' => 'Mettez des assertions pour permettre à chacun de choisir une',
+                            'title' => 'Assertions',
+                            'new' => 'Ajouter une autre assertion',
+                            'description' => 'Description de votre sondage',
                             'content' => 'Contenu de l’assertion'
+                        ],
+                        'choice_type' => [
+                            'text' => 'Texte',
+                            'image' => 'Image',
+                            'emoji' => 'Émoji',
+                            'sticker' => 'Autocollant'
                         ],
                         'post_error' => 'Veuillez choisir un post'
                     ],
@@ -869,12 +887,9 @@ return [
         'profile' => [
             // Statistics
             'statistics' => [
-                'post' => 'Post',
-                'posts' => 'Posts',
-                'follower' => 'Abonné',
-                'followers' => 'Abonnés',
-                'following' => 'Abonnement',
-                'followings' => 'Abonnements',
+                'post' => '{0} Post|{1} Post|[2,*] Posts',
+                'follower' => '{0} Abonné|{1} Abonné|[2,*] Abonnés',
+                'following' => '{0} Abonnement|{1} Abonnement|[2,*] Abonnements',
             ],
 
             // Products

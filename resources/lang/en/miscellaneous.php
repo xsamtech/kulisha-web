@@ -665,9 +665,18 @@ return [
                     'event' => 'Event',
                     'poll' => [
                         'label' => 'Poll',
+                        'new' => 'Create a poll',
                         'choice' => [
-                            'description' => 'Put assertions to allow everyone to choose one',
+                            'title' => 'Assertions',
+                            'new' => 'Add another assertion',
+                            'description' => 'Description of your poll',
                             'content' => 'Assertion content'
+                        ],
+                        'choice_type' => [
+                            'text' => 'Text',
+                            'image' => 'Image',
+                            'emoji' => 'Emoji',
+                            'sticker' => 'Sticker'
                         ],
                         'post_error' => 'Please choose a post',
                     ],
@@ -722,9 +731,18 @@ return [
                 'type' => [
                     'poll' => [
                         'label' => 'Poll',
+                        'new' => 'Create a poll',
                         'choice' => [
-                            'description' => 'Put assertions to allow everyone to choose one',
+                            'title' => 'Assertions',
+                            'new' => 'Add another assertion',
+                            'description' => 'Description of your poll',
                             'content' => 'Assertion content'
+                        ],
+                        'choice_type' => [
+                            'text' => 'Text',
+                            'image' => 'Image',
+                            'emoji' => 'Emoji',
+                            'sticker' => 'Sticker'
                         ],
                         'post_error' => 'Please choose a post',
                     ],
@@ -869,12 +887,9 @@ return [
         'profile' => [
             // Statistics
             'statistics' => [
-                'post' => 'Post',
-                'posts' => 'Posts',
-                'follower' => 'Follower',
-                'followers' => 'Followers',
-                'following' => 'Following',
-                'followings' => 'Following',
+                'post' => '{0} Post|{1} Post|[2,*] Posts',
+                'follower' => '{0} Follower|{1} Follower|[2,*] Followers',
+                'following' => '{0} Following|{1} Following|[2,*] Following',
             ],
 
             // Products

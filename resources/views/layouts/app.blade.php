@@ -65,7 +65,7 @@
             #zuck-modal-content .story-viewer .tip { text-transform: inherit!important; }
             @media (min-width: 768px) {
                 #addEndDateHour > .btn { margin-top: 0.7rem; }
-                #modalCreatePost .modal-body, #newEventModal .modal-body { max-height: 370px; }
+                #modalCreatePost .modal-body, #newEventModal .modal-body, #pollModal .modal-body { max-height: 370px; }
             }
         </style>
 
@@ -324,6 +324,7 @@
              * VI. Reactions
              * VII. Date/Time picker
              * VIII. Choose speakers
+             * IX. Add post choices
              */
             $(function () {
                 // -----------------
@@ -954,6 +955,14 @@
                         $('#newEventModal').css('z-index', '1060');
                         $(this).css('z-index', '1040');
                     });
+                });
+
+                // --------------------
+                // IX. Add post choices
+                // --------------------
+                $('#addPostChoice').on('click', function () {
+                    var htmlContent = '<div class=""></div>';
+
                 });
             });
         </script>

@@ -506,6 +506,62 @@
         </div>
         <!-- Modal new event END -->
 
+        <!-- Modal new event START -->
+        <div class="modal fade" id="pollModal" tabindex="-1" aria-labelledby="pollModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form id="newEvent">
+                        <!-- Modal event header START -->
+                        <div class="modal-header d-block text-center position-relative">
+                            <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
+                            <h4 class="modal-title m-0" id="pollModalLabel">@lang('miscellaneous.public.home.posts.type.poll.new')</h4>
+                        </div>
+                        <!-- Modal event header END -->
+
+                        <!-- Modal event body START -->
+                        <div class="modal-body p-0 overflow-x-hidden overflow-y-auto">
+                            <div class="p-3">
+                                <!-- Poll description -->
+                                <div class="form-floating mb-3">
+                                    <textarea name="post_content" id="poll_content" class="form-control" placeholder="@lang('miscellaneous.public.home.posts.type.poll.choice.description')"></textarea>
+                                    <label for="poll_content">@lang('miscellaneous.public.home.posts.type.poll.choice.description')</label>
+                                </div>
+
+                                <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="h6 mb-sm-0">@lang('miscellaneous.public.home.posts.type.poll.choice.title')</h6>
+
+                                    <!-- Poll type -->
+                                    <div>
+                                        <select id="poll_type" class="form-select" aria-label="@lang('miscellaneous.menu.admin.group.type')">
+                                            <option class="small" disabled>@lang('miscellaneous.menu.admin.group.type')</option>
+                                            <option>@lang('miscellaneous.public.home.posts.type.poll.choice_type.text')</option>
+                                            <option>@lang('miscellaneous.public.home.posts.type.poll.choice_type.image')</option>
+                                            <option>@lang('miscellaneous.public.home.posts.type.poll.choice_type.emoji')</option>
+                                            <option>@lang('miscellaneous.public.home.posts.type.poll.choice_type.sticker')</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal event body END -->
+
+                        <!-- Modal event footer START -->
+                        <div class="modal-footer d-block border-0">
+                            <div id="speackers" class="mb-3 d-none">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="users-list"></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary-soft w-100 send-event disabled">@lang('miscellaneous.register')</button>
+                        </div>
+                        <!-- Modal event footer END -->
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal new event END -->
+
         <!-- Modal select speakers START -->
         <div class="modal fade" id="modalSelectSpeakers" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-sm">

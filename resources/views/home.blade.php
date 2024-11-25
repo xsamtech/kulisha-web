@@ -48,23 +48,23 @@
 												<!-- User stat START -->
 												<div class="hstack gap-2 gap-xl-3 justify-content-center">
 													<!-- User stat item -->
-													<div>
+													<div title="{{ formatIntegerNumber(count($current_user['regular_posts'])) . ' ' . strtolower(trans_choice('miscellaneous.public.profile.statistics.post', count($current_user['regular_posts']))) }}" data-bs-toggle="tooltip" data-bs-placement="bottom">
 														<h6 class="mb-0 small">{{ !empty($current_user['regular_posts']) ? thousandsCurrencyFormat(count($current_user['regular_posts'])) : 0 }}</h6>
-														<small class="kls-fs-7">{{ count($current_user['regular_posts']) > 1 ? Str::limit(__('miscellaneous.public.profile.statistics.posts'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') : Str::limit(__('miscellaneous.public.profile.statistics.post'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
+														<small class="kls-fs-7">{{ Str::limit(trans_choice('miscellaneous.public.profile.statistics.post', count($current_user['regular_posts'])), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
 													</div>
 													<!-- Divider -->
 													<div class="vr" style="z-index: 9999;"></div>
 													<!-- User stat item -->
-													<div>
+													<div title="{{ formatIntegerNumber(count($current_user['followers'])) . ' ' . strtolower(trans_choice('miscellaneous.public.profile.statistics.follower', count($current_user['followers']))) }}" data-bs-toggle="tooltip" data-bs-placement="bottom">
 														<h6 class="mb-0 small">{{ !empty($current_user['followers']) ? thousandsCurrencyFormat(count($current_user['followers'])) : 0 }}</h6>
-														<small class="kls-fs-7">{{ count($current_user['followers']) > 1 ? Str::limit(__('miscellaneous.public.profile.statistics.followers'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') : Str::limit(__('miscellaneous.public.profile.statistics.follower'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
+														<small class="kls-fs-7">{{ Str::limit(trans_choice('miscellaneous.public.profile.statistics.follower', count($current_user['followers'])), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
 													</div>
 													<!-- Divider -->
 													<div class="vr" style="z-index: 9999;"></div>
 													<!-- User stat item -->
-													<div>
+													<div title="{{ formatIntegerNumber(count($current_user['following'])) . ' ' . strtolower(trans_choice('miscellaneous.public.profile.statistics.following', count($current_user['following']))) }}" data-bs-toggle="tooltip" data-bs-placement="bottom">
 														<h6 class="mb-0 small">{{ !empty($current_user['following']) ? thousandsCurrencyFormat(count($current_user['following'])) : 0 }}</h6>
-														<small class="kls-fs-7">{{ count($current_user['following']) > 1 ? Str::limit(__('miscellaneous.public.profile.statistics.followings'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') : Str::limit(__('miscellaneous.public.profile.statistics.following'), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
+														<small class="kls-fs-7">{{ Str::limit(trans_choice('miscellaneous.public.profile.statistics.following', count($current_user['following'])), (str_starts_with(app()->getLocale(), 'fr') ? 7 : 8), '...') }}</small>
 													</div>
 												</div>
 
@@ -178,7 +178,7 @@
 								<button class="flex-fill btn btn-sm btn-light me-2 py-1 px-2 mb-0 text-start text-truncate" data-bs-toggle="modal" data-bs-target="#newEventModal">
 									<i class="bi bi-calendar2-event-fill pe-2 fs-6 text-danger"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.event')</span>
 								</button>
-								<button class="flex-fill btn btn-sm btn-light py-1 px-2 mb-0 text-start text-truncate" data-bs-toggle="modal" data-bs-target="#modalCreatePoll">
+								<button class="flex-fill btn btn-sm btn-light py-1 px-2 mb-0 text-start text-truncate" data-bs-toggle="modal" data-bs-target="#pollModal">
 									<i class="bi bi-list-check pe-2 fs-6 text-warning"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.poll.label')</span>
 								</button>
 							</div>
