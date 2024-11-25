@@ -82,6 +82,8 @@ return [
         'use_camera' => 'Use camera',
         'upload_file' => 'Upload file',
         'choose_existing_file' => 'Choose existing file',
+        'image_error' => 'Please select only document files.',
+        'document_error' => 'Please select only image files.',
     ],
     'edit_text' => [
         'left' => 'Left',

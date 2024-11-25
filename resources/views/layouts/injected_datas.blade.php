@@ -5,6 +5,13 @@
             window.Laravel = {
                 lang: {
                     empty_list: "@lang('miscellaneous.empty_list')",
+                    upload: {
+                        use_camera: "@lang('miscellaneous.upload.use_camera')",
+                        upload_file: "@lang('miscellaneous.upload.upload_file')",
+                        choose_existing_file: "@lang('miscellaneous.upload.choose_existing_file')",
+                        image_error: "@lang('miscellaneous.upload.image_error')",
+                        document_error: "@lang('miscellaneous.upload.document_error')",
+                    },
                     menu: {
                         news_feed: "@lang('miscellaneous.menu.public.news_feed')",
                         home: "@lang('miscellaneous.menu.home')",

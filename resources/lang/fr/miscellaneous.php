@@ -81,7 +81,9 @@ return [
     'upload' => [
         'use_camera' => 'Utiliser caméra',
         'upload_file' => 'Télécharger fichier',
-        'choose_existing_file' => 'Choisir fichier existant'
+        'choose_existing_file' => 'Choisir fichier existant',
+        'image_error' => 'Veuillez sélectionner uniquement les fichiers de documents.',
+        'document_error' => 'Veuillez sélectionner uniquement les fichiers de images.',
     ],
     'edit_text' => [
         'left' => 'Gauche',

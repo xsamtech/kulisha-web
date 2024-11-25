@@ -199,14 +199,10 @@
                     var documentsFiles = document.getElementById('documentsInput');
 
                     if (element.value.trim() === '' && imagesFiles.files.length === 0 && documentsFiles.files.length === 0) {
-                        $('#newPost .send-post').removeClass('btn-primary');
-                        $('#newPost .send-post').addClass('btn-primary-soft');
-                        $('#newPost .send-post').addClass('disabled');
+                        $('#newPost .send-post').removeClass('btn-primary').addClass('btn-primary-soft').addClass('disabled');
 
                     } else {
-                        $('#newPost .send-post').removeClass('disabled');
-                        $('#newPost .send-post').removeClass('btn-primary-soft');
-                        $('#newPost .send-post').addClass('btn-primary');
+                        $('#newPost .send-post').removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
                     }
                 }
 
@@ -217,14 +213,10 @@
                     var anyChecked = $('#choose_fields .form-check-input:checked').length > 0;
 
                     if (elem.value.trim() === '' || details.value.trim() === '' || anyChecked) {
-                        $('#newEvent .send-event').removeClass('btn-primary');
-                        $('#newEvent .send-event').addClass('btn-primary-soft');
-                        $('#newEvent .send-event').addClass('disabled');
+                        $('#newEvent .send-event').removeClass('btn-primary').addClass('btn-primary-soft').addClass('disabled');
 
                     } else {
-                        $('#newEvent .send-event').removeClass('disabled');
-                        $('#newEvent .send-event').removeClass('btn-primary-soft');
-                        $('#newEvent .send-event').addClass('btn-primary');
+                        $('#newEvent .send-event').removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
                     }
                 }
             }
@@ -240,25 +232,17 @@
 
                 if (element_id === 'imagesInput') {
                     if (textarea.value.trim() === '' && elem.files.length === 0 && documentsFiles.files.length === 0) {
-                        $('#newPost .send-post').removeClass('btn-primary');
-                        $('#newPost .send-post').addClass('btn-primary-soft');
-                        $('#newPost .send-post').addClass('disabled');
+                        $('#newPost .send-post').removeClass('btn-primary').addClass('btn-primary-soft').addClass('disabled');
                     } else {
-                        $('#newPost .send-post').removeClass('disabled');
-                        $('#newPost .send-post').removeClass('btn-primary-soft');
-                        $('#newPost .send-post').addClass('btn-primary');
+                        $('#newPost .send-post').removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
                     }
                 }
 
                 if (element_id === 'documentsInput') {
                     if (textarea.value.trim() === '' && elem.files.length === 0 && imagesFiles.files.length === 0) {
-                        $('#newPost .send-post').removeClass('btn-primary');
-                        $('#newPost .send-post').addClass('btn-primary-soft');
-                        $('#newPost .send-post').addClass('disabled');
+                        $('#newPost .send-post').removeClass('btn-primary').addClass('btn-primary-soft').addClass('disabled');
                     } else {
-                        $('#newPost .send-post').removeClass('disabled');
-                        $('#newPost .send-post').removeClass('btn-primary-soft');
-                        $('#newPost .send-post').addClass('btn-primary');
+                        $('#newPost .send-post').removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
                     }
                 }
             }
@@ -272,15 +256,11 @@
 
                 // If at least one box is checked, activates the button (removes the "disabled" class)
                 if (anyChecked) {
-                    $(`#${submitButtonId}`).removeClass('disabled');
-                    $(`#${submitButtonId}`).removeClass('btn-primary-soft');
-                    $(`#${submitButtonId}`).addClass('btn-primary');
+                    $(`#${submitButtonId}`).removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
 
                 // Otherwise, disable the button (add the class "disabled")
                 } else {
-                    $(`#${submitButtonId}`).addClass('disabled');
-                    $(`#${submitButtonId}`).removeClass('btn-primary');
-                    $(`#${submitButtonId}`).addClass('btn-primary-soft');
+                    $(`#${submitButtonId}`).addClass('disabled').removeClass('btn-primary').addClass('btn-primary-soft');
                 }
             }
 
@@ -585,7 +565,7 @@
 
                     if (validFiles.length === 0) {
                         $('#errorMessageWrapper').removeClass('d-none');
-                        $('#errorMessageWrapper .custom-message').html('Please select only image files.');
+                        $('#errorMessageWrapper .custom-message').html(window.Laravel.lang.upload.image_error);
                         $('#previewsSpinner').addClass('d-none'); // Hide spinner if no valid files
 
                         return;
@@ -680,7 +660,7 @@
                             $('#errorMessageWrapper').removeClass('d-none');
                         }
 
-						$('#errorMessageWrapper .custom-message').html('Please select only Document files.');
+						$('#errorMessageWrapper .custom-message').html(window.Laravel.lang.upload.document_error);
 
                         return;
                     }
