@@ -317,10 +317,11 @@
             // IX. Show emojis picker in dropdown
             // -----------------------------------
             // Handle shown emoji
-            function handleEmoji(buttonId, inputId) {
+            function handleEmoji(buttonId, inputId, submitId) {
                 var emojiButton = document.getElementById(buttonId);
                 var emojiInput = document.getElementById(inputId);
                 var emojiDropdown = document.getElementById('emojiDropdown');
+                var submitButton = document.querySelector(submitId);
 
                 // Show or hide emoji dropdown
                 emojiButton.addEventListener('click', function () {
@@ -328,7 +329,7 @@
                         emojiDropdown.style.display = 'none';
                     } else {
                         emojiDropdown.style.display = 'block';
-                        loadEmojis(emojiDropdown, emojiInput); // Load emojis when menu is displayed
+                        loadEmojis(emojiDropdown, emojiInput, submitButton); // Load emojis when menu is displayed
                     }
                 });
 
@@ -341,7 +342,7 @@
             }
 
             // Function to retrieve emojis via an API
-            function loadEmojis(emojiDropdown, emojiInput) {
+            function loadEmojis(emojiDropdown, emojiInput, submitButton) {
                 var emojiAPI = `https://emoji-api.com/emojis?access_key=${emojiRef}`;
 
                 fetch(emojiAPI).then(response => response.json()).then(data => {
@@ -359,7 +360,10 @@
                         // Add an event to insert the emoji into the textarea
                         emojiElem.addEventListener('click', function () {
                             emojiInput.value += emoji.character;
-                            // emojiDropdown.style.display = 'none';
+
+                            if ($(submitButton).hasClass('disabled')) {
+                                $(submitButton).removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
+                            }
                         });
                     });
                 })
@@ -368,7 +372,7 @@
 
             // Run some scripts on DOM content is loaded
             document.addEventListener('DOMContentLoaded', function() {
-                handleEmoji('selectEmoji', 'post-textarea')
+                handleEmoji('selectEmoji', 'post-textarea', '#modalCreatePost [type="submit"]');
                 toggleSubmitCheckboxes('modalSelectRestrictions .users-list', 'sendCheckedUsers1');
                 toggleSubmitCheckboxes('modalSelectSpeakers .users-list', 'sendCheckedUsers2');
             });
@@ -386,7 +390,7 @@
              * VI. Reactions
              * VII. Date/Time picker
              * VIII. Choose speakers
-             * IX. Add post choices
+             * IX. Handle poll
              */
             $(function () {
                 // -----------------
@@ -1020,11 +1024,35 @@
                 });
 
                 // --------------------
-                // IX. Add post choices
+                // IX. Handle poll
                 // --------------------
-                $('#addPostChoice').on('click', function () {
-                    var htmlContent = '<div class=""></div>';
+                $('#pollModal').on('shown.bs.modal', function () {
+                    // Add other options
+                    var optionCount = 2;
 
+                    $('#add_option_button').click(function() {
+                        optionCount++;
+
+                        var newOption = `<div class="input-group mb-3" id="option_${optionCount}_group">
+                                            <span class="input-group-text" id="option_${optionCount}">Option ${optionCount}</span>
+                                            <input type="text" name="choices_contents[]" id="choices_contents_${optionCount}" class="form-control" placeholder="Contenu de l'option" aria-describedby="option_${optionCount}" value="">
+                                        </div>`;
+
+                        $(newOption).insertBefore('#add_option_button').fadeIn();
+                    });
+
+                    // Make sure certain criteria are met before activating the button to create
+                    $('#newPoll input, #newPoll textarea').on('keyup', function () {
+                        var isQuestionFilled = $('#poll_question').val().trim() !== '';
+                        var isOptions1Filled = $('#choices_contents_1').val().trim() !== '';
+                        var isOptions2Filled = $('#choices_contents_2').val().trim() !== '';
+
+                        if (isQuestionFilled && isOptions1Filled && isOptions2Filled) {
+                            $('#newPoll .send-poll').removeClass('disabled btn-primary-soft').addClass('btn-primary');
+                        } else {
+                            $('#newPoll .send-poll').removeClass('btn-primary').addClass('btn-primary-soft disabled');
+                        }
+                    });
                 });
             });
         </script>

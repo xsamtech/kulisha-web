@@ -666,16 +666,15 @@ return [
                     'poll' => [
                         'label' => 'Poll',
                         'new' => 'Create a poll',
+                        'search_post' => 'Associate a post',
                         'choice' => [
-                            'title' => 'Assertions',
-                            'new' => 'Add another assertion',
                             'description' => 'Ask your question',
-                            'content' => 'Assertion content'
-                        ],
-                        'choice_type' => [
-                            'text' => 'Text',
-                            'emoji' => 'Emoji',
-                            'sticker' => 'Sticker'
+                            'option' => [
+                                'title' => 'Option content',
+                                'option1' => 'Option 1',
+                                'option2' => 'Option 2',
+                                'add' => 'Add another option',
+                            ],
                         ],
                         'post_error' => 'Please choose a post',
                     ],
@@ -732,16 +731,13 @@ return [
                         'label' => 'Poll',
                         'new' => 'Create a poll',
                         'choice' => [
-                            'title' => 'Assertions',
-                            'new' => 'Add another assertion',
                             'description' => 'Ask your question',
-                            'content' => 'Assertion content'
-                        ],
-                        'choice_type' => [
-                            'text' => 'Text',
-                            'image' => 'Image',
-                            'emoji' => 'Emoji',
-                            'sticker' => 'Sticker'
+                            'option' => [
+                                'title' => 'Option content',
+                                'option1' => 'Option 1',
+                                'option2' => 'Option 2',
+                                'add' => 'Add another option',
+                            ],
                         ],
                         'post_error' => 'Please choose a post',
                     ],

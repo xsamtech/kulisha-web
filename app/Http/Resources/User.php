@@ -49,6 +49,7 @@ class User extends JsonResource
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'surname' => $this->surname,
+            'names' => !empty($this->lastname) ? $this->firstname . ' ' . $this->lastname : $this->firstname,
             'username' => $this->username,
             'about_me' => $this->about_me,
             'gender' => $this->gender,
