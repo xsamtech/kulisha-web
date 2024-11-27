@@ -1033,12 +1033,13 @@
                     $('#add_option_button').click(function() {
                         optionCount++;
 
-                        var newOption = `<div class="input-group mb-3" id="option_${optionCount}_group">
+                        var newOption = `<div class="input-group mb-3">
                                             <span class="input-group-text" id="option_${optionCount}">Option ${optionCount}</span>
                                             <input type="text" name="choices_contents[]" id="choices_contents_${optionCount}" class="form-control" placeholder="Contenu de l'option" aria-describedby="option_${optionCount}" value="">
                                         </div>`;
 
                         $(newOption).insertBefore('#add_option_button').fadeIn();
+                        document.querySelector(`#choices_contents_${optionCount}`).focus();
                     });
 
                     // Make sure certain criteria are met before activating the button to create

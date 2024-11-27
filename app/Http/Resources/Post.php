@@ -34,6 +34,7 @@ class Post extends JsonResource
         if ($this->type_id == $story_type->id) {
             $file = File::collection($this->files)->first();
             $user = User::make($this->user);
+            $status = Status::make($this->status);
 
             return [
                 'story_id' => (string) $this->id,
@@ -56,7 +57,7 @@ class Post extends JsonResource
                 'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
                 'created_at_ago' => timeAgo($this->created_at->format('Y-m-d H:i:s')),
                 'updated_at_ago' => timeAgo($this->updated_at->format('Y-m-d H:i:s')),
-                'status_id' => $this->status_id,
+                'status_alias' => $status->alias,
                 'type_id' => $this->type_id,
                 'category_id' => $this->category_id,
                 'visibility_id' => $this->visibility_id,
@@ -70,7 +71,8 @@ class Post extends JsonResource
                 'coverage_area_id' => $this->coverage_area_id,
                 'budget_id' => $this->budget_id,
                 'community_id' => $this->community_id,
-                'event_id' => $this->event_id
+                'event_id' => $this->event_id,
+                'surveychoices' => Surveychoice::collection($this->surveychoices),
             ];
 
         } else {

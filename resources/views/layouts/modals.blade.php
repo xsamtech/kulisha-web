@@ -537,9 +537,9 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="shared_post_id" id="shared_post_id" value="">
-                                <div class="mb-3">
-                                    <input type="text" name="search_post" id="search_post" class="form-control" placeholder="@lang('miscellaneous.public.home.posts.type.poll.search_post')">
-                                    <label for="search_post" class="visually-hidden">@lang('miscellaneous.public.home.posts.type.poll.search_post')</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text border bg-transparent"><i class="bi bi-search"></i></span>
+                                    <input type="text" name="search_post" id="search_post" class="form-control ps-0 border-start-0" placeholder="@lang('miscellaneous.public.home.posts.type.poll.search_post')" onfocus="">
                                 </div>
 
                                 <!-- Poll description -->
@@ -550,19 +550,19 @@
 
                                 <!-- Option 1 -->
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" id="option_1">@lang('miscellaneous.public.home.stories.type.poll.choice.option.option1')</span>
+                                    <span id="option_1" class="input-group-text">@lang('miscellaneous.public.home.stories.type.poll.choice.option.option1')</span>
                                     <input type="text" name="choices_contents[]" id="choices_contents_1" class="form-control" placeholder="@lang('miscellaneous.public.home.posts.type.poll.choice.option.title')" aria-describedby="option_1" value="@lang('miscellaneous.yes')">
                                 </div>
 
                                 <!-- Option 2 -->
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" id="option_2">@lang('miscellaneous.public.home.stories.type.poll.choice.option.option2')</span>
+                                    <span id="option_2" class="input-group-text">@lang('miscellaneous.public.home.stories.type.poll.choice.option.option2')</span>
                                     <input type="text" name="choices_contents[]" id="choices_contents_2" class="form-control" placeholder="@lang('miscellaneous.public.home.posts.type.poll.choice.option.title')" aria-describedby="option_2" value="@lang('miscellaneous.no')">
                                 </div>
 
                                 <!-- Add another option -->
-                                <div class="text-center">
-                                    <a role="button" id="add_option_button" class="btn btn-link"><i class="bi bi-plus-circle me-2"></i>@lang('miscellaneous.public.home.posts.type.poll.choice.option.add')</a>
+                                <div id="add_option_button" class="text-center">
+                                    <a role="button" class="btn btn-link"><i class="bi bi-plus-circle me-2"></i>@lang('miscellaneous.public.home.posts.type.poll.choice.option.add')</a>
                                 </div>
                             </div>
                         </div>
