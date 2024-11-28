@@ -184,10 +184,10 @@
 							</div>
 							<div class="d-flex flex-row">
 								<button class="flex-fill btn btn-sm btn-light me-2 py-1 px-2 mb-0 text-start text-truncate" data-bs-toggle="modal" data-bs-target="#anonymousQuestionRequestModal">
-									<i class="bi bi-question-circle pe-2 fs-6 text-info"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.anonymous_question')</span>
+									<i class="bi bi-question-circle pe-2 fs-6 text-info"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.anonymous_question.label')</span>
 								</button>
 								<button class="flex-fill btn btn-sm btn-light py-1 px-2 mb-0 text-start text-truncate" data-bs-toggle="modal" data-bs-target="#feedActionArticle">
-									<i class="bi bi-newspaper pe-2 fs-6 text-success"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.article')</span>
+									<i class="bi bi-newspaper pe-2 fs-6 text-success"></i><span class="kls-text-secondary">@lang('miscellaneous.public.home.posts.type.article.label')</span>
 								</button>
 							</div>
 						</div>

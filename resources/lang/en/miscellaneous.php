@@ -678,8 +678,16 @@ return [
                         ],
                         'post_error' => 'Please choose a post',
                     ],
-                    'anonymous_question' => 'Anonymous question',
-                    'article' => 'Write up article',
+                    'anonymous_question' => [
+                        'label' => 'Anonymous question',
+                        'request_placeholder' => 'Say something...',
+                        'request_content' => 'Ask me anything you want',
+                        'question_placeholder' => 'Ask your question...',
+                        'question_content' => 'Your connections will ask you their questions here',
+                    ],
+                    'article' => [
+                        'label' => 'Write up article',
+                    ],
                 ],
 
                 // Other data

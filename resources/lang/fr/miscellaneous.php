@@ -678,8 +678,16 @@ return [
                         ],
                         'post_error' => 'Veuillez choisir un post'
                     ],
-                    'anonymous_question' => 'Question anonyme',
-                    'article' => 'Écrire article',
+                    'anonymous_question' => [
+                        'label' => 'Question anonyme',
+                        'request_placeholder' => 'Dites quelque chose ...',
+                        'request_content' => 'Demandez-moi ce que vous voulez',
+                        'question_placeholder' => 'Posez votre question ...',
+                        'question_content' => 'Vos connexions vous poserons leurs questions ici',
+                    ],
+                    'article' => [
+                        'label' => 'Écrire article',
+                    ],
                 ],
 
                 // Other data

@@ -591,24 +591,24 @@
                         <!-- Modal anonymous question request header END -->
 
                         <!-- Modal anonymous question request body START -->
-                        <div class="modal-body py-0">
-                            <div class="d-flex justify-content-between">
+                        <div class="modal-body pt-0 pb-2">
+                            <div class="d-flex justify-content-between mb-1">
                                 <div class="flex-grow-0">
                                     <img src="{{ $current_user['profile_photo_path'] }}" alt="" width="50" class="rounded-circle float-start">
                                 </div>
                                 <div class="flex-fill">
-                                    <textarea name="post_content" id="question_request_content" class="form-control bg-transparent border-0 text-center fs-5" onfocus="this.classList.add('border-0')">Demandez-moi ce que vous voulez</textarea>
+                                    <textarea name="post_content" id="question_request_content" class="form-control bg-transparent border-0 text-center text-primary fs-5 kls-line-height-1_35" placeholder="@lang('miscellaneous.public.home.posts.type.anonymous_question.request_placeholder')" onfocus="this.classList.add('border-0')">@lang('miscellaneous.public.home.posts.type.anonymous_question.request_content')</textarea>
                                 </div>
                             </div>
-                            <div class="p-3 bg-light border rounded text-center">
-                                <input type="text" name="comment-content" id="comment-content" class="form-control bg-transparent border-0 text-center" placeholder="Posez votre question" value="Vos connexions vous poserons leurs questions ici" disabled>
+                            <div class="p-3 pb-sm-0 pb-4 bg-light border rounded text-center">
+                                <textarea name="comment_content" id="question_content" class="form-control bg-transparent pb-0 border-0 text-center" placeholder="@lang('miscellaneous.public.home.posts.type.anonymous_question.question_placeholder')" onfocus="this.classList.add('border-0')" disabled>@lang('miscellaneous.public.home.posts.type.anonymous_question.question_content')</textarea>
                             </div>
                         </div>
                         <!-- Modal anonymous question request body END -->
 
                         <!-- Modal anonymous question request footer START -->
                         <div class="modal-footer d-block border-0">
-                            <button type="submit" class="btn btn-primary-soft w-100 send-request disabled">@lang('miscellaneous.send')</button>
+                            <button type="submit" class="btn btn-primary w-100 send-question">@lang('miscellaneous.send')</button>
                         </div>
                         <!-- Modal anonymous question request footer END -->
                     </form>

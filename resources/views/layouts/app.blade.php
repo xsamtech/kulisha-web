@@ -391,6 +391,7 @@
              * VII. Date/Time picker
              * VIII. Choose speakers
              * IX. Handle poll
+             * X. Handle anonymous question
              */
             $(function () {
                 // -----------------
@@ -1054,6 +1055,48 @@
                             $('#newPoll .send-poll').removeClass('btn-primary').addClass('btn-primary-soft disabled');
                         }
                     });
+                });
+
+                // ----------------------------
+                // X. Handle anonymous question
+                // ----------------------------
+                $('#anonymousQuestionRequestModal').on('shown.bs.modal', function () {
+                    // Focus on the right textarea
+                    if ($('#question_content').val().trim() !== '') {
+                        var textarea = document.getElementById('question_request_content');
+
+                        textarea.focus();
+                        textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+
+                        // Make sure certain criteria are met before activating the button to create
+                        $('#question_request_content').on('keyup', function () {
+                            var isQuestionFilled = $(this).val().trim() !== '';
+
+                            if (isQuestionFilled) {
+                                $('#anonymousQuestionRequestModal .send-question').removeClass('disabled btn-primary-soft').addClass('btn-primary');
+                            } else {
+                                $('#anonymousQuestionRequestModal .send-question').removeClass('btn-primary').addClass('btn-primary-soft disabled');
+                            }
+                        });
+
+                    } else {
+                        var textarea = document.getElementById('question_content');
+
+                        textarea.value = '';
+                        textarea.focus();
+                        $('#anonymousQuestionRequestModal form').attr('id', 'newAnonymousQuestion');
+
+                        // Make sure certain criteria are met before activating the button to create
+                        $('#question_content').on('keyup', function () {
+                            var isQuestionFilled = $(this).val().trim() !== '';
+
+                            if (isQuestionFilled) {
+                                $('#anonymousQuestionRequestModal .send-question').removeClass('disabled btn-primary-soft').addClass('btn-primary');
+                            } else {
+                                $('#anonymousQuestionRequestModal .send-question').removeClass('btn-primary').addClass('btn-primary-soft disabled');
+                            }
+                        });
+                    }
                 });
             });
         </script>
