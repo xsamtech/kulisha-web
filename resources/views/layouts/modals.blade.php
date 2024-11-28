@@ -141,7 +141,7 @@
                 <div class="modal-content">
                     <form id="newPost">
                         <!-- Modal post header START -->
-                        <div class="modal-header d-block text-center position-relative">
+                        <div class="modal-header d-block position-relative text-center">
                             <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
                             <h4 class="product-type-title modal-title m-0">@lang('miscellaneous.public.home.posts.new.title', ['post_type' => strtolower($categories_product_type['type_name'])])</h4>
                             <h4 class="service-type-title modal-title m-0 d-none">@lang('miscellaneous.public.home.posts.new.title', ['post_type' => strtolower($categories_service_type['type_name'])])</h4>
@@ -382,7 +382,7 @@
                 <div class="modal-content">
                     <form id="newEvent">
                         <!-- Modal event header START -->
-                        <div class="modal-header d-block text-center position-relative">
+                        <div class="modal-header d-block position-relative text-center">
                             <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
                             <h4 class="modal-title m-0" id="newEventModalLabel">@lang('miscellaneous.public.events.new.title')</h4>
                         </div>
@@ -519,7 +519,7 @@
                 <div class="modal-content">
                     <form id="newPoll">
                         <!-- Modal poll header START -->
-                        <div class="modal-header d-block text-center position-relative">
+                        <div class="modal-header d-block position-relative text-center">
                             <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
                             <h4 class="modal-title m-0" id="pollModalLabel">@lang('miscellaneous.public.home.posts.type.poll.new')</h4>
                         </div>
@@ -538,8 +538,8 @@
                                 </div>
                                 <input type="hidden" name="shared_post_id" id="shared_post_id" value="">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text border bg-transparent"><i class="bi bi-search"></i></span>
-                                    <input type="text" name="search_post" id="search_post" class="form-control ps-0 border-start-0" placeholder="@lang('miscellaneous.public.home.posts.type.poll.search_post')" onfocus="">
+                                    <span id="search_poll_post_icon" class="input-group-text border bg-transparent"><i class="bi bi-search"></i></span>
+                                    <input type="text" name="search_poll_post" id="search_poll_post" class="form-control ps-0 border-start-0" placeholder="@lang('miscellaneous.public.home.posts.type.poll.search_post')" onfocus="event.preventDefault(); document.getElementById('search_poll_post_icon').classList.add('border-primary');" onblur="event.preventDefault(); document.getElementById('search_poll_post_icon').classList.remove('border-primary');">
                                 </div>
 
                                 <!-- Poll description -->
@@ -578,6 +578,44 @@
             </div>
         </div>
         <!-- Modal new poll END -->
+
+        <!-- Modal new anonymous question request START -->
+        <div class="modal fade" id="anonymousQuestionRequestModal" tabindex="-1" aria-labelledby="anonymousQuestionRequestModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form id="newAnonymousQuestionRequest">
+                        <!-- Modal anonymous question request header START -->
+                        <div class="modal-header d-block position-relative pb-0 border-0 text-center">
+                            <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle float-end position-relative" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')" style="z-index: 9999;"></button>
+                        </div>
+                        <!-- Modal anonymous question request header END -->
+
+                        <!-- Modal anonymous question request body START -->
+                        <div class="modal-body py-0">
+                            <div class="d-flex justify-content-between">
+                                <div class="flex-grow-0">
+                                    <img src="{{ $current_user['profile_photo_path'] }}" alt="" width="50" class="rounded-circle float-start">
+                                </div>
+                                <div class="flex-fill">
+                                    <textarea name="post_content" id="question_request_content" class="form-control bg-transparent border-0 text-center fs-5" onfocus="this.classList.add('border-0')">Demandez-moi ce que vous voulez</textarea>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-light border rounded text-center">
+                                <input type="text" name="comment-content" id="comment-content" class="form-control bg-transparent border-0 text-center" placeholder="Posez votre question" value="Vos connexions vous poserons leurs questions ici" disabled>
+                            </div>
+                        </div>
+                        <!-- Modal anonymous question request body END -->
+
+                        <!-- Modal anonymous question request footer START -->
+                        <div class="modal-footer d-block border-0">
+                            <button type="submit" class="btn btn-primary-soft w-100 send-request disabled">@lang('miscellaneous.send')</button>
+                        </div>
+                        <!-- Modal anonymous question request footer END -->
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Modal new anonymous question request END -->
 
         <!-- Modal select speakers START -->
         <div class="modal fade" id="modalSelectSpeakers" tabindex="-1" aria-hidden="true">
@@ -623,7 +661,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!-- Modal cover header START -->
-                    <div class="modal-header d-block text-center position-relative">
+                    <div class="modal-header d-block position-relative text-center">
                         <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
                         <h5 class="modal-title m-0" id="cropModal_coverLabel">@lang('miscellaneous.crop_before_save')</h5>
                     </div>
@@ -658,7 +696,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <!-- Modal avatar header START -->
-                    <div class="modal-header d-block text-center position-relative">
+                    <div class="modal-header d-block position-relative text-center">
                         <button type="button" class="btn-close btn-secondary-soft-hover p-3 rounded-circle position-absolute" style="top: 1rem; right: 1rem;" data-bs-dismiss="modal" aria-label="@lang('miscellaneous.close')"></button>
                         <h5 class="modal-title m-0" id="cropModal_avatarLabel">@lang('miscellaneous.crop_before_save')</h5>
                     </div>
