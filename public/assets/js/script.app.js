@@ -8,8 +8,29 @@
  */
 
 /**
- * If the window is webview, hide some elements
+ * Native functions
+ * 
+ * I. If the window is webview, hide some elements
+ * II. Theme management
+ *    II.1. Set theme to light
+ *    II.2. Set theme to dark
+ *    II.3. Set theme to auto
+ * III. Check string is numeric
+ * IV. Get cookie by name
+ * V. Switch between two elements visibility
+ * VI. Unable "submit" button
+ *    VI.1. Textarea
+ *    VI.2. Files
+ *    VI.3. Checkboxes
+ * VII. Remove a file from the input file
+ * VIII. Set location data from IpInfo
+ * IX. Show emojis picker in dropdown
+ *    IX.1. Handle shown emoji
+ *    IX.2. Function to retrieve emojis via an API
  */
+// -----------------------------------------------
+// I. If the window is webview, hide some elements
+// -----------------------------------------------
 if (isWebview1 || isWebview2) {
     $('.detect-webview').addClass('d-none');
 
@@ -17,35 +38,37 @@ if (isWebview1 || isWebview2) {
     $('.detect-webview').removeClass('d-none');
 }
 
-/**
- * Set theme to light
- */
+// --------------------
+// II. Theme management
+// ------------------------
+// II.1. Set theme to light
+// ------------------------
 function themeLight() {
     document.documentElement.setAttribute('data-bs-theme', 'light');
 
     for (var i = 0; i < kulishaBrand.length; i++) {
-      kulishaBrand[i].setAttribute('src', currentHost + '/assets/img/brand.png');
+        kulishaBrand[i].setAttribute('src', currentHost + '/assets/img/brand.png');
     }
 
     document.cookie = "theme=light; SameSite=None; Secure";
 }
 
-/**
- * Set theme to dark
- */
+// -----------------------
+// II.2. Set theme to dark
+// -----------------------
 function themeDark() {
     document.documentElement.setAttribute('data-bs-theme', 'dark');
 
     for (var i = 0; i < kulishaBrand.length; i++) {
-      kulishaBrand[i].setAttribute('src', currentHost + '/assets/img/brand-reverse.png');
+        kulishaBrand[i].setAttribute('src', currentHost + '/assets/img/brand-reverse.png');
     }
 
     document.cookie = "theme=dark; SameSite=None; Secure";
 }
 
-/**
- * Set theme to auto
- */
+// -----------------------
+// II.3. Set theme to auto
+// -----------------------
 function themeAuto() {
     var darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -67,11 +90,9 @@ function themeAuto() {
     document.cookie = "theme=auto; SameSite=None; Secure";
 }
 
-/**
- * Check string is numeric
- * 
- * @param string str 
- */
+// ----------------------------
+// III. Check string is numeric
+// ----------------------------
 function isNumeric(str) {
     if (typeof str != "string") {
         return false
@@ -81,12 +102,10 @@ function isNumeric(str) {
         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
-/**
- * Get cookie by name
- * 
- * @param string cname 
- */
- function getCookie(cname) {
+// ----------------------
+// IV. Get cookie by name
+// ----------------------
+function getCookie(cname) {
     var name = cname + '=';
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
@@ -106,15 +125,9 @@ function isNumeric(str) {
     return '';
 }
 
-/**
- * Switch between two elements visibility
- * 
- * @param string current
- * @param string element1
- * @param string element2
- * @param string message1
- * @param string message2
- */
+// -----------------------------------------
+// V. Switch between two elements visibility
+// -----------------------------------------
 function switchDisplay(current, form_id, element1, element2, message1, message2) {
     var _form = document.getElementById(form_id);
     var el1 = document.getElementById(element1);
@@ -133,59 +146,256 @@ function switchDisplay(current, form_id, element1, element2, message1, message2)
     }
 }
 
+// -------------------------
+// VI. Unable "submit" button
+// -------------------------
+// VI.1. Textarea
+// -------------
+function toggleSubmitText(element, ref) {
+    if (ref === 'post') {
+        var imagesFiles = document.getElementById('imagesInput');
+        var documentsFiles = document.getElementById('documentsInput');
+
+        if (element.value.trim() === '' && imagesFiles.files.length === 0 && documentsFiles.files.length === 0) {
+            $('#newPost .send-post').removeClass('btn-primary').addClass('btn-primary-soft').addClass('disabled');
+
+        } else {
+            $('#newPost .send-post').removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
+        }
+    }
+
+    if (ref === 'event') {
+        // Checks if at least one box is checked
+        var elem = document.getElementById(element);
+        var details = document.getElementById('event_descritpion');
+        var anyChecked = $('#choose_fields .form-check-input:checked').length > 0;
+
+        if (elem.value.trim() === '' || details.value.trim() === '' || anyChecked) {
+            $('#newEvent .send-event').removeClass('btn-primary').addClass('btn-primary-soft').addClass('disabled');
+
+        } else {
+            $('#newEvent .send-event').removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
+        }
+    }
+}
+
+// ----------
+// VI.2. Files
+// ----------
+function toggleSubmitFiles(element_id) {
+    var elem = document.getElementById(element_id);
+    var imagesFiles = document.getElementById('imagesInput');
+    var documentsFiles = document.getElementById('documentsInput');
+    var textarea = document.getElementById('post-textarea');
+
+    if (element_id === 'imagesInput') {
+        if (textarea.value.trim() === '' && elem.files.length === 0 && documentsFiles.files.length === 0) {
+            $('#newPost .send-post').removeClass('btn-primary').addClass('btn-primary-soft').addClass('disabled');
+        } else {
+            $('#newPost .send-post').removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
+        }
+    }
+
+    if (element_id === 'documentsInput') {
+        if (textarea.value.trim() === '' && elem.files.length === 0 && imagesFiles.files.length === 0) {
+            $('#newPost .send-post').removeClass('btn-primary').addClass('btn-primary-soft').addClass('disabled');
+        } else {
+            $('#newPost .send-post').removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
+        }
+    }
+}
+
+// ---------------
+// VI.3. Checkboxes
+// ---------------
+function toggleSubmitCheckboxes(checkboxesWrapperId, submitButtonId) {
+    // Checks if at least one box is checked
+    var anyChecked = $(`#${checkboxesWrapperId} .form-check-input:checked`).length > 0;
+
+    // If at least one box is checked, activates the button (removes the "disabled" class)
+    if (anyChecked) {
+        $(`#${submitButtonId}`).removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
+
+        // Otherwise, disable the button (add the class "disabled")
+    } else {
+        $(`#${submitButtonId}`).addClass('disabled').removeClass('btn-primary').addClass('btn-primary-soft');
+    }
+}
+
+// -------------------------------------
+// VII. Remove a file from the input file
+// -------------------------------------
+function removeFileFromInput(file, element) {
+    var input = $(element)[0];
+    var files = Array.from(input.files);
+    var newFiles = files.filter(function (f) {
+        return f !== file;
+    });
+
+    // Resetting the input file with remaining files
+    var dataTransfer = new DataTransfer();
+
+    newFiles.forEach(function (f) {
+        dataTransfer.items.add(f);
+    });
+    input.files = dataTransfer.files;
+}
+
+// ----------------------------------
+// VIII. Set location data from IpInfo
+// ----------------------------------
+function handleLocationData(data) {
+    // Extract information from JSON
+    var location = data.loc.split(',');  // Separate latitude and longitude
+    var latitude = location[0];
+    var longitude = location[1];
+    var city = data.city;
+    var region = data.region;
+    var country = data.country_name;
+
+    // Update hidden inputs
+    $('#latitude').val(latitude);
+    $('#longitude').val(longitude);
+    $('#city').val(city);
+    $('#region').val(region);
+    $('#country').val(country);
+
+    // Show information in div
+    $('#locationInfo').html(`<h5 class="h5 m-0">${city}</h5><p class="m-0">${country}</p>`);
+}
+
+// -----------------------------------
+// IX. Show emojis picker in dropdown
+// -----------------------------------
+// IX.1. Handle shown emoji
+// ------------------------
+function handleEmoji(buttonId, inputId, submitId) {
+    var emojiButton = document.getElementById(buttonId);
+    var emojiInput = document.getElementById(inputId);
+    var emojiDropdown = document.getElementById('emojiDropdown');
+    var submitButton = document.querySelector(submitId);
+
+    // Show or hide emoji dropdown
+    emojiButton.addEventListener('click', function () {
+        if (emojiDropdown.style.display === 'block') {
+            emojiDropdown.style.display = 'none';
+        } else {
+            emojiDropdown.style.display = 'block';
+            loadEmojis(emojiDropdown, emojiInput, submitButton); // Load emojis when menu is displayed
+        }
+    });
+
+    // Hide emoji dropdown if user clicks elsewhere
+    document.addEventListener('click', function (event) {
+        if (!emojiButton.contains(event.target) && !emojiDropdown.contains(event.target)) {
+            emojiDropdown.style.display = 'none';
+        }
+    });
+}
+
+// --------------------------------------------
+// IX.2. Function to retrieve emojis via an API
+// --------------------------------------------
+function loadEmojis(emojiDropdown, emojiInput, submitButton) {
+    var emojiAPI = `https://emoji-api.com/emojis?access_key=${emojiRef}`;
+
+    fetch(emojiAPI).then(response => response.json()).then(data => {
+        emojiDropdown.innerHTML = ''; // Empty the dropdown before filling it
+        data.forEach(emoji => {
+            var emojiElem = document.createElement('span');
+
+            emojiElem.style.display = 'inline-block';
+            emojiElem.style.margin = '3px';
+            emojiElem.classList.add('emoji');
+            emojiElem.textContent = emoji.character;
+            emojiElem.setAttribute('data-emoji', emoji.character);
+            emojiDropdown.appendChild(emojiElem);
+
+            // Add an event to insert the emoji into the textarea
+            emojiElem.addEventListener('click', function () {
+                emojiInput.value += emoji.character;
+
+                if ($(submitButton).hasClass('disabled')) {
+                    $(submitButton).removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
+                }
+            });
+        });
+    }).catch(error => console.error(`${window.Laravel.lang.error_label} ${error}`));
+}
+
+/**
+ * jQuery scripts
+ * 
+ * I. Miscellaneous
+ * II. Auto-resize textarea
+ * III. Bootstrap Tooltip
+ * IV. On select change, update de country phone code
+ * V. On check, show/hide some blocs
+ *    V.1. Transaction type
+ * VI. Theme management
+ *    VI.1. Default facts
+ *    VI.2. User chooses light
+ *    VI.3. User chooses dark
+ * VII. Crop image and send
+ *    VII.1. Avatar with ajax
+ *    VII.2. Avatar without ajax
+ *    VII.3. Cover without ajax
+ *    VII.4. ID card recto without ajax
+ *    VII.5. ID card verso without ajax
+ * VIII. Toggle post type
+ * IX. Toggle visibility
+ * X. Upload file
+ *    X.1. Images
+ *    X.2. Documents
+ * XI. Location detection
+ * XII. Date/Time picker
+ * XIII. Choose speakers
+ * XIV. Handle poll
+ * XV. Handle anonymous question
+ */
 $(function () {
+    // ----------------
+    // I. Miscellaneous
+    // ----------------
     $('.navbar, .card, .btn').addClass('shadow-0');
     $('.btn').css({ textTransform: 'inherit', paddingBottom: '0.5rem' });
     $('.back-to-top').click(function (e) {
         $("html, body").animate({ scrollTop: '0' });
     });
 
-    /* Auto-resize textarea */
+    // ------------------------
+    // II. Auto-resize textarea
+    // ------------------------
     autosize($('textarea'));
 
-    /* Bootstrap Tooltip */
+    // ----------------------
+    // III. Bootstrap Tooltip
+    // ----------------------
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     });
 
-    /* On select change, update de country phone code */
-    $('#select_country1').on('change', function () {
+    // --------------------------------------------------
+    // IV. On select change, update de country phone code
+    // --------------------------------------------------
+    $('#select_country').on('change', function () {
         var countryData = $(this).val();
         var countryDataArray = countryData.split('-');
         // Get ID and Phone code from splitted data
         var countryId = countryDataArray[1];
         var countryPhoneCode = countryDataArray[0];
 
-        $('#phone_code_text1 .text-value').text(countryPhoneCode);
-        $('#country_id1').val(countryId);
-        $('#phone_code1').val(countryPhoneCode);
-    });
-    $('#select_country2').on('change', function () {
-        var countryData = $(this).val();
-        var countryDataArray = countryData.split('-');
-        // Get ID and Phone code from splitted data
-        var countryId = countryDataArray[1];
-        var countryPhoneCode = countryDataArray[0];
-
-        $('#phone_code_text2 .text-value').text(countryPhoneCode);
-        $('#country_id2').val(countryId);
-        $('#phone_code2').val(countryPhoneCode);
-    });
-    $('#select_country3').on('change', function () {
-        var countryData = $(this).val();
-        var countryDataArray = countryData.split('-');
-        // Get ID and Phone code from splitted data
-        var countryId = countryDataArray[1];
-        var countryPhoneCode = countryDataArray[0];
-
-        $('#phone_code_text3 .text-value').text(countryPhoneCode);
-        $('#country_id3').val(countryId);
-        $('#phone_code3').val(countryPhoneCode);
+        $('#phone_code_text .text-value').text(countryPhoneCode);
+        $('#country_id').val(countryId);
+        $('#phone_code').val(countryPhoneCode);
     });
 
-    /* On check, show/hide some blocs */
-    // TRANSACTION TYPE
+    // ---------------------------------
+    // V. On check, show/hide some blocs
+    // ---------------------------------
+    // V.1. Transaction type
+    // ---------------------
     $('#paymentMethod .form-check-input').each(function () {
         $(this).on('click', function () {
             if ($('#bank_card').is(':checked')) {
@@ -197,8 +407,11 @@ $(function () {
         });
     });
 
-    /* Theme management */
-    // DEFAULT FACTS
+    // --------------------
+    // VI. Theme management
+    // --------------------
+    // VI.1. Default facts
+    // -------------------
     if (isNumeric(currentUser)) {
         $.ajax({
             headers: headers,
@@ -243,7 +456,9 @@ $(function () {
         }
     }
 
-    // USER CHOOSES LIGHT
+    // ------------------------
+    // VI.2. User chooses light
+    // ------------------------
     $('#themeToggler .light').on('click', function (e) {
         e.preventDefault();
         $('#themeToggler .current-theme').html('<i class="bi bi-sun"></i>');
@@ -274,7 +489,9 @@ $(function () {
         }
     });
 
-    // USER CHOOSES DARK
+    // -----------------------
+    // VI.3. User chooses dark
+    // -----------------------
     $('#themeToggler .dark').on('click', function (e) {
         e.preventDefault();
         $('#themeToggler .current-theme').html('<i class="bi bi-moon-fill"></i>');
@@ -303,7 +520,9 @@ $(function () {
         }
     });
 
-    // USER CHOOSES AUTO
+    // -----------------------
+    // VI.3. User chooses auto
+    // -----------------------
     $('#themeToggler .auto').on('click', function (e) {
         e.preventDefault();
         $('#themeToggler .current-theme').html('<i class="bi bi-circle-half"></i>');
@@ -332,8 +551,11 @@ $(function () {
         }
     });
 
-    /* Crop image and send */
-    // AVATAR with ajax
+    // ------------------------
+    // VII. Crop image and send
+    // ------------------------
+    // VII.1. Avatar with ajax
+    // -----------------------
     $('#avatar').on('change', function (e) {
         var files = e.target.files;
         var done = function (url) {
@@ -410,7 +632,9 @@ $(function () {
         });
     });
 
-    // AVATAR without ajax
+    // --------------------------
+    // VII.2. Avatar without ajax
+    // --------------------------
     $('#image_profile').on('change', function (e) {
         var files = e.target.files;
         var done = function (url) {
@@ -463,7 +687,9 @@ $(function () {
         });
     });
 
-    // COVER
+    // --------------------------
+    // VII.3. Cover without ajax
+    // --------------------------
     $('#image_cover').on('change', function (e) {
         var files = e.target.files;
         var done = function (url) {
@@ -522,7 +748,9 @@ $(function () {
         });
     });
 
-    // RECTO
+    // ---------------------------------
+    // VII.4. ID card recto without ajax
+    // ---------------------------------
     $('#image_recto').on('change', function (e) {
         var files = e.target.files;
         var done = function (url) {
@@ -575,7 +803,9 @@ $(function () {
         });
     });
 
-    // VERSO
+    // ---------------------------------
+    // VII.5. ID card verso without ajax
+    // ---------------------------------
     $('#image_verso').on('change', function (e) {
         var files = e.target.files;
         var done = function (url) {
@@ -626,5 +856,657 @@ $(function () {
                 $('#data_verso').attr('value', base64_data);
             };
         });
+    });
+
+    // -----------------
+    // VIII. Toggle post type
+    // -----------------
+    $('#newPostType .form-check').each(function () {
+        $(this).on('click', function () {
+            $('[id^="check-category-"]').prop('checked', false);
+
+            if ($('#postService').is(':checked')) {
+                $('#serviceCategories, .service-type-title').removeClass('d-none');
+                $('#productCategories, .product-type-title').addClass('d-none');
+
+            } else {
+                $('#serviceCategories, .service-type-title').addClass('d-none');
+                $('#productCategories, .product-type-title').removeClass('d-none');
+            }
+        });
+    });
+
+    // ------------------
+    // IX. Toggle visibility
+    // ------------------
+    $('#visibility li a').each(function () {
+        $(this).on('click', function () {
+            var _this = $(this);
+            var isChecked = $(this).find('.is-checked');
+            var alias = $(this).data('alias');
+            var visibilityIcon = $(this).attr('data-icon');
+            var visibilityData = $(this).attr('id');
+            var visibilityDataArray = visibilityData.split('-');
+
+            // If exception exist, check excepted users before switching visibility
+            if (alias === 'everybody_except' || alias === 'nobody_except') {
+                // Create an instance of the User class
+                var action = 'restrictions-among-users';
+                var currentModalId = 'modalSelectRestrictions';
+                var apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
+                var userListId = 'modalSelectRestrictions .users-list';
+                var loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
+                var userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
+
+                // Open the modal and load users
+                userModal.openModal();
+
+                $('form#chooseFollowers').submit(function (e) {
+                    e.preventDefault();
+
+                    var formData = new FormData(this);
+                    var followers = [];
+
+                    // Retrieving selected checkboxes
+                    document.querySelectorAll('[name="followers_ids"]:checked').forEach(item => {
+                        // Collection of data associated with each user
+                        var follower = {
+                            id: parseInt(item.value),
+                            firstname: item.dataset.firstname,
+                            lastname: item.dataset.lastname,
+                            avatar: item.dataset.avatar
+                        };
+
+                        // Adding user to followers ARRAY
+                        followers.push(follower);
+                    });
+
+                    // Adding data to FormData
+                    followers.forEach((follower, i) => {
+                        formData.append('followers_ids[' + i + '][id]', follower.id);
+                        formData.append('followers_ids[' + i + '][firstname]', follower.firstname);
+                        formData.append('followers_ids[' + i + '][lastname]', follower.lastname);
+                        formData.append('followers_ids[' + i + '][avatar]', follower.avatar);
+                    });
+
+                    // Limit display to 3 users
+                    var htmlContent = '<input type="hidden" name="restrict-users" id="restrict-users" value="' + followers.map(f => f.id).join(',') + '">';
+
+                    htmlContent += '<div class="d-flex flex-row">';
+
+                    // Showing the first 3 users
+                    for (var i = 0; i < Math.min(3, followers.length); i++) {
+                        var follower = followers[i];
+
+                        htmlContent += `<div class="restrict-user-${i + 1}">
+                                                        <img src="${follower.avatar}" alt="${follower.firstname} ${follower.lastname}" width="30" class="rounded-circle me-1" title="${follower.firstname} ${follower.lastname}">
+                                                    </div>`;
+                    }
+
+                    // If there are more than 3 users, display the remaining number
+                    if (followers.length > 3) {
+                        var remainingCount = followers.length - 3;
+
+                        htmlContent += `<p class="m-0 ms-1">
+                                                        <span class="btn btn-light px-2 pt-1 pb-0 rounded-pill">+${remainingCount}</span>
+                                                    </p>`;
+                    }
+
+                    htmlContent += '</div>';
+
+                    // Add generated content to ".users-list"
+                    $('#restrictions .users-list').html(htmlContent);
+                    $('#restrictions').removeClass('d-none');
+
+                    // Set selected link to "active"
+                    $('#visibility li a .is-checked').removeClass('opacity-100').addClass('opacity-0');
+                    isChecked.removeClass('opacity-0').addClass('opacity-100');
+                    $('#visibility li a').removeClass('active');
+                    _this.addClass('active');
+
+                    // Change visibility icon at the toggle button
+                    $('#post-visibility').val(visibilityDataArray[1]);
+                    $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
+                    // Disable submit button after sending
+                    $('#sendCheckedUsers1').addClass('disabled').removeClass('btn-primary').addClass('btn-primary-soft');
+                });
+
+                // Otherwise, switch visibility directly
+            } else {
+                // Set selected link to "active"
+                $('#visibility li a .is-checked').removeClass('opacity-100').addClass('opacity-0');
+                isChecked.removeClass('opacity-0').addClass('opacity-100');
+                $('#visibility li a').removeClass('active');
+                $(this).addClass('active');
+
+                // Change visibility icon at the toggle button
+                $('#post-visibility').val(visibilityDataArray[1]);
+                $('#toggleVisibility').html(`<i class="${visibilityIcon} fs-6"></i>`);
+
+                if (!$('#restrictions').hasClass('d-none')) {
+                    $('#restrictions .users-list').html('');
+                    $('#restrictions').addClass('d-none');
+                }
+            }
+        });
+    });
+
+    $('#retry-select-restrictions').click(function (e) {
+        e.preventDefault();
+
+        // Create an instance of the User class
+        var action = 'restrictions-among-users';
+        var currentModalId = 'modalSelectRestrictions';
+        var apiURL = `${apiHost}/subscription/user_subscribers/${currentUser}`;
+        var userListId = 'modalSelectRestrictions .users-list';
+        var loadingSpinnerId = 'modalSelectRestrictions .loading-spinner';
+        var userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
+
+        // Open the modal and load users
+        userModal.openModal();
+
+        $('form#chooseFollowers').submit(function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            var followers = [];
+
+            // Retrieving selected checkboxes
+            document.querySelectorAll('[name="followers_ids"]:checked').forEach(item => {
+                // Collection of data associated with each user
+                var follower = {
+                    id: parseInt(item.value),
+                    firstname: item.dataset.firstname,
+                    lastname: item.dataset.lastname,
+                    avatar: item.dataset.avatar
+                };
+
+                // Adding user to followers ARRAY
+                followers.push(follower);
+            });
+
+            // Adding data to FormData
+            followers.forEach((follower, i) => {
+                formData.append('followers_ids[' + i + '][id]', follower.id);
+                formData.append('followers_ids[' + i + '][firstname]', follower.firstname);
+                formData.append('followers_ids[' + i + '][lastname]', follower.lastname);
+                formData.append('followers_ids[' + i + '][avatar]', follower.avatar);
+            });
+
+            // Limit display to 3 users
+            var htmlContent = '<input type="hidden" name="restrict-users" id="restrict-users" value="' + followers.map(f => f.id).join(',') + '">';
+
+            htmlContent += '<div class="d-flex flex-row">';
+
+            // Showing the first 3 users
+            for (var i = 0; i < Math.min(3, followers.length); i++) {
+                var follower = followers[i];
+
+                htmlContent += `<div class="restrict-user-${i + 1}">
+                                                <img src="${follower.avatar}" alt="${follower.firstname} ${follower.lastname}" width="30" class="rounded-circle me-1" title="${follower.firstname} ${follower.lastname}">
+                                            </div>`;
+            }
+
+            // If there are more than 3 users, display the remaining number
+            if (followers.length > 3) {
+                var remainingCount = followers.length - 3;
+
+                htmlContent += `<p class="m-0 ms-1">
+                                                <span class="btn btn-light px-2 pt-1 pb-0 rounded-pill">+${remainingCount}</span>
+                                            </p>`;
+            }
+
+            htmlContent += '</div>';
+
+            // Add generated content to ".users-list"
+            $('#restrictions .users-list').html(htmlContent);
+            $('#restrictions').removeClass('d-none');
+            // Disable submit button after sending
+            $('#sendCheckedUsers1').addClass('disabled').removeClass('btn-primary').addClass('btn-primary-soft');
+        });
+    });
+
+    // ----------------
+    // X. Upload file
+    // ----------------
+    // X.1. Images
+    // -------------
+    // When the user clicks the button to select the files
+    $('#uploadImages').on('click', function () {
+        $('#imagesInput').click();
+    });
+
+    // When a file is selected
+    $('#imagesInput').on('change', function (event) {
+        var files = event.target.files;
+        var previewContainer = $('#imagesPreviews');
+        var validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'mp4', 'avi', 'ogg'];
+
+        previewContainer.empty(); // Clear existing previews
+        previewContainer.removeClass('d-none');
+        $('#previewsSpinner').removeClass('d-none');
+
+        // File type validation (Image only)
+        var validFiles = Array.from(files).filter(function (file) {
+            var extension = file.name.split('.').pop().toLowerCase(); // Retrieves the file extension
+
+            return validExtensions.includes(extension); // Check if the extension is valid
+        });
+
+        if (validFiles.length === 0) {
+            $('#errorMessageWrapper').removeClass('d-none');
+            $('#errorMessageWrapper .custom-message').html(window.Laravel.lang.upload.image_error);
+            $('#previewsSpinner').addClass('d-none'); // Hide spinner if no valid files
+
+            return;
+
+        } else {
+            if (!$('#errorMessageWrapper').hasClass('d-none')) {
+                $('#errorMessageWrapper').addClass('d-none');
+            }
+        }
+
+        // Counter to track number of files loaded
+        var filesLoaded = 0;
+
+        // Browsing selected files
+        Array.from(files).forEach(function (file) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var previewItem = $('<div class="previewItem"></div>');
+                var fileElement;
+
+                // Check the file type (image or video)
+                if (file.type.startsWith('image')) {
+                    fileElement = $('<img src="' + e.target.result + '" alt="Preview">');
+                } else if (file.type.startsWith('video')) {
+                    fileElement = $('<video><source src="' + e.target.result + '" type="' + file.type + '"></video>');
+                }
+
+                // Add a button to remove the preview item
+                var removeBtn = $('<button type="button" class="removeBtn"><i class="bi bi-x"></i></button>').on('click', function () {
+                    // Delete the preview
+                    previewItem.remove();
+                    // Delete file from input when clicking "x"
+                    removeFileFromInput(file, '#imagesInput');
+                    // Check submit
+                    toggleSubmitFiles('imagesInput');
+
+                    // Check if the preview container is empty and hide it if so
+                    if (previewContainer.children().length === 0) {
+                        previewContainer.addClass('d-none');
+                    }
+                });
+
+                previewItem.append(fileElement).append(removeBtn);
+                previewContainer.append(previewItem);
+
+                // Increment the counter when a file is successfully loaded
+                filesLoaded++;
+
+                // Once all files are loaded, hide the spinner
+                if (filesLoaded === files.length) {
+                    $('#previewsSpinner').addClass('d-none'); // Hide the spinner when all files are processed
+                }
+            };
+
+            // Read the file
+            reader.readAsDataURL(file);
+        });
+    });
+
+    // ----------------
+    // X.2. Documents
+    // ----------------
+    // When the user clicks the button to select the files
+    $('#uploadDocuments').on('click', function () {
+        $('#documentsInput').click();
+    });
+
+    // When a file is selected
+    $('#documentsInput').on('change', function (event) {
+        var files = event.target.files;
+        var previewContainer = $('#documentsPreviews');
+        var validExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx'];
+
+        previewContainer.empty(); // Clear existing previews
+        previewContainer.removeClass('d-none');
+        $('#previewsSpinner').removeClass('d-none');
+
+        // File type validation (Document only)
+        var validFiles = Array.from(files).filter(function (file) {
+            var extension = file.name.split('.').pop().toLowerCase(); // Retrieves the file extension
+
+            return validExtensions.includes(extension); // Check if the extension is valid
+        });
+
+        if (validFiles.length === 0) {
+            if ($('#errorMessageWrapper').hasClass('d-none')) {
+                $('#errorMessageWrapper').removeClass('d-none');
+
+            } else {
+                $('#errorMessageWrapper').addClass('d-none');
+                $('#errorMessageWrapper').removeClass('d-none');
+            }
+
+            $('#errorMessageWrapper .custom-message').html(window.Laravel.lang.upload.document_error);
+
+            return;
+        }
+
+        // Counter to track number of files loaded
+        var filesLoaded = 0;
+
+        // Browsing selected files
+        validFiles.forEach(function (file) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var fileElement;
+                var fileData = e.target.result;
+                var previewItem = $('<div class="previewItem"></div>');
+                var removeBtn = $('<button type="button" class="removeBtn"><i class="bi bi-x"></i></button>').on('click', function () {
+                    // Delete the preview
+                    previewItem.remove();
+                    // Delete file from input when clicking "x"
+                    removeFileFromInput(file, '#documentsInput');
+                    // Check submit
+                    toggleSubmitFiles('documentsInput');
+
+                    // Check if the preview container is empty and hide it if so
+                    if (previewContainer.children().length === 0) {
+                        previewContainer.addClass('d-none');
+                    }
+                });
+
+                // Using PDF.js to preview PDF
+                if (file.type === 'application/pdf') {
+                    // Creating a canvas element to display the PDF
+                    var canvas = $('<canvas></canvas>');
+
+                    previewItem.append(canvas).append(removeBtn);
+                    previewContainer.append(previewItem);
+
+                    // Load and display the first page of the PDF
+                    var loadingTask = pdfjsLib.getDocument(fileData);
+
+                    loadingTask.promise.then(function (pdf) {
+                        pdf.getPage(1).then(function (page) {
+                            var viewport = page.getViewport({ scale: 0.5 });
+                            var context = canvas[0].getContext('2d');
+                            canvas[0].height = viewport.height;
+                            canvas[0].width = viewport.width;
+
+                            // Rendering the first page on the canvas
+                            page.render({ canvasContext: context, viewport: viewport });
+                        });
+                    });
+
+                } else {
+                    fileElement = $('<img src="' + fileData + '" alt="Preview">');
+                    fileElement = $('<span class="d-inline-block px-4 py-2 bg-light border-secondary"><small>' + file.name + '</small></span>');
+
+                    previewItem.append(fileElement).append(removeBtn);
+                    previewContainer.append(previewItem);
+                }
+
+                // Increment the counter when a file is successfully loaded
+                filesLoaded++;
+
+                // Once all files are loaded, hide the spinner
+                if (filesLoaded === files.length) {
+                    $('#previewsSpinner').addClass('d-none'); // Hide the spinner when all files are processed
+                }
+            };
+
+            // Read file as DataURL
+            reader.readAsArrayBuffer(file);
+        });
+    });
+
+    // ----------------------
+    // XI. Location detection
+    // ----------------------
+    // When the user clicks the location detection button
+    $("#detectLocation").on('click', function (e) {
+        e.preventDefault();
+
+        if (window.Laravel.data.user.allow_location_detection === 0) {
+            // If user has not allowed localization, show modal
+            modalAllowLocation.show();
+
+        } else {
+            var $
+            // If the user has allowed location, access the data directly
+            handleLocationData(window.Laravel.data.ipinfo);
+        }
+    });
+
+    // If the user accepts the localization in the modal
+    $('#allow-location-btn').on('click', function (e) {
+        e.preventDefault();
+
+        // Close the modal
+        modalAllowLocation.hide();
+
+        // Access location data
+        handleLocationData(window.Laravel.data.ipinfo);
+    });
+
+    // ---------------------
+    // XII. Date/Time picker
+    // ---------------------
+    $('#newEventModal').on('shown.bs.modal', function () {
+        setTimeout(function () {
+            flatpickr('#date_start', {
+                minDate: new Date(),  // Forbidden dates before now
+                maxDate: '2030-12-31',  // Authorized ending date
+                dateFormat: dateFormat,  // Format for user display
+                locale: locale,  // Locale setting
+                enableTime: true,  // Enable time selection
+                noCalendar: false,  // Allows date selection
+                defaultDate: $('#date_start').val(),  // Set default date for Flatpickr
+                onChange: function (selectedDates, dateStr, instance) {
+                    // Formatting before sending to server
+                    const formattedDate = instance.formatDate(selectedDates[0], 'Y-m-d H:i:s');
+                    $('#start_at').val(formattedDate);
+                }
+            });
+
+            flatpickr('#date_end', {
+                minDate: new Date(),  // Forbidden dates before now
+                maxDate: '2030-12-31',  // Authorized ending date
+                dateFormat: dateFormat,  // Format for user display
+                locale: locale,  // Locale setting
+                enableTime: true,  // Enable time selection
+                noCalendar: false,  // Allows date selection
+                defaultDate: $('#date_end').val(),  // Set default date for Flatpickr
+                onChange: function (selectedDates, dateStr, instance) {
+                    // Formatting before sending to server
+                    const formattedDate = instance.formatDate(selectedDates[0], 'Y-m-d H:i:s');
+                    $('#end_at').val(formattedDate);
+                }
+            });
+        }, 1000);
+
+        // Make sure certain criteria are met before activating the button to create
+        function validateForm() {
+            var isTitleFilled = $('#event_title').val().trim() !== '';
+            var isPlaceFilled = $('#event_place').val().trim() !== '';
+            var isDescriptionFilled = $('#event_descritpion').val().trim() !== '';
+            var isCheckboxChecked = $('#newEvent .form-check-input:checked').length > 0;
+
+            if (isTitleFilled && isPlaceFilled && isDescriptionFilled && isCheckboxChecked) {
+                $('#newEvent [type="submit"]').removeClass('disabled btn-primary-soft').addClass('btn-primary');
+            } else {
+                $('#newEvent [type="submit"]').removeClass('btn-primary').addClass('btn-primary-soft disabled');
+            }
+        }
+        $('#newEvent input, #newEvent textarea').on('keyup change', validateForm);
+        $('#newEvent .form-check-input').on('change click', validateForm);
+    });
+
+    // ---------------------
+    // XIII. Choose speakers
+    // ---------------------
+    $('#select-speakers').click(function (e) {
+        e.preventDefault();
+
+        // Create an instance of the User class
+        var action = 'speakers-among-users';
+        var currentModalId = 'modalSelectSpeakers';
+        var apiURL = `${apiHost}/subscription/user_connections/${currentUser}`;
+        var userListId = 'modalSelectSpeakers .users-list';
+        var loadingSpinnerId = 'modalSelectSpeakers .loading-spinner';
+        var userModal = new User(action, currentModalId, apiURL, userListId, loadingSpinnerId);
+
+        // Open the modal and load users
+        userModal.openModal();
+
+        $('form#chooseFollowers').submit(function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+            var connections = [];
+
+            // Retrieving selected checkboxes
+            document.querySelectorAll('[name="connections_ids"]:checked').forEach(item => {
+                // Collection of data associated with each user
+                var connection = {
+                    id: parseInt(item.value),
+                    firstname: item.dataset.firstname,
+                    lastname: item.dataset.lastname,
+                    avatar: item.dataset.avatar
+                };
+
+                // Adding user to connections ARRAY
+                connections.push(connection);
+            });
+
+            // Adding data to FormData
+            connections.forEach((connection, i) => {
+                formData.append('connections_ids[' + i + '][id]', connection.id);
+                formData.append('connections_ids[' + i + '][firstname]', connection.firstname);
+                formData.append('connections_ids[' + i + '][lastname]', connection.lastname);
+                formData.append('connections_ids[' + i + '][avatar]', connection.avatar);
+            });
+
+            // Limit display to 3 users
+            var htmlContent = '<input type="hidden" name="connections" id="connections" value="' + connections.map(f => f.id).join(',') + '">';
+
+            htmlContent += '<div class="d-flex flex-row">';
+            htmlContent += `<span class="d-inline-block me-2 pt-1">${window.Laravel.lang.public.events.new.data.speakers}</span>`;
+
+            // Showing the first 3 users
+            for (var i = 0; i < Math.min(3, connections.length); i++) {
+                var connection = connections[i];
+
+                htmlContent += `<div class="connection-${i + 1}">
+                                                <img src="${connection.avatar}" alt="${connection.firstname} ${connection.lastname}" width="30" class="rounded-circle me-1" title="${connection.firstname} ${connection.lastname}">
+                                            </div>`;
+            }
+
+            // If there are more than 3 users, display the remaining number
+            if (connections.length > 3) {
+                var remainingCount = connections.length - 3;
+
+                htmlContent += `<p class="m-0 ms-1">
+                                                <span class="btn btn-light px-2 pt-1 pb-0 rounded-pill">+${remainingCount}</span>
+                                            </p>`;
+            }
+
+            htmlContent += '</div>';
+
+            // Add generated content to ".users-list"
+            $('#speackers .users-list').html(htmlContent);
+            $('#speackers').removeClass('d-none');
+            // Disable submit button after sending
+            $('#sendCheckedUsers').addClass('disabled').removeClass('btn-primary').addClass('btn-primary-soft');
+        });
+
+        $('#modalSelectSpeakers').on('shown.bs.modal', function () {
+            $('#newEventModal').css('z-index', '1040');
+            $(this).css('z-index', '1060');
+
+        }).on('hidden.bs.modal', function () {
+            $('#newEventModal').css('z-index', '1060');
+            $(this).css('z-index', '1040');
+        });
+    });
+
+    // --------------------
+    // XIV. Handle poll
+    // --------------------
+    $('#pollModal').on('shown.bs.modal', function () {
+        // Add other options
+        var optionCount = 2;
+
+        $('#add_option_button').click(function () {
+            optionCount++;
+
+            var newOption = `<div class="input-group mb-3">
+                                            <span class="input-group-text" id="option_${optionCount}">Option ${optionCount}</span>
+                                            <input type="text" name="choices_contents[]" id="choices_contents_${optionCount}" class="form-control" placeholder="Contenu de l'option" aria-describedby="option_${optionCount}" value="">
+                                        </div>`;
+
+            $(newOption).insertBefore('#add_option_button').fadeIn();
+            document.querySelector(`#choices_contents_${optionCount}`).focus();
+        });
+
+        // Make sure certain criteria are met before activating the button to create
+        $('#newPoll input, #newPoll textarea').on('keyup', function () {
+            var isQuestionFilled = $('#poll_question').val().trim() !== '';
+            var isOptions1Filled = $('#choices_contents_1').val().trim() !== '';
+            var isOptions2Filled = $('#choices_contents_2').val().trim() !== '';
+
+            if (isQuestionFilled && isOptions1Filled && isOptions2Filled) {
+                $('#newPoll .send-poll').removeClass('disabled btn-primary-soft').addClass('btn-primary');
+            } else {
+                $('#newPoll .send-poll').removeClass('btn-primary').addClass('btn-primary-soft disabled');
+            }
+        });
+    });
+
+    // ----------------------------
+    // XV. Handle anonymous question
+    // ----------------------------
+    $('#anonymousQuestionRequestModal').on('shown.bs.modal', function () {
+        // Focus on the right textarea
+        if ($('#question_content').val().trim() !== '') {
+            var textarea = document.getElementById('question_request_content');
+
+            textarea.focus();
+            textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+
+            // Make sure certain criteria are met before activating the button to create
+            $('#question_request_content').on('keyup', function () {
+                var isQuestionFilled = $(this).val().trim() !== '';
+
+                if (isQuestionFilled) {
+                    $('#anonymousQuestionRequestModal .send-question').removeClass('disabled btn-primary-soft').addClass('btn-primary');
+                } else {
+                    $('#anonymousQuestionRequestModal .send-question').removeClass('btn-primary').addClass('btn-primary-soft disabled');
+                }
+            });
+
+        } else {
+            var textarea = document.getElementById('question_content');
+
+            textarea.value = '';
+            textarea.focus();
+            $('#anonymousQuestionRequestModal form').attr('id', 'newAnonymousQuestion');
+
+            // Make sure certain criteria are met before activating the button to create
+            $('#question_content').on('keyup', function () {
+                var isQuestionFilled = $(this).val().trim() !== '';
+
+                if (isQuestionFilled) {
+                    $('#anonymousQuestionRequestModal .send-question').removeClass('disabled btn-primary-soft').addClass('btn-primary');
+                } else {
+                    $('#anonymousQuestionRequestModal .send-question').removeClass('btn-primary').addClass('btn-primary-soft disabled');
+                }
+            });
+        }
     });
 });
