@@ -40,7 +40,7 @@
                                 <div class="d-grid">
                                     <button id="submit" class="btn btn-lg btn-primary rounded-pill disabled">
                                         <span class="text-uppercase">@lang('auth.login')</span>
-                                        <div class="spinner-border text-white float-end opacity-0" style="margin-top: -5px;" role="status"><span class="visually-hidden">Loading...</span></div>
+                                        <div class="spinner-border text-white float-end opacity-0" style="margin-top: -5px;" role="status"><span class="visually-hidden">@lang('miscellaneous.loading')</span></div>
                                     </button>
                                 </div>
                                 <!-- Register -->
