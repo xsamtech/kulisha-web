@@ -14,6 +14,9 @@
                         document_error: "@lang('miscellaneous.upload.document_error')",
                     },
                     public: {
+                        errors: {
+                            number: "@lang('miscellaneous.public.errors.number')",
+                        },
                         events: {
                             new: {
                                 data: {

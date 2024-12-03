@@ -8,10 +8,10 @@
         <meta name="keywords" content="@lang('miscellaneous.keywords')">
         <meta name="kls-url" content="{{ getWebURL() }}">
         <meta name="kls-api-url" content="{{ getApiURL() }}">
-        <meta name="kls-visitor" content="{{ Auth::check() ? $current_user['id'] : null }}">
+        <meta name="kls-visitor" content="{{ $current_user['id'] }}">
         <meta name="kls-ip" content="{{ Request::ip() }}">
         <meta name="kls-emoji-ref" content="{{ config('services.open_emoji.api_key') }}">
-        <meta name="kls-ref" content="{{ (Auth::check() ? $current_user['api_token'] : 'nat') . '-' . (request()->has('app_id') ? request()->get('app_id') : 'nai') }}">
+        <meta name="kls-ref" content="{{ $current_user['api_token'] }}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="description" content="">
 
@@ -63,6 +63,8 @@
             .btn, .btn-close { transition: .5s ease all; }
             .kls-fs-7 { font-size: 0.7rem; }
             .kls-text-secondary { color: var(--bs-secondary-text-emphasis); }
+            .kls-border-default { border-color: rgba(0, 0, 0, 0.1)!important; }
+            [data-bs-theme=dark] .kls-border-default { border-color: #29292e!important; }
             .btn-check:checked + .btn-secondary-soft, :not(.btn-check) + .btn-secondary-soft:active, .btn-secondary-soft:first-child:active, .btn-secondary-soft.active, .btn-secondary-soft.show { color: #fff!important; background-color: #14191e !important; border-color: #14191e !important; }
             [data-bs-theme=dark] .btn-check:checked + .btn-secondary-soft, [data-bs-theme=dark] :not(.btn-check) + .btn-secondary-soft:active, [data-bs-theme=dark] .btn-secondary-soft:first-child:active, [data-bs-theme=dark] .btn-secondary-soft.active, [data-bs-theme=dark] .btn-secondary-soft.show { color: var(--bs-body-bg)!important; background-color: rgba(var(--bs-secondary-rgb)) !important; border-color: transparent !important; }
             #zuck-modal-content .story-viewer .tip { text-transform: inherit!important; }
@@ -99,7 +101,7 @@
         <button class="close-navbar-toggler navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"></button>
 
         <!-- Responsive navbar toggler -->
-        <div id="successMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999;">
+        <div id="successMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999; transition: opacity 1s ease-out;">
             <div class="row">
                 <div class="col-lg-4 col-sm-6 col-11 mx-auto">
                     <div class="alert alert-success alert-dismissible d-flex align-items-center" role="alert">
@@ -110,7 +112,18 @@
                 </div>
             </div>
         </div>
-        <div id="errorMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999;">
+        <div id="warningMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999; transition: opacity 1s ease-out;">
+            <div class="row">
+                <div class="col-lg-4 col-sm-6 col-11 mx-auto">
+                    <div class="alert alert-warning alert-dismissible d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
+                        <div class="custom-message"></div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="errorMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999; transition: opacity 1s ease-out;">
             <div class="row">
                 <div class="col-lg-4 col-sm-6 col-11 mx-auto">
                     <div class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
@@ -199,7 +212,23 @@
                 // --------------
                 // XII. Send post
                 // --------------
-                $('#modalCreatePost').on('submit', function(event) {
+                $('form#newPost').submit(function (e) { 
+                    e.preventDefault();
+
+                    var formData = new FormData(this);
+                    var post = new Post();
+
+                    post.setUniqueVariables(
+                        null, null, formData.get('post_content'),
+                        null, (price ? price.value : null), (currency ? currency.value : null),
+                        (quantity ? quantity.value : null), (answeredFor ? answeredFor.value : null), (latitude ? latitude.value : null),
+                        (longitude ? longitude.value : null), (city ? city.value : null), (region ? region.value : null), (country ? country.value : null),
+                        (typeId ? typeId.value : null), (categoryId ? categoryId.value : null), (statusId ? statusId.value : null),
+                        (visibilityId ? visibilityId.value : null), (coverageAreaId ? coverageAreaId.value : null), (budgetId ? budgetId.value : null),
+                        (communityId ? communityId.value : null), (eventId ? eventId.value : null), (userId ? userId.value : null)
+                    );
+                    console.log(formData.get('post_content'));
+
                 });
 
                 // ---------------

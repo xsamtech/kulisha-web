@@ -160,11 +160,11 @@
                     const loginPassword = document.getElementById('password');
                     const loginSubmit = document.getElementById('submit');
 
-                    if (loginUsername.value.trim() !== '' && loginPassword.value.trim() !== '') {
-                        loginSubmit.classList.remove('disabled');
+                    if (loginUsername.value.trim() === '' || loginPassword.value.trim() === '') {
+                        $(loginSubmit).removeClass('btn-primary').addClass('btn-primary-soft').addClass('disabled');
 
                     } else {
-                        loginSubmit.classList.add('disabled');
+                        $(loginSubmit).removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
                     }
                 }
             };
@@ -176,7 +176,7 @@
                 $('form#login_form').submit(function (e) {
                     e.preventDefault();
 
-                    const formData = new FormData(this);
+                    var formData = new FormData(this);
 
                     $.ajax({
 						headers: { 'Accept': 'application/json', 'X-localization': navigator.language.split('-')[0] },

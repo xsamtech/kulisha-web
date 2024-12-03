@@ -73,6 +73,7 @@ class PostController extends BaseController
         $post_type_group = Group::where('group_name->fr', 'Type de post')->first();
         $notification_type_group = Group::where('group_name->fr', 'Type de notification')->first();
         $posts_visibility_group = Group::where('group_name->fr', 'Visibilité pour les posts')->first();
+        $file_type_group = Group::where('group_name->fr', 'Type de fichier')->first();
         // Statuses
         $accepted_status = Status::where([['status_name->fr', 'Acceptée'], ['group_id', $susbcription_status_group->id]])->first();
         $operational_status = Status::where([['status_name->fr', 'Opérationnel'], ['group_id', $post_or_community_status_group->id]])->first();
@@ -91,6 +92,9 @@ class PostController extends BaseController
         $comment_on_post_type = Type::where([['type_name->fr', 'Commentaire sur publication'], ['group_id', $notification_type_group->id]])->first();
         $anonymous_question_type = Type::where([['type_name->fr', 'Question anonyme'], ['group_id', $notification_type_group->id]])->first();
         $connection_suggestion_type = Type::where([['type_name->fr', 'Suggestion de connexion'], ['group_id', $notification_type_group->id]])->first();
+        $file_image_type = Type::where([['type_name->fr', 'Image'], ['group_id', $file_type_group->id]])->first();
+        $file_document_type = Type::where([['type_name->fr', 'Document'], ['group_id', $file_type_group->id]])->first();
+        $file_audio_type = Type::where([['type_name->fr', 'Audio'], ['group_id', $file_type_group->id]])->first();
         // Visibility
         $everybody_visibility = Visibility::where([['visibility_name->fr', 'Tout le monde'], ['group_id', $posts_visibility_group->id]])->first();
         $everybody_except_visibility = Visibility::where([['visibility_name->fr', 'Tout le monde, sauf ...'], ['group_id', $posts_visibility_group->id]])->first();
@@ -120,6 +124,10 @@ class PostController extends BaseController
             'event_id' => $request->event_id,
             'user_id' => $request->user_id
         ];
+        // Table for storing image paths
+        $imagePaths = [];
+        $documentPaths = [];
+        $object = new stdClass();
 
         if (!is_numeric($inputs['type_id']) OR trim($inputs['type_id']) == null) {
             return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['type_id'], __('validation.custom.type.required'), 400);
@@ -824,9 +832,43 @@ class PostController extends BaseController
                     }
                 }
             }
-
-            return $this->handleResponse(new ResourcesPost($post), __('notifications.create_post_success'));
         }
+
+        // if post contains images
+        if ($request->hasFile('images_urls')) {
+            foreach ($request->file('images_urls') as $image) {
+                $imagePath = $image->store('images/posts/' . $post->id, 'public');
+                $imagePaths[] = $imagePath;
+
+                File::create([
+                    'file_url' => $imagePath,
+                    'type_id' => $file_image_type->id,
+                    'post_id' => $post->id
+                ]);
+            }
+
+            $object->image_paths = $imagePaths;
+        }
+
+        // if post contains documents
+        if ($request->hasFile('documents_urls')) {
+            foreach ($request->file('documents_urls') as $document) {
+                $documentPath = $document->store('documents/posts/' . $post->id, 'public');
+                $documentPaths[] = $documentPath;
+
+                File::create([
+                    'file_url' => $imagePath,
+                    'type_id' => $file_document_type->id,
+                    'post_id' => $post->id
+                ]);
+            }
+
+            $object->document_paths = $documentPaths;
+        }
+
+        $object->post = new ResourcesPost($post);
+
+        return $this->handleResponse($object, __('notifications.create_post_success'));
     }
 
     /**

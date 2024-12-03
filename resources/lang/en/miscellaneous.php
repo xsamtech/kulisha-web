@@ -631,6 +631,10 @@ return [
 
     // ===== PUBLIC PAGES
     'public' => [
+        'errors' => [
+            'number' => 'Please put only numbers',
+        ],
+
         // Home
         'home' => [
             'view_profile' => 'View profile',
@@ -692,6 +696,13 @@ return [
 
                 // Other data
                 'other_data' => [
+                    'title' => 'Other data',
+                    'price' => [
+                        'label' => 'Price',
+                        'placeholder' => 'Add a price',
+                    ],
+                    'currency' => 'Currency',
+                    'quantity' => 'Quantity',
                     'image' => 'Image',
                     'document' => 'Document',
                     'location' => 'Location',

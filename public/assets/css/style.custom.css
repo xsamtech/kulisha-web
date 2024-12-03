@@ -205,7 +205,7 @@ textarea {
     z-index: 1051 !important;
 }
 
-/********** Typographie **********/
+/********** Image previews **********/
 #imagesPreviews,
 #documentsPreviews {
     display: flex;

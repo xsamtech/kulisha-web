@@ -631,6 +631,10 @@ return [
 
     // ===== PUBLIC PAGES
     'public' => [
+        'errors' => [
+            'number' => 'Veuillez mettre uniquement des nombres',
+        ],
+
         // Home
         'home' => [
             'view_profile' => 'Voir profil',
@@ -692,9 +696,16 @@ return [
 
                 // Other data
                 'other_data' => [
+                    'title' => 'Autres données',
+                    'price' => [
+                        'label' => 'Prix',
+                        'placeholder' => 'Ajouter un prix',
+                    ],
+                    'currency' => 'Devise',
+                    'quantity' => 'Quantité',
                     'image' => 'Image',
                     'document' => 'Document',
-                    'location' => 'Emplacement',
+                    'location' => 'Localisation',
                     'emoji' => 'Émoji',
                 ],
 

@@ -170,9 +170,9 @@
                             </div>
 
                             <!-- Images input -->
-                            <input type="file" name="images[]" id="imagesInput" multiple class="d-none" onchange="toggleSubmitFiles(this.id);">
+                            <input type="file" name="images_urls[]" id="imagesInput" multiple class="d-none" onchange="toggleSubmitFiles(this.id);">
                             <!-- Document input -->
-                            <input type="file" name="documents[]" id="documentsInput" multiple class="d-none" onchange="toggleSubmitFiles(this.id);">
+                            <input type="file" name="documents_urls[]" id="documentsInput" multiple class="d-none" onchange="toggleSubmitFiles(this.id);">
                             <!-- Location -->
                             <input type="hidden" name="latitude" id="latitude" value="">
                             <input type="hidden" name="longitude" id="longitude" value="">
@@ -199,7 +199,7 @@
                                 </div>
                                 <!-- Post box  -->
                                 <div class="w-100">
-                                    <textarea id="post-textarea" class="form-control pe-4 fs-3 lh-1 border-0" rows="3" placeholder="@lang('miscellaneous.public.home.posts.write')" onkeyup="toggleSubmitText(this, 'post');" autofocus></textarea>
+                                    <textarea name="post_content" id="post-textarea" class="form-control pe-4 fs-3 lh-1 border-0" rows="3" placeholder="@lang('miscellaneous.public.home.posts.write')" onkeyup="toggleSubmitText(this, 'post');" autofocus></textarea>
                                 </div>
                             </div>
 
@@ -247,8 +247,35 @@
                                     <label for="check-category-service-{{ $category['id'] }}" class="btn btn-secondary-soft m-2 rounded-pill" style="font-size: 10pt;">{{ $category['category_name'] }}</label>
 @endforeach
                                 </div>
+
                             </div>
 
+                            <!-- Price & Quantity -->
+                            <div class="row g-0 mt-3">
+                                <div class="form-floating col-4">
+                                    <input type="text" name="price" id="post-price" class="form-control rounded-end-0 border-end-0" placeholder="@lang('miscellaneous.public.home.posts.other_data.price.label')" title="@lang('miscellaneous.public.home.posts.other_data.price.placeholder')" data-bs-toggle="tooltip" onfocus="document.getElementById(this.id).classList.add('kls-border-default')" onkeydown="if (!/[0-9]/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete' && event.key !== 'Tab') { event.preventDefault(); document.getElementById('warningMessageWrapper').classList.remove('d-none'); document.querySelector('#warningMessageWrapper .custom-message').innerHTML = window.Laravel.lang.public.errors.number; setTimeout(function() { document.getElementById('warningMessageWrapper').style.opacity = '0'; setTimeout(function() { document.getElementById('warningMessageWrapper').classList.add('d-none'); document.getElementById('warningMessageWrapper').style.opacity = '1'; }, 1000); }, 5000); }">
+                                    <label for="post-price">@lang('miscellaneous.public.home.posts.other_data.price.label')</label>
+_urls                                </div>
+                                <div class="form-floating col-4">
+                                    <select name="currency" id="post-currency" class="form-select rounded-start-0 rounded-end-0 border-start-0 border-end-0" aria-label="@lang('miscellaneous.public.home.posts.other_data.currency')" onfocus="document.getElementById(this.id).classList.add('kls-border-default')">
+                                        <option value="USD">Dollar US</option>
+                                        <option value="EUR">Euro</option>
+                                        <option value="FCFA">Franc CFA</option>
+                                        <option value="CDF">Franc congolais</option>
+                                        <option value="AOA">Kwanza</option>
+                                        <option value="GBP">Livre sterling</option>
+                                        <option value="NGN">Naira</option>
+                                        <option value="ZAR">Rand</option>
+                                        <option value="JPY">Yen</option>
+                                        <option value="CNY">Yuan</option>
+                                    </select>
+                                    <label for="post-currency">@lang('miscellaneous.public.home.posts.other_data.currency')</label>
+                                </div>
+                                <div class="form-floating col-4">
+                                    <input type="text" name="quantity" id="post-quantity" class="form-control rounded-start-0 border-start-0" placeholder="@lang('miscellaneous.public.home.posts.other_data.quantity')" onfocus="document.getElementById(this.id).classList.add('kls-border-default')" onkeydown="if (!/[0-9]/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete' && event.key !== 'Tab') { event.preventDefault(); document.getElementById('warningMessageWrapper').classList.remove('d-none'); document.querySelector('#warningMessageWrapper .custom-message').innerHTML = window.Laravel.lang.public.errors.number; setTimeout(function() { document.getElementById('warningMessageWrapper').style.opacity = '0'; setTimeout(function() { document.getElementById('warningMessageWrapper').classList.add('d-none'); document.getElementById('warningMessageWrapper').style.opacity = '1'; }, 1000); }, 5000); }">
+                                    <label for="post-quantity">@lang('miscellaneous.public.home.posts.other_data.quantity')</label>
+                                </div>
+                            </div>
                         </div>
                         <!-- Modal post body -->
 

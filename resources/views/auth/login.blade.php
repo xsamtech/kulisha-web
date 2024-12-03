@@ -10,7 +10,7 @@
                             <h1 class="mb-4 kls-lime-green-text">@lang('miscellaneous.login_title2')</h1>
 
                             <!-- Form START -->
-                            <form id="login_form" onkeyup="event.preventDefault(); toggleSubmit('login');">
+                            <form id="login_form" onkeyup="toggleSubmit('login');">
                                 <!-- Email, Phone or Username -->
                                 <div class="mt-4 mb-3 input-group-lg">
                                     <input type="text" name="username" id="username" class="form-control" placeholder="@lang('miscellaneous.login_username')" autofocus>
@@ -38,7 +38,7 @@
 
                                 <!-- Button -->
                                 <div class="d-grid">
-                                    <button id="submit" class="btn btn-lg btn-primary rounded-pill disabled">
+                                    <button id="submit" class="btn btn-lg btn-primary-soft rounded-pill disabled">
                                         <span class="text-uppercase">@lang('auth.login')</span>
                                         <div class="spinner-border text-white float-end opacity-0" style="margin-top: -5px;" role="status"><span class="visually-hidden">@lang('miscellaneous.loading')</span></div>
                                     </button>

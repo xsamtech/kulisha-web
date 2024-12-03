@@ -311,7 +311,7 @@ sendStory.addEventListener('click', async () => {
   var userId = document.getElementById('userId');
 
   post.setUniqueVariables(
-    (postUrl ? postUrl.value : null), (postUrl ? postTitle.value : null), (postContent ? postContent.value : null),
+    (postUrl ? postUrl.value : null), (postTitle ? postTitle.value : null), (postContent ? postContent.value : null),
     (sharedPostId ? sharedPostId.value : null), (price ? price.value : null), (currency ? currency.value : null),
     (quantity ? quantity.value : null), (answeredFor ? answeredFor.value : null), (latitude ? latitude.value : null),
     (longitude ? longitude.value : null), (city ? city.value : null), (region ? region.value : null), (country ? country.value : null),
