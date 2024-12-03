@@ -223,6 +223,10 @@ class Post {
 
         // Data in array for visibility
         this.exceptions_ids = [];
+
+        // Data in array for files
+        this.images_urls = [];
+        this.documents_urls = [];
     }
 
     /**
@@ -299,6 +303,22 @@ class Post {
     }
 
     /**
+     * Method to store data in array for files
+     * 
+     * @param string imageURL
+     * @param string documentURL
+     */
+    addFilesData(imageURL, documentURL) {
+        if (imageURL !== null) {
+            this.images_urls.push(imageURL);
+        }
+
+        if (documentURL !== null) {
+            this.documents_urls.push(documentURL);
+        }
+    }
+
+    /**
      * Method to send all data
      */
     sendData() {
@@ -329,7 +349,9 @@ class Post {
                 choices_contents: this.choices_contents,
                 icons_fonts: this.icons_fonts,
                 images_urls: this.images_urls,
-                exceptions_ids: this.exceptions_ids
+                exceptions_ids: this.exceptions_ids,
+                images_urls: this.images_urls,
+                documents_urls: this.documents_urls
             };
 
             return $.ajax({
