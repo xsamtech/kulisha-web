@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Http\Resources\Category as ResourcesCategory;
 use App\Http\Resources\Field as ResourcesField;
 use App\Http\Resources\Reaction as ResourcesReaction;
+use App\Http\Resources\Status as ResourcesStatus;
 use App\Http\Resources\Type as ResourcesType;
 use App\Http\Resources\User as ResourcesUser;
 use App\Http\Resources\Visibility as ResourcesVisibility;
@@ -12,6 +13,7 @@ use App\Models\Category;
 use App\Models\Field;
 use App\Models\Group;
 use App\Models\Reaction;
+use App\Models\Status;
 use App\Models\Type;
 use App\Models\Visibility;
 use Carbon\Carbon;
@@ -73,6 +75,7 @@ class AppServiceProvider extends ServiceProvider
             // Groups
             $post_type_group = Group::where('group_name->fr', 'Type de post')->first();
             $access_type_group = Group::where('group_name->fr', 'Type d’accès')->first();
+            $post_community_status_group = Group::where('group_name->fr', 'Etat du post ou de la communauté')->first();
             $post_visibilities_group = Group::where('group_name->fr', 'Visibilité pour les posts')->first();
             $post_reactions_group = Group::where('group_name->fr', 'Réaction sur post')->first();
             // Types
@@ -81,6 +84,19 @@ class AppServiceProvider extends ServiceProvider
             $access_types_collection = Type::where('group_id', $access_type_group->id)->get();
             $access_types_resource = ResourcesType::collection($access_types_collection);
             $access_types = $access_types_resource->toArray(request());
+            // Statuses
+            $draft_status = Status::where([['alias', 'draft'], ['group_id', $post_community_status_group->id]])->first();
+            $draft_status_resource = new ResourcesStatus($draft_status);
+            $draft_status_data = $draft_status_resource->toArray(request());
+            $operational_status = Status::where([['alias', 'operational'], ['group_id', $post_community_status_group->id]])->first();
+            $operational_status_resource = new ResourcesStatus($operational_status);
+            $operational_status_data = $operational_status_resource->toArray(request());
+            $boosted_status = Status::where([['alias', 'boosted'], ['group_id', $post_community_status_group->id]])->first();
+            $boosted_status_resource = new ResourcesStatus($boosted_status);
+            $boosted_status_data = $boosted_status_resource->toArray(request());
+            $deleted_status = Status::where([['alias', 'recycled'], ['group_id', $post_community_status_group->id]])->first();
+            $deleted_status_resource = new ResourcesStatus($deleted_status);
+            $deleted_status_data = $deleted_status_resource->toArray(request());
 
             if (Auth::check()) {
                 // Calling the request
@@ -107,12 +123,14 @@ class AppServiceProvider extends ServiceProvider
                 $post_visibilities = $post_visibilities_resource->toArray(request());
                 // Default visibility (Everybody)
                 $everybody_visibility = Visibility::where('alias', 'everybody')->first();
+                // Restricted visibility
+                $everybody_except_visibility = Visibility::where('alias', 'everybody_except')->first();
+                $nobody_except_visibility = Visibility::where('alias', 'nobody_except')->first();
                 // Reactions
                 $reactions_collection = Reaction::where('group_id', $post_reactions_group->id)->get();
                 $reactions_resource = ResourcesReaction::collection($reactions_collection);
                 $reactions = $reactions_resource->toArray(request());
 
-                $view->with('all_fields', $fields);
                 $view->with('access_types', $access_types);
                 $view->with('current_user', $user_data);
                 $view->with('categories_product', $categories_product);
@@ -121,11 +139,18 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('categories_service_type', $categories_service_type);
                 $view->with('post_visibilities', $post_visibilities);
                 $view->with('everybody_visibility', $everybody_visibility);
+                $view->with('everybody_except_visibility', $everybody_except_visibility);
+                $view->with('nobody_except_visibility', $nobody_except_visibility);
                 $view->with('reactions', $reactions);
                 $view->with('ipinfo_data', $request->ipinfo);
             }
 
             $view->with('timezones', $timezoneList);
+            $view->with('all_fields', $fields);
+            $view->with('draft_status', $draft_status_data);
+            $view->with('operational_status', $operational_status_data);
+            $view->with('boosted_status', $boosted_status_data);
+            $view->with('deleted_status', $deleted_status_data);
             $view->with('current_locale', app()->getLocale());
             $view->with('available_locales', config('app.available_locales'));
         });

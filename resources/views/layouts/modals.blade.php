@@ -155,13 +155,13 @@
                                 <span class="d-inline-block">@lang('miscellaneous.public.home.posts.choose_type')</span>
                                 <div class="ps-sm-0 ps-2">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="post-type" id="postProduct" value="product">
+                                        <input class="form-check-input" type="radio" name="type_id" id="postProduct" value="product" checked value="{{ $categories_product_type['id'] }}">
                                         <label role="button" class="form-check-label" for="postProduct">
                                             @lang('miscellaneous.public.home.posts.type.product')
                                         </label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="post-type" id="postService" value="service" checked>
+                                        <input class="form-check-input" type="radio" name="type_id" id="postService" value="service" value="{{ $categories_service_type['id'] }}">
                                         <label role="button" class="form-check-label" for="postService">
                                             @lang('miscellaneous.public.home.posts.type.service')
                                         </label>
@@ -234,16 +234,16 @@
                                 <h6 class="fw-light product-type-title">@lang('miscellaneous.public.home.posts.choose_category', ['post_type' => strtolower($categories_product_type['type_name'])])</h6>
                                 <h6 class="fw-light service-type-title d-none">@lang('miscellaneous.public.home.posts.choose_category', ['post_type' => strtolower($categories_service_type['type_name'])])</h6>
 
-                                <div id="productCategories" class="d-none">
+                                <div id="productCategories">
 @foreach ($categories_product as $category)
-                                    <input type="radio" class="btn-check" id="check-category-product-{{ $category['id'] }}" name="check-category" autocomplete="off" value="{{ $category['id'] }}">
+                                    <input type="radio" name="category_id" id="check-category-product-{{ $category['id'] }}" class="btn-check" autocomplete="off" value="{{ $category['id'] }}">
                                     <label for="check-category-product-{{ $category['id'] }}" class="btn btn-secondary-soft m-2 rounded-pill" style="font-size: 10pt;">{{ $category['category_name'] }}</label>
 @endforeach
                                 </div>
 
-                                <div id="serviceCategories">
+                                <div id="serviceCategories" class="d-none">
 @foreach ($categories_service as $category)
-                                    <input type="radio" class="btn-check" id="check-category-service-{{ $category['id'] }}" name="check-category" autocomplete="off" value="{{ $category['id'] }}">
+                                    <input type="radio" name="category_id" id="check-category-service-{{ $category['id'] }}" class="btn-check" autocomplete="off" value="{{ $category['id'] }}">
                                     <label for="check-category-service-{{ $category['id'] }}" class="btn btn-secondary-soft m-2 rounded-pill" style="font-size: 10pt;">{{ $category['category_name'] }}</label>
 @endforeach
                                 </div>
@@ -255,7 +255,7 @@
                                 <div class="form-floating col-4">
                                     <input type="text" name="price" id="post-price" class="form-control rounded-end-0 border-end-0" placeholder="@lang('miscellaneous.public.home.posts.other_data.price.label')" title="@lang('miscellaneous.public.home.posts.other_data.price.placeholder')" data-bs-toggle="tooltip" onfocus="document.getElementById(this.id).classList.add('kls-border-default')" onkeydown="if (!/[0-9]/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete' && event.key !== 'Tab') { event.preventDefault(); document.getElementById('warningMessageWrapper').classList.remove('d-none'); document.querySelector('#warningMessageWrapper .custom-message').innerHTML = window.Laravel.lang.public.errors.number; setTimeout(function() { document.getElementById('warningMessageWrapper').style.opacity = '0'; setTimeout(function() { document.getElementById('warningMessageWrapper').classList.add('d-none'); document.getElementById('warningMessageWrapper').style.opacity = '1'; }, 1000); }, 5000); }">
                                     <label for="post-price">@lang('miscellaneous.public.home.posts.other_data.price.label')</label>
-_urls                                </div>
+                                </div>
                                 <div class="form-floating col-4">
                                     <select name="currency" id="post-currency" class="form-select rounded-start-0 rounded-end-0 border-start-0 border-end-0" aria-label="@lang('miscellaneous.public.home.posts.other_data.currency')" onfocus="document.getElementById(this.id).classList.add('kls-border-default')">
                                         <option value="USD">Dollar US</option>
@@ -292,7 +292,7 @@ _urls                                </div>
                                     </div>
                                 </div>
                                 <div id="visibility" class="col-sm-2 col-3 mt-3">
-                                    <input type="hidden" name="post-visibility" id="post-visibility" value="{{ $everybody_visibility->id }}">
+                                    <input type="hidden" name="visibility_id" id="post-visibility" value="{{ $everybody_visibility->id }}">
                                     <div class="dropdown d-inline-block" title="@lang('miscellaneous.public.home.posts.choose_visibility.title')" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                         <a role="button" class="text-secondary dropdown-toggle btn btn-secondary-soft py-1 px-2 rounded-pill" id="toggleVisibility" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="{{ $everybody_visibility->icon_font }} fs-6"></i>

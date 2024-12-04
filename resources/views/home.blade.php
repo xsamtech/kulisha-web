@@ -158,7 +158,7 @@
 						<!-- Story END -->
 
 						<!-- Share feed START -->
-						<div class="card card-body">
+						<div id="newShare" class="card card-body">
 							<div class="d-flex mb-3">
 								<!-- Avatar -->
 								<div class="avatar avatar-xs me-2">
@@ -169,7 +169,7 @@
 
 								<!-- Post input -->
 								<form class="w-100">
-									<input class="form-control pe-4 border-0" placeholder="@lang('miscellaneous.public.home.posts.new.description')" data-bs-toggle="modal" data-bs-target="#modalCreatePost">
+									<input id="post-text" class="form-control pe-4 border-0" placeholder="@lang('miscellaneous.public.home.posts.new.description')" data-bs-toggle="modal" data-bs-target="#modalCreatePost">
 								</form>
 							</div>
 
@@ -192,6 +192,16 @@
 							</div>
 						</div>
 						<!-- Share feed END -->
+
+						<!-- Card waiting new post -->
+						<div id="waitingNewPost" class="card card-body text-center">
+							<p class="card-text">@lang('miscellaneous.public.home.posts.new.waiting')</p>
+							<div class="text-center loading-spinner">
+                                <div class="spinner-grow spinner-grow-lg text-primary" role="status">
+                                    <span class="visually-hidden">@lang('miscellaneous.loading')</span>
+                                </div>
+                            </div>
+						</div>
 
 						<!-- Card feed item START -->
 						<div class="card">

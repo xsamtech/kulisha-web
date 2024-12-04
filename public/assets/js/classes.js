@@ -30,16 +30,30 @@ class User {
         this.setupEventListeners();
     }
 
-    // Function to manage the opening of the modal
+    /**
+     * Method to manage the opening of the modal
+     */
     openModal() {
         this.currentModal.show();
     }
 
-    // Function to handle scroll event in user list
+    /**
+     * Method to handle scroll event in user list
+     */
     setupEventListeners() {
         if (this.action === 'restrictions-among-users' || this.action === 'speakers-among-users') {
             // Open the modal and load the users
             $(`#${this.currentModalId}`).on('shown.bs.modal', () => {
+                if (this.action === 'restrictions-among-users') {
+                    $('#modalCreatePost').css('z-index', '1040');
+                    $(this).css('z-index', '1060');
+                }
+
+                if (this.action === 'speakers-among-users') {
+                    $('#newEventModal').css('z-index', '1040');
+                    $(this).css('z-index', '1060');
+                }
+
                 this.page = 1;  // Reset page number
                 $(`#${this.userListId}`).empty();  // Empty the list before loading new users
                 this.loadUsersToCheck();  // Load users when opening modal
@@ -66,7 +80,9 @@ class User {
         }
     }
 
-    // Function to load users
+    /**
+     * Method to load users
+     */
     loadUsersToCheck() {
         if (this.loading) return;  // Prevent multiple requests if a request is already in progress
 
@@ -191,8 +207,9 @@ class User {
  * (2) "Post" class to handle posts
  */
 class Post {
-    constructor() {
+    constructor(entity, currentModalId = null) {
         // Ordinary post data
+        this.entity = entity;
         this.post_url = null;
         this.post_title = null;
         this.post_content = null;
@@ -227,8 +244,29 @@ class Post {
         // Data in array for files
         this.images_urls = [];
         this.documents_urls = [];
+
+        // Current modal (Optional)
+        this.currentModalId = currentModalId || '';
+        this.currentModal = new bootstrap.Modal(document.getElementById(this.currentModalId), { keyboard: false });
     }
 
+    /**
+     * to manage the opening of the modal
+     */
+    toggleModal(action) {
+        if (action === 'open') {
+            this.currentModal.show();
+
+        }
+
+        if (action === 'hide') {
+            this.currentModal.hide();
+        }
+
+        if (action === 'dispose') {
+            this.currentModal.dispose();
+        }
+    }
     /**
      * Method to store ordinary post data
      * 
@@ -353,6 +391,10 @@ class Post {
                 images_urls: this.images_urls,
                 documents_urls: this.documents_urls
             };
+
+            if (this.entity === 'post') {
+                $('#waitingNewPost').removeClass('d-none');
+            }
 
             return $.ajax({
                 headers: headers,

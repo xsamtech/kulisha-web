@@ -646,7 +646,8 @@ return [
             'posts' => [
                 'new' => [
                     'title' => 'Nouveau :post_type',
-                    'description' => 'Publiez quelque chose ...'
+                    'description' => 'Publiez quelque chose ...',
+                    'waiting' => 'Publication en cours ...'
                 ],
                 'write' => 'Écrivez ici ...',
                 'choose_type' => 'Choisir le type de post',

@@ -646,7 +646,8 @@ return [
             'posts' => [
                 'new' => [
                     'title' => 'New :post_type',
-                    'description' => 'Publish something...'
+                    'description' => 'Publish something...',
+                    'waiting' => 'Publishing in progress...'
                 ],
                 'write' => 'Write here ...',
                 'choose_type' => 'Choose the type of post',

@@ -212,23 +212,61 @@
                 // --------------
                 // XII. Send post
                 // --------------
-                $('form#newPost').submit(function (e) { 
+                $('form#newPost').submit(function (e) {
                     e.preventDefault();
 
                     var formData = new FormData(this);
                     var post = new Post();
 
+                    // Send main data
                     post.setUniqueVariables(
-                        null, null, formData.get('post_content'),
-                        null, (price ? price.value : null), (currency ? currency.value : null),
-                        (quantity ? quantity.value : null), (answeredFor ? answeredFor.value : null), (latitude ? latitude.value : null),
-                        (longitude ? longitude.value : null), (city ? city.value : null), (region ? region.value : null), (country ? country.value : null),
-                        (typeId ? typeId.value : null), (categoryId ? categoryId.value : null), (statusId ? statusId.value : null),
-                        (visibilityId ? visibilityId.value : null), (coverageAreaId ? coverageAreaId.value : null), (budgetId ? budgetId.value : null),
-                        (communityId ? communityId.value : null), (eventId ? eventId.value : null), (userId ? userId.value : null)
+                        null, null, formData.get('post_content'), null, formData.get('price'), formData.get('currency'),
+                        formData.get('quantity'), null, formData.get('latitude'), formData.get('longitude'), formData.get('city'), 
+                        formData.get('region'), formData.get('country'), formData.get('type_id'), formData.get('category_id'), 
+                        window.Laravel.data.operational_status.id, formData.get('visibility_id'), null, null, null, null, parseInt(currentUser)
                     );
-                    console.log(formData.get('post_content'));
 
+                    // Check for any restrictions in visibility
+                    if (parseInt(formData.get('visibility_id')) === window.Laravel.data.everybody_except_visibility.id || parseInt(formData.get('visibility_id')) === window.Laravel.data.nobody_except_visibility.id) {
+                        var restrictUsersInput = formData.get('restrict-users').split(',');
+
+                        restrictUsersInput.forEach((userId, index) => {
+                            post.addRestrictionData(parseInt(userId)); // Dynamically adding restricted users IDs
+                        });
+                    }
+
+                    // Add image and document files
+                    var images = formData.getAll('images_urls[]');
+                    var documents = formData.getAll('documents_urls[]');
+
+                    // If images exist, add them
+                    // Filter empty entries
+                    images = images.filter(image => image.size > 0); // If the image is empty (size == 0), it is removed
+
+                    if (images.length > 0) {
+                        images.forEach((image, index) => {
+                            post.addFilesData(image, null);
+                        });
+                    }
+
+                    // If the documents exist, add them
+                    // Filter empty entries
+                    documents = documents.filter(document => document.size > 0); // If the document is empty (size == 0), it is removed
+
+                    if (documents.length > 0) {
+                        documents.forEach((document, index) => {
+                            post.addFilesData(null, document);
+                        });
+                    }
+
+                    // Send post data
+                    post.sendData()
+                        .done(function(response) {
+                            console.log("Le post a été envoyé avec succès :", response);
+                        })
+                        .fail(function(error) {
+                            console.log("Erreur lors de l'envoi du post :", error);
+                        });
                 });
 
                 // ---------------

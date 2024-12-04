@@ -39,6 +39,13 @@
                 data: {
                     user: @json($current_user),
                     ipinfo: @json($ipinfo_data),
+                    draft_status: @json($draft_status),
+                    operational_status: @json($operational_status),
+                    boosted_status: @json($boosted_status),
+                    deleted_status: @json($deleted_status),
+                    everybody_visibility: @json($everybody_visibility),
+                    everybody_except_visibility: @json($everybody_except_visibility),
+                    nobody_except_visibility: @json($nobody_except_visibility),
                 },
             };
         </script>
