@@ -401,7 +401,8 @@ class Post {
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(retrieve_data),
-                url: `${apiHost}/post`
+                url: `${apiHost}/post`,
+                complete: function() { this.toggleModal('hide'); },
             });
 
         } catch (error) {

@@ -5,7 +5,12 @@
             window.Laravel = {
                 lang: {
                     empty_list: "@lang('miscellaneous.empty_list')",
+                    see_more: "@lang('miscellaneous.see_more')",
                     error_label: "@lang('miscellaneous.error_label')",
+                    delete: "@lang('miscellaneous.delete')",
+                    like: "@lang('miscellaneous.like')",
+                    share: "@lang('miscellaneous.share')",
+                    send: "@lang('miscellaneous.send')",
                     upload: {
                         use_camera: "@lang('miscellaneous.upload.use_camera')",
                         upload_file: "@lang('miscellaneous.upload.upload_file')",
@@ -14,8 +19,32 @@
                         document_error: "@lang('miscellaneous.upload.document_error')",
                     },
                     public: {
+                        reactions: "@lang('miscellaneous.public.home.reactions')",
+                        comments: "@lang('miscellaneous.public.home.comments')",
+                        shares: "@lang('miscellaneous.public.home.shares')",
                         errors: {
                             number: "@lang('miscellaneous.public.errors.number')",
+                        },
+                        posts: {
+                            boost: {
+                                title: "@lang('miscellaneous.public.home.posts.boost.title')",
+                            },
+                            actions: {
+                                save: "@lang('miscellaneous.public.home.posts.actions.save')",
+                                send_via_dm: "@lang('miscellaneous.public.home.posts.actions.send_via_dm')",
+                                copy_link: "@lang('miscellaneous.public.home.posts.actions.copy_link')",
+                                share_via_: "@lang('miscellaneous.public.home.posts.actions.share_via_')",
+                                share_directly: "@lang('miscellaneous.public.home.posts.actions.share_directly')",
+                                share_with_opinion: "@lang('miscellaneous.public.home.posts.actions.share_with_opinion')",
+                                change_visibility: "@lang('miscellaneous.public.home.posts.actions.change_visibility')",
+                                hide: "@lang('miscellaneous.public.home.posts.actions.hide')",
+                                report: "@lang('miscellaneous.public.home.posts.actions.report')",
+                                update_post: "@lang('miscellaneous.public.home.posts.actions.update_post')",
+                                update_audience: "@lang('miscellaneous.public.home.posts.actions.update_audience')",
+                                disable_notification: "@lang('miscellaneous.public.home.posts.actions.disable_notification')",
+                                embed_into_website: "@lang('miscellaneous.public.home.posts.actions.embed_into_website')",
+                                delete_description: "@lang('miscellaneous.public.home.posts.actions.delete_description')",
+                            },
                         },
                         events: {
                             new: {
@@ -46,6 +75,7 @@
                     everybody_visibility: @json($everybody_visibility),
                     everybody_except_visibility: @json($everybody_except_visibility),
                     nobody_except_visibility: @json($nobody_except_visibility),
+                    reactions: @json($reactions),
                 },
             };
         </script>

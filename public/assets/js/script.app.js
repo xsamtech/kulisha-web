@@ -27,6 +27,7 @@
  * IX. Show emojis picker in dropdown
  *    IX.1. Handle shown emoji
  *    IX.2. Function to retrieve emojis via an API
+ * X. Function to show PDF first page
  */
 // -----------------------------------------------
 // I. If the window is webview, hide some elements
@@ -321,6 +322,38 @@ function loadEmojis(emojiDropdown, emojiInput, submitButton) {
             });
         });
     }).catch(error => console.error(`${window.Laravel.lang.error_label} ${error}`));
+}
+
+// ----------------------------------
+// X. Function to show PDF first page
+// ----------------------------------
+function loadPDFPreview(fileUrl, index) {
+    const canvas = document.getElementById(`canvas-${index}`);
+    const ctx = canvas.getContext('2d');
+
+    // Using PDF.js to retrieve PDF
+    pdfjsLib.getDocument(fileUrl).promise.then(function (pdf) {
+        // Retrieve the first page of the PDF
+        pdf.getPage(1).then(function(page) {
+            const scale = 0.5; // Ajuster la taille de la vignette
+            const viewport = page.getViewport({ scale: scale });
+
+            // Set canvas size according to page
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            // Render PDF page to canvas
+            page.render({
+                canvasContext: ctx,
+                viewport: viewport
+            }).promise.then(function () {
+                // Rendering is complete, the thumbnail is now ready
+                console.log('PDF overview loaded');
+            });
+        });
+    }).catch(function (error) {
+        console.error(`PDF loading error: ${error}`);
+    });
 }
 
 /**
@@ -1168,7 +1201,7 @@ $(function () {
     $('#documentsInput').on('change', function (event) {
         var files = event.target.files;
         var previewContainer = $('#documentsPreviews');
-        var validExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx'];
+        var validExtensions = ['pdf'];
 
         previewContainer.empty(); // Clear existing previews
         previewContainer.removeClass('d-none');

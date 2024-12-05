@@ -53,6 +53,7 @@ return [
     'post' => 'Publier',
     'send' => 'Envoyer',
     'add' => 'Ajouter',
+    'share' => 'Partager',
     'validated' => 'Validé',
     'invalid' => 'Non valide',
     'issued_on' => 'Délivrée à Kinshasa, le',
@@ -313,7 +314,7 @@ return [
         'notifications' => [
             'title' => 'Notifications',
             'the_public' => 'Le public',
-            'connections' => 'Connexions',
+            'connections' => 'Relations',
             'mentions' => 'Mentions'
         ],
         'admin' => [
@@ -363,7 +364,7 @@ return [
             'communities' => [
                 'title' => 'Communautés',
                 'yours' => 'Les vôtres',
-                'connections' => 'Connexions',
+                'connections' => 'Relations',
                 'popular' => 'Les plus populaires',
             ],
             'events' => [
@@ -377,7 +378,7 @@ return [
                 'title' => 'Mon profil',
                 'products' => 'Produits',
                 'services' => 'Services',
-                'connections' => 'Connexions',
+                'connections' => 'Relations',
                 'my_activities' => 'Mes activités',
             ],
             'settings' => [
@@ -385,7 +386,7 @@ return [
                 'account' => 'Compte',
                 'notification' => 'Notification',
                 'privacy_and_safety' => 'Confidentialité et sécurité',
-                'connections' => 'Connexions',
+                'connections' => 'Relations',
                 'messages' => 'Messagerie',
             ],
         ],
@@ -640,7 +641,10 @@ return [
             'view_profile' => 'Voir profil',
             'help' => 'Aide et support',
             'among_followers' => 'Choisir parmi vos followers',
-            'among_connections' => 'Choisir parmi vos connections',
+            'among_connections' => 'Choisir parmi vos relations',
+            'reactions' => 'Réactions',
+            'comments' => 'Commentaires',
+            'shares' => 'Partages',
 
             // Posts
             'posts' => [
@@ -712,7 +716,7 @@ return [
 
                 // Boost
                 'boost' => [
-                    'title' => 'Booster',
+                    'title' => 'Booster le post',
                     'description' => 'Booster votre :post_type pour la faire voir à un grand nombre.',
                     'coverage_area' => 'Zone de couverture',
                     'budget' => 'Budget',
@@ -730,9 +734,25 @@ return [
                 // Actions
                 'actions' => [
                     'save' => 'Enregistrer le post',
+                    'send_via_dm' => 'Envoyer via Direct Message',
+                    'copy_link' => 'Copier le lien pour publier',
+                    'share_via_' => 'Partager le post via …',
+                    'share_directly' => 'Partager directement',
+                    'share_with_opinion' => 'Partager avec mon avis',
                     'unfollow_owner' => 'Ne plus suivre @:owner',
+                    'change_visibility' => 'Changer de visibilité',
                     'hide' => 'Cacher ce post',
                     'report' => 'Signaler ce post',
+                    'update_post' => 'Modifier le post',
+                    'update_audience' => 'Modifier l’audience',
+                    'disable_notification' => 'Désactiver notification pour ce post',
+                    'embed_into_website' => 'Intégrer à un site web',
+                    'delete_description' => 'Les posts dans la corbeille sont supprimés après 30 jours',
+                ],
+
+                // Comments
+                'comments' => [
+                    'add' => 'Ajouter un commentaire ...',
                 ],
             ],
 

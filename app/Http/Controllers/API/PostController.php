@@ -124,10 +124,6 @@ class PostController extends BaseController
             'event_id' => $request->event_id,
             'user_id' => $request->user_id
         ];
-        // Table for storing image paths
-        $imagePaths = [];
-        $documentPaths = [];
-        $object = new stdClass();
 
         if (!is_numeric($inputs['type_id']) OR trim($inputs['type_id']) == null) {
             return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['type_id'], __('validation.custom.type.required'), 400);
@@ -838,7 +834,6 @@ class PostController extends BaseController
         if ($request->hasFile('images_urls')) {
             foreach ($request->file('images_urls') as $image) {
                 $imagePath = $image->store('images/posts/' . $post->id, 'public');
-                $imagePaths[] = $imagePath;
 
                 File::create([
                     'file_url' => $imagePath,
@@ -846,29 +841,22 @@ class PostController extends BaseController
                     'post_id' => $post->id
                 ]);
             }
-
-            $object->image_paths = $imagePaths;
         }
 
         // if post contains documents
         if ($request->hasFile('documents_urls')) {
             foreach ($request->file('documents_urls') as $document) {
                 $documentPath = $document->store('documents/posts/' . $post->id, 'public');
-                $documentPaths[] = $documentPath;
 
                 File::create([
-                    'file_url' => $imagePath,
+                    'file_url' => $documentPath,
                     'type_id' => $file_document_type->id,
                     'post_id' => $post->id
                 ]);
             }
-
-            $object->document_paths = $documentPaths;
         }
 
-        $object->post = new ResourcesPost($post);
-
-        return $this->handleResponse($object, __('notifications.create_post_success'));
+        return $this->handleResponse(new ResourcesPost($post), __('notifications.create_post_success'));
     }
 
     /**

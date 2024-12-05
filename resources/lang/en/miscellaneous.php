@@ -53,6 +53,7 @@ return [
     'post' => 'Post',
     'send' => 'Send',
     'add' => 'Add',
+    'share' => 'Share',
     'validated' => 'Validated',
     'invalid' => 'Invalid',
     'issued_on' => 'Issued in Kinshasa, on',
@@ -640,7 +641,10 @@ return [
             'view_profile' => 'View profile',
             'help' => 'Help and support',
             'among_followers' => 'Choosing among your followers',
-            'among_connections' => 'Choisir parmi vos connections',
+            'among_connections' => 'Choosing among your connections',
+            'reactions' => 'Reaction',
+            'comments' => 'Comment',
+            'shares' => 'Share',
 
             // Posts
             'posts' => [
@@ -712,7 +716,7 @@ return [
 
                 // Boost
                 'boost' => [
-                    'title' => 'Boost',
+                    'title' => 'Boost the post',
                     'description' => 'Boost your :post_type to get it seen by a larger number of people.',
                     'coverage_area' => 'Coverage area',
                     'budget' => 'Budget',
@@ -730,9 +734,25 @@ return [
                 // Actions
                 'actions' => [
                     'save' => 'Save the post',
+                    'send_via_dm' => 'Send via Direct Message',
+                    'copy_link' => 'Copy link to post',
+                    'share_via_' => 'Share post via …',
+                    'share_directly' => 'Share directly',
+                    'share_with_opinion' => 'Share with my opinion',
                     'unfollow_owner' => 'Unfollow @:owner',
+                    'change_visibility' => 'Change visibility',
                     'hide' => 'Hide this post',
                     'report' => 'Report this post',
+                    'update_post' => 'Edit post',
+                    'update_audience' => 'Change audience',
+                    'disable_notification' => 'Disable notification for this post',
+                    'embed_into_website' => 'Embed into a website',
+                    'delete_description' => 'Posts in the trash are deleted after 30 days',
+                ],
+
+                // Comments
+                'comments' => [
+                    'add' => 'Add a comment...',
                 ],
             ],
 
