@@ -747,7 +747,7 @@ return [
                     'update_audience' => 'Modifier l’audience',
                     'disable_notification' => 'Désactiver notification pour ce post',
                     'embed_into_website' => 'Intégrer à un site web',
-                    'delete_description' => 'Les posts dans la corbeille sont supprimés après 30 jours',
+                    'delete_description' => 'Sera supprimé après 30 jours',
                 ],
 
                 // Comments

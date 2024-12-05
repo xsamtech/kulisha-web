@@ -129,12 +129,42 @@ class PostController extends BaseController
             return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['type_id'], __('validation.custom.type.required'), 400);
         }
 
-        // Validate the coverage area
-        // if ($inputs['coverage_area_id'] == null OR !is_numeric($inputs['coverage_area_id'])) {
-        //     return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['coverage_area_id'], __('validation.required', ['field_name' => __('miscellaneous.public.home.posts.boost.coverage_area')]), 400);
-        // }
-
         $post = Post::create($inputs);
+
+        // if post contains images
+        if ($request->hasFile('images_urls')) {
+            dd($request->file('images_urls'));
+            foreach ($request->file('images_urls') as $image) {
+                $file_url = 'images/posts/' . $post->id . '/' . Str::random(50) . '.' . $image->extension();
+
+                // Upload file
+                $dir_result = Storage::url(Storage::disk('public')->put($file_url, $image));
+
+                File::create([
+                    'file_url' => $dir_result,
+                    'type_id' => $file_image_type->id,
+                    'post_id' => $post->id
+                ]);
+            }
+        }
+
+        // if post contains documents
+        if ($request->hasFile('documents_urls')) {
+            foreach ($request->file('documents_urls') as $document) {
+                $file_url = 'documents/posts/' . $post->id . '/' . Str::random(50) . '.' . $document->extension();
+
+                // Upload file
+                $dir_result = Storage::url(Storage::disk('public')->put($file_url, $document));
+    
+                File::create([
+                    'file_url' => $dir_result,
+                    'type_id' => $file_document_type->id,
+                    'post_id' => $post->id
+                ]);
+            }
+
+            return $this->handleResponse(new ResourcesPost($post), __('notifications.update_post_success'));
+        }
 
         // Hashtags management
         $hashtags = getHashtags($post->post_content);
@@ -192,14 +222,16 @@ class PostController extends BaseController
                 foreach ($mentions as $mention):
                     $mentioned = User::where('username', $mention)->first();
 
-                    if ($mentioned->id != $post->user_id) {
-                        Notification::create([
-                            'type_id' => $mention_type->id,
-                            'status_id' => $unread_notification_status->id,
-                            'from_user_id' => $post->user_id,
-                            'to_user_id' => $mentioned->id,
-                            'post_id' => $post->id
-                        ]);
+                    if (!empty($mentioned)) {
+                        if ($mentioned->id != $post->user_id) {
+                            Notification::create([
+                                'type_id' => $mention_type->id,
+                                'status_id' => $unread_notification_status->id,
+                                'from_user_id' => $post->user_id,
+                                'to_user_id' => $mentioned->id,
+                                'post_id' => $post->id
+                            ]);
+                        }
                     }
                 endforeach;
 
@@ -210,7 +242,7 @@ class PostController extends BaseController
                     'status_id' => $unread_history_status->id,
                     'from_user_id' => $post->user_id,
                     'post_id' => $post->id,
-                    'for_notification_id' => $notification->id
+                    'for_notification_id' => !empty($notification) ? $notification->id : null
                 ]);
 
                 // If the post is for everybody
@@ -301,7 +333,7 @@ class PostController extends BaseController
                     'status_id' => $unread_history_status->id,
                     'from_user_id' => $post->user_id,
                     'post_id' => $post->id,
-                    'for_notification_id' => $notification->id
+                    'for_notification_id' => !empty($notification) ? $notification->id : null
                 ]);
 
             // Otherwise (if there is no mention), register notifications normally
@@ -386,7 +418,7 @@ class PostController extends BaseController
                     'status_id' => $unread_history_status->id,
                     'from_user_id' => $post->user_id,
                     'post_id' => $post->id,
-                    'for_notification_id' => $notification->id
+                    'for_notification_id' => !empty($notification) ? $notification->id : null
                 ]);
             }
 
@@ -399,14 +431,16 @@ class PostController extends BaseController
                 foreach ($mentions as $mention):
                     $mentioned = User::where('username', $mention)->first();
 
-                    if ($mentioned->id != $post->user_id) {
-                        Notification::create([
-                            'type_id' => $mention_type->id,
-                            'status_id' => $unread_notification_status->id,
-                            'from_user_id' => $post->user_id,
-                            'to_user_id' => $mentioned->id,
-                            'post_id' => $post->id
-                        ]);
+                    if (!empty($mentioned)) {
+                        if ($mentioned->id != $post->user_id) {
+                            Notification::create([
+                                'type_id' => $mention_type->id,
+                                'status_id' => $unread_notification_status->id,
+                                'from_user_id' => $post->user_id,
+                                'to_user_id' => $mentioned->id,
+                                'post_id' => $post->id
+                            ]);
+                        }
                     }
                 endforeach;
 
@@ -417,7 +451,7 @@ class PostController extends BaseController
                     'status_id' => $unread_history_status->id,
                     'from_user_id' => $post->user_id,
                     'post_id' => $post->id,
-                    'for_notification_id' => $notification->id
+                    'for_notification_id' => !empty($notification) ? $notification->id : null
                 ]);
 
                 // If the post is for everybody
@@ -508,7 +542,7 @@ class PostController extends BaseController
                     'status_id' => $unread_history_status->id,
                     'from_user_id' => $post->user_id,
                     'post_id' => $post->id,
-                    'for_notification_id' => $notification->id
+                    'for_notification_id' => !empty($notification) ? $notification->id : null
                 ]);
 
             // Otherwise (if there is no mention), register notifications normally
@@ -536,7 +570,7 @@ class PostController extends BaseController
                             'status_id' => $unread_history_status->id,
                             'from_user_id' => $post->user_id,
                             'post_id' => $post->id,
-                            'for_notification_id' => $notification->id
+                            'for_notification_id' => !empty($notification) ? $notification->id : null
                         ]);
 
                     // Answer for a post (a comment)
@@ -554,7 +588,7 @@ class PostController extends BaseController
                             'status_id' => $unread_history_status->id,
                             'from_user_id' => $post->user_id,
                             'post_id' => $post->id,
-                            'for_notification_id' => $notification->id
+                            'for_notification_id' => !empty($notification) ? $notification->id : null
                         ]);
                     }
 
@@ -654,7 +688,7 @@ class PostController extends BaseController
                             'status_id' => $unread_history_status->id,
                             'from_user_id' => $post->user_id,
                             'post_id' => $post->id,
-                            'for_notification_id' => $notification->id
+                            'for_notification_id' => !empty($notification) ? $notification->id : null
                         ]);
 
                     } else if ($post->post_url != null) {
@@ -739,7 +773,7 @@ class PostController extends BaseController
                             'status_id' => $unread_history_status->id,
                             'from_user_id' => $post->user_id,
                             'post_id' => $post->id,
-                            'for_notification_id' => $notification->id
+                            'for_notification_id' => !empty($notification) ? $notification->id : null
                         ]);
 
                     } else {
@@ -823,36 +857,10 @@ class PostController extends BaseController
                             'status_id' => $unread_history_status->id,
                             'from_user_id' => $post->user_id,
                             'post_id' => $post->id,
-                            'for_notification_id' => $notification->id
+                            'for_notification_id' => !empty($notification) ? $notification->id : null
                         ]);
                     }
                 }
-            }
-        }
-
-        // if post contains images
-        if ($request->hasFile('images_urls')) {
-            foreach ($request->file('images_urls') as $image) {
-                $imagePath = $image->store('images/posts/' . $post->id, 'public');
-
-                File::create([
-                    'file_url' => $imagePath,
-                    'type_id' => $file_image_type->id,
-                    'post_id' => $post->id
-                ]);
-            }
-        }
-
-        // if post contains documents
-        if ($request->hasFile('documents_urls')) {
-            foreach ($request->file('documents_urls') as $document) {
-                $documentPath = $document->store('documents/posts/' . $post->id, 'public');
-
-                File::create([
-                    'file_url' => $documentPath,
-                    'type_id' => $file_document_type->id,
-                    'post_id' => $post->id
-                ]);
             }
         }
 
@@ -1062,14 +1070,16 @@ class PostController extends BaseController
                     foreach ($mentions as $mention):
                         $mentioned = User::where('username', $mention)->first();
 
-                        if ($mentioned->id != $post->user_id) {
-                            $notification = Notification::create([
-                                'type_id' => $mention_type->id,
-                                'status_id' => $unread_notification_status->id,
-                                'from_user_id' => $post->user_id,
-                                'to_user_id' => $mentioned->id,
-                                'post_id' => $post->id
-                            ]);
+                        if (!empty($mentioned)) {
+                            if ($mentioned->id != $post->user_id) {
+                                $notification = Notification::create([
+                                    'type_id' => $mention_type->id,
+                                    'status_id' => $unread_notification_status->id,
+                                    'from_user_id' => $post->user_id,
+                                    'to_user_id' => $mentioned->id,
+                                    'post_id' => $post->id
+                                ]);
+                            }
                         }
                     endforeach;
                 }
@@ -1120,7 +1130,7 @@ class PostController extends BaseController
                     'status_id' => $unread_history_status->id,
                     'from_user_id' => $post->user_id,
                     'post_id' => $post->id,
-                    'for_notification_id' => $notification->id
+                    'for_notification_id' => !empty($notification) ? $notification->id : null
                 ]);
             }
         }
@@ -1268,7 +1278,7 @@ class PostController extends BaseController
                 'status_id' => $unread_history_status->id,
                 'from_user_id' => $current_post->user_id,
                 'post_id' => $current_post->id,
-                'for_notification_id' => $notification->id
+                'for_notification_id' => !empty($notification) ? $notification->id : null
             ]);
         }
 

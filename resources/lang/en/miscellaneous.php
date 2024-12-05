@@ -747,7 +747,7 @@ return [
                     'update_audience' => 'Change audience',
                     'disable_notification' => 'Disable notification for this post',
                     'embed_into_website' => 'Embed into a website',
-                    'delete_description' => 'Posts in the trash are deleted after 30 days',
+                    'delete_description' => 'Will be deleted after 30 days',
                 ],
 
                 // Comments

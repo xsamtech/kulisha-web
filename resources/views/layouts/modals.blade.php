@@ -136,7 +136,7 @@
 @endif
 
         <!-- Modal create post START -->
-        <div class="modal fade" id="modalCreatePost" tabindex="-1" aria-labelledby="modalLabelCreatePost" aria-hidden="true">
+        <div class="modal fade" id="modalCreatePost" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalLabelCreatePost" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <form id="newPost">
@@ -155,13 +155,13 @@
                                 <span class="d-inline-block">@lang('miscellaneous.public.home.posts.choose_type')</span>
                                 <div class="ps-sm-0 ps-2">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="type_id" id="postProduct" value="product" checked value="{{ $categories_product_type['id'] }}">
+                                        <input class="form-check-input" type="radio" name="type_id" id="postProduct" checked value="{{ $categories_product_type['id'] }}">
                                         <label role="button" class="form-check-label" for="postProduct">
                                             @lang('miscellaneous.public.home.posts.type.product')
                                         </label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="type_id" id="postService" value="service" value="{{ $categories_service_type['id'] }}">
+                                        <input class="form-check-input" type="radio" name="type_id" id="postService" value="{{ $categories_service_type['id'] }}">
                                         <label role="button" class="form-check-label" for="postService">
                                             @lang('miscellaneous.public.home.posts.type.service')
                                         </label>
@@ -322,7 +322,7 @@
 
                                 <!-- Button -->
                                 <div class="col-sm-10 col-9 mt-3">
-                                    <button type="submit" class="send-post btn d-block w-100 btn-primary-soft disabled">
+                                    <button type="submit" class="send-post btn d-block w-100 btn-primary-soft disabled" data-bs-dismiss="modal">
                                         <i class="bi bi-send me-1"></i> @lang('miscellaneous.post')
                                     </button>
                                 </div>

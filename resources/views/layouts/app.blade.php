@@ -214,9 +214,10 @@
                 // --------------
                 $('form#newPost').submit(function (e) {
                     e.preventDefault();
+                    $('#waitingNewPost').removeClass('d-none');
 
                     var formData = new FormData(this);
-                    var post = new Post();
+                    var post = new Post('post', 'modalCreatePost');
 
                     // Send main data
                     post.setUniqueVariables(
@@ -235,34 +236,32 @@
                         });
                     }
 
-                    // Add image and document files
-                    var images = formData.getAll('images_urls[]');
-                    var documents = formData.getAll('documents_urls[]');
+                    var images = formData.getAll('images_urls[]').filter(image => image.size > 0);
+                    var documents = formData.getAll('documents_urls[]').filter(document => document.size > 0);
 
-                    // If images exist, add them
-                    // Filter empty entries
-                    images = images.filter(image => image.size > 0); // If the image is empty (size == 0), it is removed
+                    // images.forEach(image => post.addImagesData(image));
+                    images.forEach(image => {
+                        console.log('Image récupérée:', image); // Affichage pour vérifier
 
-                    if (images.length > 0) {
-                        images.forEach(image => {
-                            post.addFilesData(image, null);
-                        });
-                    }
+                        if (image.size > 0) {
+                            post.addImagesData(image); // Ajout des fichiers valides
+                        }
+                    });
 
-                    // If the documents exist, add them
-                    // Filter empty entries
-                    documents = documents.filter(document => document.size > 0); // If the document is empty (size == 0), it is removed
+                    // documents.forEach(document => post.addDocumentsData(document));
+                    documents.forEach(document => {
+                        console.log('Document récupérée:', document); // Affichage pour vérifier
 
-                    if (documents.length > 0) {
-                        documents.forEach(document => {
-                            post.addFilesData(null, document);
-                        });
-                    }
+                        if (document.size > 0) {
+                            post.addDocumentsData(document); // Ajout des fichiers valides
+                        }
+                    });
 
                     // Send post data
                     post.sendData()
                         .done(function(response) {
-                            console.log(`The post was sent successfully: ${response}`);
+                            console.log(`The post was sent successfully: ${JSON.stringify(response)}`);
+                            $('#waitingNewPost').addClass('d-none');
 
                             // Add the new post as a page bloc
                             var newPostElement = `<div class="card">
@@ -311,9 +310,9 @@
                                                                     <li>
                                                                         <a role="button" class="dropdown-item">
                                                                             <i class="fa-regular fa-trash-can fa-fw me-2"></i>
-                                                                            <span class="d-inline-block">
+                                                                            <span class="d-inline-block align-middle">
                                                                                 ${window.Laravel.lang.delete}<br>
-                                                                                <small>${window.Laravel.lang.public.posts.actions.delete_description}</small>
+                                                                                <small class="text-muted" style="font-size: 0.7rem">${window.Laravel.lang.public.posts.actions.delete_description}</small>
                                                                             </span>
                                                                         </a>
                                                                     </li>
@@ -479,10 +478,13 @@
                             var waitingNewPost = document.querySelector('div#waitingNewPost');
 
                             // Insert HTML after selected element
-                            waitingNewPost.insertAdjacentHTML('afterend', newCardHTML);
+                            waitingNewPost.insertAdjacentHTML('afterend', newPostElement);
                         })
                         .fail(function(error) {
-                            console.log(`Error sending post: ${error}`);
+                            console.log(`Error sending post: ${JSON.stringify(error)}`);
+                            $('#waitingNewPost').addClass('d-none');
+                            $('#errorMessageWrapper').removeClass('d-none');
+                            $('#errorMessageWrapper .custom-message').html(error);
                         });
                 });
 

@@ -207,9 +207,8 @@ class User {
  * (2) "Post" class to handle posts
  */
 class Post {
-    constructor(entity, currentModalId = null) {
+    constructor() {
         // Ordinary post data
-        this.entity = entity;
         this.post_url = null;
         this.post_title = null;
         this.post_content = null;
@@ -244,29 +243,8 @@ class Post {
         // Data in array for files
         this.images_urls = [];
         this.documents_urls = [];
-
-        // Current modal (Optional)
-        this.currentModalId = currentModalId || '';
-        this.currentModal = new bootstrap.Modal(document.getElementById(this.currentModalId), { keyboard: false });
     }
 
-    /**
-     * to manage the opening of the modal
-     */
-    toggleModal(action) {
-        if (action === 'open') {
-            this.currentModal.show();
-
-        }
-
-        if (action === 'hide') {
-            this.currentModal.hide();
-        }
-
-        if (action === 'dispose') {
-            this.currentModal.dispose();
-        }
-    }
     /**
      * Method to store ordinary post data
      * 
@@ -341,19 +319,23 @@ class Post {
     }
 
     /**
-     * Method to store data in array for files
+     * Method to store data in array for images
      * 
      * @param string imageURL
+     */
+    addImagesData(imageURL) {
+        this.images_urls.push(imageURL);
+        console.log(`Image added: ${JSON.stringify(imageURL)}`);
+    }
+
+    /**
+     * Method to store data in array for images
+     * 
      * @param string documentURL
      */
-    addFilesData(imageURL, documentURL) {
-        if (imageURL !== null) {
-            this.images_urls.push(imageURL);
-        }
-
-        if (documentURL !== null) {
-            this.documents_urls.push(documentURL);
-        }
+    addDocumentsData(documentURL) {
+        this.documents_urls.push(documentURL);
+        console.log(`Document added: ${JSON.stringify(documentURL)}`);
     }
 
     /**
@@ -392,17 +374,18 @@ class Post {
                 documents_urls: this.documents_urls
             };
 
-            if (this.entity === 'post') {
-                $('#waitingNewPost').removeClass('d-none');
-            }
-
             return $.ajax({
                 headers: headers,
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(retrieve_data),
                 url: `${apiHost}/post`,
-                complete: function() { this.toggleModal('hide'); },
+                error: function (xhr, error, status_description) {
+                    console.log(xhr.responseJSON);
+                    console.log(xhr.status);
+                    console.log(error);
+                    console.log(status_description);
+                },
             });
 
         } catch (error) {
