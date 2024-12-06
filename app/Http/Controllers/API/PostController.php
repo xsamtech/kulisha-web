@@ -129,14 +129,17 @@ class PostController extends BaseController
             return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['type_id'], __('validation.custom.type.required'), 400);
         }
 
+        // return $this->handleResponse($request->images_urls, __('notifications.create_post_success'));
         $post = Post::create($inputs);
 
         // if post contains images
-        if ($request->hasFile('images_urls')) {
-            dd($request->file('images_urls'));
-            foreach ($request->file('images_urls') as $image) {
-                $file_url = 'images/posts/' . $post->id . '/' . Str::random(50) . '.' . $image->extension();
+        if ($request->images_urls) {
+            foreach ($request->images_urls as $image) {
+                if (!$this->isValidFileSize($image)) {
+                    return $this->handleError($image, __('validation.size.file', ['attribute' => 'image', 'size' => '102400']), 400);
+                }
 
+                $file_url = 'images/posts/' . $post->id . '/' . Str::random(50) . '.' . $image->extension();
                 // Upload file
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $image));
 
@@ -149,10 +152,13 @@ class PostController extends BaseController
         }
 
         // if post contains documents
-        if ($request->hasFile('documents_urls')) {
-            foreach ($request->file('documents_urls') as $document) {
-                $file_url = 'documents/posts/' . $post->id . '/' . Str::random(50) . '.' . $document->extension();
+        if ($request->documents_urls) {
+            foreach ($request->documents_urls as $document) {
+                if (!$this->isValidFileSize($document)) {
+                    return $this->handleError($document, __('validation.size.file', ['attribute' => 'document', 'size' => '102400']), 400);
+                }
 
+                $file_url = 'documents/posts/' . $post->id . '/' . Str::random(50) . '.' . $document->extension();
                 // Upload file
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $document));
     
@@ -162,8 +168,6 @@ class PostController extends BaseController
                     'post_id' => $post->id
                 ]);
             }
-
-            return $this->handleResponse(new ResourcesPost($post), __('notifications.update_post_success'));
         }
 
         // Hashtags management

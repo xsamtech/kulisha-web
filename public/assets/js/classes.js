@@ -61,6 +61,16 @@ class User {
 
             // Reset user list when modal is closed
             $(`#${this.currentModalId}`).on('hidden.bs.modal', () => {
+                if (this.action === 'restrictions-among-users') {
+                    $('#modalCreatePost').css('z-index', '1060');
+                    $(this).css('z-index', '1040');
+                }
+
+                if (this.action === 'speakers-among-users') {
+                    $('#newEventModal').css('z-index', '1060');
+                    $(this).css('z-index', '1040');
+                }
+
                 // Reset user list contents
                 $(`#${this.userListId}`).empty();  // Use ".empty()" to remove all child elements
                 this.page = 1;  // Reset page number
@@ -208,6 +218,13 @@ class User {
  */
 class Post {
     constructor() {
+        // Form data
+        this.formData = null;
+        this.imagesId = null;
+        this.documentsId = null;
+        this.imagesArrayName = null;
+        this.documentsArrayName = null;
+
         // Ordinary post data
         this.post_url = null;
         this.post_title = null;
@@ -339,6 +356,49 @@ class Post {
     }
 
     /**
+     * Method to prepare data to send
+     * 
+     * @param string imageURL
+     */
+    prepareFormData(formData, imagesId, documentsId, imagesArrayName, documentsArrayName) {
+        this.formData = formData;
+        this.imagesId = imagesId;
+        this.documentsId = documentsId;
+        this.imagesArrayName = imagesArrayName;
+        this.documentsArrayName = documentsArrayName;
+
+        var images = document.getElementById(imagesId).files;
+        var documents = document.getElementById(documentsId).files;
+
+        if (images.length > 0) {
+            for (var i = 0; i < images.length; i++) {
+                formData.append(imagesArrayName, images[i]);
+                this.addImagesData(images[i]); // Add in the class "Post" before sending
+            }
+
+        } else {
+            console.log('Aucune image sélectionnée.');
+        }
+
+        if (documents.length > 0) {
+            for (var i = 0; i < documents.length; i++) {
+                formData.append(documentsArrayName, documents[i]);
+                this.addDocumentsData(documents[i]); // Add in the class "Post" before sending
+            }
+
+        } else {
+            console.log('Aucun document sélectionné.');
+        }
+
+        if (images.length === 0 && documents.length === 0) {
+            console.log("Aucun fichier (image ou document) n'a été sélectionné.");
+        }
+
+        return formData;
+    }
+
+
+    /**
      * Method to send all data
      */
     sendData() {
@@ -385,11 +445,24 @@ class Post {
                     console.log(xhr.status);
                     console.log(error);
                     console.log(status_description);
+                    if (!$('#successMessageWrapper').hasClass('d-none')) {
+                        $('#successMessageWrapper').addClass('d-none');
+                    }
+
+                    $('#errorMessageWrapper').removeClass('d-none');
+                    $('#errorMessageWrapper .custom-message').html(xhr.responseJSON.message);
                 },
             });
 
         } catch (error) {
             console.log(`API send post error: ${error}`);
+
+            if (!$('#successMessageWrapper').hasClass('d-none')) {
+                $('#successMessageWrapper').addClass('d-none');
+            }
+
+            $('#errorMessageWrapper').removeClass('d-none');
+            $('#errorMessageWrapper .custom-message').html(error);
         }
     }
 }

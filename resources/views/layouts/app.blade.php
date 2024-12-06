@@ -236,26 +236,13 @@
                         });
                     }
 
-                    var images = formData.getAll('images_urls[]').filter(image => image.size > 0);
-                    var documents = formData.getAll('documents_urls[]').filter(document => document.size > 0);
+                    // Prepare files to send
+                    post.prepareFormData(formData, 'imagesInput', 'documentsInput', 'images_urls[]', 'documents_urls[]');
 
-                    // images.forEach(image => post.addImagesData(image));
-                    images.forEach(image => {
-                        console.log('Image récupérée:', image); // Affichage pour vérifier
-
-                        if (image.size > 0) {
-                            post.addImagesData(image); // Ajout des fichiers valides
-                        }
-                    });
-
-                    // documents.forEach(document => post.addDocumentsData(document));
-                    documents.forEach(document => {
-                        console.log('Document récupérée:', document); // Affichage pour vérifier
-
-                        if (document.size > 0) {
-                            post.addDocumentsData(document); // Ajout des fichiers valides
-                        }
-                    });
+                    // Check the files added in FormData
+                    for (let pair of myFormData.entries()) {
+                        console.log(pair[0] + ', ' + pair[1]);
+                    }
 
                     // Send post data
                     post.sendData()

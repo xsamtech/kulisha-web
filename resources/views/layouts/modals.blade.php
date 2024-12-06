@@ -136,7 +136,7 @@
 @endif
 
         <!-- Modal create post START -->
-        <div class="modal fade" id="modalCreatePost" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalLabelCreatePost" aria-hidden="true">
+        <div class="modal fade" id="modalCreatePost" tabindex="-1" aria-labelledby="modalLabelCreatePost" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <form id="newPost">
