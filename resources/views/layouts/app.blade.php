@@ -221,11 +221,10 @@
 
                     // Send main data
                     post.setUniqueVariables(
-                        null, null, formData.get('post_content'), null, formData.get('price'), formData.get('currency'),
-                        formData.get('quantity'), null, formData.get('latitude'), formData.get('longitude'), formData.get('city'), 
+                        '', '', formData.get('post_content'), '', formData.get('price'), formData.get('currency'), 
+                        formData.get('quantity'), '', formData.get('latitude'), formData.get('longitude'), formData.get('city'), 
                         formData.get('region'), formData.get('country'), formData.get('type_id'), formData.get('category_id'), 
-                        window.Laravel.data.operational_status.id, formData.get('visibility_id'), null, null, null, null, parseInt(currentUser)
-                    );
+                        window.Laravel.data.operational_status.id, formData.get('visibility_id'), '', '', '', '', parseInt(currentUser));
 
                     // Check for any restrictions in visibility
                     if (parseInt(formData.get('visibility_id')) === window.Laravel.data.everybody_except_visibility.id || parseInt(formData.get('visibility_id')) === window.Laravel.data.nobody_except_visibility.id) {
@@ -256,8 +255,8 @@
                     }
 
                     // Send post data
-                    post.sendData()
-                        .done(function(response) {
+                    post.sendData(formData)
+                        .then(function(response) {
                             console.log(`The post was sent successfully: ${JSON.stringify(response)}`);
                             $('#waitingNewPost').addClass('d-none');
 
@@ -478,11 +477,11 @@
                             // Insert HTML after selected element
                             waitingNewPost.insertAdjacentHTML('afterend', newPostElement);
                         })
-                        .fail(function(error) {
-                            console.log(`Error sending post: ${error.responseText.message}`);
+                        .catch(function(error) {
+                            console.log(`Error sending post: ${error}`);
                             $('#waitingNewPost').addClass('d-none');
                             $('#errorMessageWrapper').removeClass('d-none');
-                            $('#errorMessageWrapper .custom-message').html(error.responseText.message);
+                            $('#errorMessageWrapper .custom-message').html(error);
                         });
                 });
 

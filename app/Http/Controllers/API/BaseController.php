@@ -93,18 +93,4 @@ class BaseController extends Controller
             return response()->json($res, $code);
         }
     }
-
-    /**
-     * Handle response error
-     *
-     * @param  $file
-     * @return boolean
-     */
-    public function isValidFileSize($file) {
-        // Maximum allowed size in bytes (100 Mo = 10 * 1024 * 1024)
-        $maxSize = 100 * 1024 * 1024; // 100 MB in octets
-
-        // Check if the file exceeds the maximum size
-        return $file->getSize() <= $maxSize;
-    }
 }

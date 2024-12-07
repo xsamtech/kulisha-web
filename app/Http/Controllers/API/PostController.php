@@ -130,7 +130,6 @@ class PostController extends BaseController
             return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['type_id'], __('validation.custom.type.required'), 400);
         }
 
-        // return $this->handleResponse($request->images_urls, __('notifications.create_post_success'));
         $post = Post::create($inputs);
 
         // if post contains images
@@ -138,11 +137,11 @@ class PostController extends BaseController
             foreach ($request->images_urls as $image) {
                 if ($image instanceof UploadedFile) {
                     if ($image->getSize() <= 1000 * 1024 * 1024) {
-                        $fileUrl = 'images/posts/' . Str::random(50) . '.' . $image->getClientOriginalExtension();
-                        $path = $image->storeAs('public/' . $fileUrl);
+                        $file_url = 'images/posts/' . $post->id . '/' . Str::random(50) . '.' . $image->getClientOriginalExtension();
+                        $dir_result = Storage::url(Storage::disk('public')->put($file_url, $image));
 
                         File::create([
-                            'file_url' => Storage::url($path),
+                            'file_url' => $dir_result,
                             'type_id' => $file_image_type->id,
                             'post_id' => $post->id
                         ]);
@@ -156,11 +155,11 @@ class PostController extends BaseController
             foreach ($request->documents_urls as $document) {
                 if ($document instanceof UploadedFile) {
                     if ($document->getSize() <= 1000 * 1024 * 1024) {
-                        $fileUrl = 'documents/posts/' . Str::random(50) . '.' . $document->getClientOriginalExtension();
-                        $path = $document->storeAs('public/' . $fileUrl);
+                        $file_url = 'documents/posts/' . $post->id . '/' . Str::random(50) . '.' . $document->getClientOriginalExtension();
+                        $dir_result = Storage::url(Storage::disk('public')->put($file_url, $document));
 
                         File::create([
-                            'file_url' => Storage::url($path),
+                            'file_url' => $dir_result,
                             'type_id' => $file_document_type->id,
                             'post_id' => $post->id
                         ]);
@@ -2766,9 +2765,7 @@ class PostController extends BaseController
 
         if ($request->hasFile('file_url')) {
             if ($type->getTranslation('type_name', 'fr') == 'Document') {
-                $file_url = 'documents/posts/' . $post->id . '/' . Str::random(50) . '.' . $request->file('file_url')->extension();
-
-                // Upload file
+                $file_url = 'documents/posts/' . $post->id . '/' . Str::random(50) . '.' . $request->file('file_url')->getClientOriginalExtension();
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $request->file('file_url')));
 
                 File::create([
@@ -2782,9 +2779,7 @@ class PostController extends BaseController
             }
 
             if ($type->getTranslation('type_name', 'fr') == 'Image') {
-                $file_url = 'images/posts/' . $post->id . '/' . Str::random(50) . '.' . $request->file('file_url')->extension();
-
-                // Upload file
+                $file_url = 'images/posts/' . $post->id . '/' . Str::random(50) . '.' . $request->file('file_url')->getClientOriginalExtension();
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $request->file('file_url')));
 
                 File::create([
@@ -2798,7 +2793,7 @@ class PostController extends BaseController
             }
 
             if ($type->getTranslation('type_name', 'fr') == 'Audio') {
-                $file_url = 'audios/posts/' . $post->id . '/' . Str::random(50) . '.' . $request->file('file_url')->extension();
+                $file_url = 'audios/posts/' . $post->id . '/' . Str::random(50) . '.' . $request->file('file_url')->getClientOriginalExtension();
 
                 // Upload file
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $request->file('file_url')));

@@ -336,26 +336,6 @@ class Post {
     }
 
     /**
-     * Method to store data in array for images
-     * 
-     * @param string imageURL
-     */
-    addImagesData(imageURL) {
-        this.images_urls.push(imageURL);
-        console.log(`Image added: ${JSON.stringify(imageURL)}`);
-    }
-
-    /**
-     * Method to store data in array for images
-     * 
-     * @param string documentURL
-     */
-    addDocumentsData(documentURL) {
-        this.documents_urls.push(documentURL);
-        console.log(`Document added: ${JSON.stringify(documentURL)}`);
-    }
-
-    /**
      * Method to prepare data to send
      * 
      * @param string imageURL
@@ -369,29 +349,40 @@ class Post {
 
         var images = document.getElementById(imagesId).files;
         var documents = document.getElementById(documentsId).files;
+        // Use a table to keep track of files already added
+        var addedImages = new Set();
+        var addedDocuments = new Set();
 
         if (images.length > 0) {
             for (var i = 0; i < images.length; i++) {
-                formData.append(imagesArrayName, images[i]);
-                this.addImagesData(images[i]); // Add in the class "Post" before sending
+                var imageName = images[i].name;
+
+                if (!addedImages.has(imageName)) {
+                    formData.append(imagesArrayName, images[i]);
+                    addedImages.add(imageName); // Add image name to all added files
+                }
             }
 
         } else {
-            console.log('Aucune image sélectionnée.');
+            console.log('No images selected.');
         }
 
         if (documents.length > 0) {
             for (var i = 0; i < documents.length; i++) {
-                formData.append(documentsArrayName, documents[i]);
-                this.addDocumentsData(documents[i]); // Add in the class "Post" before sending
+                var documentName = documents[i].name;
+
+                if (!addedDocuments.has(documentName)) {
+                    formData.append(documentsArrayName, documents[i]);
+                    addedDocuments.add(documentName); // Add the document name to the set of added files
+                }
             }
 
         } else {
-            console.log('Aucun document sélectionné.');
+            console.log('No documents selected.');
         }
 
         if (images.length === 0 && documents.length === 0) {
-            console.log("Aucun fichier (image ou document) n'a été sélectionné.");
+            console.log('No files (image or document) have been selected.');
         }
 
         return formData;
@@ -401,59 +392,75 @@ class Post {
     /**
      * Method to send all data
      */
-    sendData() {
-        try {
-            var retrieve_data = {
-                post_url: this.post_url,
-                post_title: this.post_title,
-                post_content: this.post_content,
-                shared_post_id: this.shared_post_id,
-                price: this.price,
-                currency: this.currency,
-                quantity: this.quantity,
-                answered_for: this.answered_for,
-                latitude: this.latitude,
-                longitude: this.longitude,
-                city: this.city,
-                region: this.region,
-                country: this.country,
-                type_id: this.type_id,
-                category_id: this.category_id,
-                status_id: this.status_id,
-                visibility_id: this.visibility_id,
-                coverage_area_id: this.coverage_area_id,
-                budget_id: this.budget_id,
-                community_id: this.community_id,
-                event_id: this.event_id,
-                user_id: this.user_id,
-                choices_contents: this.choices_contents,
-                icons_fonts: this.icons_fonts,
-                images_urls: this.images_urls,
-                exceptions_ids: this.exceptions_ids,
-                images_urls: this.images_urls,
-                documents_urls: this.documents_urls
-            };
+    sendData(formData) {
+        return new Promise((resolve, reject) => {
+            try {
+                var xhr = new XMLHttpRequest();
 
-            return $.ajax({
-                headers: { 'Authorization': 'Bearer ' + appRef, 'Accept': 'multipart/form-data', 'X-localization': navigator.language },
-                type: 'POST',
-                contentType: 'multipart/form-data',
-                data: retrieve_data,
-                url: `${apiHost}/post`,
-                cache: false,
-                contentType: false,
-                processData: false,
-                error: function (xhr, error, status_description) {
-                    console.log(xhr.responseJSON);
-                    console.log(xhr.status);
-                    console.log(error);
-                    console.log(status_description);
-                },
-            });
+                formData.append('post_url', this.post_url);
+                formData.append('post_title', this.post_title);
+                formData.append('post_content', this.post_content);
+                formData.append('shared_post_id', this.shared_post_id);
+                formData.append('price', this.price);
+                formData.append('currency', this.currency);
+                formData.append('quantity', this.quantity);
+                formData.append('answered_for', this.answered_for);
+                formData.append('latitude', this.latitude);
+                formData.append('longitude', this.longitude);
+                formData.append('city', this.city);
+                formData.append('region', this.region);
+                formData.append('country', this.country);
+                formData.append('type_id', this.type_id);
+                formData.append('category_id', this.category_id);
+                formData.append('status_id', this.status_id);
+                formData.append('visibility_id', this.visibility_id);
+                formData.append('coverage_area_id', this.coverage_area_id);
+                formData.append('budget_id', this.budget_id);
+                formData.append('community_id', this.community_id);
+                formData.append('event_id', this.event_id);
+                formData.append('user_id', this.user_id);
 
-        } catch (error) {
-            console.log(`API send post error: ${error}`);
-        }
-    }
+                if (this.exceptions_ids.length > 0) {
+                    for (var i = 0; i < this.exceptions_ids.length; i++) {
+                        formData.append('exceptions_ids[' + i + ']', this.exceptions_ids[i]);
+                    }
+                }
+
+                if (this.choices_contents.length > 0) {
+                    for (var i = 0; i < this.choices_contents.length; i++) {
+                        formData.append('choices_contents[' + i + ']', this.choices_contents[i]);
+                        formData.append('icons_fonts[' + i + ']', this.icons_fonts[i]);
+                        formData.append('images_urls[' + i + ']', this.images_urls[i]);
+                    }
+                }
+
+                // API Endpoint
+                xhr.open('POST', `${apiHost}/post`, true);
+                // Add necessary headers
+                xhr.setRequestHeader('Authorization', 'Bearer ' + appRef);
+                xhr.setRequestHeader('X-localization', navigator.language);
+    
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) { // When the query is complete
+                        if (xhr.status === 200) {
+                            try {
+                                const response = JSON.parse(xhr.responseText);
+                                resolve(response); // Returning the response
+                            } catch (e) {
+                                reject('Error parsing response');
+                            }
+                        } else {
+                            reject(`Error sending post: ${xhr.status} - ${xhr.statusText}`);
+                        }
+                    }
+                };
+    
+                // Envoi des données via FormData
+                xhr.send(formData);
+            } catch (error) {
+                reject(`API send post error: ${error}`);
+            }
+        });
+    }    
 }
 
