@@ -36,6 +36,7 @@ use App\Http\Resources\SentReaction as ResourcesSentReaction;
 use App\Http\Resources\User as ResourcesUser;
 use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
+use Illuminate\Http\UploadedFile;
 
 /**
  * @author Xanders
@@ -135,38 +136,36 @@ class PostController extends BaseController
         // if post contains images
         if ($request->images_urls) {
             foreach ($request->images_urls as $image) {
-                if (!$this->isValidFileSize($image)) {
-                    return $this->handleError($image, __('validation.size.file', ['attribute' => 'image', 'size' => '102400']), 400);
+                if ($image instanceof UploadedFile) {
+                    if ($image->getSize() <= 1000 * 1024 * 1024) {
+                        $fileUrl = 'images/posts/' . Str::random(50) . '.' . $image->getClientOriginalExtension();
+                        $path = $image->storeAs('public/' . $fileUrl);
+
+                        File::create([
+                            'file_url' => Storage::url($path),
+                            'type_id' => $file_image_type->id,
+                            'post_id' => $post->id
+                        ]);
+                    }
                 }
-
-                $file_url = 'images/posts/' . $post->id . '/' . Str::random(50) . '.' . $image->extension();
-                // Upload file
-                $dir_result = Storage::url(Storage::disk('public')->put($file_url, $image));
-
-                File::create([
-                    'file_url' => $dir_result,
-                    'type_id' => $file_image_type->id,
-                    'post_id' => $post->id
-                ]);
             }
         }
 
         // if post contains documents
         if ($request->documents_urls) {
             foreach ($request->documents_urls as $document) {
-                if (!$this->isValidFileSize($document)) {
-                    return $this->handleError($document, __('validation.size.file', ['attribute' => 'document', 'size' => '102400']), 400);
-                }
+                if ($document instanceof UploadedFile) {
+                    if ($document->getSize() <= 1000 * 1024 * 1024) {
+                        $fileUrl = 'documents/posts/' . Str::random(50) . '.' . $document->getClientOriginalExtension();
+                        $path = $document->storeAs('public/' . $fileUrl);
 
-                $file_url = 'documents/posts/' . $post->id . '/' . Str::random(50) . '.' . $document->extension();
-                // Upload file
-                $dir_result = Storage::url(Storage::disk('public')->put($file_url, $document));
-    
-                File::create([
-                    'file_url' => $dir_result,
-                    'type_id' => $file_document_type->id,
-                    'post_id' => $post->id
-                ]);
+                        File::create([
+                            'file_url' => Storage::url($path),
+                            'type_id' => $file_document_type->id,
+                            'post_id' => $post->id
+                        ]);
+                    }
+                }
             }
         }
 

@@ -435,34 +435,24 @@ class Post {
             };
 
             return $.ajax({
-                headers: headers,
+                headers: { 'Authorization': 'Bearer ' + appRef, 'Accept': 'multipart/form-data', 'X-localization': navigator.language },
                 type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(retrieve_data),
+                contentType: 'multipart/form-data',
+                data: retrieve_data,
                 url: `${apiHost}/post`,
+                cache: false,
+                contentType: false,
+                processData: false,
                 error: function (xhr, error, status_description) {
                     console.log(xhr.responseJSON);
                     console.log(xhr.status);
                     console.log(error);
                     console.log(status_description);
-                    if (!$('#successMessageWrapper').hasClass('d-none')) {
-                        $('#successMessageWrapper').addClass('d-none');
-                    }
-
-                    $('#errorMessageWrapper').removeClass('d-none');
-                    $('#errorMessageWrapper .custom-message').html(xhr.responseJSON.message);
                 },
             });
 
         } catch (error) {
             console.log(`API send post error: ${error}`);
-
-            if (!$('#successMessageWrapper').hasClass('d-none')) {
-                $('#successMessageWrapper').addClass('d-none');
-            }
-
-            $('#errorMessageWrapper').removeClass('d-none');
-            $('#errorMessageWrapper .custom-message').html(error);
         }
     }
 }

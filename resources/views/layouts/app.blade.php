@@ -240,8 +240,19 @@
                     post.prepareFormData(formData, 'imagesInput', 'documentsInput', 'images_urls[]', 'documents_urls[]');
 
                     // Check the files added in FormData
-                    for (let pair of myFormData.entries()) {
-                        console.log(pair[0] + ', ' + pair[1]);
+                    for (var pair of formData.entries()) {
+                        var fieldName = pair[0];
+                        var value = pair[1];
+
+                        if (value instanceof File) {
+                            console.log(`${fieldName}:`);
+                            console.log(`  File name: ${value.name}`);
+                            console.log(`  File size: ${value.size} octets`);
+                            console.log(`  MIME Type: ${value.type}`);
+
+                        } else {
+                            console.log(`${fieldName}: ${value}`);
+                        }
                     }
 
                     // Send post data
@@ -468,10 +479,10 @@
                             waitingNewPost.insertAdjacentHTML('afterend', newPostElement);
                         })
                         .fail(function(error) {
-                            console.log(`Error sending post: ${JSON.stringify(error)}`);
+                            console.log(`Error sending post: ${error.responseText.message}`);
                             $('#waitingNewPost').addClass('d-none');
                             $('#errorMessageWrapper').removeClass('d-none');
-                            $('#errorMessageWrapper .custom-message').html(error);
+                            $('#errorMessageWrapper .custom-message').html(error.responseText.message);
                         });
                 });
 
