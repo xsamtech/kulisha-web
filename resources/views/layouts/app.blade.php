@@ -217,7 +217,7 @@
                     $('#waitingNewPost').removeClass('d-none');
 
                     var formData = new FormData(this);
-                    var post = new Post('post', 'modalCreatePost');
+                    var post = new Post();
 
                     // Send main data
                     post.setUniqueVariables(
