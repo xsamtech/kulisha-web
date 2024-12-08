@@ -170,9 +170,9 @@
                             </div>
 
                             <!-- Images input -->
-                            <input type="file" name="images_urls[]" id="imagesInput" multiple class="d-none" onchange="toggleSubmitFiles(this.id);">
+                            <input type="file" name="images_urls" id="imagesInput" multiple class="d-none" onchange="toggleSubmitFiles(this.id);">
                             <!-- Document input -->
-                            <input type="file" name="documents_urls[]" id="documentsInput" multiple class="d-none" onchange="toggleSubmitFiles(this.id);">
+                            <input type="file" name="documents_urls" id="documentsInput" multiple class="d-none" onchange="toggleSubmitFiles(this.id);">
                             <!-- Location -->
                             <input type="hidden" name="latitude" id="latitude" value="">
                             <input type="hidden" name="longitude" id="longitude" value="">
