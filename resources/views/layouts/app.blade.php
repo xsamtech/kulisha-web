@@ -258,6 +258,18 @@
                     post.sendData(formData)
                         .then(function(response) {
                             console.log(`The post was sent successfully: ${JSON.stringify(response)}`);
+
+                            $(this).trigger('reset');
+                            $('#imagesPreviews').html('');
+                            $('#documentsPreviews').html('');
+                            $('#locationInfo').html('');
+                            $('#locationInfo').html('');
+
+                            if (!$('#restrictions').hasClass('d-none')) {
+                                $('#restrictions').addClass('d-none');
+                                $('#restrictions .users-list').html('');
+                            }
+
                             $('#waitingNewPost').addClass('d-none');
 
                             // Add the new post as a page bloc
@@ -318,7 +330,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
-                                                        <p>${response.data.transformed_post_content}</p>`;
+                                                        <p class="mb-0">${response.data.transformed_post_content}</p>`;
 
                             if (response.data.images.length > 0) {
                                 if (response.data.images.length > 3) {
@@ -390,11 +402,11 @@
                             }
 
                             if (response.data.documents.length > 0) {
-                                newPostElement += `<div class="tiny-slider arrow-hover">
-                                                        <div class="tiny-slider-inner ms-n4" data-arrow="true" data-dots="false" data-items-xl="3" data-items-lg="2" data-items-md="2" data-items-sm="2" data-items-xs="1" data-gutter="12" data-edge="30">`
+                                newPostElement += `<div class="tiny-slider arrow-hover mt-3">
+                                                        <div class="row tiny-slider-inner ms-n4" data-arrow="true" data-dots="false" data-items-xl="3" data-items-lg="2" data-items-md="2" data-items-sm="2" data-items-xs="1" data-gutter="12" data-edge="30" data-autoplay="false" data-autoheight="false">`
 
                                 response.data.documents.forEach((file, index) => {
-                                    newPostElement += `<div class="slider-item">
+                                    newPostElement += `<div class="col-sm-4 col-6 slider-item">
                                                             <canvas id="canvas-${index}" class="pdf-preview"></canvas>
                                                         </div>`;
 
@@ -402,13 +414,22 @@
                                 newPostElement += `</div>
                                                 </div>`; // <div class="tiny-slider arrow-hover">
 
-                                // Load and display previews of each PDF file
-                                response.data.documents.forEach((file, index) => {
-                                    loadPDFPreview(file.file_url, index);
-                                });
+                                setTimeout(() => {
+                                    // Load and display previews of each PDF file
+                                    response.data.documents.forEach((doc, index) => {
+                                        var canvas = document.getElementById(`canvas-${index}`);
+
+                                        if (canvas) {
+                                            loadPDFPreview(doc.file_url, index);
+
+                                        } else {
+                                            console.error(`Canvas with id canvas-${index} not found`);
+                                        }
+                                    });
+                                }, 0);
                             }
 
-                            newPostElement += `<ul class="nav nav-pills nav-pills-light nav-fill nav-stack small border-top border-bottom py-1 my-3">
+                            newPostElement += `<ul class="nav nav-pills nav-pills-light nav-fill nav-stack small border-top">
                                                     <li class="nav-item">
                                                         <a class="nav-link mb-0 reaction-btn" data-reactions-type='horizontal' data-post-id="1">
                                                             <div class="reaction-box">`
@@ -476,6 +497,7 @@
 
                             // Insert HTML after selected element
                             waitingNewPost.insertAdjacentHTML('afterend', newPostElement);
+                            loadScriptsInParallel(scripts);
                         })
                         .catch(function(error) {
                             console.log(`Error sending post: ${error}`);

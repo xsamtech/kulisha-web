@@ -314,7 +314,19 @@ function loadEmojis(emojiDropdown, emojiInput, submitButton) {
 
             // Add an event to insert the emoji into the textarea
             emojiElem.addEventListener('click', function () {
-                emojiInput.value += emoji.character;
+                var emojiCharacter = emoji.character;
+                var emojiInputElem = emojiInput; // Référence à votre textarea
+
+                // On récupère la position actuelle du curseur
+                var cursorPos = emojiInputElem.selectionStart;
+                var textBefore = emojiInputElem.value.substring(0, cursorPos);
+                var textAfter = emojiInputElem.value.substring(cursorPos);
+
+                // Insérer l'émoji à la position du curseur
+                emojiInputElem.value = textBefore + emojiCharacter + textAfter;
+
+                // Déplace le curseur juste après l'émoji inséré
+                emojiInputElem.selectionStart = emojiInputElem.selectionEnd = cursorPos + emojiCharacter.length;
 
                 if ($(submitButton).hasClass('disabled')) {
                     $(submitButton).removeClass('disabled').removeClass('btn-primary-soft').addClass('btn-primary');
@@ -328,15 +340,22 @@ function loadEmojis(emojiDropdown, emojiInput, submitButton) {
 // X. Function to show PDF first page
 // ----------------------------------
 function loadPDFPreview(fileUrl, index) {
-    const canvas = document.getElementById(`canvas-${index}`);
-    const ctx = canvas.getContext('2d');
+    var canvas = document.getElementById(`canvas-${index}`);
+
+    if (!canvas) {
+        console.error(`Canvas with id canvas-${index} not found`);
+
+        return;
+    }
+
+    var ctx = canvas.getContext('2d');
 
     // Using PDF.js to retrieve PDF
     pdfjsLib.getDocument(fileUrl).promise.then(function (pdf) {
         // Retrieve the first page of the PDF
         pdf.getPage(1).then(function(page) {
-            const scale = 0.5; // Ajuster la taille de la vignette
-            const viewport = page.getViewport({ scale: scale });
+            var scale = 0.5; // Ajuster la taille de la vignette
+            var viewport = page.getViewport({ scale: scale });
 
             // Set canvas size according to page
             canvas.height = viewport.height;
@@ -1342,7 +1361,7 @@ $(function () {
                 defaultDate: $('#date_start').val(),  // Set default date for Flatpickr
                 onChange: function (selectedDates, dateStr, instance) {
                     // Formatting before sending to server
-                    const formattedDate = instance.formatDate(selectedDates[0], 'Y-m-d H:i:s');
+                    var formattedDate = instance.formatDate(selectedDates[0], 'Y-m-d H:i:s');
                     $('#start_at').val(formattedDate);
                 }
             });
@@ -1357,7 +1376,7 @@ $(function () {
                 defaultDate: $('#date_end').val(),  // Set default date for Flatpickr
                 onChange: function (selectedDates, dateStr, instance) {
                     // Formatting before sending to server
-                    const formattedDate = instance.formatDate(selectedDates[0], 'Y-m-d H:i:s');
+                    var formattedDate = instance.formatDate(selectedDates[0], 'Y-m-d H:i:s');
                     $('#end_at').val(formattedDate);
                 }
             });

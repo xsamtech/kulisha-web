@@ -46,36 +46,53 @@ var isWebview1 = appRef.split('-')[1] != 'nai';
 var isWebview2 = (isAndroid && /; wv\)/.test(normalizedUserAgent)) || (isIos && !standalone && !isSafari);
 
 var scripts = [
-    '/assets/addons/custom/jquery/js/jquery.min.js',
-    '/assets/addons/social/bootstrap/dist/js/bootstrap.bundle.min.js',
-    '/assets/addons/social/tiny-slider/dist/tiny-slider.js',
-    '/assets/addons/social/pswmeter/pswmeter.min.js',
-    '/assets/addons/social/OverlayScrollbars-master/js/OverlayScrollbars.min.js',
-    '/assets/addons/social/choices.js/public/assets/scripts/choices.min.js',
-    '/assets/addons/social/glightbox-master/dist/js/glightbox.min.js',
-    '/assets/addons/social/flatpickr/dist/flatpickr.min.js',
-    '/assets/addons/social/plyr/plyr.js',
-    '/assets/addons/social/dropzone/dist/min/dropzone.min.js',
-    '/assets/js/social/functions.js',
-    '/assets/addons/custom/autosize/js/autosize.min.js',
-    '/assets/addons/custom/perfect-scrollbar/dist/perfect-scrollbar.min.js',
+    currentHost + '/assets/addons/custom/jquery/js/jquery.min.js',
+    currentHost + '/assets/addons/social/bootstrap/dist/js/bootstrap.bundle.min.js',
+    currentHost + '/assets/addons/social/tiny-slider/dist/tiny-slider.js',
+    currentHost + '/assets/addons/social/pswmeter/pswmeter.min.js',
+    currentHost + '/assets/addons/social/OverlayScrollbars-master/js/OverlayScrollbars.min.js',
+    currentHost + '/assets/addons/social/choices.js/public/assets/scripts/choices.min.js',
+    currentHost + '/assets/addons/social/glightbox-master/dist/js/glightbox.min.js',
+    currentHost + '/assets/addons/social/flatpickr/dist/flatpickr.min.js',
+    currentHost + '/assets/addons/social/plyr/plyr.js',
+    currentHost + '/assets/addons/social/dropzone/dist/min/dropzone.min.js',
+    currentHost + '/assets/js/social/functions.js',
+    currentHost + '/assets/addons/custom/autosize/js/autosize.min.js',
+    currentHost + '/assets/addons/custom/perfect-scrollbar/dist/perfect-scrollbar.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js',
-    '/assets/js/load-app-scripts.js',
-    '/assets/addons/social/zuck.js/dist/zuck.min.js',
-    '/assets/js/classes.js',
-    '/assets/js/social/zuck-stories.js',
-    '/assets/js/script.app.js',
+    currentHost + '/assets/js/load-app-scripts.js',
+    currentHost + '/assets/addons/social/zuck.js/dist/zuck.min.js',
+    currentHost + '/assets/js/classes.js',
+    currentHost + '/assets/js/social/zuck-stories.js',
+    currentHost + '/assets/js/script.app.js',
 ];
 
 // Dynamically load JS files
 function loadJS(url) {
-    return $.getScript(currentHost + url);
+    return $.getScript(url);
+}
+
+function removeExistingScripts(scripts) {
+    // Select all scripts present in the DOM
+    const existingScripts = document.querySelectorAll('script');
+
+    // Browse scripts and delete existing ones
+    existingScripts.forEach(script => {
+        if (scripts.includes(script.src)) {
+            script.remove();
+        }
+    });
 }
 
 function loadScriptsInParallel(scripts) {
+    // Delete existing scripts before loading new ones
+    removeExistingScripts(scripts);
+
+    // Load scripts in parallel
     return Promise.all(scripts.map(src => {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
+
             script.src = src;
             script.async = true;
             script.onload = resolve;
