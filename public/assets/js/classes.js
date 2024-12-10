@@ -11,7 +11,7 @@
  * (1) "User" class to handle users
  */
 class User {
-    constructor(action, currentModalId = null, apiURL = null, userListId = null, loadingSpinnerId = null, firstname = null) {
+    constructor(action, currentModalId = null, apiURL = null, usersListId = null, loadingSpinnerId = null, firstname = null) {
         this.page = 1;  // Initialize page to 1
         this.loading = false;  // Indicator to check if a query is in progress
 
@@ -19,7 +19,7 @@ class User {
         this.action = action;
         this.currentModalId = currentModalId || '';
         this.apiURL = apiURL || '';
-        this.userListId = userListId || '';
+        this.usersListId = usersListId || '';
         this.loadingSpinnerId = loadingSpinnerId || '';
         this.firstname = firstname || '';
 
@@ -55,7 +55,7 @@ class User {
                 }
 
                 this.page = 1;  // Reset page number
-                $(`#${this.userListId}`).empty();  // Empty the list before loading new users
+                $(`#${this.usersListId}`).empty();  // Empty the list before loading new users
                 this.loadUsersToCheck();  // Load users when opening modal
             });
 
@@ -72,16 +72,16 @@ class User {
                 }
 
                 // Reset user list contents
-                $(`#${this.userListId}`).empty();  // Use ".empty()" to remove all child elements
+                $(`#${this.usersListId}`).empty();  // Use ".empty()" to remove all child elements
                 this.page = 1;  // Reset page number
                 this.loading = false;  // Reset loading state
                 $(window).off('scroll');  // Disable scroll event to avoid calls after closing
             });
 
             // Handle scroll for infinite loading inside modal
-            $(`#${this.userListId}`).on('scroll', () => {
+            $(`#${this.usersListId}`).on('scroll', () => {
                 // Check if the user is at the bottom of the list
-                if ($(`#${this.userListId}`).scrollTop() + $(`#${this.userListId}`).innerHeight() >= $(`#${this.userListId}`)[0].scrollHeight - 50) {
+                if ($(`#${this.usersListId}`).scrollTop() + $(`#${this.usersListId}`).innerHeight() >= $(`#${this.usersListId}`)[0].scrollHeight - 50) {
                     if (!this.loading) { // Make sure there is not already a call in progress
                         this.loadUsersToCheck();  // Load more users if needed
                     }
@@ -122,7 +122,7 @@ class User {
 
                     // If the element does not already exist, it is added to the list
                     if (!document.querySelector('#empty-text')) {
-                        document.querySelector(`#${this.userListId}`).appendChild(userItem);
+                        document.querySelector(`#${this.usersListId}`).appendChild(userItem);
                     }
 
                     // Stop scroll loading
@@ -160,7 +160,7 @@ class User {
                         // Check if item with id "follower-{user.follower.id}" already exists
                         if (!document.querySelector(`#follower-${user.follower.id}`)) {
                             // If the element does not already exist, it is added to the list
-                            document.querySelector(`#${this.userListId}`).appendChild(userItem);
+                            document.querySelector(`#${this.usersListId}`).appendChild(userItem);
                         }
                     }
 
@@ -183,7 +183,7 @@ class User {
                         // Check if item with id "connection-{user.id}" already exists
                         if (!document.querySelector(`#connection-${user.id}`)) {
                             // If the element does not already exist, it is added to the list
-                            document.querySelector(`#${this.userListId}`).appendChild(userItem);
+                            document.querySelector(`#${this.usersListId}`).appendChild(userItem);
                         }
                     }
                 });
@@ -193,7 +193,7 @@ class User {
                     this.page++;  // Go to next page
                 } else {
                     // If you are on the last page, disable scrolling
-                    $(`#${this.userListId}`).off('scroll');
+                    $(`#${this.usersListId}`).off('scroll');
                 }
 
                 // Hide loading spinner
@@ -217,7 +217,9 @@ class User {
  * (2) "Post" class to handle posts
  */
 class Post {
-    constructor() {
+    constructor(postsListId = null) {
+        this.postsListId = postsListId || '';
+
         // Form data
         this.formData = null;
         this.imagesId = null;
@@ -260,6 +262,128 @@ class Post {
         // Data in array for files
         this.images_urls = [];
         this.documents_urls = [];
+    }
+
+    /**
+     * Method to load posts
+     */
+    loadPosts() {
+        if (this.loading) return;  // Prevent multiple requests if a request is already in progress
+
+        this.loading = true;  // Mark that a request is in progress
+
+        // Show loading spinner
+        document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-0');
+        document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-100');
+
+        $.ajax({
+            headers: headers,
+            type: 'GET',
+            contentType: 'application/json',
+            url: this.apiURL,  // The API URL to retrieve users
+            dataType: 'json',
+            data: { page: this.page },  // Send page number
+            success: (response) => {
+                // If no data is returned, stop loading
+                if (response.data.length === 0) {
+                    var postItem = document.createElement('p');
+
+                    postItem.setAttribute('id', 'empty-text');
+                    postItem.setAttribute('class', 'm-0 text-center');
+
+                    // Empty list text
+                    postItem.innerHTML = window.Laravel.lang.empty_list;
+
+                    // If the element does not already exist, it is added to the list
+                    if (!document.querySelector('#empty-text')) {
+                        document.querySelector(`#${this.postsListId}`).appendChild(postItem);
+                    }
+
+                    // Stop scroll loading
+                    $(window).off('scroll');
+                    // Hide loading spinner
+                    document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-100');
+                    document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-0');
+
+                    // Reset the "loading" status
+                    this.loading = false;
+
+                    return;
+                }
+
+                // Loop through users and add them to the list
+                response.data.forEach(user => {
+                    var userItem = document.createElement('label');
+
+                    if (this.action === 'restrictions-among-users') {
+                        userItem.setAttribute('for', `follower-${user.follower.id}`);
+                        userItem.setAttribute('role', 'button');
+                        userItem.classList.add('form-check-label', 'd-block', 'mb-4');
+
+                        userItem.innerHTML = `
+                            <img src="${user.follower.profile_photo_path}" alt="" width="50" class="me-3 rounded-circle float-start">
+                            <input type="checkbox" name="followers_ids" id="follower-${user.follower.id}" class="form-check-input float-end" 
+                                value="${user.follower.id}" data-firstname="${user.follower.firstname}" data-lastname="${user.follower.lastname}" 
+                                data-avatar="${user.follower.profile_photo_path}" onchange="toggleSubmitCheckboxes('modalSelectRestrictions .users-list', 'sendCheckedUsers1')">
+                            <div>
+                                <h6 class="mb-0">${user.follower.firstname} ${user.follower.lastname}</h6>
+                                <small>@${user.follower.username}</small>
+                            </div>
+                        `;
+
+                        // Check if item with id "follower-{user.follower.id}" already exists
+                        if (!document.querySelector(`#follower-${user.follower.id}`)) {
+                            // If the element does not already exist, it is added to the list
+                            document.querySelector(`#${this.postsListId}`).appendChild(userItem);
+                        }
+                    }
+
+                    if (this.action === 'speakers-among-users') {
+                        userItem.setAttribute('for', `connection-${user.id}`);
+                        userItem.setAttribute('role', 'button');
+                        userItem.classList.add('form-check-label', 'd-block', 'mb-4');
+
+                        userItem.innerHTML = `
+                            <img src="${user.profile_photo_path}" alt="" width="50" class="me-3 rounded-circle float-start">
+                            <input type="checkbox" name="connections_ids" id="connection-${user.id}" class="form-check-input float-end" 
+                                value="${user.id}" data-firstname="${user.firstname}" data-lastname="${user.lastname}" 
+                                data-avatar="${user.profile_photo_path}" onchange="toggleSubmitCheckboxes('modalSelectSpeakers .users-list', 'sendCheckedUsers2')">
+                            <div>
+                                <h6 class="mb-0">${user.firstname} ${user.lastname}</h6>
+                                <small>@${user.username}</small>
+                            </div>
+                        `;
+
+                        // Check if item with id "connection-{user.id}" already exists
+                        if (!document.querySelector(`#connection-${user.id}`)) {
+                            // If the element does not already exist, it is added to the list
+                            document.querySelector(`#${this.postsListId}`).appendChild(userItem);
+                        }
+                    }
+                });
+
+                // Check if the last page has been reached
+                if (this.page < response.lastPage) {
+                    this.page++;  // Go to next page
+                } else {
+                    // If you are on the last page, disable scrolling
+                    $(`#${this.postsListId}`).off('scroll');
+                }
+
+                // Hide loading spinner
+                document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-100');
+                document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-0');
+
+                // Reset the "loading" status
+                this.loading = false;
+            },
+            error: () => {
+                // If an error occurs, hide the spinner and reset the "loading" status
+                document.querySelector(`#${this.loadingSpinnerId}`).classList.remove('opacity-100');
+                document.querySelector(`#${this.loadingSpinnerId}`).classList.add('opacity-0');
+                this.loading = false;
+            }
+        });
     }
 
     /**

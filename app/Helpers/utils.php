@@ -121,6 +121,16 @@ if (!function_exists('getArrayKeys')) {
     }
 }
 
+// Get hours difference between two dates
+if (!function_exists('hoursDifference')) {
+    function hoursDifference($dateMin, $dateMax)
+    {
+        $hoursDifference = $dateMax->diffInHours($dateMin, false);
+
+        return abs($hoursDifference);
+    }
+}
+
 // Month fully readable
 if (!function_exists('explicitMonth')) {
     function explicitMonth($month)

@@ -1441,9 +1441,10 @@ class UserController extends BaseController
                 if ($user->status_id == $blocked_member_status->id) {
                     $blocked_user_controller = new BlockedUserController();
                     // Try to unlock the blocked user
-                    $unlock_user = json_decode($blocked_user_controller->unlockUser($user->id));
+                    $unlock_user = $blocked_user_controller->unlockUser($user->id);
+                    $unlock_user_data = $unlock_user->getData();
 
-                    if ($unlock_user->success == false) {
+                    if ($unlock_user_data->success == false) {
                         return $this->handleError(new ResourcesUser($user), __('notifications.find_member_blocked'), 400);
                     }
                 }
@@ -1508,9 +1509,10 @@ class UserController extends BaseController
                 if ($user->status_id == $blocked_member_status->id) {
                     $blocked_user_controller = new BlockedUserController();
                     // Try to unlock the blocked user
-                    $unlock_user = json_decode($blocked_user_controller->unlockUser($user->id));
+                    $unlock_user = $blocked_user_controller->unlockUser($user->id);
+                    $unlock_user_data = $unlock_user->getData();
 
-                    if ($unlock_user->success == false) {
+                    if ($unlock_user_data->success == false) {
                         return $this->handleError(new ResourcesUser($user), __('notifications.find_member_blocked'), 400);
                     }
                 }

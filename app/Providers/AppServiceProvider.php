@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\API\PostController;
 use App\Http\Resources\Category as ResourcesCategory;
 use App\Http\Resources\Field as ResourcesField;
 use App\Http\Resources\Reaction as ResourcesReaction;
@@ -43,6 +44,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->composer('*', function ($view) {
+            // Prepare an ARRAY for the news feed
+            $news_feed_aliases_array = [];
             // Available time zones
             $timezones = DateTimeZone::listIdentifiers();
             // Prepare an ARRAY for time zones with their offset
@@ -98,6 +101,12 @@ class AppServiceProvider extends ServiceProvider
             $deleted_status_resource = new ResourcesStatus($deleted_status);
             $deleted_status_data = $deleted_status_resource->toArray(request());
 
+            // Add data to "$news_feed_aliases_array" ARRAY
+            array_push($news_feed_aliases_array, 'product', 'service', 'anonymous_question_request', 'poll');
+
+            // Convert "$news_feed_aliases_array" to string
+            $news_feed_aliases = implode(',', $news_feed_aliases_array);
+
             if (Auth::check()) {
                 // Calling the request
                 $request = App::make(Request::class);
@@ -107,6 +116,11 @@ class AppServiceProvider extends ServiceProvider
                 // User fields
                 $user_fields = $user_data['fields'];
                 $fields_ids = getColumnsFromJson($user_fields, 'id');
+                // Posts list
+                $post_controller = new PostController();
+                $news_feed_request = $post_controller->newsFeed($news_feed_aliases, Auth::user()->id);
+                $news_feed_data = $news_feed_request->getData()->data;
+                $news_feed = json_decode(json_encode($news_feed_data), true);
                 // Categories for product
                 $categories_product_collection = Category::whereHas('fields', function ($query) use ($fields_ids) { $query->whereIn('fields.id', $fields_ids); })->where('type_id', $product_type->id)->get();
                 $categories_product_resource = ResourcesCategory::collection($categories_product_collection);
@@ -133,6 +147,7 @@ class AppServiceProvider extends ServiceProvider
 
                 $view->with('access_types', $access_types);
                 $view->with('current_user', $user_data);
+                $view->with('posts', $news_feed);
                 $view->with('categories_product', $categories_product);
                 $view->with('categories_product_type', $categories_product_type);
                 $view->with('categories_service', $categories_service);
