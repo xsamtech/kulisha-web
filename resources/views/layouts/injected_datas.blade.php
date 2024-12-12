@@ -31,6 +31,7 @@
                             },
                             actions: {
                                 save: "@lang('miscellaneous.public.home.posts.actions.save')",
+                                pin: "@lang('miscellaneous.public.home.posts.actions.pin')",
                                 send_via_dm: "@lang('miscellaneous.public.home.posts.actions.send_via_dm')",
                                 copy_link: "@lang('miscellaneous.public.home.posts.actions.copy_link')",
                                 share_via_: "@lang('miscellaneous.public.home.posts.actions.share_via_')",

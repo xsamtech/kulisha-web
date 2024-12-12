@@ -38,9 +38,9 @@
 
                                 <!-- Button -->
                                 <div class="d-grid">
-                                    <button id="submit" class="btn btn-lg btn-primary-soft rounded-pill disabled">
-                                        <span class="text-uppercase">@lang('auth.login')</span>
-                                        <div class="spinner-border text-white float-end opacity-0" style="margin-top: -5px;" role="status"><span class="visually-hidden">@lang('miscellaneous.loading')</span></div>
+                                    <button id="submit" class="btn btn-lg btn-primary-soft rounded-pill position-relative disabled">
+                                        <span class="text-uppercase d-inline-block mb-1">@lang('auth.login')</span>
+                                        <div class="spinner-border text-white position-absolute opacity-0" style="top: 9px; right: 9px;" role="status"><span class="visually-hidden">@lang('miscellaneous.loading')</span></div>
                                     </button>
                                 </div>
                                 <!-- Register -->

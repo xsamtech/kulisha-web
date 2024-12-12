@@ -143,6 +143,7 @@ class Post extends JsonResource
                     'currency' => $this->currency,
                     'quantity' => $this->quantity,
                     'answered_for' => $this->answered_for,
+                    'is_pinned' => $this->is_pinned,
                     'latitude' => $this->latitude,
                     'longitude' => $this->longitude,
                     'city' => $this->city,

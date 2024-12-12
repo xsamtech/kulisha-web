@@ -734,6 +734,8 @@ return [
                 // Actions
                 'actions' => [
                     'save' => 'Enregistrer le post',
+                    'pin' => 'Épingler ce post',
+                    'unpin' => 'Détacher ce post',
                     'send_via_dm' => 'Envoyer via Direct Message',
                     'copy_link' => 'Copier le lien pour publier',
                     'share_via_' => 'Partager le post via …',

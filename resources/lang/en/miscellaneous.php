@@ -734,6 +734,8 @@ return [
                 // Actions
                 'actions' => [
                     'save' => 'Save the post',
+                    'pin' => 'Pin this post',
+                    'unpin' => 'Unpin this post',
                     'send_via_dm' => 'Send via Direct Message',
                     'copy_link' => 'Copy link to post',
                     'share_via_' => 'Share post via …',

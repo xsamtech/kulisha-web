@@ -1655,7 +1655,7 @@ $(function () {
                                                     <!-- Card feed action dropdown menu -->
                                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="post-${response.data.id}">
                                                         <li>
-                                                            <a role="button" class="dropdown-item"><i class="fa-regular fa-bookmark fa-fw me-2"></i>${window.Laravel.lang.public.posts.actions.save}</a>
+                                                            <a role="button" class="dropdown-item"><i class="fa-regular fa-thumbtack fa-fw me-2"></i>${window.Laravel.lang.public.posts.actions.pin}</a>
                                                         </li>
                                                         <li>
                                                             <a role="button" class="dropdown-item"><i class="fa-regular fa-eye fa-fw me-2"></i>${window.Laravel.lang.public.posts.actions.change_visibility}</a>
