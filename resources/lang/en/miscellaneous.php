@@ -654,6 +654,10 @@ return [
                     'waiting' => 'Publishing in progress...'
                 ],
                 'write' => 'Write here ...',
+                'posted' => [
+                    'message' => 'The post has been published',
+                    'see' => 'See the post',
+                ],
                 'choose_type' => 'Choose the type of post',
                 'choose_category' => 'Choose a category for your <strong>:post_type</strong>',
                 'choose_visibility' => [
@@ -747,7 +751,6 @@ return [
                     'report' => 'Report this post',
                     'update_post' => 'Edit post',
                     'update_audience' => 'Change audience',
-                    'disable_notification' => 'Disable notification for this post',
                     'embed_into_website' => 'Embed into a website',
                     'delete_description' => 'Will be deleted after 30 days',
                 ],

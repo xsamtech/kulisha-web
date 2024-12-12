@@ -26,6 +26,10 @@
                             number: "@lang('miscellaneous.public.errors.number')",
                         },
                         posts: {
+                            posted: {
+                                message: "@lang('miscellaneous.public.home.posts.posted.message')",
+                                see: "@lang('miscellaneous.public.home.posts.posted.see')",
+                            },
                             boost: {
                                 title: "@lang('miscellaneous.public.home.posts.boost.title')",
                             },
@@ -42,7 +46,6 @@
                                 report: "@lang('miscellaneous.public.home.posts.actions.report')",
                                 update_post: "@lang('miscellaneous.public.home.posts.actions.update_post')",
                                 update_audience: "@lang('miscellaneous.public.home.posts.actions.update_audience')",
-                                disable_notification: "@lang('miscellaneous.public.home.posts.actions.disable_notification')",
                                 embed_into_website: "@lang('miscellaneous.public.home.posts.actions.embed_into_website')",
                                 delete_description: "@lang('miscellaneous.public.home.posts.actions.delete_description')",
                             },

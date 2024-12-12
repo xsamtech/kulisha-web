@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Http\Controllers\API\PostController;
 use App\Http\Resources\Category as ResourcesCategory;
 use App\Http\Resources\Field as ResourcesField;
+use App\Http\Resources\Post as ResourcesPost;
 use App\Http\Resources\Reaction as ResourcesReaction;
 use App\Http\Resources\Status as ResourcesStatus;
 use App\Http\Resources\Type as ResourcesType;
@@ -13,6 +14,7 @@ use App\Http\Resources\Visibility as ResourcesVisibility;
 use App\Models\Category;
 use App\Models\Field;
 use App\Models\Group;
+use App\Models\Post;
 use App\Models\Reaction;
 use App\Models\Status;
 use App\Models\Type;
@@ -144,6 +146,10 @@ class AppServiceProvider extends ServiceProvider
                 $reactions_collection = Reaction::where('group_id', $post_reactions_group->id)->get();
                 $reactions_resource = ResourcesReaction::collection($reactions_collection);
                 $reactions = $reactions_resource->toArray(request());
+                // Find the last user post to check on page
+                $last_user_post_request = Post::where('user_id', Auth::user()->id)->latest()->first();
+                $last_user_post_resource = new ResourcesPost($last_user_post_request);
+                $last_user_post = $last_user_post_resource->toArray(request());
 
                 $view->with('access_types', $access_types);
                 $view->with('current_user', $user_data);
@@ -158,6 +164,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('nobody_except_visibility', $nobody_except_visibility);
                 $view->with('reactions', $reactions);
                 $view->with('ipinfo_data', $request->ipinfo);
+                $view->with('last_user_post', $last_user_post);
             }
 
             $view->with('timezones', $timezoneList);

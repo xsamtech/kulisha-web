@@ -147,7 +147,7 @@ if (!function_exists('explicitDayMonth')) {
     {
         $locale = app()->getLocale();
         $currentDate = Carbon::parse($date);
-        $format = $locale === 'fr' ? 'j M' : 'M j';
+        $format = $locale === 'fr' ? 'j F' : 'F j';
 
         Carbon::setlocale($locale);
 

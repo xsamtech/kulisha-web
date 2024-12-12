@@ -654,6 +654,10 @@ return [
                     'waiting' => 'Publication en cours ...'
                 ],
                 'write' => 'Écrivez ici ...',
+                'posted' => [
+                    'message' => 'Le post a été publié',
+                    'see' => 'Voir le post',
+                ],
                 'choose_type' => 'Choisir le type de post',
                 'choose_category' => 'Choisir une categorie pour votre <strong>:post_type</strong>',
                 'choose_visibility' => [
@@ -747,7 +751,6 @@ return [
                     'report' => 'Signaler ce post',
                     'update_post' => 'Modifier le post',
                     'update_audience' => 'Modifier l’audience',
-                    'disable_notification' => 'Désactiver notification pour ce post',
                     'embed_into_website' => 'Intégrer à un site web',
                     'delete_description' => 'Sera supprimé après 30 jours',
                 ],

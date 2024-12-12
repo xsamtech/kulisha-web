@@ -214,11 +214,11 @@
 			@if ($post['type']['alias'] === 'anonymous_question_request')
 
 			@else
-							<div class="card">
+							<div class="card mb-3">
 								<!-- Card header START -->
 								<div class="card-header border-0 pb-0">
-									<div class="d-flex align-items-center justify-content-between">
-										<div class="d-flex align-items-center">
+									<div class="d-flex justify-content-between">
+										<div class="d-flex">
 											<!-- Avatar -->
 											<div class="avatar avatar-story me-2">
 												<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}">
@@ -230,14 +230,17 @@
 											<div>
 												<div class="nav nav-divider">
 													<h6 class="nav-item card-title mb-0">
-														<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}">
+														<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}" class="user-thumbnail" data-user-id="{{ $post['id'] }}">
 															{{ $post['user']['firstname'] . ' ' . $post['user']['lastname'] }}
 														</a>
 													</h6>
-													<span class="nav-item small">{{ $post['created_at_explicit'] }}</span>
+													<span class="nav-item">
+														<i class="fa-solid fa-{{ $post['type']['alias'] == 'product' ? 'basket-shopping' : 'people-carry-box' }} text-{{ $post['type']['color'] }}" title="{{ $post['type']['type_name'] }}" data-bs-toggle="tooltip" data-bs-placement="right"></i>
+													</span>
 												</div>
 
-												<p class="mb-0 small">{{ '@' . $post['user']['username'] }}</p>
+												<p class="mb-0 kls-small">{{ '@' . $post['user']['username'] }}</p>
+												<p class="mb-0 kls-small">{{ $post['created_at_explicit'] }}</p>
 											</div>
 										</div>
 
@@ -259,9 +262,6 @@
                                                 <li>
                                                     <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'hide', this)"><i class="fa-regular fa-eye-slash fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.hide')</a>
                                                 </li>
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'disable_notification', this)"><i class="fa-regular fa-bell-slash fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.disable_notification')</a>
-                                                </li>
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li>
                                                     <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'report', this)"><i class="fa-regular fa-flag fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.report')</a>
@@ -282,9 +282,11 @@
                                                 <li>
                                                     <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'embed_into_website', this)"><i class="fa-solid fa-code fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.embed_into_website')</a>
                                                 </li>
+					@if ($post['id'] == $last_user_post['id'])
                                                 <li>
                                                     <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'update_post', this)"><i class="fa-solid fa-pencil fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.update_post')</a>
                                                 </li>
+					@endif
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li>
                                                     <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'delete', this)"><i class="fa-regular fa-trash-can fa-fw me-2"></i><span class="d-inline-block align-middle kls-line-height-1_2">@lang('miscellaneous.delete')<br><small class="text-muted fw-light" style="font-size: 0.7rem;">@lang('miscellaneous.public.home.posts.actions.delete_description')</small></span></a>
@@ -295,14 +297,23 @@
                                         <!-- Card feed action dropdown END -->
 									</div>
 								</div>
+								<!-- Card header END -->
+
+								<!-- Card body START -->
+								<div class="card-body pt-0">
+				@if ($post['post_content'])
+									<p class="mt-3 mb-0 kls-fs-11 fw-light">{!! $post['transformed_post_content'] !!}</p>
+				@endif
+
+								</div>
+								<!-- Card body END -->
 							</div>
 			@endif
 		@endif
 	@empty
 	@endforelse
-
 						</div>
-						<div id="formerFeedItems" class="d-none"></div>
+						{{-- <div id="formerFeedItems" class="d-none"></div> --}}
 
 						<!-- Load more button START -->
 						<a href="#!" role="button" class="btn btn-loader btn-primary-soft" data-bs-toggle="button" aria-pressed="true">

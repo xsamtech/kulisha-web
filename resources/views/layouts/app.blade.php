@@ -1,3 +1,4 @@
+{{-- {{ dd($posts) }} --}}
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
     <head>
@@ -62,8 +63,10 @@
         <style>
             .btn, .btn-close { transition: .5s ease all; }
             .kls-fs-7 { font-size: 0.7rem; }
+            .kls-fs-11 { font-size: 1.1rem; }
             .kls-text-secondary { color: var(--bs-secondary-text-emphasis); }
             .kls-border-default { border-color: rgba(0, 0, 0, 0.1)!important; }
+            .kls-small { font-size: 12px; }
             [data-bs-theme=dark] .kls-border-default { border-color: #29292e!important; }
             .btn-check:checked + .btn-secondary-soft, :not(.btn-check) + .btn-secondary-soft:active, .btn-secondary-soft:first-child:active, .btn-secondary-soft.active, .btn-secondary-soft.show { color: #fff!important; background-color: #14191e !important; border-color: #14191e !important; }
             [data-bs-theme=dark] .btn-check:checked + .btn-secondary-soft, [data-bs-theme=dark] :not(.btn-check) + .btn-secondary-soft:active, [data-bs-theme=dark] .btn-secondary-soft:first-child:active, [data-bs-theme=dark] .btn-secondary-soft.active, [data-bs-theme=dark] .btn-secondary-soft.show { color: var(--bs-body-bg)!important; background-color: rgba(var(--bs-secondary-rgb)) !important; border-color: transparent !important; }
