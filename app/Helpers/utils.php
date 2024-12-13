@@ -65,7 +65,7 @@ if (!function_exists('transformMentionHashtag')) {
     function transformMentionHashtag($web_url, $subject)
     {
         $pat = array('/#(\w+)/', '/@(\w+)/');
-        $rep = array('<strong><a href="' . $web_url . '/hashtag/$1">#$1</a></strong>', '<strong><a href="' . $web_url . '/$1">@$1</a></strong>');
+        $rep = array('<a href="' . $web_url . '/trends/$1" class="text-success">#$1</a>', '<a href="' . $web_url . '/$1">@$1</a>');
 
         return preg_replace($pat, $rep, $subject);
     }

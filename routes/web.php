@@ -32,7 +32,7 @@ Route::get('/discover', [HomeController::class, 'discover'])->name('discover.hom
 Route::get('/stories', [HomeController::class, 'story'])->name('story.home');
 Route::get('/stories/{id}', [HomeController::class, 'storyDatas'])->whereNumber('id')->name('story.datas');
 Route::get('/trends', [HomeController::class, 'trend'])->name('trend.home');
-Route::get('/trends/{id}', [HomeController::class, 'trendDatas'])->whereNumber('id')->name('trend.datas');
+Route::get('/trends/{hashtag}', [HomeController::class, 'trendDatas'])->name('trend.datas');
 Route::get('/suggestions', [HomeController::class, 'suggestion'])->name('suggestion.home');
 Route::get('/news', [HomeController::class, 'news'])->name('news.home');
 Route::get('/news/{id}', [HomeController::class, 'newsDatas'])->whereNumber('id')->name('news.datas');
