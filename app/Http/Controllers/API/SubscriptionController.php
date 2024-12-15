@@ -164,6 +164,90 @@ class SubscriptionController extends BaseController
 
     // ==================================== CUSTOM METHODS ====================================
     /**
+     * Check if user is follower/following
+     *
+     * @param  int $user_id
+     * @param  int $addressee_id
+     * @param  string $as_what
+     * @return \Illuminate\Http\Response
+     */
+    public function isConnectedAs($user_id, $addressee_id, $as_what)
+    {
+        // Group
+        $susbcription_status_group = Group::where('group_name->fr', 'Etat de la souscription')->first();
+        // Status
+        $accepted_status = Status::where([['status_name->fr', 'Acceptée'], ['group_id', $susbcription_status_group->id]])->first();
+        // Users
+        $user = User::find($user_id);
+        $addressee = User::find($addressee_id);
+
+        if (is_null($user)) {
+            return $this->handleError(__('notifications.find_user_404'));
+        }
+
+        if (is_null($addressee)) {
+            return $this->handleError(__('notifications.find_addressee_404'));
+        }
+
+        if ($as_what == 'follower') {
+            $connection = Subscription::where([['user_id', $addressee->id], ['subscriber_id', $user->id], ['status_id', $accepted_status->id]])->first();
+
+            if (is_null($connection)) {
+                return $this->handleError(0, __('notifications.find_subscription_404'));
+
+            } else {
+                return $this->handleResponse(1, __('notifications.find_subscription_success'));
+            }
+        }
+
+        if ($as_what == 'followed') {
+            $connection = Subscription::where([['user_id', $user->id], ['subscriber_id', $addressee->id], ['status_id', $accepted_status->id]])->first();
+
+            if (is_null($connection)) {
+                return $this->handleResponse(0, __('notifications.find_subscription_404'));
+
+            } else {
+                return $this->handleResponse(1, __('notifications.find_subscription_success'));
+            }
+        }
+    }
+
+    /**
+     * User subscriptions in waiting
+     *
+     * @param  int $user_id
+     * @param  string $as_what
+     * @return \Illuminate\Http\Response
+     */
+    public function waitingSubscription($user_id, $as_what)
+    {
+        // Group
+        $susbcription_status_group = Group::where('group_name->fr', 'Etat de la souscription')->first();
+        // Status
+        $waiting_status = Status::where([['status_name->fr', 'En attente'], ['group_id', $susbcription_status_group->id]])->first();
+        // Request
+        $user = User::find($user_id);
+
+        if (is_null($user)) {
+            return $this->handleError(__('notifications.find_user_404'));
+        }
+
+        if ($as_what == 'follower') {
+            $subscriptions = Subscription::where([['subscriber_id', $user->id], ['status_id', $waiting_status->id]])->orderByDesc('created_at')->paginate(10);
+            $count_all = Subscription::where([['subscriber_id', $user->id], ['status_id', $waiting_status->id]])->count();
+
+            return $this->handleResponse(ResourcesSubscription::collection($subscriptions), __('notifications.find_all_subscriptions_success'), $subscriptions->lastPage(), $count_all);
+        }
+
+        if ($as_what == 'followed') {
+            $subscriptions = Subscription::where([['user_id', $user->id], ['status_id', $waiting_status->id]])->orderByDesc('created_at')->paginate(10);
+            $count_all = Subscription::where([['user_id', $user->id], ['status_id', $waiting_status->id]])->count();
+
+            return $this->handleResponse(ResourcesSubscription::collection($subscriptions), __('notifications.find_all_subscriptions_success'), $subscriptions->lastPage(), $count_all);
+        }
+    }
+
+    /**
      * User subscribers
      *
      * @param  int $user_id

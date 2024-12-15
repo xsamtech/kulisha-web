@@ -62,6 +62,7 @@
 
         <style>
             .btn, .btn-close { transition: .5s ease all; }
+            .popover { width: 100rem; }
             .kls-fs-7 { font-size: 0.7rem; }
             .kls-fs-11 { font-size: 1.1rem; }
             .kls-text-secondary { color: var(--bs-secondary-text-emphasis); }
@@ -144,7 +145,7 @@
         <main>
             <!-- Container START -->
             <div class="container">
-                <div id="content" class="row g-4" style="min-height: 40rem;">
+                <div id="content" class="row g-3" style="min-height: 40rem;">
 
 @yield('app-content')
 
@@ -209,6 +210,7 @@
                 handleEmoji('selectEmoji', 'post-textarea', '#modalCreatePost [type="submit"]');
                 toggleSubmitCheckboxes('modalSelectRestrictions .users-list', 'sendCheckedUsers1');
                 toggleSubmitCheckboxes('modalSelectSpeakers .users-list', 'sendCheckedUsers2');
+                popoverOnHover('user', '.user-infos');
             });
 
             $(function () {

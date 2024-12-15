@@ -48,10 +48,10 @@ Route::get('/events', [HomeController::class, 'event'])->name('event.home');
 Route::get('/events/{id}', [HomeController::class, 'eventDatas'])->whereNumber('id')->name('event.datas');
 Route::get('/events/{entity}', [HomeController::class, 'eventEntity'])->name('event.entity');
 Route::get('/events/{entity}/{id}', [HomeController::class, 'eventEntityDatas'])->whereNumber('id')->name('event.entity.datas');
+Route::get('/messages', [HomeController::class, 'message'])->name('message.home');
+Route::get('/messages/{id}', [HomeController::class, 'messageDatas'])->whereNumber('id')->name('message.datas');
 
 // Account
-Route::get('/messages', [AccountController::class, 'message'])->name('message.home');
-Route::get('/messages/{id}', [AccountController::class, 'messageDatas'])->whereNumber('id')->name('message.datas');
 Route::get('/settings', [AccountController::class, 'settings'])->name('settings.home');
 Route::get('/settings/{id}', [AccountController::class, 'settingsDatas'])->whereNumber('id')->name('settings.datas');
 Route::get('/settings/{entity}', [AccountController::class, 'settingsEntity'])->name('settings.entity');

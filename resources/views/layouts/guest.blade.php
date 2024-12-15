@@ -189,7 +189,8 @@
 							$('#submit .spinner-border').removeClass('opacity-0');
 						},
 						success: function (res) {
-							$('#submit').removeClass('disabled');
+                            $('#submit').addClass('disabled').removeClass('btn-primary').addClass('btn-primary-soft');
+                            // $('#submit').removeClass('disabled');
 							$('#submit .spinner-border').addClass('opacity-0');
 
                             if (!$('#errorMessageWrapper').hasClass('d-none')) {

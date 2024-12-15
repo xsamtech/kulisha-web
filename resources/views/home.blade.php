@@ -139,9 +139,9 @@
 					<!-- Sidenav END -->
 
 					<!-- Main content START -->
-					<div id="partial2" class="col-lg-6 col-md-8 mx-auto vstack gap-4 mt-0">
+					<div id="partial2" class="col-lg-6 col-md-8 mx-auto vstack mt-0">
 						<!-- Story START -->
-						<div class="d-flex gap-3 mb-n3">
+						<div class="d-flex gap-3 mb-2">
 							<div class="position-relative text-center">
 								<!-- Card START -->
 								<a role="button" class="small fw-normal text-secondary" data-bs-toggle="modal" data-bs-target="#modalCreateStory">
@@ -194,7 +194,7 @@
 						<!-- Share feed END -->
 
 						<!-- Card waiting new post -->
-						<div id="waitingNewPost" class="card card-body text-center d-none">
+						<div id="waitingNewPost" class="card card-body text-center mt-3 d-none">
 							<p class="card-text">@lang('miscellaneous.public.home.posts.new.waiting')</p>
 							<div class="text-center loading-spinner">
                                 <div class="spinner-grow spinner-grow-lg text-primary" role="status">
@@ -203,7 +203,7 @@
                             </div>
 						</div>
 
-						<div id="newFeedItems" class="d-none"></div>
+						<div id="newFeedItems"></div>
 						<div id="firstFeedItems">
 	@forelse ($posts as $post)
 		{{-- Design for the poll --}}
@@ -214,14 +214,14 @@
 			@if ($post['type']['alias'] === 'anonymous_question_request')
 
 			@else
-							<div class="card mb-3">
+							<div class="card mt-3">
 								<!-- Card header START -->
 								<div class="card-header border-0 pb-0">
 									<div class="d-flex justify-content-between">
 										<div class="d-flex">
 											<!-- Avatar -->
 											<div class="avatar avatar-story me-2">
-												<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}">
+												<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}" class="user-infos" data-user-id="{{ $post['user']['id'] }}">
 													<img class="avatar-img rounded-circle" src="{{ asset($post['user']['profile_photo_path']) }}" alt>
 												</a>
 											</div>
@@ -230,7 +230,7 @@
 											<div>
 												<div class="nav nav-divider">
 													<h6 class="nav-item card-title mb-0">
-														<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}" class="user-thumbnail" data-user-id="{{ $post['id'] }}">
+														<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}" class="user-infos" data-user-id="{{ $post['user']['id'] }}">
 															{{ $post['user']['firstname'] . ' ' . $post['user']['lastname'] }}
 														</a>
 													</h6>
@@ -240,13 +240,13 @@
 												</div>
 
 												<p class="mb-0 kls-small">{{ '@' . $post['user']['username'] }}</p>
-												<p class="mb-0 kls-small">{{ $post['created_at_explicit'] }}</p>
+												<p class="mb-0 kls-small" title="{{ $post['created_at_explicit'] }}">{{ $post['created_at_ago'] }}</p>
 											</div>
 										</div>
 
                                         <!-- Card feed action dropdown START -->
                                         <div class="dropdown">
-                                            <a role="button" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <a role="button" id="cardFeedAction" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-chevron-down"></i>
                                             </a>
 
@@ -262,12 +262,15 @@
                                                 <li>
                                                     <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'hide', this)"><i class="fa-regular fa-eye-slash fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.hide')</a>
                                                 </li>
+                                                <li>
+                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'embed_into_website', this)"><i class="fa-solid fa-code fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.embed_into_website')</a>
+                                                </li>
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li>
                                                     <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'report', this)"><i class="fa-regular fa-flag fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.report')</a>
                                                 </li>
 				@else
-					@if ($post['is_pinned'] != 0)
+					@if ($post['is_pinned'] == 0)
                                                 <li>
                                                     <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'pin', this)"><i class="fa-solid fa-thumbtack fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.pin')</a>
                                                 </li>
@@ -302,7 +305,7 @@
 								<!-- Card body START -->
 								<div class="card-body pt-0">
 				@if ($post['post_content'])
-									<p class="mt-3 mb-0 kls-fs-11 fw-light">{!! $post['transformed_post_content'] !!}</p>
+									<p class="mt-3 mb-0 fw-light">{!! $post['transformed_post_content'] !!}</p>
 				@endif
 
 								</div>
@@ -313,10 +316,10 @@
 	@empty
 	@endforelse
 						</div>
-						{{-- <div id="formerFeedItems" class="d-none"></div> --}}
+						<div id="formerFeedItems"></div>
 
 						<!-- Load more button START -->
-						<a href="#!" role="button" class="btn btn-loader btn-primary-soft" data-bs-toggle="button" aria-pressed="true">
+						<a role="button" class="btn btn-loader btn-primary-soft mt-3" data-bs-toggle="button" aria-pressed="true">
 							<span class="load-text">@lang('miscellaneous.see_more')</span>
 							<div class="load-icon">
 								<div class="spinner-grow spinner-grow-sm" role="status">

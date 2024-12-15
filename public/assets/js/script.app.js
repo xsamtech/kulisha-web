@@ -11,23 +11,27 @@
  * Native functions
  * 
  * I. If the window is webview, hide some elements
- * II. Theme management
- *    II.1. Set theme to light
- *    II.2. Set theme to dark
- *    II.3. Set theme to auto
- * III. Check string is numeric
- * IV. Get cookie by name
- * V. Switch between two elements visibility
- * VI. Unable "submit" button
- *    VI.1. Textarea
- *    VI.2. Files
- *    VI.3. Checkboxes
- * VII. Remove a file from the input file
- * VIII. Set location data from IpInfo
- * IX. Show emojis picker in dropdown
- *    IX.1. Handle shown emoji
- *    IX.2. Function to retrieve emojis via an API
- * X. Function to show PDF first page
+ * II. Format number
+ *    II.1. Format long number
+ *    II.2. Format thousand number
+ * III. Theme management
+ *    III.1. Set theme to light
+ *    III.2. Set theme to dark
+ *    III.3. Set theme to auto
+ * IV. Check string is numeric
+ * V. Get cookie by name
+ * VI. Switch between two elements visibility
+ * VII. Unable "submit" button
+ *    VII.1. Textarea
+ *    VII.2. Files
+ *    VII.3. Checkboxes
+ * VIII. Remove a file from the input file
+ * IX. Set location data from IpInfo
+ * X. Show emojis picker in dropdown
+ *    X.1. Handle shown emoji
+ *    X.2. Function to retrieve emojis via an API
+ * XI. Function to show PDF first page
+ * XII. Function to show popover
  */
 // -----------------------------------------------
 // I. If the window is webview, hide some elements
@@ -39,10 +43,58 @@ if (isWebview1 || isWebview2) {
     $('.detect-webview').removeClass('d-none');
 }
 
+// ------------------
+// II. Format number
+// ----------------------------
+// II.1. Format long number
+// ----------------------------
+function formatLongNumber(number) {
+    // Make sure `number` is a number
+    number = Number(number);
+
+    // Check if conversion to number failed
+    if (isNaN(number)) {
+        number = 0;
+    }
+
+    var units = ['', 'k', 'm', 'b', 't'];
+    var unitIndex = 0;
+
+    // If the number is already less than 1000, we return it directly
+    if (number < 1000) {
+        return number;
+    }
+
+    // We continue to divide the number by 1000 until it is less than 1000
+    while (number >= 1000 && unitIndex < units.length - 1) {
+        number /= 1000;
+        unitIndex++;
+    }
+
+    // The number is rounded to 1 digit after the decimal point for readability.
+    return number.toFixed(1) + units[unitIndex];
+}
+
+// ----------------------------
+// II.2. Format thousand number
+// ----------------------------
+function formatThousandNumber(number) {
+    // Detect application language
+    const locale = navigator.language || 'en'; // Use "navigator.language" to detect browser language
+
+    if (locale === 'fr') {
+        // If the language is French, use a space to separate thousands.
+        return number.toLocaleString('fr-FR');
+    } else {
+        // By default (for English), use a comma
+        return number.toLocaleString('en-US');
+    }
+}
+
 // --------------------
-// II. Theme management
+// III. Theme management
 // ------------------------
-// II.1. Set theme to light
+// III.1. Set theme to light
 // ------------------------
 function themeLight() {
     document.documentElement.setAttribute('data-bs-theme', 'light');
@@ -55,7 +107,7 @@ function themeLight() {
 }
 
 // -----------------------
-// II.2. Set theme to dark
+// III.2. Set theme to dark
 // -----------------------
 function themeDark() {
     document.documentElement.setAttribute('data-bs-theme', 'dark');
@@ -68,7 +120,7 @@ function themeDark() {
 }
 
 // -----------------------
-// II.3. Set theme to auto
+// III.3. Set theme to auto
 // -----------------------
 function themeAuto() {
     var darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
@@ -92,7 +144,7 @@ function themeAuto() {
 }
 
 // ----------------------------
-// III. Check string is numeric
+// IV. Check string is numeric
 // ----------------------------
 function isNumeric(str) {
     if (typeof str != "string") {
@@ -104,7 +156,7 @@ function isNumeric(str) {
 }
 
 // ----------------------
-// IV. Get cookie by name
+// V. Get cookie by name
 // ----------------------
 function getCookie(cname) {
     var name = cname + '=';
@@ -127,7 +179,7 @@ function getCookie(cname) {
 }
 
 // -----------------------------------------
-// V. Switch between two elements visibility
+// VI. Switch between two elements visibility
 // -----------------------------------------
 function switchDisplay(current, form_id, element1, element2, message1, message2) {
     var _form = document.getElementById(form_id);
@@ -148,9 +200,9 @@ function switchDisplay(current, form_id, element1, element2, message1, message2)
 }
 
 // -------------------------
-// VI. Unable "submit" button
+// VII. Unable "submit" button
 // -------------------------
-// VI.1. Textarea
+// VII.1. Textarea
 // -------------
 function toggleSubmitText(element, ref) {
     if (ref === 'post') {
@@ -181,7 +233,7 @@ function toggleSubmitText(element, ref) {
 }
 
 // ----------
-// VI.2. Files
+// VII.2. Files
 // ----------
 function toggleSubmitFiles(element_id) {
     var elem = document.getElementById(element_id);
@@ -207,7 +259,7 @@ function toggleSubmitFiles(element_id) {
 }
 
 // ---------------
-// VI.3. Checkboxes
+// VII.3. Checkboxes
 // ---------------
 function toggleSubmitCheckboxes(checkboxesWrapperId, submitButtonId) {
     // Checks if at least one box is checked
@@ -224,7 +276,7 @@ function toggleSubmitCheckboxes(checkboxesWrapperId, submitButtonId) {
 }
 
 // -------------------------------------
-// VII. Remove a file from the input file
+// VIII. Remove a file from the input file
 // -------------------------------------
 function removeFileFromInput(file, element) {
     var input = $(element)[0];
@@ -243,7 +295,7 @@ function removeFileFromInput(file, element) {
 }
 
 // ----------------------------------
-// VIII. Set location data from IpInfo
+// IX. Set location data from IpInfo
 // ----------------------------------
 function handleLocationData(data) {
     // Extract information from JSON
@@ -266,9 +318,9 @@ function handleLocationData(data) {
 }
 
 // -----------------------------------
-// IX. Show emojis picker in dropdown
+// X. Show emojis picker in dropdown
 // -----------------------------------
-// IX.1. Handle shown emoji
+// X.1. Handle shown emoji
 // ------------------------
 function handleEmoji(buttonId, inputId, submitId) {
     var emojiButton = document.getElementById(buttonId);
@@ -295,7 +347,7 @@ function handleEmoji(buttonId, inputId, submitId) {
 }
 
 // --------------------------------------------
-// IX.2. Function to retrieve emojis via an API
+// X.2. Function to retrieve emojis via an API
 // --------------------------------------------
 function loadEmojis(emojiDropdown, emojiInput, submitButton) {
     var emojiAPI = `https://emoji-api.com/emojis?access_key=${emojiRef}`;
@@ -337,7 +389,7 @@ function loadEmojis(emojiDropdown, emojiInput, submitButton) {
 }
 
 // ----------------------------------
-// X. Function to show PDF first page
+// XI. Function to show PDF first page
 // ----------------------------------
 function loadPDFPreview(fileUrl, index) {
     var canvas = document.getElementById(`canvas-${index}`);
@@ -375,12 +427,151 @@ function loadPDFPreview(fileUrl, index) {
     });
 }
 
+// ----------------------------
+// XII. Function to show popover
+// ----------------------------
+function popoverOnHover(entity, elementsSelector) {
+    if (entity === 'user') {
+        var userInfos = document.querySelectorAll(elementsSelector);
+
+        userInfos.forEach(function (link) {
+            var popover = null; // Reference to popover
+            var timeoutId = null; // ID for timeout (to delay the disappearance)
+            var isMouseOverPopover = false; // Indicator if mouse is over popover
+
+            // On hover over the link, create and show the popover
+            link.addEventListener('mouseenter', function () {
+                var userId = link.getAttribute('data-user-id');
+
+                // Check if a popover already exists, if it exists, delete it
+                if (popover) {
+                    popover.hide();
+                    popover = null; // Reset reference
+                }
+
+                // Fetch user data via AJAX
+                fetch(`${apiHost}/user/${userId}`)
+                    .then(response => response.json())
+                    .then(res => {
+                        if (!res.success) {
+                            console.error(res.message);
+                            return;
+                        }
+
+                        // Create the popover content with the fetched data
+                        var popoverContent = `<div class="card overflow-hidden bg-transparent border-0">
+                                                    <div class="card-body p-0">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar avatar-lg mb-3 me-2">
+                                                                <a><img class="avatar-img rounded-circle" src="${res.data.profile_photo_path}" alt></a>
+                                                            </div>
+
+                                                            <div>
+                                                                <h5 class="mb-0"> <a>${res.data.firstname} ${res.data.lastname}</a></h5>
+                                                                <small>@${res.data.username}</small>
+                                                                <p class="card-text mt-1 mb-0 small">${res.data.about_me || ''}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="hstack gap-2 gap-xl-3 justify-content-center text-center">
+                                                            <div>
+                                                                <h6 class="mb-0 small">${formatLongNumber(res.data.regular_posts.length)}</h6>
+                                                                <small class="kls-fs-7">${res.data.regular_posts.length > 1 ? window.Laravel.lang.public.profile.statistics.posts : window.Laravel.lang.public.profile.statistics.post}</small>
+                                                            </div>
+                                                            <div class="vr" style="z-index: 9999;"></div>
+                                                                <div>
+                                                                    <h6 class="mb-0 small">${formatLongNumber(res.data.followers.length)}</h6>
+                                                                    <small class="kls-fs-7">${res.data.followers.length > 1 ? window.Laravel.lang.public.profile.statistics.followers : window.Laravel.lang.public.profile.statistics.follower}</small>
+                                                                </div>
+                                                                <div class="vr" style="z-index: 9999;"></div>
+                                                                    <div>
+                                                                        <h6 class="mb-0 small">${formatLongNumber(res.data.following.length)}</h6>
+                                                                        <small class="kls-fs-7">${res.data.following.length > 1 ? window.Laravel.lang.public.profile.statistics.followings : window.Laravel.lang.public.profile.statistics.following}</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>`;
+
+                        if (res.data.id != parseInt(currentUser)) {
+                            popoverContent += `<div class="mt-3">
+                                                    <a role="button" class="btn btn-sm btn-primary rounded follow-button me-2" data-user-id="${res.data.id}">
+                                                        <i class="bi bi-person-check-fill me-2"></i>${window.Laravel.lang.followed}
+                                                    </a>
+                                                    <a href="${currentHost}/messages/${res.data.id}" class="btn btn-sm btn-secondary-soft rounded">
+                                                        <i class="bi bi-chat-quote me-2"></i>${window.Laravel.lang.send_message}
+                                                    </a>
+                                                </div>`;
+
+                        } else {
+                            popoverContent += `<div class="mt-3">
+                                                    <a href="${currentHost}/${res.data.username}" class="btn btn-sm btn-primary rounded">${window.Laravel.lang.menu.profile.title}</a>
+                                                </div>`;
+                        }
+
+                        popoverContent += `</div>
+                                        </div>`;
+
+                        // Initialize the popover
+                        popover = new bootstrap.Popover(link, {
+                            container: 'body',
+                            html: true,
+                            content: popoverContent,
+                        });
+
+                        popover.show();
+                    })
+                    .catch(error => {
+                        console.error(`Get user error: ${error}`);
+                    });
+            });
+
+            // When mouse leaves the link, we set a timeout to hide the popover
+            link.addEventListener('mouseleave', function () {
+                // If a timeout is in progress, clear it to avoid hiding the popover immediately
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
+                }
+
+                // Delay to hide the popover (500ms)
+                timeoutId = setTimeout(() => {
+                    if (popover && !isMouseOverPopover) {
+                        popover.hide();
+                        popover = null; // Reset reference
+                    }
+                }, 500);
+            });
+
+            // Detect when mouse enters the popover to keep the popover visible
+            document.body.addEventListener('mouseenter', function (e) {
+                if (popover && e.target.closest('.popover') === popover.tip) {
+                    isMouseOverPopover = true;
+                }
+            });
+
+            // When mouse leaves both the link and the popover, we hide the popover after a delay
+            document.body.addEventListener('mouseleave', function (e) {
+                if (popover && !popover.tip.contains(e.target) && !link.contains(e.target)) {
+                    isMouseOverPopover = false;
+
+                    timeoutId = setTimeout(() => {
+                        if (!isMouseOverPopover) {
+                            popover.hide();
+                            popover = null; // Reset reference
+                        }
+                    }, 500); // Delay of 500ms
+                }
+            });
+        });
+    }
+}
+
 /**
  * jQuery scripts
  * 
  * I. Miscellaneous
  * II. Auto-resize textarea
- * III. Bootstrap Tooltip
+ * III. Bootstrap components
+ *    III.1. Tooltip
+ *    III.2. Popover
  * IV. On select change, update de country phone code
  * V. On check, show/hide some blocs
  *    V.1. Transaction type
@@ -421,12 +612,24 @@ $(function () {
     // ------------------------
     autosize($('textarea'));
 
-    // ----------------------
-    // III. Bootstrap Tooltip
-    // ----------------------
+    // -------------------------
+    // III. Bootstrap components
+    // -------------------------
+    // III.1. Tooltip
+    // --------------
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    // -------------------------
+    // III.2. Popover
+    // --------------
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl, {
+            container: 'body'
+        });
     });
 
     // --------------------------------------------------
@@ -1612,12 +1815,9 @@ $(function () {
         post.sendData(formData)
             .then(function (response) {
                 console.log(`The post was sent successfully: ${JSON.stringify(response)}`);
-
-                $(this).trigger('reset');
-                $('#imagesPreviews').html('');
-                $('#documentsPreviews').html('');
-                $('#locationInfo').html('');
-                $('#locationInfo').html('');
+                // Reset all inputs
+                $('#imagesInput, #documentsInput, #latitude, #longitude, #city, #region, #country, #post-textarea').val('');
+                $('#imagesPreviews, #documentsPreviews, #locationInfo').html('');
 
                 if (!$('#restrictions').hasClass('d-none')) {
                     $('#restrictions').addClass('d-none');
@@ -1627,12 +1827,10 @@ $(function () {
                 $('#waitingNewPost').addClass('d-none');
 
                 // Add the new post as a page bloc
-                var newPostElement = `<div class="card">
-                                        <div class="card-body text-center">
-                                            <h3 class="mb-1 fw-bold">${window.Laravel.lang.public.posts.posted.message}</h3>
-                                            <a href="${currentHost}/posts/${response.data.id}" class="card-link">${window.Laravel.lang.public.posts.posted.see}</a>
-                                        </div>
-                                    <div>`;
+                var newPostElement = `<div class="card card-body text-center mt-3">
+                                        <h3 class="mb-1 fw-bold">${window.Laravel.lang.public.posts.posted.message}</h3>
+                                        <a href="${currentHost}/posts/${response.data.id}" class="card-link">${window.Laravel.lang.public.posts.posted.see}</a>
+                                    </div>`;
 
                 // Select the item after which you want to add the map
                 var waitingNewPost = document.querySelector('div#waitingNewPost');

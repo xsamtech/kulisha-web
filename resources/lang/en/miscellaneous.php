@@ -54,6 +54,10 @@ return [
     'send' => 'Send',
     'add' => 'Add',
     'share' => 'Share',
+    'follow' => 'Follow',
+    'unfollow' => 'Unfollow',
+    'send_message' => 'Send message',
+    'followed' => 'Followed',
     'validated' => 'Validated',
     'invalid' => 'Invalid',
     'issued_on' => 'Issued in Kinshasa, on',
@@ -930,6 +934,14 @@ return [
                 'post' => '{0} Post|{1} Post|[2,*] Posts',
                 'follower' => '{0} Follower|{1} Follower|[2,*] Followers',
                 'following' => '{0} Following|{1} Following|[2,*] Following',
+                'injected' => [
+                    'post' => 'Post',
+                    'posts' => 'Posts',
+                    'follower' => 'Follower',
+                    'followers' => 'Followers',
+                    'following' => 'Following',
+                    'followings' => 'Following',
+                ],
             ],
 
             // Products

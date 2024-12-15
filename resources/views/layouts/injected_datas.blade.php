@@ -11,6 +11,10 @@
                     like: "@lang('miscellaneous.like')",
                     share: "@lang('miscellaneous.share')",
                     send: "@lang('miscellaneous.send')",
+                    follow: "@lang('miscellaneous.follow')",
+                    unfollow: "@lang('miscellaneous.unfollow')",
+                    send_message: "@lang('miscellaneous.send_message')",
+                    followed: "@lang('miscellaneous.followed')",
                     upload: {
                         use_camera: "@lang('miscellaneous.upload.use_camera')",
                         upload_file: "@lang('miscellaneous.upload.upload_file')",
@@ -18,12 +22,39 @@
                         image_error: "@lang('miscellaneous.upload.image_error')",
                         document_error: "@lang('miscellaneous.upload.document_error')",
                     },
+                    menu: {
+                        news_feed: "@lang('miscellaneous.menu.public.news_feed')",
+                        home: "@lang('miscellaneous.menu.home')",
+                        discover: "@lang('miscellaneous.menu.discover')",
+                        orders: "@lang('miscellaneous.menu.public.orders.title')",
+                        notifications: "@lang('miscellaneous.menu.notifications.title')",
+                        communities: "@lang('miscellaneous.menu.public.communities.title')",
+                        events: "@lang('miscellaneous.menu.public.events.title')",
+                        messages: "@lang('miscellaneous.menu.messages')",
+                        profile: {
+                            title: "@lang('miscellaneous.menu.public.profile.title')",
+                            products: "@lang('miscellaneous.menu.public.profile.products')",
+                            services: "@lang('miscellaneous.menu.public.profile.services')",
+                            connections: "@lang('miscellaneous.menu.public.profile.connections')",
+                            my_activities: "@lang('miscellaneous.menu.public.profile.my_activities')",
+                        },
+                    },
                     public: {
                         reactions: "@lang('miscellaneous.public.home.reactions')",
                         comments: "@lang('miscellaneous.public.home.comments')",
                         shares: "@lang('miscellaneous.public.home.shares')",
                         errors: {
                             number: "@lang('miscellaneous.public.errors.number')",
+                        },
+                        profile: {
+                            statistics: {
+                                post: "@lang('miscellaneous.public.profile.statistics.injected.post')",
+                                posts: "@lang('miscellaneous.public.profile.statistics.injected.posts')",
+                                follower: "@lang('miscellaneous.public.profile.statistics.injected.follower')",
+                                followers: "@lang('miscellaneous.public.profile.statistics.injected.followers')",
+                                following: "@lang('miscellaneous.public.profile.statistics.injected.following')",
+                                followings: "@lang('miscellaneous.public.profile.statistics.injected.followings')",
+                            },
                         },
                         posts: {
                             posted: {
@@ -57,16 +88,6 @@
                                 },
                             },
                         },
-                    },
-                    menu: {
-                        news_feed: "@lang('miscellaneous.menu.public.news_feed')",
-                        home: "@lang('miscellaneous.menu.home')",
-                        discover: "@lang('miscellaneous.menu.discover')",
-                        orders: "@lang('miscellaneous.menu.public.orders.title')",
-                        notifications: "@lang('miscellaneous.menu.notifications.title')",
-                        communities: "@lang('miscellaneous.menu.public.communities.title')",
-                        events: "@lang('miscellaneous.menu.public.events.title')",
-                        messages: "@lang('miscellaneous.menu.messages')",
                     },
                 },
                 data: {

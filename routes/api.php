@@ -227,6 +227,8 @@ Route::group(['middleware' => ['api', 'auth:sanctum', 'localization']], function
     Route::put('community/update_status/{community_id}/{status_id}', 'App\Http\Controllers\API\CommunityController@updateStatus')->name('community.api.update_status');
     Route::put('community/update_cover/{community_id}', 'App\Http\Controllers\API\CommunityController@updateCover')->name('community.api.update_cover');
     // Subscription
+    Route::get('subscription/is_connected_as/{user_id}/{addressee_id}/{as_what}', 'App\Http\Controllers\API\SubscriptionController@isConnectedAs')->name('subscription.api.is_connected_as');
+    Route::get('subscription/waiting_subscription/{user_id}/{as_what}', 'App\Http\Controllers\API\SubscriptionController@waitingSubscription')->name('subscription.api.waiting_subscription');
     Route::get('subscription/user_subscribers/{user_id}', 'App\Http\Controllers\API\SubscriptionController@userSubscribers')->name('subscription.api.user_subscribers');
     Route::get('subscription/user_subscriptions/{user_id}', 'App\Http\Controllers\API\SubscriptionController@userSubscriptions')->name('subscription.api.user_subscriptions');
     Route::get('subscription/user_connections/{user_id}', 'App\Http\Controllers\API\SubscriptionController@userConnections')->name('subscription.api.user_connections');
