@@ -225,7 +225,7 @@
                             }
 
                             $('#successMessageWrapper').removeClass('d-none');
-							$('#successMessageWrapper .custom-message').html(`${res.message} <div class="spinner-grow text-success position-absolute" role="status" style="top: 0.7rem; right: 0.7rem;"><span class="visually-hidden">${window.Laravel.lang.loading}</span></div>`);
+							$('#successMessageWrapper .custom-message').html(`${res.message} <div class="spinner-grow text-success position-absolute" role="status" style="top: 0.9rem; right: 0.9rem;"><span class="visually-hidden">${window.Laravel.lang.loading}</span></div>`);
 
                             $.ajaxSetup({
                                 headers: {
