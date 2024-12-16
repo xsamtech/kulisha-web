@@ -193,7 +193,7 @@ class SubscriptionController extends BaseController
             $connection = Subscription::where([['user_id', $addressee->id], ['subscriber_id', $user->id], ['status_id', $accepted_status->id]])->first();
 
             if (is_null($connection)) {
-                return $this->handleError(0, __('notifications.find_subscription_404'));
+                return $this->handleResponse(0, __('notifications.find_subscription_404'));
 
             } else {
                 return $this->handleResponse(1, __('notifications.find_subscription_success'));

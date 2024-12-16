@@ -106,7 +106,7 @@
         <div id="successMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999; transition: opacity 1s ease-out;">
             <div class="row">
                 <div class="col-lg-4 col-sm-6 col-11 mx-auto">
-                    <div class="alert alert-success alert-dismissible d-flex align-items-center" role="alert">
+                    <div class="alert alert-success alert-dismissible d-flex align-items-center position-relative" role="alert">
                         <i class="bi bi-info-circle me-3 fs-5"></i>
                         <div class="custom-message"></div>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -117,7 +117,7 @@
         <div id="warningMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999; transition: opacity 1s ease-out;">
             <div class="row">
                 <div class="col-lg-4 col-sm-6 col-11 mx-auto">
-                    <div class="alert alert-warning alert-dismissible d-flex align-items-center" role="alert">
+                    <div class="alert alert-warning alert-dismissible d-flex align-items-center position-relative" role="alert">
                         <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
                         <div class="custom-message"></div>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -128,7 +128,7 @@
         <div id="errorMessageWrapper" class="position-fixed w-100 top-0 start-0 d-none" style="z-index: 99999; transition: opacity 1s ease-out;">
             <div class="row">
                 <div class="col-lg-4 col-sm-6 col-11 mx-auto">
-                    <div class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
+                    <div class="alert alert-danger alert-dismissible d-flex align-items-center position-relative" role="alert">
                         <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
                         <div class="custom-message"></div>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

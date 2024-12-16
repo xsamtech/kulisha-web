@@ -66,7 +66,7 @@
                 <div id="successMessageWrapper" class="position-fixed w-100 top-0 start-0 z-index-99 d-none">
                     <div class="row">
                         <div class="col-lg-5 col-sm-6 col-11 mx-auto">
-                            <div class="alert alert-success d-flex align-items-center" role="alert">
+                            <div class="alert alert-success d-flex align-items-center position-relative" role="alert">
                                 <i class="bi bi-info-circle me-3 fs-5"></i>
                                 <div class="custom-message"></div>
                             </div>
@@ -76,7 +76,7 @@
                 <div id="errorMessageWrapper" class="position-fixed w-100 top-0 start-0 z-index-99 d-none">
                     <div class="row">
                         <div class="col-lg-5 col-sm-6 col-11 mx-auto">
-                            <div class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
+                            <div class="alert alert-danger alert-dismissible d-flex align-items-center position-relative" role="alert">
                                 <i class="bi bi-exclamation-triangle me-3 fs-5"></i>
                                 <div class="custom-message"></div>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -151,6 +151,33 @@
         <!-- Scroll forever -->
         <script src="{{ asset('assets/addons/custom/jquery/scroll4ever/js/jquery.scroll4ever.js') }}"></script>
         <!-- Custom scripts -->
+        <script type="text/javascript">
+            /**
+             * Injected data
+             */
+            window.Laravel = {
+                lang: {
+                    empty_list: "@lang('miscellaneous.empty_list')",
+                    see_more: "@lang('miscellaneous.see_more')",
+                    error_label: "@lang('miscellaneous.error_label')",
+                    delete: "@lang('miscellaneous.delete')",
+                    loading: "@lang('miscellaneous.loading')",
+                    like: "@lang('miscellaneous.like')",
+                    share: "@lang('miscellaneous.share')",
+                    send: "@lang('miscellaneous.send')",
+                    upload: {
+                        use_camera: "@lang('miscellaneous.upload.use_camera')",
+                        upload_file: "@lang('miscellaneous.upload.upload_file')",
+                        choose_existing_file: "@lang('miscellaneous.upload.choose_existing_file')",
+                        image_error: "@lang('miscellaneous.upload.image_error')",
+                        document_error: "@lang('miscellaneous.upload.document_error')",
+                    },
+                    menu: {
+                        home: "@lang('miscellaneous.menu.home')",
+                    },
+                },
+            };
+        </script>
         <script src="{{ asset('assets/js/load-guest-scripts.js') }}"></script>
         <script src="{{ asset('assets/js/script.guest.js') }}"></script>
         <script type="text/javascript">
@@ -198,7 +225,7 @@
                             }
 
                             $('#successMessageWrapper').removeClass('d-none');
-							$('#successMessageWrapper .custom-message').html(res.message);
+							$('#successMessageWrapper .custom-message').html(`${res.message} <div class="spinner-grow text-success position-absolute" role="status" style="top: 0.7rem; right: 0.7rem;"><span class="visually-hidden">${window.Laravel.lang.loading}</span></div>`);
 
                             $.ajaxSetup({
                                 headers: {

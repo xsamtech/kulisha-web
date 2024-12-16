@@ -8,6 +8,7 @@
                     see_more: "@lang('miscellaneous.see_more')",
                     error_label: "@lang('miscellaneous.error_label')",
                     delete: "@lang('miscellaneous.delete')",
+                    loading: "@lang('miscellaneous.loading')",
                     like: "@lang('miscellaneous.like')",
                     share: "@lang('miscellaneous.share')",
                     send: "@lang('miscellaneous.send')",
