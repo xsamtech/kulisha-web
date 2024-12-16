@@ -504,59 +504,35 @@ function popoverOnHover(entity, elementsSelector) {
                             is_follower.done(function(response) {
                                 console.log(response.data === 1);
 
-                                if (response.data === 0) {
-                                    popoverContent += `<a role="button" class="btn btn-sm btn-primary rounded follow-button me-2" data-user-id="${res.data.id}">
-                                                            <i class="bi bi-person-check-fill me-2"></i>${window.Laravel.lang.followed}
-                                                        </a>`;
-
-                                }
-
-                                if (response.data === 1) {
-                                    popoverContent += `<a role="button" class="btn btn-sm btn-primary-soft rounded follow-button me-2" data-user-id="${res.data.id}">
-                                                            <i class="fa-solid fa-plus me-2"></i>${window.Laravel.lang.follow}
-                                                        </a>`;
-                                }
-
+                                popoverContent += `<a role="button" class="btn btn-sm ${response.data === 0 ? 'btn-primary' : 'btn-primary-soft'} rounded follow-button me-2" data-user-id="${res.data.id}">
+                                                        <i class="bi ${response.data === 0 ? 'bi-person-check-fill' : 'fa-solid fa-plus'} me-2"></i>${response.data === 0 ? window.Laravel.lang.followed : window.Laravel.lang.follow}
+                                                    </a>`;
                             }).fail(function(xhr, status, error) {
                                 console.error(`Is follower error: ${error}`);
                             });
 
                             popoverContent += `<a href="${currentHost}/messages/${res.data.id}" class="btn btn-sm btn-secondary-soft rounded">
                                                     <i class="bi bi-chat-quote me-2"></i>${window.Laravel.lang.send_message}
-                                                </a>`;
-
-                            popoverContent += `</div>`;
-
-
-                            popoverContent += `</div>
+                                                </a>
                                             </div>`;
-
-                            // Initialize the popover
-                            popover = new bootstrap.Popover(link, {
-                                container: 'body',
-                                html: true,
-                                content: popoverContent,
-                            });
-
-                            popover.show();
 
                         } else {
                             popoverContent += `<div class="mt-3">
                                                     <a href="${currentHost}/${res.data.username}" class="btn btn-sm btn-primary w-100 rounded">${window.Laravel.lang.menu.profile.title}</a>
                                                 </div>`;
-
-                            popoverContent += `</div>
-                                            </div>`;
-
-                            // Initialize the popover
-                            popover = new bootstrap.Popover(link, {
-                                container: 'body',
-                                html: true,
-                                content: popoverContent,
-                            });
-
-                            popover.show();
                         }
+
+                        popoverContent += `</div>
+                                        </div>`;
+
+                        // Initialize the popover
+                        popover = new bootstrap.Popover(link, {
+                            container: 'body',
+                            html: true,
+                            content: popoverContent,
+                        });
+
+                        popover.show();
                     })
                     .catch(error => {
                         console.error(`Get user error: ${error}`);
