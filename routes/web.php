@@ -49,7 +49,7 @@ Route::get('/events/{id}', [HomeController::class, 'eventDatas'])->whereNumber('
 Route::get('/events/{entity}', [HomeController::class, 'eventEntity'])->name('event.entity');
 Route::get('/events/{entity}/{id}', [HomeController::class, 'eventEntityDatas'])->whereNumber('id')->name('event.entity.datas');
 Route::get('/messages', [HomeController::class, 'message'])->name('message.home');
-Route::get('/messages/{id}', [HomeController::class, 'messageDatas'])->whereNumber('id')->name('message.datas');
+Route::get('/messages/{username}', [HomeController::class, 'messageDatas'])->name('message.datas');
 
 // Account
 Route::get('/settings', [AccountController::class, 'settings'])->name('settings.home');

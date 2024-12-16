@@ -61,7 +61,6 @@
 
         <style>
             .btn, .btn-close { transition: .5s ease all; }
-            .popover { width: 100rem; }
             .kls-fs-7 { font-size: 0.7rem; }
             .kls-fs-11 { font-size: 1.1rem; }
             .kls-text-secondary { color: var(--bs-secondary-text-emphasis); }

@@ -492,32 +492,71 @@ function popoverOnHover(entity, elementsSelector) {
                                                         </div>`;
 
                         if (res.data.id != parseInt(currentUser)) {
-                            popoverContent += `<div class="mt-3">
-                                                    <a role="button" class="btn btn-sm btn-primary rounded follow-button me-2" data-user-id="${res.data.id}">
-                                                        <i class="bi bi-person-check-fill me-2"></i>${window.Laravel.lang.followed}
-                                                    </a>
-                                                    <a href="${currentHost}/messages/${res.data.id}" class="btn btn-sm btn-secondary-soft rounded">
-                                                        <i class="bi bi-chat-quote me-2"></i>${window.Laravel.lang.send_message}
-                                                    </a>
-                                                </div>`;
+                            popoverContent += `<div class="mt-3">`;
+
+                            var is_follower = $.ajax({
+                                headers: headers,
+                                method: 'GET',
+                                contentType: 'application/json',
+                                url: `${apiHost}/subscription/is_connected_as/${currentUser}/${res.data.id}/follower`
+                            });
+
+                            is_follower.done(function(response) {
+                                console.log(response.data === 1);
+
+                                if (response.data === 0) {
+                                    popoverContent += `<a role="button" class="btn btn-sm btn-primary rounded follow-button me-2" data-user-id="${res.data.id}">
+                                                            <i class="bi bi-person-check-fill me-2"></i>${window.Laravel.lang.followed}
+                                                        </a>`;
+
+                                }
+
+                                if (response.data === 1) {
+                                    popoverContent += `<a role="button" class="btn btn-sm btn-primary-soft rounded follow-button me-2" data-user-id="${res.data.id}">
+                                                            <i class="fa-solid fa-plus me-2"></i>${window.Laravel.lang.follow}
+                                                        </a>`;
+                                }
+
+                            }).fail(function(xhr, status, error) {
+                                console.error(`Is follower error: ${error}`);
+                            });
+
+                            popoverContent += `<a href="${currentHost}/messages/${res.data.id}" class="btn btn-sm btn-secondary-soft rounded">
+                                                    <i class="bi bi-chat-quote me-2"></i>${window.Laravel.lang.send_message}
+                                                </a>`;
+
+                            popoverContent += `</div>`;
+
+
+                            popoverContent += `</div>
+                                            </div>`;
+
+                            // Initialize the popover
+                            popover = new bootstrap.Popover(link, {
+                                container: 'body',
+                                html: true,
+                                content: popoverContent,
+                            });
+
+                            popover.show();
 
                         } else {
                             popoverContent += `<div class="mt-3">
-                                                    <a href="${currentHost}/${res.data.username}" class="btn btn-sm btn-primary rounded">${window.Laravel.lang.menu.profile.title}</a>
+                                                    <a href="${currentHost}/${res.data.username}" class="btn btn-sm btn-primary w-100 rounded">${window.Laravel.lang.menu.profile.title}</a>
                                                 </div>`;
+
+                            popoverContent += `</div>
+                                            </div>`;
+
+                            // Initialize the popover
+                            popover = new bootstrap.Popover(link, {
+                                container: 'body',
+                                html: true,
+                                content: popoverContent,
+                            });
+
+                            popover.show();
                         }
-
-                        popoverContent += `</div>
-                                        </div>`;
-
-                        // Initialize the popover
-                        popover = new bootstrap.Popover(link, {
-                            container: 'body',
-                            html: true,
-                            content: popoverContent,
-                        });
-
-                        popover.show();
                     })
                     .catch(error => {
                         console.error(`Get user error: ${error}`);
