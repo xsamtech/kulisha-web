@@ -33,7 +33,7 @@ class Post extends JsonResource
         $image_type = ModelsType::where([['type_name->fr', 'Image'], ['group_id', $file_type_group->id]])->first();
         $audio_type = ModelsType::where([['type_name->fr', 'Audio'], ['group_id', $file_type_group->id]])->first();
         // Requests
-        $shared_post = ModelsPost::find($this->shared_post_id);
+        $shared_post = ModelsPost::where('id', $this->shared_post_id)->first();
 
         if ($this->type_id == $story_type->id) {
             $file = File::collection($this->files)->first();
