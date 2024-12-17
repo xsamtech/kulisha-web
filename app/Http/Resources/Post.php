@@ -32,8 +32,6 @@ class Post extends JsonResource
         $doc_type = ModelsType::where([['type_name->fr', 'Document'], ['group_id', $file_type_group->id]])->first();
         $image_type = ModelsType::where([['type_name->fr', 'Image'], ['group_id', $file_type_group->id]])->first();
         $audio_type = ModelsType::where([['type_name->fr', 'Audio'], ['group_id', $file_type_group->id]])->first();
-        // Requests
-        $shared_post = ModelsPost::where('id', $this->shared_post_id)->first();
 
         if ($this->type_id == $story_type->id) {
             $file = File::collection($this->files)->first();
@@ -49,7 +47,6 @@ class Post extends JsonResource
                 'post_content' => $this->post_content,
                 'transformed_post_content' => transformMentionHashtag(getWebURL(), $this->post_content),
                 'shared_post_id' => $this->shared_post_id,
-                'shared_post' => !empty($shared_post) ? $shared_post : null,
                 'price' => $this->price,
                 'currency' => $this->currency,
                 'quantity' => $this->quantity,
@@ -102,7 +99,6 @@ class Post extends JsonResource
                     'post_content' => $this->post_content,
                     'transformed_post_content' => transformMentionHashtag(getWebURL(), $this->post_content),
                     'shared_post_id' => $this->shared_post_id,
-                    'shared_post' => !empty($shared_post) ? $shared_post : null,
                     'latitude' => $this->latitude,
                     'longitude' => $this->longitude,
                     'city' => $this->city,
@@ -138,7 +134,6 @@ class Post extends JsonResource
                     'post_content' => $this->post_content,
                     'transformed_post_content' => transformMentionHashtag(getWebURL(), $this->post_content),
                     'shared_post_id' => $this->shared_post_id,
-                    'shared_post' => !empty($shared_post) ? $shared_post : null,
                     'price' => $this->price,
                     'currency' => $this->currency,
                     'quantity' => $this->quantity,
