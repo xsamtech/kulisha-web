@@ -478,7 +478,6 @@ function popoverOnHover(entity, elementsSelector) {
                             try {
                                 // Wait for follower status to be recovered
                                 var followerStatus = await getFollowerStatus();
-                                
                                 // Create the popover content with the fetched data
                                 var popoverContent = `<div class="card overflow-hidden bg-transparent border-0">
                                                             <div class="card-body p-0">
@@ -522,7 +521,9 @@ function popoverOnHover(entity, elementsSelector) {
                                                             </a>
                                                         </div>`;
 
-                                } else {
+                                }
+
+                                if (res.data.id == parseInt(currentUser)) {
                                     popoverContent += `<div class="mt-3">
                                                             <a href="${currentHost}/${res.data.username}" class="btn btn-sm btn-primary w-100 rounded">${window.Laravel.lang.menu.profile.title}</a>
                                                         </div>`;
