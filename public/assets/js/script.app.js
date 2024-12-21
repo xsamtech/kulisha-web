@@ -1858,7 +1858,7 @@ $(function () {
 
                 // Add the new post as a page bloc
                 var newPostElement = `<div class="card card-body text-center mt-3">
-                                        <h3 class="mb-1 fw-bold">${window.Laravel.lang.public.posts.posted.message}</h3>
+                                        <h4 class="mb-1 fw-bold">${window.Laravel.lang.public.posts.posted.message}</h4>
                                         <a href="${currentHost}/posts/${response.data.id}" class="card-link">${window.Laravel.lang.public.posts.posted.see}</a>
                                     </div>`;
 

@@ -37,6 +37,7 @@ class FileController extends BaseController
         $inputs = [
             'file_name' => $request->file_name,
             'file_url' => $request->file_url,
+            'poster_url' => $request->poster_url,
             'type_id' => $request->type_id,
             'post_id' => $request->post_id,
             'message_id' => $request->message_id,
@@ -105,6 +106,13 @@ class FileController extends BaseController
         if ($inputs['file_url'] != null) {
             $file->update([
                 'file_url' => $inputs['file_url'],
+                'updated_at' => now()
+            ]);
+        }
+
+        if ($inputs['poster_url'] != null) {
+            $file->update([
+                'poster_url' => $inputs['poster_url'],
                 'updated_at' => now()
             ]);
         }

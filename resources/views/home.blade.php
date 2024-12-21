@@ -203,120 +203,154 @@
                             </div>
 						</div>
 
-						<div id="newFeedItems"></div>
-						<div id="firstFeedItems">
 	@forelse ($posts as $post)
-		{{-- Design for the poll --}}
-		@if ($post['type']['alias'] === 'poll')
-
+		{{-- Design for anonymous question --}}
+		@if ($post['type']['alias'] === 'anonymous_question_request')
+			
+		{{-- Design for other post types --}}
 		@else
-			{{-- Design for anonymous question --}}
-			@if ($post['type']['alias'] === 'anonymous_question_request')
-
-			@else
-							<div class="card mt-3">
-								<!-- Card header START -->
-								<div class="card-header border-0 pb-0">
-									<div class="d-flex justify-content-between">
-										<div class="d-flex">
-											<!-- Avatar -->
-											<div class="avatar avatar-story me-2">
-												<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}" class="user-infos" data-user-id="{{ $post['user']['id'] }}">
-													<img class="avatar-img rounded-circle" src="{{ asset($post['user']['profile_photo_path']) }}" alt>
-												</a>
-											</div>
-
-											<!-- Info -->
-											<div>
-												<div class="nav nav-divider">
-													<h6 class="nav-item card-title mb-0">
-														<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}" class="user-infos" data-user-id="{{ $post['user']['id'] }}">
-															{{ $post['user']['firstname'] . ' ' . $post['user']['lastname'] }}
-														</a>
-													</h6>
-													<span class="nav-item">
-														<i class="fa-solid fa-{{ $post['type']['alias'] == 'product' ? 'basket-shopping' : 'people-carry-box' }} text-{{ $post['type']['color'] }}" title="{{ $post['type']['type_name'] }}" data-bs-toggle="tooltip" data-bs-placement="right"></i>
-													</span>
-												</div>
-
-												<p class="mb-0 kls-small">{{ '@' . $post['user']['username'] }}</p>
-												<p class="mb-0 kls-small" title="{{ $post['created_at_explicit'] }}">{{ $post['created_at_ago'] }}</p>
-											</div>
+						<div class="card mt-3">
+							<!-- Card header START -->
+							<div class="card-header border-0 pb-0">
+								<div class="d-flex justify-content-between">
+									<div class="d-flex">
+										<!-- Avatar -->
+										<div class="avatar avatar-story me-2">
+											<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}" class="user-infos" data-user-id="{{ $post['user']['id'] }}">
+												<img class="avatar-img rounded-circle" src="{{ asset($post['user']['profile_photo_path']) }}" alt>
+											</a>
 										</div>
 
-                                        <!-- Card feed action dropdown START -->
-                                        <div class="dropdown">
-                                            <a role="button" id="cardFeedAction" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="bi bi-chevron-down"></i>
-                                            </a>
-
-                                            <!-- Card feed action dropdown menu -->
-                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-				@if ($post['user']['id'] != $current_user['id'])
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'save', this)"><i class="fa-regular fa-bookmark fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.save')</a>
-                                                </li>
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'unfollow_owner', this)"><i class="fa-solid fa-user-large-slash fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.unfollow_owner', ['owner' => $post['user']['username']])</a>
-                                                </li>
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'hide', this)"><i class="fa-regular fa-eye-slash fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.hide')</a>
-                                                </li>
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'embed_into_website', this)"><i class="fa-solid fa-code fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.embed_into_website')</a>
-                                                </li>
-                                                <li><hr class="dropdown-divider"></li>
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'report', this)"><i class="fa-regular fa-flag fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.report')</a>
-                                                </li>
-				@else
-					@if ($post['is_pinned'] == 0)
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'pin', this)"><i class="fa-solid fa-thumbtack fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.pin')</a>
-                                                </li>
-					@else
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'unpin', this)"><i class="fa-solid fa-thumbtack-slash fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.unpin')</a>
-                                                </li>
-					@endif
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'change_visibility', this)"><i class="fa-regular fa-eye fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.change_visibility')</a>
-                                                </li>
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'embed_into_website', this)"><i class="fa-solid fa-code fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.embed_into_website')</a>
-                                                </li>
-					@if ($post['id'] == $last_user_post['id'])
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'update_post', this)"><i class="fa-solid fa-pencil fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.update_post')</a>
-                                                </li>
-					@endif
-                                                <li><hr class="dropdown-divider"></li>
-                                                <li>
-                                                    <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'delete', this)"><i class="fa-regular fa-trash-can fa-fw me-2"></i><span class="d-inline-block align-middle kls-line-height-1_2">@lang('miscellaneous.delete')<br><small class="text-muted fw-light" style="font-size: 0.7rem;">@lang('miscellaneous.public.home.posts.actions.delete_description')</small></span></a>
-                                                </li>
-				@endif
-                                            </ul>
-                                        </div>
-                                        <!-- Card feed action dropdown END -->
-									</div>
-								</div>
-								<!-- Card header END -->
-
-								<!-- Card body START -->
-								<div class="card-body pt-0">
-				@if ($post['post_content'])
-									<p class="mt-3 mb-0 fw-light">{!! $post['transformed_post_content'] !!}</p>
-				@endif
-
-								</div>
-								<!-- Card body END -->
-							</div>
+										<!-- Info -->
+										<div>
+											<div class="nav nav-divider">
+												<h6 class="nav-item card-title mb-0">
+													<a href="{{ route('profile.home', ['username' => $post['user']['username']]) }}" class="user-infos" data-user-id="{{ $post['user']['id'] }}">
+														{{ $post['user']['firstname'] . ' ' . $post['user']['lastname'] }}
+													</a>
+												</h6>
+			@if ($post['type']['alias'] != 'poll')
+												<span class="nav-item">
+													<i class="{{ $post['type']['icon_font'] }} text-{{ $post['type']['color'] }}" title="{{ $post['type']['type_name'] }}" data-bs-toggle="tooltip" data-bs-placement="right"></i>
+												</span>
 			@endif
+											</div>
+
+											<p class="mb-0 kls-small">{{ '@' . $post['user']['username'] }}</p>
+											<p class="mb-0 kls-small" title="{{ $post['created_at_explicit'] }}">{{ $post['created_at_ago'] }}</p>
+										</div>
+									</div>
+
+                                    <!-- Card feed action dropdown START -->
+                                    <div class="dropdown">
+                                        <a role="button" id="cardFeedAction" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-chevron-down"></i>
+                                        </a>
+
+                                        <!-- Card feed action dropdown menu -->
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+			@if ($post['user']['id'] != $current_user['id'])
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'save', this)"><i class="fa-regular fa-bookmark fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.save')</a>
+                                            </li>
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'unfollow_owner', this)"><i class="fa-solid fa-user-large-slash fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.unfollow_owner', ['owner' => $post['user']['username']])</a>
+                                            </li>
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'hide', this)"><i class="fa-regular fa-eye-slash fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.hide')</a>
+                                            </li>
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'embed_into_website', this)"><i class="fa-solid fa-code fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.embed_into_website')</a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'report', this)"><i class="fa-regular fa-flag fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.report')</a>
+                                            </li>
+			@else
+				@if ($post['is_pinned'] == 0)
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'pin', this)"><i class="fa-solid fa-thumbtack fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.pin')</a>
+                                            </li>
+				@else
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'unpin', this)"><i class="fa-solid fa-thumbtack-slash fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.unpin')</a>
+                                            </li>
+				@endif
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'change_visibility', this)"><i class="fa-regular fa-eye fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.change_visibility')</a>
+                                            </li>
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'embed_into_website', this)"><i class="fa-solid fa-code fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.embed_into_website')</a>
+                                            </li>
+				@if ($post['id'] == $last_user_post['id'])
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'update_post', this)"><i class="fa-solid fa-pencil fa-fw me-2"></i>@lang('miscellaneous.public.home.posts.actions.update_post')</a>
+                                            </li>
+				@endif
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a role="button" class="dropdown-item" data-post-id="{{ $post['id'] }}" onclick="event.preventDefault(); event.stopPropagation(); actionOn('post', 'delete', this)"><i class="fa-regular fa-trash-can fa-fw me-2"></i><span class="d-inline-block align-middle kls-line-height-1_2">@lang('miscellaneous.delete')<br><small class="text-muted fw-light" style="font-size: 0.7rem;">@lang('miscellaneous.public.home.posts.actions.delete_description')</small></span></a>
+                                            </li>
+			@endif
+                                        </ul>
+                                    </div>
+                                    <!-- Card feed action dropdown END -->
+								</div>
+							</div>
+							<!-- Card header END -->
+
+							<!-- Card body START -->
+							<div class="card-body pt-1 px-0">
+			@if ($post['post_content'])
+								<p class="mt-3 px-lg-4 px-3 fw-light">{!! $post['transformed_post_content'] !!}</p>
+			@endif
+
+			@if (count($post['images']) > 0)
+								<!-- Image(s) START -->
+				@if (count($post['images']) == 1)
+					@if (isVideoFile($post['images'][0]['file_url']))
+								<!-- Card img -->
+								<div class="overflow-hidden fullscreen-video w-100">
+									<!-- HTML video START -->
+									<div class="player-wrapper overflow-hidden">
+										<video class="player-html" controls crossorigin="anonymous" poster="">
+											<source src="{{ $post['images'][0]['file_url'] }}" type="video/mp4">
+										</video>
+									</div>
+									<!-- HTML video END -->
+
+									<!-- Plyr resources and browser polyfills are specified in the pen settings -->
+								</div>
+					@else
+								<!-- Card img -->
+								<div class="px-lg-4 px-3">
+									<img class="card-img" src="{{ $post['images'][0]['file_url'] }}" alt="{{ $post['post_content'] }}">
+								</div>
+					@endif
+				@else
+								<div class="row g-2 mt-3">
+								</div>
+				@endif
+								<!-- Image(s) END -->
+			@endif
+
+			@if (count($post['documents']) > 0)
+								<!-- Document(s) START -->
+								<div class="mt-3">
+									documents
+								</div>
+								<!-- Document(s) END -->
+			@endif
+							</div>
+							<!-- Card body END -->
+						</div>
+
 		@endif
+		{{-- Design for the poll
+		@if ($post['type']['alias'] === 'poll')
+		@endif --}}
 	@empty
 	@endforelse
-						</div>
-						<div id="formerFeedItems"></div>
 
 						<!-- Load more button START -->
 						<a role="button" class="btn btn-loader btn-primary-soft mt-3" data-bs-toggle="button" aria-pressed="true">
