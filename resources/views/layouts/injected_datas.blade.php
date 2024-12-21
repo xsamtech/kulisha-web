@@ -15,6 +15,7 @@
                     follow: "@lang('miscellaneous.follow')",
                     unfollow: "@lang('miscellaneous.unfollow')",
                     send_message: "@lang('miscellaneous.send_message')",
+                    message: "@lang('miscellaneous.message')",
                     followed: "@lang('miscellaneous.followed')",
                     upload: {
                         use_camera: "@lang('miscellaneous.upload.use_camera')",

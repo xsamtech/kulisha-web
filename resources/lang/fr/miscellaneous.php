@@ -57,6 +57,7 @@ return [
     'follow' => 'Suivre',
     'unfollow' => 'Ne plus suivre',
     'send_message' => 'Envoyer message',
+    'message' => 'Message',
     'followed' => 'Suivi',
     'validated' => 'Validé',
     'invalid' => 'Non valide',

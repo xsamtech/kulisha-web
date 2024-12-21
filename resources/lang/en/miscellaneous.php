@@ -57,6 +57,7 @@ return [
     'follow' => 'Follow',
     'unfollow' => 'Unfollow',
     'send_message' => 'Send message',
+    'message' => 'Message',
     'followed' => 'Followed',
     'validated' => 'Validated',
     'invalid' => 'Invalid',

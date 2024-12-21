@@ -474,67 +474,79 @@ function popoverOnHover(entity, elementsSelector) {
                             }
                         }
 
-                        var followerStatus = getFollowerStatus();
-                        // Create the popover content with the fetched data
-                        var popoverContent = `<div class="card overflow-hidden bg-transparent border-0">
-                                                    <div class="card-body p-0">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar avatar-lg mb-3 me-2">
-                                                                <a><img class="avatar-img rounded-circle" src="${res.data.profile_photo_path}" alt></a>
-                                                            </div>
+                        async function createPopoverContent() {
+                            try {
+                                // Wait for follower status to be recovered
+                                var followerStatus = await getFollowerStatus();
+                                
+                                // Create the popover content with the fetched data
+                                var popoverContent = `<div class="card overflow-hidden bg-transparent border-0">
+                                                            <div class="card-body p-0">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="avatar avatar-lg mb-3 me-2">
+                                                                        <a><img class="avatar-img rounded-circle" src="${res.data.profile_photo_path}" alt></a>
+                                                                    </div>
 
-                                                            <div>
-                                                                <h5 class="mb-0"> <a>${res.data.firstname} ${res.data.lastname}</a></h5>
-                                                                <small>@${res.data.username}</small>
-                                                                <p class="card-text mt-1 mb-0 small">${res.data.about_me || ''}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="hstack gap-2 gap-xl-3 justify-content-center text-center">
-                                                            <div>
-                                                                <h6 class="mb-0 small">${formatLongNumber(res.data.regular_posts.length)}</h6>
-                                                                <small class="kls-fs-7">${res.data.regular_posts.length > 1 ? window.Laravel.lang.public.profile.statistics.posts : window.Laravel.lang.public.profile.statistics.post}</small>
-                                                            </div>
-                                                            <div class="vr" style="z-index: 9999;"></div>
-                                                                <div>
-                                                                    <h6 class="mb-0 small">${formatLongNumber(res.data.followers.length)}</h6>
-                                                                    <small class="kls-fs-7">${res.data.followers.length > 1 ? window.Laravel.lang.public.profile.statistics.followers : window.Laravel.lang.public.profile.statistics.follower}</small>
-                                                                </div>
-                                                                <div class="vr" style="z-index: 9999;"></div>
                                                                     <div>
-                                                                        <h6 class="mb-0 small">${formatLongNumber(res.data.following.length)}</h6>
-                                                                        <small class="kls-fs-7">${res.data.following.length > 1 ? window.Laravel.lang.public.profile.statistics.followings : window.Laravel.lang.public.profile.statistics.following}</small>
+                                                                        <h5 class="mb-0"> <a>${res.data.firstname} ${res.data.lastname}</a></h5>
+                                                                        <small>@${res.data.username}</small>
+                                                                        <p class="card-text mt-1 mb-0 small">${res.data.about_me || ''}</p>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                                <div class="hstack gap-2 gap-xl-3 justify-content-center text-center">
+                                                                    <div class="flex-fill">
+                                                                        <h6 class="mb-0 small">${formatLongNumber(res.data.regular_posts.length)}</h6>
+                                                                        <small class="kls-fs-7">${res.data.regular_posts.length > 1 ? window.Laravel.lang.public.profile.statistics.posts : window.Laravel.lang.public.profile.statistics.post}</small>
+                                                                    </div>
+                                                                    <div class="vr" style="z-index: 9999;"></div>
+                                                                        <div class="flex-fill">
+                                                                            <h6 class="mb-0 small">${formatLongNumber(res.data.followers.length)}</h6>
+                                                                            <small class="kls-fs-7">${res.data.followers.length > 1 ? window.Laravel.lang.public.profile.statistics.followers : window.Laravel.lang.public.profile.statistics.follower}</small>
+                                                                        </div>
+                                                                        <div class="vr" style="z-index: 9999;"></div>
+                                                                            <div class="flex-fill">
+                                                                                <h6 class="mb-0 small">${formatLongNumber(res.data.following.length)}</h6>
+                                                                                <small class="kls-fs-7">${res.data.following.length > 1 ? window.Laravel.lang.public.profile.statistics.followings : window.Laravel.lang.public.profile.statistics.following}</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>`;
+
+                                if (res.data.id != parseInt(currentUser)) {
+                                    popoverContent += `<div class="d-flex mt-3">
+                                                            <a role="button" class="btn btn-sm ${followerStatus === 1 ? 'btn-primary' : 'btn-primary-soft'} flex-fill rounded follow-button me-2" data-user-id="${res.data.id}">
+                                                                <i class="${followerStatus === 1 ? 'bi bi-person-check-fill' : 'fa-solid fa-plus'} me-2"></i>${followerStatus === 1 ? window.Laravel.lang.followed : window.Laravel.lang.follow}
+                                                            </a>
+                                                            <a href="${currentHost}/messages/${res.data.id}" class="btn btn-sm btn-secondary-soft flex-fill rounded">
+                                                                <i class="bi bi-chat-quote me-2"></i>${window.Laravel.lang.message}
+                                                            </a>
                                                         </div>`;
 
-                        if (res.data.id != parseInt(currentUser)) {
-                            popoverContent += `<div class="mt-3">
-                                                    <a role="button" class="btn btn-sm ${followerStatus === 1 ? 'btn-primary' : 'btn-primary-soft'} rounded follow-button me-2" data-user-id="${res.data.id}">
-                                                        <i class="${followerStatus === 1 ? 'bi bi-person-check-fill' : 'fa-solid fa-plus'} me-2"></i>${followerStatus === 1 ? window.Laravel.lang.followed : window.Laravel.lang.follow}
-                                                    </a>
-                                                    <a href="${currentHost}/messages/${res.data.id}" class="btn btn-sm btn-secondary-soft rounded">
-                                                        <i class="bi bi-chat-quote me-2"></i>${window.Laravel.lang.send_message}
-                                                    </a>
+                                } else {
+                                    popoverContent += `<div class="mt-3">
+                                                            <a href="${currentHost}/${res.data.username}" class="btn btn-sm btn-primary w-100 rounded">${window.Laravel.lang.menu.profile.title}</a>
+                                                        </div>`;
+                                }
+
+                                popoverContent += `</div>
                                                 </div>`;
 
-                        } else {
-                            popoverContent += `<div class="mt-3">
-                                                    <a href="${currentHost}/${res.data.username}" class="btn btn-sm btn-primary w-100 rounded">${window.Laravel.lang.menu.profile.title}</a>
-                                                </div>`;
+                                // Initialize the popover
+                                popover = new bootstrap.Popover(link, {
+                                    container: 'body',
+                                    html: true,
+                                    content: popoverContent,
+                                });
+
+                                popover.show();
+
+                            } catch (error) {
+                                console.error(`Error creating popover : ${error}`);
+                            }
                         }
 
-                        popoverContent += `</div>
-                                        </div>`;
-
-                        // Initialize the popover
-                        popover = new bootstrap.Popover(link, {
-                            container: 'body',
-                            html: true,
-                            content: popoverContent,
-                        });
-
-                        popover.show();
+                        // Call the function to display the popover
+                        createPopoverContent();
                     })
                     .catch(error => {
                         console.error(`Get user error: ${error}`);
