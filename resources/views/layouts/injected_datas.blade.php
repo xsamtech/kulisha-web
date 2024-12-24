@@ -7,6 +7,7 @@
                     empty_list: "@lang('miscellaneous.empty_list')",
                     see_more: "@lang('miscellaneous.see_more')",
                     error_label: "@lang('miscellaneous.error_label')",
+                    network_error: "@lang('notifications.network_error')",
                     delete: "@lang('miscellaneous.delete')",
                     loading: "@lang('miscellaneous.loading')",
                     like: "@lang('miscellaneous.like')",

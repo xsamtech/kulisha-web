@@ -461,7 +461,7 @@ function navigate(url, element) {
     fetch(url).then(response => {
         if (!response.ok) {
             console.error('*****Response error: ', response.status);
-            throw new Error('<?= __("notifications.network_error") ?>');
+            throw new Error(window.Laravel.lang.network_error);
         }
 
         console.log('*****url: ' + url);
@@ -526,7 +526,7 @@ window.onpopstate = function(event) {
     if (event.state) {
         fetch(event.state.url).then(response => {
             if (!response.ok) {
-                throw new Error('<?= __("notifications.network_error") ?>');
+                throw new Error(window.Laravel.lang.network_error);
             }
 
             console.log('*****event.state.url: ' + event.state.url);
