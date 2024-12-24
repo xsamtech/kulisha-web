@@ -1,7 +1,7 @@
 /**
  * This scripts are loading "app.blade.php" JS files
  * 
- * Copyright (c) 2024 Xsam Technologies and/or its affiliates. All rights reserved.
+ * Copyright (c) 2025 Xsam Technologies and/or its affiliates. All rights reserved.
  * 
  * @author Xanders
  * @see https://team.xsamtech.com/xanderssamoth
