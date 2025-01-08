@@ -655,10 +655,10 @@ return [
             'posts' => [
                 'new' => [
                     'title' => 'New :post_type',
-                    'description' => 'Publish something...',
+                    'description' => 'New post...',
                     'waiting' => 'Publishing in progress...'
                 ],
-                'write' => 'Write here ...',
+                'write' => 'Say something...',
                 'posted' => [
                     'message' => 'The post has been published',
                     'see' => 'See the post',

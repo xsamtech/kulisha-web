@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <!-- Meta Tags -->
         <meta charset="utf-8">
@@ -58,28 +58,6 @@
         <!-- Custom -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.custom.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/reactions.css') }}">
-
-        <style>
-            .btn, .btn-close { transition: .5s ease all; }
-            .kls-fs-7 { font-size: 0.7rem; }
-            .kls-fs-11 { font-size: 1.1rem; }
-            .kls-text-secondary { color: var(--bs-secondary-text-emphasis); }
-            .kls-border-default { border-color: rgba(0, 0, 0, 0.1)!important; }
-            .kls-small { font-size: 12px; }
-            [data-bs-theme=dark] .kls-border-default { border-color: #29292e!important; }
-            .btn-check:checked + .btn-secondary-soft, :not(.btn-check) + .btn-secondary-soft:active, .btn-secondary-soft:first-child:active, .btn-secondary-soft.active, .btn-secondary-soft.show { color: #fff!important; background-color: #14191e !important; border-color: #14191e !important; }
-            [data-bs-theme=dark] .btn-check:checked + .btn-secondary-soft, [data-bs-theme=dark] :not(.btn-check) + .btn-secondary-soft:active, [data-bs-theme=dark] .btn-secondary-soft:first-child:active, [data-bs-theme=dark] .btn-secondary-soft.active, [data-bs-theme=dark] .btn-secondary-soft.show { color: var(--bs-body-bg)!important; background-color: rgba(var(--bs-secondary-rgb)) !important; border-color: transparent !important; }
-            #zuck-modal-content .story-viewer .tip { text-transform: inherit!important; }
-            @media (min-width: 768px) {
-                #addEndDateHour > .btn { margin-top: 0.7rem; }
-                #modalCreatePost .modal-body, #newEventModal .modal-body, #pollModal .modal-body { max-height: 370px; }
-            }
-            /* Emojis */
-            .emoji-dropdown { display: none; position: absolute; width: 300px; max-height: 250px; background-color: white; padding: 5px; border: 1px solid #ccc; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden; overflow-y: auto; }
-            [data-bs-theme=dark] .emoji-dropdown { background-color: var(--bs-black); border: 1px solid var(--bs-black); }
-            .emoji { font-size: 24px; cursor: pointer; padding: 5px; margin: 5px; }
-            .emoji:hover { background-color: #f0f0f0; }
-        </style>
 
         <title>
 @if (!empty($page_title))
@@ -202,64 +180,6 @@
         <script src="{{ asset('assets/js/social/zuck-stories.js') }}"></script>
 @endif
         <script src="{{ asset('assets/js/script.app.js') }}"></script>
-        <script type="text/javascript">
-            // Run some scripts on DOM content is loaded
-            document.addEventListener('DOMContentLoaded', function() {
-                handleEmoji('selectEmoji', 'post-textarea', '#modalCreatePost [type="submit"]');
-                toggleSubmitCheckboxes('modalSelectRestrictions .users-list', 'sendCheckedUsers1');
-                toggleSubmitCheckboxes('modalSelectSpeakers .users-list', 'sendCheckedUsers2');
-                popoverOnHover('user', '.user-infos');
-            });
-
-            $(function () {
-                // ---------------
-                // XIII. Reactions
-                // ---------------
-                $('.reaction-btn').each(function () {
-                    var reactionIcon = $(this).find('.reaction-icon');
-                    var currentReaction = $(this).find('.current-reaction');
-                    var currentReactionData = currentReaction.attr('data-current-reaction');
-                    var reactionName = $(this).find('.reaction-name');
-
-                    $(this).hover(function() {
-                        reactionIcon.each(function(i, e) {
-                            setTimeout(function() {
-                                $(e).addClass('show');
-                            }, i * 100);
-                        });
-                    }, function() {
-                        reactionIcon.removeClass('show');
-                    });
-
-                    $(this).on('click', '.reaction-icon', function() {
-                        var reactionIconDataId = $(this).attr('data-reaction-id');
-                        var reactionIconDataAlias = $(this).attr('data-reaction-alias');
-                        var reactionIconDataName = $(this).attr('data-reaction-name');
-                        var reactionIconDataColor = $(this).attr('data-reaction-color');
-
-                        currentReaction.html(`<img src="${currentHost}/assets/img/reaction/${reactionIconDataAlias}.png" alt="">`);
-                        currentReaction.attr('data-current-reaction', currentReactionData);
-                        reactionName.html(reactionIconDataName);
-                        reactionName.css('color', reactionIconDataColor);
-                    });
-
-                    $(this).on('click', function(e) {
-                        e.stopPropagation();
-
-                        // if (currentReactionData.trim() !== null) {
-                        //     $(currentReaction).html('<i class="fa-solid fa-thumbs-up"></i>');
-                        //     $(reactionName).html(`<?= __('miscellaneous.like') ?>`);
-                        // }
-
-                        reactionIcon.each(function(i, e) {
-                            setTimeout(function() {
-                                $(e).addClass('show');
-                            }, i * 100);
-                        });
-                    });
-                });
-            });
-        </script>
         <script src="{{ asset('assets/js/navigation.js') }}"></script>
     </body>
 </html>

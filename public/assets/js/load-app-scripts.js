@@ -44,7 +44,6 @@ var isAndroid = /android/.test(normalizedUserAgent);
 var isSafari = /safari/.test(normalizedUserAgent);
 var isWebview1 = appRef.split('-')[1] != 'nai';
 var isWebview2 = (isAndroid && /; wv\)/.test(normalizedUserAgent)) || (isIos && !standalone && !isSafari);
-
 var scripts = [
     currentHost + '/assets/addons/custom/jquery/js/jquery.min.js',
     currentHost + '/assets/addons/social/bootstrap/dist/js/bootstrap.bundle.min.js',
@@ -88,8 +87,13 @@ function loadScriptsInParallel(scripts) {
     // Delete existing scripts before loading new ones
     removeExistingScripts(scripts);
 
+    // Filter out scripts already loaded in the DOM
+    const scriptsToLoad = scripts.filter(src => {
+        return !Array.from(document.querySelectorAll('script')).some(script => script.src === src);
+    });
+
     // Load scripts in parallel
-    return Promise.all(scripts.map(src => {
+    return Promise.all(scriptsToLoad.map(src => {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
 

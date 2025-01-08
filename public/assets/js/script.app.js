@@ -31,7 +31,10 @@
  *    X.1. Handle shown emoji
  *    X.2. Function to retrieve emojis via an API
  * XI. Function to show PDF first page
- * XII. Function to show popover
+ * XII. Bootstrap components
+ *    XII.1. Tooltip
+ *    XII.2. Popover
+ * XIII. Function to show popover
  */
 // -----------------------------------------------
 // I. If the window is webview, hide some elements
@@ -427,8 +430,56 @@ function loadPDFPreview(fileUrl, index) {
     });
 }
 
+// -------------------------
+// XII. Bootstrap components
+// -------------------------
+// XII.1. Tooltip
+// -------------------------
+function initializeTooltips() {
+    if (typeof bootstrap !== 'undefined') {
+        // Disable all existing tooltips before resetting
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            var tooltipInstance = bootstrap.Tooltip.getInstance(tooltipTriggerEl); // Retrieves the existing instance
+
+            if (tooltipInstance) {
+                tooltipInstance.dispose(); // Disables the existing tooltip
+            }
+        });
+
+        // Reset all tooltips
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    }
+}
+
+// -------------------------
+// XII.2. Popover
+// -------------------------
+function initializePopovers() {
+    if (typeof bootstrap !== 'undefined') {
+        // Disable all existing popovers before resetting
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+
+        popoverTriggerList.forEach(function (popoverTriggerEl) {
+            var popoverInstance = bootstrap.Popover.getInstance(popoverTriggerEl); // Retrieves the existing instance
+
+            if (popoverInstance) {
+                popoverInstance.dispose(); // Disables the existing popover
+            }
+        });
+
+        // Reset all popovers
+        popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl);
+        });
+    }
+}
+
 // ----------------------------
-// XII. Function to show popover
+// XIII. Function to show popover
 // ----------------------------
 function popoverOnHover(entity, elementsSelector) {
     if (entity === 'user') {
@@ -599,33 +650,31 @@ function popoverOnHover(entity, elementsSelector) {
  * 
  * I. Miscellaneous
  * II. Auto-resize textarea
- * III. Bootstrap components
- *    III.1. Tooltip
- *    III.2. Popover
- * IV. On select change, update de country phone code
- * V. On check, show/hide some blocs
+ * III. On select change, update de country phone code
+ * IV. On check, show/hide some blocs
  *    V.1. Transaction type
- * VI. Theme management
- *    VI.1. Default facts
- *    VI.2. User chooses light
- *    VI.3. User chooses dark
- * VII. Crop image and send
- *    VII.1. Avatar with ajax
- *    VII.2. Avatar without ajax
- *    VII.3. Cover without ajax
- *    VII.4. ID card recto without ajax
- *    VII.5. ID card verso without ajax
- * VIII. Toggle post type
- * IX. Toggle visibility
- * X. Upload file
- *    X.1. Images
- *    X.2. Documents
- * XI. Location detection
- * XII. Date/Time picker
- * XIII. Choose speakers
- * XIV. Handle poll
- * XV. Handle anonymous question
- * XVI. Send post
+ * V. Theme management
+ *    V.1. Default facts
+ *    V.2. User chooses light
+ *    V.3. User chooses dark
+ * VI. Crop image and send
+ *    VI.1. Avatar with ajax
+ *    VI.2. Avatar without ajax
+ *    VI.3. Cover without ajax
+ *    VI.4. ID card recto without ajax
+ *    VI.5. ID card verso without ajax
+ * VII. Toggle post type
+ * VIII. Toggle visibility
+ * IX. Upload file
+ *    IX.1. Images
+ *    IX.2. Documents
+ * X. Location detection
+ * XI. Date/Time picker
+ * XII. Choose speakers
+ * XIII. Handle poll
+ * XIV. Handle anonymous question
+ * XV. Send post
+ * XVI. Reactions
  */
 $(function () {
     // ----------------
@@ -642,28 +691,8 @@ $(function () {
     // ------------------------
     autosize($('textarea'));
 
-    // -------------------------
-    // III. Bootstrap components
-    // -------------------------
-    // III.1. Tooltip
-    // --------------
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    });
-
-    // -------------------------
-    // III.2. Popover
-    // --------------
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl, {
-            container: 'body'
-        });
-    });
-
     // --------------------------------------------------
-    // IV. On select change, update de country phone code
+    // III. On select change, update de country phone code
     // --------------------------------------------------
     $('#select_country').on('change', function () {
         var countryData = $(this).val();
@@ -678,9 +707,9 @@ $(function () {
     });
 
     // ---------------------------------
-    // V. On check, show/hide some blocs
+    // IV. On check, show/hide some blocs
     // ---------------------------------
-    // V.1. Transaction type
+    // IV.1. Transaction type
     // ---------------------
     $('#paymentMethod .form-check-input').each(function () {
         $(this).on('click', function () {
@@ -694,9 +723,9 @@ $(function () {
     });
 
     // --------------------
-    // VI. Theme management
+    // V. Theme management
     // --------------------
-    // VI.1. Default facts
+    // V.1. Default facts
     // -------------------
     if (isNumeric(currentUser)) {
         $.ajax({
@@ -743,7 +772,7 @@ $(function () {
     }
 
     // ------------------------
-    // VI.2. User chooses light
+    // V.2. User chooses light
     // ------------------------
     $('#themeToggler .light').on('click', function (e) {
         e.preventDefault();
@@ -776,7 +805,7 @@ $(function () {
     });
 
     // -----------------------
-    // VI.3. User chooses dark
+    // V.3. User chooses dark
     // -----------------------
     $('#themeToggler .dark').on('click', function (e) {
         e.preventDefault();
@@ -807,7 +836,7 @@ $(function () {
     });
 
     // -----------------------
-    // VI.3. User chooses auto
+    // V.4. User chooses auto
     // -----------------------
     $('#themeToggler .auto').on('click', function (e) {
         e.preventDefault();
@@ -838,9 +867,9 @@ $(function () {
     });
 
     // ------------------------
-    // VII. Crop image and send
+    // VI. Crop image and send
     // ------------------------
-    // VII.1. Avatar with ajax
+    // VI.1. Avatar with ajax
     // -----------------------
     $('#avatar').on('change', function (e) {
         var files = e.target.files;
@@ -919,7 +948,7 @@ $(function () {
     });
 
     // --------------------------
-    // VII.2. Avatar without ajax
+    // VI.2. Avatar without ajax
     // --------------------------
     $('#image_profile').on('change', function (e) {
         var files = e.target.files;
@@ -974,7 +1003,7 @@ $(function () {
     });
 
     // --------------------------
-    // VII.3. Cover without ajax
+    // VI.3. Cover without ajax
     // --------------------------
     $('#image_cover').on('change', function (e) {
         var files = e.target.files;
@@ -1035,7 +1064,7 @@ $(function () {
     });
 
     // ---------------------------------
-    // VII.4. ID card recto without ajax
+    // VI.4. ID card recto without ajax
     // ---------------------------------
     $('#image_recto').on('change', function (e) {
         var files = e.target.files;
@@ -1090,7 +1119,7 @@ $(function () {
     });
 
     // ---------------------------------
-    // VII.5. ID card verso without ajax
+    // VI.5. ID card verso without ajax
     // ---------------------------------
     $('#image_verso').on('change', function (e) {
         var files = e.target.files;
@@ -1145,7 +1174,7 @@ $(function () {
     });
 
     // -----------------
-    // VIII. Toggle post type
+    // VII. Toggle post type
     // -----------------
     $('#newPostType .form-check').each(function () {
         $(this).on('click', function () {
@@ -1163,7 +1192,7 @@ $(function () {
     });
 
     // ------------------
-    // IX. Toggle visibility
+    // VIII. Toggle visibility
     // ------------------
     $('#visibility li a').each(function () {
         $(this).on('click', function () {
@@ -1353,9 +1382,9 @@ $(function () {
     });
 
     // ----------------
-    // X. Upload file
+    // IX. Upload file
     // ----------------
-    // X.1. Images
+    // IX.1. Images
     // -------------
     // When the user clicks the button to select the files
     $('#uploadImages').on('click', function () {
@@ -1443,7 +1472,7 @@ $(function () {
     });
 
     // ----------------
-    // X.2. Documents
+    // IX.2. Documents
     // ----------------
     // When the user clicks the button to select the files
     $('#uploadDocuments').on('click', function () {
@@ -1552,7 +1581,7 @@ $(function () {
     });
 
     // ----------------------
-    // XI. Location detection
+    // X. Location detection
     // ----------------------
     // When the user clicks the location detection button
     $("#detectLocation").on('click', function (e) {
@@ -1581,7 +1610,7 @@ $(function () {
     });
 
     // ---------------------
-    // XII. Date/Time picker
+    // XI. Date/Time picker
     // ---------------------
     $('#newEventModal').on('shown.bs.modal', function () {
         setTimeout(function () {
@@ -1634,7 +1663,7 @@ $(function () {
     });
 
     // ---------------------
-    // XIII. Choose speakers
+    // XII. Choose speakers
     // ---------------------
     $('#select-speakers').click(function (e) {
         e.preventDefault();
@@ -1722,7 +1751,7 @@ $(function () {
     });
 
     // --------------------
-    // XIV. Handle poll
+    // XIII. Handle poll
     // --------------------
     $('#pollModal').on('shown.bs.modal', function () {
         // Add other options
@@ -1755,7 +1784,7 @@ $(function () {
     });
 
     // ----------------------------
-    // XV. Handle anonymous question
+    // XIV. Handle anonymous question
     // ----------------------------
     $('#anonymousQuestionRequestModal').on('shown.bs.modal', function () {
         // Focus on the right textarea
@@ -1797,7 +1826,7 @@ $(function () {
     });
 
     // --------------
-    // XVI. Send post
+    // XV. Send post
     // --------------
     $('form#newPost').submit(function (e) {
         e.preventDefault();
@@ -1876,4 +1905,61 @@ $(function () {
                 $('#errorMessageWrapper .custom-message').html(error);
             });
     });
+
+    // --------------
+    // XVI. Reactions
+    // --------------
+    $('.reaction-btn').each(function () {
+        var reactionIcon = $(this).find('.reaction-icon');
+        var currentReaction = $(this).find('.current-reaction');
+        var currentReactionData = currentReaction.attr('data-current-reaction');
+        var reactionName = $(this).find('.reaction-name');
+
+        $(this).hover(function () {
+            reactionIcon.each(function (i, e) {
+                setTimeout(function () {
+                    $(e).addClass('show');
+                }, i * 100);
+            });
+        }, function () {
+            reactionIcon.removeClass('show');
+        });
+
+        $(this).on('click', '.reaction-icon', function () {
+            var reactionIconDataId = $(this).attr('data-reaction-id');
+            var reactionIconDataAlias = $(this).attr('data-reaction-alias');
+            var reactionIconDataName = $(this).attr('data-reaction-name');
+            var reactionIconDataColor = $(this).attr('data-reaction-color');
+
+            currentReaction.html(`<img src="${currentHost}/assets/img/reaction/${reactionIconDataAlias}.png" alt="">`);
+            currentReaction.attr('data-current-reaction', currentReactionData);
+            reactionName.html(reactionIconDataName);
+            reactionName.css('color', reactionIconDataColor);
+        });
+
+        $(this).on('click', function (e) {
+            e.stopPropagation();
+
+            // if (currentReactionData.trim() !== null) {
+            //     $(currentReaction).html('<i class="fa-solid fa-thumbs-up"></i>');
+            //     $(reactionName).html(`<?= __('miscellaneous.like') ?>`);
+            // }
+
+            reactionIcon.each(function (i, e) {
+                setTimeout(function () {
+                    $(e).addClass('show');
+                }, i * 100);
+            });
+        });
+    });
+});
+
+// Run some scripts on DOM content is loaded
+document.addEventListener('DOMContentLoaded', function () {
+    handleEmoji('selectEmoji', 'post-textarea', '#modalCreatePost [type="submit"]');
+    toggleSubmitCheckboxes('modalSelectRestrictions .users-list', 'sendCheckedUsers1');
+    toggleSubmitCheckboxes('modalSelectSpeakers .users-list', 'sendCheckedUsers2');
+    initializeTooltips();
+    initializePopovers();
+    popoverOnHover('user', '.user-infos');
 });
