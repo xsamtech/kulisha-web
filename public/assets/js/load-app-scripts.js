@@ -53,17 +53,20 @@ var scripts = [
     currentHost + '/assets/addons/social/choices.js/public/assets/scripts/choices.min.js',
     currentHost + '/assets/addons/social/glightbox-master/dist/js/glightbox.min.js',
     currentHost + '/assets/addons/social/flatpickr/dist/flatpickr.min.js',
+    currentHost + '/assets/addons/social/flatpickr/dist/fr.min.js',
+    currentHost + '/assets/addons/custom/cropper/js/cropper.min.js',
+    currentHost + '/assets/addons/custom/quill.js/js/quill.js',
     currentHost + '/assets/addons/social/plyr/plyr.js',
     currentHost + '/assets/addons/social/dropzone/dist/min/dropzone.min.js',
     currentHost + '/assets/js/social/functions.js',
     currentHost + '/assets/addons/custom/autosize/js/autosize.min.js',
-    currentHost + '/assets/addons/custom/perfect-scrollbar/dist/perfect-scrollbar.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js',
+    currentHost + '/assets/addons/custom/pdf.js/js/pdf.min.js',
     currentHost + '/assets/js/load-app-scripts.js',
-    currentHost + '/assets/addons/social/zuck.js/dist/zuck.min.js',
     currentHost + '/assets/js/classes.js',
+    currentHost + '/assets/addons/social/zuck.js/dist/zuck.min.js',
     currentHost + '/assets/js/social/zuck-stories.js',
     currentHost + '/assets/js/script.app.js',
+    currentHost + '/assets/js/navigation.js',
 ];
 
 // Dynamically load JS files

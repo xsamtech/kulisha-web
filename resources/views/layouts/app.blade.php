@@ -48,7 +48,7 @@
         <!-- CropperJS -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/cropper/css/cropper.min.css') }}">
         <!-- Quill -->
-        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/custom/quill.js/css/quill.snow.css') }}">
         <!-- Plyr -->
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/addons/social/plyr/plyr.css') }}">
         <!-- Zuck -->
@@ -71,7 +71,7 @@
 
     <body>
         <!-- Pre loader -->
-        <div class="preloader perfect-scrollbar">
+        <div class="preloader">
             <div class="preloader-item">
                 <div class="spinner-grow text-primary"></div>
             </div>
@@ -153,11 +153,11 @@
         <script src="{{ asset('assets/addons/social/glightbox-master/dist/js/glightbox.min.js') }}"></script>
         <!-- Flatpickr -->
         <script src="{{ asset('assets/addons/social/flatpickr/dist/flatpickr.min.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/fr.js"></script>
+        <script src="{{ asset('assets/addons/social/flatpickr/dist/fr.js') }}"></script>
         <!-- CropperJS -->
         <script src="{{ asset('assets/addons/custom/cropper/js/cropper.min.js') }}"></script>
         <!-- Quill -->
-        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+        <script src="{{ asset('assets/addons/custom/quill.js/js/quill.js') }}"></script>
         <!-- Plyr -->
         <script src="{{ asset('assets/addons/social/plyr/plyr.js') }}"></script>
         <!-- Dropzone -->
@@ -166,10 +166,8 @@
         <script src="{{ asset('assets/js/social/functions.js') }}"></script>
         <!-- Autoresize textarea -->
         <script src="{{ asset('assets/addons/custom/autosize/js/autosize.min.js') }}"></script>
-        <!-- Perfect scrollbar -->
-        <script src="{{ asset('assets/addons/custom/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>
         <!-- PDF.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+        <script src="{{ asset('assets/addons/custom/pdf.js/js/pdf.min.js') }}"></script>
         <!-- Custom scripts -->
 @include('layouts.injected_datas')
         <script src="{{ asset('assets/js/load-app-scripts.js') }}"></script>
