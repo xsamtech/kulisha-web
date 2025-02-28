@@ -496,6 +496,7 @@ class UserController extends BaseController
             'two_factor_secret' => $request->two_factor_secret,
             'two_factor_recovery_codes' => $request->two_factor_recovery_codes,
             'two_factor_confirmed_at' => $request->two_factor_confirmed_at,
+            'two_factor_phone_confirmed_at' => $request->two_factor_phone_confirmed_at,
             'notify_connection_invites' => $request->notify_connection_invites,
             'notify_new_posts' => $request->notify_new_posts,
             'notify_post_answers' => $request->notify_post_answers,
@@ -806,6 +807,13 @@ class UserController extends BaseController
         if ($inputs['two_factor_confirmed_at'] != null) {
             $user->update([
                 'two_factor_confirmed_at' => $inputs['two_factor_confirmed_at'],
+                'updated_at' => now(),
+            ]);
+        }
+
+        if ($inputs['two_factor_phone_confirmed_at'] != null) {
+            $user->update([
+                'two_factor_phone_confirmed_at' => $inputs['two_factor_phone_confirmed_at'],
                 'updated_at' => now(),
             ]);
         }
