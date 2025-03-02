@@ -87,6 +87,7 @@ class UserController extends BaseController
         $everybody_on_kulisha_visibility = !empty($to_connect_visibility_group) ? Visibility::where([['visibility_name->fr', 'Tout le monde sur Kulisha (recommandé)'], ['group_id', $to_connect_visibility_group->id]])->first() : Visibility::where('visibility_name->fr', 'Tout le monde sur Kulisha (recommandé)')->first();
         // Get inputs
         $inputs = [
+            'is_company' => $request->is_company,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'surname' => $request->surname,
@@ -472,6 +473,7 @@ class UserController extends BaseController
         // Get inputs
         $inputs = [
             'id' => $request->id,
+            'is_company' => $request->is_company,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'surname' => $request->surname,
@@ -518,6 +520,13 @@ class UserController extends BaseController
         ];
         $users = User::all();
         $current_user = User::find($inputs['id']);
+
+        if ($inputs['is_company'] != null) {
+            $user->update([
+                'is_company' => $inputs['is_company'],
+                'updated_at' => now(),
+            ]);
+        }
 
         if ($inputs['firstname'] != null) {
             $user->update([
