@@ -277,7 +277,8 @@ return [
     'addresses' => 'Addresses',
     'username' => [
         'label' => 'Username',
-        'description' => 'Very useful for chats',
+        'description' => 'Useful for identifying and being identified in discussions and posts',
+        'exists' => 'Sorry. This username already exists',
         'error' => 'Should only contain numbers, lowercase/uppercase letters or subdashes'
     ],
     'password' => [

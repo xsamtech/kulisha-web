@@ -111,6 +111,7 @@ class UserController extends BaseController
             'timezone' => isset($request->timezone) ? $request->timezone : 'UTC'
         ];
         $password_resets = PasswordResetToken::all();
+        $users = User::all();
         // $basic = new \Vonage\Client\Credentials\Basic(config('vonage.api_key'), config('vonage.api_secret'));
         // $client = new \Vonage\Client($basic);
 
@@ -148,11 +149,11 @@ class UserController extends BaseController
 
         if ($inputs['username'] != null) {
             // Check if username already exists
-            // foreach ($users as $another_user):
-            //     if ($another_user->username == $inputs['username']) {
-            //         return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['username'], __('validation.custom.username.exists'), 400);
-            //     }
-            // endforeach;
+            foreach ($users as $another_user):
+                if ($another_user->username == $inputs['username']) {
+                    return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['username'], __('miscellaneous.username.exists'), 400);
+                }
+            endforeach;
 
             // Check correct username
             if (preg_match('#^[\w]+$#', $inputs['username']) == 0) {

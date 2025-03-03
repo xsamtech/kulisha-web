@@ -276,8 +276,9 @@ return [
     ],
     'addresses' => 'Adresses',
     'username' => [
-        'label' => 'Pseudo',
-        'description' => 'Très utile pour les discussions',
+        'label' => 'Nom d’utilisateur',
+        'description' => 'Utile pour identifier et être identifié dans les discussions et les posts',
+        'exists' => 'Désolé. Ce nom d’utilisateur existe déjà',
         'error' => 'Ne doit contenir que des chiffres, des lettres en minuscules/majuscules ou des sous-traits'
     ],
     'password' => [
