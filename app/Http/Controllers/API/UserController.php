@@ -125,42 +125,6 @@ class UserController extends BaseController
             return $this->handleError(__('validation.custom.email_or_phone.required'));
         }
 
-        if ($inputs['email'] != null) {
-            // Check if email already exists
-            foreach ($users as $another_user):
-                if ($another_user->email == $inputs['email']) {
-                    return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['email'], __('validation.custom.email.exists'), 400);
-                }
-            endforeach;
-
-            // If email exists in "password_reset" table, delete it
-            if ($password_resets != null) {
-                foreach ($password_resets as $password_reset):
-                    if ($password_reset->email == $inputs['email']) {
-                        $password_reset->delete();
-                    }
-                endforeach;
-            }
-        }
-
-        if ($inputs['phone'] != null) {
-            // Check if phone already exists
-            foreach ($users as $another_user):
-                if ($another_user->phone == $inputs['phone']) {
-                    return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['phone'], __('validation.custom.phone.exists'), 400);
-                }
-            endforeach;
-
-            // If phone exists in "password_reset" table, delete it
-            if ($password_resets != null) {
-                foreach ($password_resets as $password_reset):
-                    if ($password_reset->phone == $inputs['phone']) {
-                        $password_reset->delete();
-                    }
-                endforeach;
-            }
-        }
-
         if ($inputs['username'] != null) {
             // Check if username already exists
             foreach ($users as $another_user):
@@ -187,6 +151,38 @@ class UserController extends BaseController
             $random_string = (string) random_int(1000000, 9999999);
 
             if ($inputs['email'] != null AND $inputs['phone'] != null) {
+                // Check if email already exists
+                foreach ($users as $another_user):
+                    if ($another_user->email == $inputs['email']) {
+                        return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['email'], __('validation.custom.email.exists'), 400);
+                    }
+                endforeach;
+
+                // If email exists in "password_reset" table, delete it
+                if ($password_resets != null) {
+                    foreach ($password_resets as $password_reset):
+                        if ($password_reset->email == $inputs['email']) {
+                            $password_reset->delete();
+                        }
+                    endforeach;
+                }
+
+                // Check if phone already exists
+                foreach ($users as $another_user):
+                    if ($another_user->phone == $inputs['phone']) {
+                        return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['phone'], __('validation.custom.phone.exists'), 400);
+                    }
+                endforeach;
+
+                // If phone exists in "password_reset" table, delete it
+                if ($password_resets != null) {
+                    foreach ($password_resets as $password_reset):
+                        if ($password_reset->phone == $inputs['phone']) {
+                            $password_reset->delete();
+                        }
+                    endforeach;
+                }
+
                 $password_reset = PasswordResetToken::create([
                     'phone' => $inputs['phone'],
                     'email' => $inputs['email'],
@@ -205,6 +201,22 @@ class UserController extends BaseController
 
             } else {
                 if ($inputs['email'] != null) {
+                    // Check if email already exists
+                    foreach ($users as $another_user):
+                        if ($another_user->email == $inputs['email']) {
+                            return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['email'], __('validation.custom.email.exists'), 400);
+                        }
+                    endforeach;
+
+                    // If email exists in "password_reset" table, delete it
+                    if ($password_resets != null) {
+                        foreach ($password_resets as $password_reset):
+                            if ($password_reset->email == $inputs['email']) {
+                                $password_reset->delete();
+                            }
+                        endforeach;
+                    }
+
                     PasswordResetToken::create([
                         'email' => $inputs['email'],
                         'token' => $random_string,
@@ -215,6 +227,22 @@ class UserController extends BaseController
                 }
 
                 if ($inputs['phone'] != null) {
+                    // Check if phone already exists
+                    foreach ($users as $another_user):
+                        if ($another_user->phone == $inputs['phone']) {
+                            return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['phone'], __('validation.custom.phone.exists'), 400);
+                        }
+                    endforeach;
+
+                    // If phone exists in "password_reset" table, delete it
+                    if ($password_resets != null) {
+                        foreach ($password_resets as $password_reset):
+                            if ($password_reset->phone == $inputs['phone']) {
+                                $password_reset->delete();
+                            }
+                        endforeach;
+                    }
+
                     $password_reset = PasswordResetToken::create([
                         'phone' => $inputs['phone'],
                         'token' => $random_string,
@@ -569,7 +597,7 @@ class UserController extends BaseController
             foreach ($users as $another_user):
                 if ($current_user->username != $inputs['username']) {
                     if ($another_user->username == $inputs['username']) {
-                        return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['username'], __('validation.custom.username.exists'), 400);
+                        return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['username'], __('miscellaneous.username.exists'), 400);
                     }
                 }
             endforeach;
