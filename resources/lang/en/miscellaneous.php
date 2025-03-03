@@ -226,7 +226,7 @@ return [
     'login_title1' => 'Log in',
     'login_title2' => 'Identify yourself',
     'login_description' => 'Your data is safe with us. So you need to identify yourself to be sure it’s you.',
-    'login_username' => 'Phone number, E-mail or username',
+    'login_username' => 'Phone number, Email or Username',
     'remember_me' => 'Stay connected',
     'forgotten_password' => 'Forgotten password?',
     'not_member' => 'Not a member?',

@@ -226,7 +226,7 @@ return [
     'login_title1' => 'Se connecter',
     'login_title2' => 'Identifiez-vous',
     'login_description' => 'Vos données sont sécurisées avec nous. Alors vous devez vous identifier pour être sûr que c’est bien vous.',
-    'login_username' => 'N° de téléphone, e-mail ou nom d’utilisateur',
+    'login_username' => 'N° de téléphone, E-mail ou Nom d’utilisateur',
     'remember_me' => 'Rester connecté',
     'forgotten_password' => 'Mot de passe oublié ?',
     'not_member' => 'Pas encore membre ?',
