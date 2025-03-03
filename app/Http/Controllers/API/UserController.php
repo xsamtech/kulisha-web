@@ -103,7 +103,7 @@ class UserController extends BaseController
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => !isset($request->password) ? null : Hash::make($request->password),
-            'prefered_theme' => !isset($request->prefered_theme) ? 'Light' : $request->prefered_theme,
+            'prefered_theme' => !isset($request->prefered_theme) ? 'light' : $request->prefered_theme,
             'prefered_language' => !isset($request->prefered_language) ? app()->getLocale() : $request->prefered_language,
             'status_id' => is_null($activated_status) ? (isset($request->status_id) ? $request->status_id : null) : $activated_status->id,
             'type_id' => is_null($ordinary_member_type) ? (isset($request->type_id) ? $request->type_id : null) : $ordinary_member_type->id,
