@@ -126,6 +126,13 @@ class UserController extends BaseController
         }
 
         if ($inputs['email'] != null) {
+            // Check if email already exists
+            foreach ($users as $another_user):
+                if ($another_user->email == $inputs['email']) {
+                    return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['email'], __('validation.custom.email.exists'), 400);
+                }
+            endforeach;
+
             // If email exists in "password_reset" table, delete it
             if ($password_resets != null) {
                 foreach ($password_resets as $password_reset):
@@ -137,6 +144,13 @@ class UserController extends BaseController
         }
 
         if ($inputs['phone'] != null) {
+            // Check if phone already exists
+            foreach ($users as $another_user):
+                if ($another_user->phone == $inputs['phone']) {
+                    return $this->handleError(__('miscellaneous.found_value') . ' ' . $inputs['phone'], __('validation.custom.phone.exists'), 400);
+                }
+            endforeach;
+
             // If phone exists in "password_reset" table, delete it
             if ($password_resets != null) {
                 foreach ($password_resets as $password_reset):
