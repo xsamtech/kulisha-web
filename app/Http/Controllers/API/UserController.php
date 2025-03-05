@@ -330,11 +330,16 @@ class UserController extends BaseController
             }
         }
 
-        if ($request->fields_ids != null) {
+        if ($request->has('fields_ids') && !is_null($request->fields_ids)) {
+            $request->validate([
+                'fields_ids' => 'array|nullable',
+                'fields_ids.*' => 'exists:fields,id'
+            ]);
+
             $user->fields()->sync($request->fields_ids);
 
         } else {
-            if ($agriculture_field) {
+            if (!empty($agriculture_field)) {
                 $user->fields()->sync([$agriculture_field->id]);
             }
         }
