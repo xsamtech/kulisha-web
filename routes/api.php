@@ -91,7 +91,7 @@ Route::group(['middleware' => ['api', 'localization']], function () {
     // ReactionReason
     Route::get('reaction_reason/find_by_for_post/{is_for_post}', 'App\Http\Controllers\API\ReactionReasonController@findByForPost')->name('reaction_reason.api.find_by_for_post');
     // Field
-    Route::get('field', 'App\Http\Controllers\API\FieldController@findByRealName')->name('field.api.index');
+    Route::get('field', 'App\Http\Controllers\API\FieldController@index')->name('field.api.index');
     Route::get('field/find_by_real_name/{locale}/{data}', 'App\Http\Controllers\API\FieldController@findByRealName')->name('field.api.find_by_real_name');
     Route::get('field/find_by_alias/{alias}', 'App\Http\Controllers\API\FieldController@findByAlias')->name('field.api.find_by_alias');
     // CoverageArea
