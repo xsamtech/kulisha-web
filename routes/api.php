@@ -23,7 +23,7 @@ Route::middleware(['auth:sanctum', 'localization'])->group(function () {
     Route::apiResource('restriction', 'App\Http\Controllers\API\RestrictionController');
     Route::apiResource('reaction', 'App\Http\Controllers\API\ReactionController')->except(['findByRealName', 'findByAlias', 'findByGroup']);
     Route::apiResource('reaction_reason', 'App\Http\Controllers\API\ReactionReasonController')->except(['findByForPost']);
-    Route::apiResource('field', 'App\Http\Controllers\API\FieldController')->except(['findByRealName', 'findByAlias']);
+    Route::apiResource('field', 'App\Http\Controllers\API\FieldController')->except(['index', 'findByRealName', 'findByAlias']);
     Route::apiResource('coverage_area', 'App\Http\Controllers\API\CoverageAreaController')->except(['index']);
     Route::apiResource('budget', 'App\Http\Controllers\API\BudgetController');
     Route::apiResource('user', 'App\Http\Controllers\API\UserController')->except(['store', 'show', 'search', 'profile', 'login']);
@@ -60,7 +60,7 @@ Route::group(['middleware' => ['api', 'localization']], function () {
     Route::resource('visibility', 'App\Http\Controllers\API\VisibilityController')->except(['index', 'store', 'show', 'update', 'destroy']);
     Route::resource('reaction', 'App\Http\Controllers\API\ReactionController')->except(['index', 'store', 'show', 'update', 'destroy']);
     Route::resource('reaction_reason', 'App\Http\Controllers\API\ReactionReasonController')->except(['index', 'store', 'show', 'update', 'destroy']);
-    Route::resource('field', 'App\Http\Controllers\API\FieldController')->except(['index', 'store', 'show', 'update', 'destroy']);
+    Route::resource('field', 'App\Http\Controllers\API\FieldController')->except(['store', 'show', 'update', 'destroy']);
     Route::resource('coverage_area', 'App\Http\Controllers\API\CoverageAreaController')->except(['store', 'show', 'update', 'destroy']);
     Route::resource('user', 'App\Http\Controllers\API\UserController')->except(['index', 'store', 'show', 'update', 'destroy']);
     Route::resource('password_reset', 'App\Http\Controllers\API\PasswordResetTokenController')->except(['index', 'store', 'show', 'update', 'destroy']);
@@ -91,6 +91,7 @@ Route::group(['middleware' => ['api', 'localization']], function () {
     // ReactionReason
     Route::get('reaction_reason/find_by_for_post/{is_for_post}', 'App\Http\Controllers\API\ReactionReasonController@findByForPost')->name('reaction_reason.api.find_by_for_post');
     // Field
+    Route::get('field', 'App\Http\Controllers\API\FieldController@findByRealName')->name('field.api.index');
     Route::get('field/find_by_real_name/{locale}/{data}', 'App\Http\Controllers\API\FieldController@findByRealName')->name('field.api.find_by_real_name');
     Route::get('field/find_by_alias/{alias}', 'App\Http\Controllers\API\FieldController@findByAlias')->name('field.api.find_by_alias');
     // CoverageArea
