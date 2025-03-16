@@ -11,8 +11,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 if (!function_exists('getWebURL')) {
     function getWebURL()
     {
-        return 'http://192.168.151.238/kulisha-web/public';
-        // return (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+        // return 'http://192.168.151.238/kulisha-web/public';
+        return (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
     }
 }
 
