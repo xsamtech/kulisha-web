@@ -1,4 +1,4 @@
-<p align="center"><a href="https://kulisha.xsamtech.com" target="_blank"><img src="https://xsamtech.com/assets/img/logo-text.png" width="400" alt="Xsam Logo"></a></p>
+<p align="center"><a href="https://kulisha.xsamtech.com" target="_blank"><img src="https://kulisha.xsamtech.com/assets/img/logo-text.png" width="400" alt="Xsam Logo"></a></p>
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
