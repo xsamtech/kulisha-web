@@ -14,9 +14,24 @@ return [
     */
     'demo_message' => 'Espace présentant la maquette de la plateforme',
     'welcome_title' => 'Votre plateforme agroalimentaire',
-    'welcome_description_product' => 'Partager, trouvez, achetez ou vendez vos produits agroalimentaires.',
-    'welcome_description_service' => 'Offrez ou commandez des services aux agriculteurs, aux éleveurs ou aux pêcheurs.',
-    'welcome_description_food' => 'Vendez de la nourriture saine et bio et attirer plus de clients chez vous.',
+    'welcome_description' => [
+        'product' => [
+            'title' => 'Trafic des Produits',
+            'content' => 'Partager, trouvez, achetez ou vendez vos produits agroalimentaires.'
+        ],
+        'service' => [
+            'title' => 'Offre de Services',
+            'content' => 'Offrez ou commandez des services aux agriculteurs, aux éleveurs ou aux pêcheurs.'
+        ],
+        'food' => [
+            'title' => 'Nourriture Bio ou Synthétique',
+            'content' => 'Vendez de la nourriture bio ou synthétique et attirer plus de clients chez vous.'
+        ],
+        'networking' => [
+            'title' => 'Echange et Réseautage',
+            'content' => 'Organisez des discussions dans les événements, les communautés ou en privé dans la messagerie.'
+        ],
+    ],
     'slogan' => 'Mieux nourrir la vie !',
     'keywords' => 'kulisha, agribusiness agroalimentaire, agriculteur, éleveur, pêche, pêcheur, mieux nourrir la vie',
     'app_invitation' => [

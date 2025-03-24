@@ -11,12 +11,27 @@ return [
     | Miscellaneous Language Lines
     |--------------------------------------------------------------------------
     |
-     */
+    */
     'demo_message' => 'Space presenting the model of the platform',
     'welcome_title' => 'Your agri-food platform',
-    'welcome_description_product' => 'Share, find, buy or sell your agri-food products.',
-    'welcome_description_service' => 'Offer or order services to farmers, ranchers or fishermen.',
-    'welcome_description_food' => 'Sell healthy, organic food and attract more customers to your business.',
+    'welcome_description' => [
+        'product' => [
+            'title' => 'Product traffic',
+            'content' => 'Share, find, buy or sell your agri-food products.'
+        ],
+        'service' => [
+            'title' => 'Service offer',
+            'content' => 'Offer or order services to farmers, ranchers or fishermen.'
+        ],
+        'food' => [
+            'title' => 'Organic or synthetic food',
+            'content' => 'Sell organic or synthetic food and attract more customers to your home.'
+        ],
+        'networking' => [
+            'title' => 'Exchange and networking',
+            'content' => 'Organize discussions in events, communities, or privately in messaging.'
+        ],
+    ],
     'slogan' => 'Better feeding life!',
     'keywords' => 'kulisha, agribusiness agrifood, agriculture, farmer, breeding, breeder, fishing, fisherman, better feeding life',
     'app_invitation' => [

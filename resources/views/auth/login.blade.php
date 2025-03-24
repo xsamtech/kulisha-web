@@ -72,7 +72,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-9 col-sm-10">
-                                        <p class="lh-sm fs-5 fw-light">@lang('miscellaneous.welcome_description_product')</p>
+                                        <p class="lh-sm fs-5 fw-light">@lang('miscellaneous.welcome_description.product.content')</p>
                                     </div>
                                 </div>
 
@@ -83,7 +83,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-9 col-sm-10">
-                                        <p class="lh-sm fs-5 fw-light">@lang('miscellaneous.welcome_description_service')</p>
+                                        <p class="lh-sm fs-5 fw-light">@lang('miscellaneous.welcome_description.service.content')</p>
                                     </div>
                                 </div>
 
@@ -94,7 +94,18 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-9 col-sm-10">
-                                        <p class="lh-sm fs-5 fw-light">@lang('miscellaneous.welcome_description_food')</p>
+                                        <p class="lh-sm fs-5 fw-light">@lang('miscellaneous.welcome_description.food.content')</p>
+                                    </div>
+                                </div>
+
+                                <div class="row g-lg-0 g-sm-5 gy-4 mt-3 align-items-center">
+                                    <div class="col-lg-3 col-sm-2 justify-content-center">
+                                        <div class="card card-body rounded-circle mx-auto text-center" style="width: 6rem; height: 6rem;">
+                                            <h2 class="m-0 pt-sm-2 pt-3"><i class="fa-solid fa-comments text-primary"></i></h2>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-9 col-sm-10">
+                                        <p class="lh-sm fs-5 fw-light">@lang('miscellaneous.welcome_description.networking.content')</p>
                                     </div>
                                 </div>
                             </div>
