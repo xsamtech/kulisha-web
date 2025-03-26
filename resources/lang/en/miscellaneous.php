@@ -16,11 +16,11 @@ return [
     'welcome_title' => 'Your agri-food platform',
     'welcome_description' => [
         'product' => [
-            'title' => 'Product traffic',
-            'content' => 'Share, find, buy or sell your agri-food products.'
+            'title' => 'Product and equipment',
+            'content' => 'Share, find, buy or sell products (plants, animals, fish, etc.) and agricultural, fishing or breeding equipment.'
         ],
         'service' => [
-            'title' => 'Service offer',
+            'title' => 'Services and Logistics',
             'content' => 'Offer or order services to farmers, ranchers or fishermen.'
         ],
         'food' => [

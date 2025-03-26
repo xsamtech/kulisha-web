@@ -16,11 +16,11 @@ return [
     'welcome_title' => 'Votre plateforme agroalimentaire',
     'welcome_description' => [
         'product' => [
-            'title' => 'Trafic des Produits',
-            'content' => 'Partager, trouvez, achetez ou vendez vos produits agroalimentaires.'
+            'title' => 'Produits et Matériels',
+            'content' => 'Partager, trouvez, achetez ou vendez des produits (plantes, bêtes, poissons, etc.) et matériels agricoles, de pêche ou d’élevage.'
         ],
         'service' => [
-            'title' => 'Offre de Services',
+            'title' => 'Services et Logistique',
             'content' => 'Offrez ou commandez des services aux agriculteurs, aux éleveurs ou aux pêcheurs.'
         ],
         'food' => [
