@@ -75,6 +75,25 @@ class CommunityController extends BaseController
 
         $community = Community::create($inputs);
 
+        if (isset($request->image_64)) {
+            // $extension = explode('/', explode(':', substr($request->image_64, 0, strpos($request->image_64, ';')))[1])[1];
+            $replace = substr($request->image_64, 0, strpos($request->image_64, ',') + 1);
+            // Find substring from replace here eg: data:image/png;base64,
+            $image = str_replace($replace, '', $request->image_64);
+            $image = str_replace(' ', '+', $image);
+            // Create image URL
+            $image_url = 'images/communities/' . $community->id . '/cover/' . Str::random(50) . '.png';
+
+            // Upload image
+            Storage::url(Storage::disk('public')->put($image_url, base64_decode($image)));
+
+            $community->update([
+                'cover_photo_path' => $image_url,
+                'cover_coordinates' => $request->x . '-' . $request->y . '-' . $request->width . '-' . $request->height,
+                'updated_at' => now()
+            ]);
+        }
+
         /*
             HISTORY AND/OR NOTIFICATION MANAGEMENT
         */
@@ -587,7 +606,6 @@ class CommunityController extends BaseController
         // Find substring from replace here eg: data:image/png;base64,
         $image = str_replace($replace, '', $inputs['image_64']);
         $image = str_replace(' ', '+', $image);
-
         // Create image URL
 		$image_url = 'images/communities/' . $inputs['community_id'] . '/cover/' . Str::random(50) . '.png';
 

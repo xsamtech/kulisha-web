@@ -97,6 +97,25 @@ class EventController extends BaseController
             $event->fields()->sync($request->fields_ids);
         }
 
+        if (isset($request->image_64)) {
+            // $extension = explode('/', explode(':', substr($request->image_64, 0, strpos($request->image_64, ';')))[1])[1];
+            $replace = substr($request->image_64, 0, strpos($request->image_64, ',') + 1);
+            // Find substring from replace here eg: data:image/png;base64,
+            $image = str_replace($replace, '', $request->image_64);
+            $image = str_replace(' ', '+', $image);
+            // Create image URL
+            $image_url = 'images/events/' . $event->id . '/cover/' . Str::random(50) . '.png';
+
+            // Upload image
+            Storage::url(Storage::disk('public')->put($image_url, base64_decode($image)));
+
+            $event->update([
+                'cover_photo_path' => $image_url,
+                'cover_coordinates' => $request->x . '-' . $request->y . '-' . $request->width . '-' . $request->height,
+                'updated_at' => now()
+            ]);
+        }
+
         /*
             HISTORY AND/OR NOTIFICATION MANAGEMENT
         */
@@ -660,6 +679,12 @@ class EventController extends BaseController
             return $query->where('status_id', $request->status_id);
         });
 
+        $query->when($request->fields_ids, function ($query) use ($request) {
+            return $query->whereHas('fields', function ($query) use ($request) {
+                                $query->whereIn('fields.id', $request->fields_ids);
+                            });
+        });
+
         // Retrieves the query results
         $events = $query->orderByDesc('created_at')->paginate(12);
         $count_events = $query->count();
@@ -741,7 +766,6 @@ class EventController extends BaseController
         // Find substring from replace here eg: data:image/png;base64,
         $image = str_replace($replace, '', $inputs['image_64']);
         $image = str_replace(' ', '+', $image);
-
         // Create image URL
 		$image_url = 'images/events/' . $inputs['event_id'] . '/cover/' . Str::random(50) . '.png';
 
@@ -791,7 +815,6 @@ class EventController extends BaseController
         if ($request->hasFile('file_url')) {
             if ($type->getTranslation('type_name', 'fr') == 'Document') {
                 $file_url = 'documents/events/' . $event->id . '/' . Str::random(50) . '.' . $request->file('file_url')->extension();
-
                 // Upload file
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $request->file('file_url')));
 
@@ -807,7 +830,6 @@ class EventController extends BaseController
 
             if ($type->getTranslation('type_name', 'fr') == 'Image') {
                 $file_url = 'images/events/' . $event->id . '/' . Str::random(50) . '.' . $request->file('file_url')->extension();
-
                 // Upload file
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $request->file('file_url')));
 
@@ -823,7 +845,6 @@ class EventController extends BaseController
 
             if ($type->getTranslation('type_name', 'fr') == 'Audio') {
                 $file_url = 'audios/events/' . $event->id . '/' . Str::random(50) . '.' . $request->file('file_url')->extension();
-
                 // Upload file
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $request->file('file_url')));
 
