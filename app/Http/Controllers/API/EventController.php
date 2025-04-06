@@ -615,91 +615,30 @@ class EventController extends BaseController
             return $this->handleError(__('notifications.find_user_404'));
         }
 
-        if (isset($request->type_id) AND isset($request->status_id) AND isset($request->fields_ids)) {
-            $type = Type::find($request->type_id);
+        $query = Event::query();
 
-            if (is_null($type)) {
-                return $this->handleError(__('notifications.find_type_404'));
-            }
+        $query->where('user_id', $user->id);
 
-            $status = Status::find($request->status_id);
+        // Add dynamic conditions
+        $query->when($request->type_id, function ($query) use ($request) {
+            return $query->where('type_id', $request->type_id);
+        });
 
-            if (is_null($status)) {
-                return $this->handleError(__('notifications.find_status_404'));
-            }
+        $query->when($request->status_id, function ($query) use ($request) {
+            return $query->where('status_id', $request->status_id);
+        });
 
-            $events = Event::whereHas('fields', function ($query) use ($request) {
+        $query->when($request->fields_ids, function ($query) use ($request) {
+            return $query->whereHas('fields', function ($query) use ($request) {
                                 $query->whereIn('fields.id', $request->fields_ids);
-                            })->where([['user_id', $user->id], ['type_id', $type->id], ['status_id', $status->id]])->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::whereHas('fields', function ($query) use ($request) {
-                                $query->whereIn('fields.id', $request->fields_ids);
-                            })->where([['user_id', $user->id], ['type_id', $type->id], ['status_id', $status->id]])->count();
+                            });
+        });
 
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
+        // Retrieves the query results
+        $events = $query->orderByDesc('created_at')->paginate(12);
+        $count_events = $query->count();
 
-        if (isset($request->type_id) AND isset($request->status_id) AND !isset($request->fields_ids)) {
-            $type = Type::find($request->type_id);
-
-            if (is_null($type)) {
-                return $this->handleError(__('notifications.find_type_404'));
-            }
-
-            $status = Status::find($request->status_id);
-
-            if (is_null($status)) {
-                return $this->handleError(__('notifications.find_status_404'));
-            }
-
-            $events = Event::where([['user_id', $user->id], ['type_id', $type->id], ['status_id', $status->id]])->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::where([['user_id', $user->id], ['type_id', $type->id], ['status_id', $status->id]])->count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
-
-        if (isset($request->type_id) AND !isset($request->status_id) AND !isset($request->fields_ids)) {
-            $type = Type::find($request->type_id);
-
-            if (is_null($type)) {
-                return $this->handleError(__('notifications.find_type_404'));
-            }
-
-            $events = Event::where([['user_id', $user->id], ['type_id', $type->id]])->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::where([['user_id', $user->id], ['type_id', $type->id]])->count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
-
-        if (!isset($request->type_id) AND isset($request->status_id) AND !isset($request->fields_ids)) {
-            $status = Status::find($request->status_id);
-
-            if (is_null($status)) {
-                return $this->handleError(__('notifications.find_status_404'));
-            }
-
-            $events = Event::where([['user_id', $user->id], ['status_id', $status->id]])->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::where([['user_id', $user->id], ['status_id', $status->id]])->count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
-
-        if (!isset($request->type_id) AND !isset($request->status_id) AND isset($request->fields_ids)) {
-            $events = Event::whereHas('fields', function ($query) use ($request) {
-                                $query->whereIn('fields.id', $request->fields_ids);
-                            })->where('user_id', $user->id)->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::whereHas('fields', function ($query) use ($request) {
-                                $query->whereIn('fields.id', $request->fields_ids);
-                            })->where('user_id', $user->id)->count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
-
-        if (!isset($request->type_id) AND !isset($request->status_id) AND !isset($request->fields_ids)) {
-            $events = Event::where('user_id', $user->id)->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::where('user_id', $user->id)->count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
+        return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
     }
 
     /**
@@ -710,91 +649,22 @@ class EventController extends BaseController
      */
     public function filterForEverybody(Request $request)
     {
-        if (isset($request->type_id) AND isset($request->status_id) AND isset($request->fields_ids)) {
-            $type = Type::find($request->type_id);
+        $query = Event::query();
 
-            if (is_null($type)) {
-                return $this->handleError(__('notifications.find_type_404'));
-            }
+        // Add dynamic conditions
+        $query->when($request->type_id, function ($query) use ($request) {
+            return $query->where('type_id', $request->type_id);
+        });
 
-            $status = Status::find($request->status_id);
+        $query->when($request->status_id, function ($query) use ($request) {
+            return $query->where('status_id', $request->status_id);
+        });
 
-            if (is_null($status)) {
-                return $this->handleError(__('notifications.find_status_404'));
-            }
+        // Retrieves the query results
+        $events = $query->orderByDesc('created_at')->paginate(12);
+        $count_events = $query->count();
 
-            $events = Event::whereHas('fields', function ($query) use ($request) {
-                                $query->whereIn('fields.id', $request->fields_ids);
-                            })->where([['type_id', $type->id], ['status_id', $status->id]])->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::whereHas('fields', function ($query) use ($request) {
-                                $query->whereIn('fields.id', $request->fields_ids);
-                            })->where([['type_id', $type->id], ['status_id', $status->id]])->count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
-
-        if (isset($request->type_id) AND isset($request->status_id) AND !isset($request->fields_ids)) {
-            $type = Type::find($request->type_id);
-
-            if (is_null($type)) {
-                return $this->handleError(__('notifications.find_type_404'));
-            }
-
-            $status = Status::find($request->status_id);
-
-            if (is_null($status)) {
-                return $this->handleError(__('notifications.find_status_404'));
-            }
-
-            $events = Event::where([['type_id', $type->id], ['status_id', $status->id]])->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::where([['type_id', $type->id], ['status_id', $status->id]])->count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
-
-        if (isset($request->type_id) AND !isset($request->status_id) AND !isset($request->fields_ids)) {
-            $type = Type::find($request->type_id);
-
-            if (is_null($type)) {
-                return $this->handleError(__('notifications.find_type_404'));
-            }
-
-            $events = Event::where([['type_id', $type->id]])->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::where([['type_id', $type->id]])->count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
-
-        if (!isset($request->type_id) AND isset($request->status_id) AND !isset($request->fields_ids)) {
-            $status = Status::find($request->status_id);
-
-            if (is_null($status)) {
-                return $this->handleError(__('notifications.find_status_404'));
-            }
-
-            $events = Event::where([['status_id', $status->id]])->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::where([['status_id', $status->id]])->count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
-
-        if (!isset($request->type_id) AND !isset($request->status_id) AND isset($request->fields_ids)) {
-            $events = Event::whereHas('fields', function ($query) use ($request) {
-                                $query->whereIn('fields.id', $request->fields_ids);
-                            })->orderByDesc('created_at')->paginate(30);
-            $count_events = Event::whereHas('fields', function ($query) use ($request) {
-                                $query->whereIn('fields.id', $request->fields_ids);
-                            })->count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
-
-        if (!isset($request->type_id) AND !isset($request->status_id) AND !isset($request->fields_ids)) {
-            $events = Event::orderByDesc('created_at')->paginate(30);
-            $count_events = Event::count();
-
-            return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
-        }
+        return $this->handleResponse(ResourcesEvent::collection($events), __('notifications.find_all_events_success'), $events->lastPage(), $count_events);
     }
 
     /**
