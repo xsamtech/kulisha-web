@@ -90,6 +90,42 @@ class MessageController extends BaseController
 
         $message = Message::create($inputs);
 
+        if ($request->hasFile('file_url')) {
+            if ($request->file_type_id == null) {
+                return $this->handleError($request->file_type_id, __('validation.required') . ' (' . __('miscellaneous.file_type') . ') ', 400);
+            }
+
+            $type = Type::find($request->file_type_id);
+
+            if (is_null($type)) {
+                return $this->handleError(__('notifications.find_type_404'));
+            }
+
+            // Group
+            $file_type_group = Group::where('group_name', 'Type de fichier')->first();
+            // Types
+            $image_type = Type::where([['type_name', 'Image (Photo/Vidéo)'], ['group_id', $file_type_group->id]])->first();
+            $document_type = Type::where([['type_name', 'Document'], ['group_id', $file_type_group->id]])->first();
+            $audio_type = Type::where([['type_name', 'Audio'], ['group_id', $file_type_group->id]])->first();
+
+            if ($type->id == $image_type->id AND $type->id == $document_type->id AND $type->id == $audio_type->id) {
+                return $this->handleError(__('notifications.type_is_not_file'));
+            }
+
+            $custom_path = ($type->id == $document_type->id ? 'documents/messages' : ($type->id == $audio_type->id ? 'audios/messages' : 'images/messages'));
+            $file_url =  $custom_path . '/' . $message->id . '/' . Str::random(50) . '.' . $request->file('file_url')->extension();
+
+            // Upload file
+            $dir_result = Storage::url(Storage::disk('public')->put($file_url, $request->file('file_url')));
+
+            File::create([
+                'file_name' => trim($request->file_name) != null ? $request->file_name : $request->file('file_url')->getClientOriginalName(),
+                'file_url' => $dir_result,
+                'type_id' => $type->id,
+                'message_id' => $message->id
+            ]);
+        }
+
         // If the message is sent to a user
         if ($inputs['addressee_user_id'] != null) {
             $addressee_user = User::find($inputs['addressee_user_id']);
@@ -354,7 +390,7 @@ class MessageController extends BaseController
         $count_messages = Message::where([['message_content', 'LIKE', '%' . $data . '%'], ['type_id', $message_type->id], ['user_id', $sender->id], ['addressee_user_id', $addressee->id]])->orWhere([['message_content', 'LIKE', '%' . $data . '%'], ['type_id', $message_type->id], ['user_id', $addressee->id], ['addressee_user_id', $sender->id]])->count();
 
         if (is_null($messages)) {
-            return $this->handleResponse(null, __('miscellaneous.empty_list'));
+            return $this->handleResponse([], __('miscellaneous.empty_list'));
         }
 
         /*
@@ -402,7 +438,7 @@ class MessageController extends BaseController
             $count_messages = Message::where([['message_content', 'LIKE', '%' . $data . '%'], ['addressee_community_id', $community->id]])->count();
 
             if (is_null($messages)) {
-                return $this->handleResponse(null, __('miscellaneous.empty_list'));
+                return $this->handleResponse([], __('miscellaneous.empty_list'));
             }
 
             /*
@@ -428,7 +464,7 @@ class MessageController extends BaseController
             $count_messages = Message::where([['message_content', 'LIKE', '%' . $data . '%'], ['addressee_team_id', $team->id]])->count();
 
             if (is_null($messages)) {
-                return $this->handleResponse(null, __('miscellaneous.empty_list'));
+                return $this->handleResponse([], __('miscellaneous.empty_list'));
             }
 
             /*
@@ -745,7 +781,7 @@ class MessageController extends BaseController
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $request->file('file_url')));
 
                 File::create([
-                    'file_name' => trim($request->file_name) != null ? $request->file_name : null,
+                    'file_name' => trim($request->file_name) != null ? $request->file_name : $request->file('file_url')->getClientOriginalName(),
                     'file_url' => $dir_result,
                     'type_id' => $type->id,
                     'message_id' => $message->id
@@ -761,7 +797,7 @@ class MessageController extends BaseController
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $request->file('file_url')));
 
                 File::create([
-                    'file_name' => trim($request->file_name) != null ? $request->file_name : null,
+                    'file_name' => trim($request->file_name) != null ? $request->file_name : $request->file('file_url')->getClientOriginalName(),
                     'file_url' => $dir_result,
                     'type_id' => $type->id,
                     'message_id' => $message->id
@@ -777,7 +813,7 @@ class MessageController extends BaseController
                 $dir_result = Storage::url(Storage::disk('public')->put($file_url, $request->file('file_url')));
 
                 File::create([
-                    'file_name' => trim($request->file_name) != null ? $request->file_name : null,
+                    'file_name' => trim($request->file_name) != null ? $request->file_name : $request->file('file_url')->getClientOriginalName(),
                     'file_url' => $dir_result,
                     'type_id' => $type->id,
                     'message_id' => $message->id
