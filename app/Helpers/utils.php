@@ -24,7 +24,7 @@ if (!function_exists('getApiURL')) {
     }
 }
 
-// Get APIs URL
+// Check image type
 if (!function_exists('isVideoFile')) {
     function isVideoFile($url)
     {
